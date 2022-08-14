@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Python中的  iter     reversed     next   - 尹亚亮的博客</title>
+<!-- begin _includes/seo.html --><title>Python中的 __iter__ __reversed__ __next__ - 尹亚亮的博客</title>
 <meta name="description" content="Python 中特殊方法的一些理解笔记">
 
 
@@ -22,7 +22,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_US">
 <meta property="og:site_name" content="尹亚亮的博客">
-<meta property="og:title" content="Python中的  iter     reversed     next  ">
+<meta property="og:title" content="Python中的 __iter__ __reversed__ __next__">
 <meta property="og:url" content="/python-iter-reversed-next/">
 
 
@@ -150,7 +150,7 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Python中的  iter     reversed     next  ">
+    <meta itemprop="headline" content="Python中的 __iter__ __reversed__ __next__">
     <meta itemprop="description" content="Python 中特殊方法的一些理解笔记">
     <meta itemprop="datePublished" content="2022-08-14T00:00:00+08:00">
     
@@ -159,7 +159,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="/python-iter-reversed-next/" class="u-url" itemprop="url">Python中的  iter     reversed     next  
+            <a href="/python-iter-reversed-next/" class="u-url" itemprop="url"><code class="language-plaintext highlighter-rouge">Python中的 __iter__ __reversed__ __next__</code>
 </a>
           </h1>
           
@@ -188,36 +188,35 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#__reversed__">__reversed__</a></li><li><a href="#__next__-和-__iter__">__next__ 和 __iter__</a><ul><li><a href="#__iterable__">__iterable__</a></li><li><a href="#__iterator__">__iterator__</a></li></ul></li></ul></li></ul></li><li><a href="#迭代器和可迭代对象的关系">迭代器和可迭代对象的关系</a></li><li><a href="#代码示例">代码示例</a></li></ul>
+              <ul class="toc__menu"><li><a href="#__reversed__说明">__reversed__说明</a></li><li><a href="#特殊方法__next__和__iter__说明">特殊方法__next__和__iter__说明</a><ul><li><a href="#iterable">iterable</a></li><li><a href="#iterator">iterator</a></li></ul></li><li><a href="#code">code</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
         <p>Python 中特殊方法的一些理解笔记</p>
 
-<h2 id="__reversed__">__reversed__</h2>
+<h3 id="__reversed__说明">__reversed__说明</h3>
 
-<p>​    返回集合的倒叙迭代器,如果没有实现这个方法,reversed()会去使用__getitem__和__len__来实现</p>
+<p>返回集合的倒叙迭代器,如果没有实现这个方法,reversed()会去使用__getitem__和__len__来实现</p>
 
-<h2 id="__next__-和-__iter__">__next__ 和 __iter__</h2>
+<h3 id="特殊方法__next__和__iter__说明">特殊方法__next__和__iter__说明</h3>
 
-<p>​    介绍 __next__ 和  __iter__ 方法需要了解下可迭代对象(iterable)和迭代器(iterator):</p>
+<p>介绍__next__和__iter__方法需要了解下可迭代对象(iterable)和迭代器(iterator):</p>
 
-<h5 id="__iterable__">__iterable__</h5>
+<h5 id="iterable">iterable</h5>
 
-<p>​    如果对象实现了 __iter__  方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现 __iter__  ,实现了 __getitem__  方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
+<p>如果对象实现了 <code class="language-plaintext highlighter-rouge">__iter__</code>  方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现 <code class="language-plaintext highlighter-rouge">__iter__</code>  ,实现了 <code class="language-plaintext highlighter-rouge">__getitem__</code>  方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
 
-<h5 id="__iterator__">__iterator__</h5>
+<h5 id="iterator">iterator</h5>
 
-<p>​    标准的迭代器都有两个方法   ___next__ 和 __iter__:
-​        __next__  返回下一个可用的元素,如果没有元素了,抛出 StopIteration 异常
-​        __iter__   返回self</p>
+<p>标准的迭代器都有两个方法___next__和__iter__:</p>
+<ul>
+  <li>__next__返回下一个可用的元素,如果没有元素了,抛出 StopIteration 异常</li>
+  <li>__iter__返回self</li>
+</ul>
 
-<h2 id="迭代器和可迭代对象的关系">迭代器和可迭代对象的关系</h2>
-
-<p>​    python从可迭代对象中获取迭代器(可迭代对象—iter()—&gt;迭代器—next()—&gt;值)</p>
-
-<h2 id="代码示例">代码示例</h2>
+<h4 id="code">code</h4>
+<p>python从可迭代对象中获取迭代器(可迭代对象—iter()—&gt;迭代器—next()—&gt;值)</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
@@ -326,7 +325,7 @@
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Python%E4%B8%AD%E7%9A%84%C2%A0%C2%A0iter%C2%A0%C2%A0+%C2%A0%C2%A0reversed%C2%A0%C2%A0+%C2%A0%C2%A0next%C2%A0%C2%A0%20%2Fpython-iter-reversed-next%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=%60Python%E4%B8%AD%E7%9A%84+__iter__+__reversed__+__next__%60%20%2Fpython-iter-reversed-next%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fpython-iter-reversed-next%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 

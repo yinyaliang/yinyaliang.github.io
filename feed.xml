@@ -1,28 +1,27 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-14T22:28:37+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮的博客</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Python中的  iter     reversed     next  </title><link href="/python-iter-reversed-next/" rel="alternate" type="text/html" title="Python中的  iter     reversed     next  " /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/python-iter-reversed-next</id><content type="html" xml:base="/python-iter-reversed-next/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-14T22:44:27+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮的博客</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __iter__ __reversed__ __next__`</title><link href="/python-iter-reversed-next/" rel="alternate" type="text/html" title="`Python中的 __iter__ __reversed__ __next__`" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/python-iter-reversed-next</id><content type="html" xml:base="/python-iter-reversed-next/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
 
-<h2 id="__reversed__">__reversed__</h2>
+<h3 id="__reversed__说明">__reversed__说明</h3>
 
-<p>​    返回集合的倒叙迭代器,如果没有实现这个方法,reversed()会去使用__getitem__和__len__来实现</p>
+<p>返回集合的倒叙迭代器,如果没有实现这个方法,reversed()会去使用__getitem__和__len__来实现</p>
 
-<h2 id="__next__-和-__iter__">__next__ 和 __iter__</h2>
+<h3 id="特殊方法__next__和__iter__说明">特殊方法__next__和__iter__说明</h3>
 
-<p>​    介绍 __next__ 和  __iter__ 方法需要了解下可迭代对象(iterable)和迭代器(iterator):</p>
+<p>介绍__next__和__iter__方法需要了解下可迭代对象(iterable)和迭代器(iterator):</p>
 
-<h5 id="__iterable__">__iterable__</h5>
+<h5 id="iterable">iterable</h5>
 
-<p>​    如果对象实现了 __iter__  方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现 __iter__  ,实现了 __getitem__  方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
+<p>如果对象实现了 <code class="language-plaintext highlighter-rouge">__iter__</code>  方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现 <code class="language-plaintext highlighter-rouge">__iter__</code>  ,实现了 <code class="language-plaintext highlighter-rouge">__getitem__</code>  方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
 
-<h5 id="__iterator__">__iterator__</h5>
+<h5 id="iterator">iterator</h5>
 
-<p>​    标准的迭代器都有两个方法   ___next__ 和 __iter__:
-​        __next__  返回下一个可用的元素,如果没有元素了,抛出 StopIteration 异常
-​        __iter__   返回self</p>
+<p>标准的迭代器都有两个方法___next__和__iter__:</p>
+<ul>
+  <li>__next__返回下一个可用的元素,如果没有元素了,抛出 StopIteration 异常</li>
+  <li>__iter__返回self</li>
+</ul>
 
-<h2 id="迭代器和可迭代对象的关系">迭代器和可迭代对象的关系</h2>
-
-<p>​    python从可迭代对象中获取迭代器(可迭代对象—iter()—&gt;迭代器—next()—&gt;值)</p>
-
-<h2 id="代码示例">代码示例</h2>
+<h4 id="code">code</h4>
+<p>python从可迭代对象中获取迭代器(可迭代对象—iter()—&gt;迭代器—next()—&gt;值)</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
 
