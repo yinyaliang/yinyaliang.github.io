@@ -1,4 +1,199 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-14T23:06:01+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮的博客</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门系统01</title><link href="/docker-01/" rel="alternate" type="text/html" title="docker 入门系统01" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/docker-01</id><content type="html" xml:base="/docker-01/"><![CDATA[<p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>docker 入门系统01 - 尹亚亮的博客</title>
+<meta name="description" content="了解什么是容器,如何管理容器和镜像,了解docker网络">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="尹亚亮的博客">
+<meta property="og:title" content="docker 入门系统01">
+<meta property="og:url" content="/docker-01/">
+
+
+  <meta property="og:description" content="了解什么是容器,如何管理容器和镜像,了解docker网络">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-08-14T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/docker-01/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮的博客 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">Skip to primary navigation</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">Skip to content</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">Skip to footer</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮的博客
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/collection-archive/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="docker 入门系统01">
+    <meta itemprop="description" content="了解什么是容器,如何管理容器和镜像,了解docker网络">
+    <meta itemprop="datePublished" content="2022-08-14T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/docker-01/" class="u-url" itemprop="url">docker 入门系统01
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-08-14T00:00:00+08:00">August 14, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
+              <ul class="toc__menu"><li><a href="#初始化一台主机">初始化一台主机</a></li><li><a href="#docker基础">docker基础</a><ul><li><a href="#安装docker-及下载镜像">安装docker 及下载镜像</a><ul><li><a href="#官方">官方</a></li><li><a href="#手动安装">手动安装</a></li><li><a href="#yum安装">yum安装</a></li><li><a href="#启动docker">启动docker</a></li><li><a href="#解决下载慢">解决下载慢</a></li></ul></li><li><a href="#镜像如何管理">镜像如何管理</a><ul><li><a href="#如何命名">如何命名</a></li><li><a href="#查看镜像">查看镜像</a></li><li><a href="#重做标签">重做标签</a></li><li><a href="#删除镜像">删除镜像</a></li><li><a href="#镜像的层结构">镜像的层结构</a></li><li><a href="#导出镜像">导出镜像</a></li><li><a href="#删除所有镜像">删除所有镜像</a></li></ul></li><li><a href="#管理容器">管理容器</a><ul><li><a href="#运行一个最简单容器">运行一个最简单容器</a></li><li><a href="#删除容器">删除容器</a></li><li><a href="#容器的生命周期">容器的生命周期</a></li><li><a href="#临时容器">临时容器</a></li><li><a href="#指定容器中运行的命令">指定容器中运行的命令</a></li><li><a href="#容器变量">容器变量</a></li><li><a href="#端口映射到物理机">端口映射到物理机</a></li><li><a href="#容器中执行命令">容器中执行命令</a></li><li><a href="#拷贝文件">拷贝文件</a></li><li><a href="#关闭启动重启">关闭、启动、重启</a></li><li><a href="#查看输出">查看输出</a></li><li><a href="#数据卷">数据卷</a></li></ul></li><li><a href="#docker-网络">docker 网络</a><ul><li><a href="#查看网络">查看网络</a></li></ul></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
 
 <h2 id="初始化一台主机">初始化一台主机</h2>
 
@@ -950,101 +1145,122 @@ NETWORK ID     NAME      DRIVER    SCOPE
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">rm</span> <span class="nt">-f</span> e3
 e3
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[了解什么是容器,如何管理容器和镜像,了解docker网络]]></summary></entry><entry><title type="html">`Python中的 __iter__ __reversed__ __next__`</title><link href="/python-iter-reversed-next/" rel="alternate" type="text/html" title="`Python中的 __iter__ __reversed__ __next__`" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/python-iter-reversed-next</id><content type="html" xml:base="/python-iter-reversed-next/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+</code></pre></div></div>
 
-<h3 id="__reversed__说明">__reversed__说明</h3>
 
-<p>返回集合的倒叙迭代器,如果没有实现这个方法,reversed()会去使用__getitem__和__len__来实现</p>
+        
+      </section>
 
-<h3 id="特殊方法__next__和__iter__说明">特殊方法__next__和__iter__说明</h3>
+      <!-- <footer class="page__meta">
+        
+        
+  
 
-<p>介绍__next__和__iter__方法需要了解下可迭代对象(iterable)和迭代器(iterator):</p>
 
-<h5 id="iterable">iterable</h5>
+  
 
-<p>如果对象实现了__iter__方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现__iter__,实现了__getitem__方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
-
-<h5 id="iterator">iterator</h5>
-
-<p>标准的迭代器都有两个方法___next__和__iter__:</p>
-<ul>
-  <li>__next__返回下一个可用的元素,如果没有元素了,抛出 StopIteration 异常</li>
-  <li>__iter__返回self</li>
-</ul>
-
-<h4 id="code">code</h4>
-<p>python从可迭代对象中获取迭代器(可迭代对象—iter()—&gt;迭代器—next()—&gt;值)</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="nb">tuple</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">b</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">tuple_iterator</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="nb">list</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">b</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">list_iterator</span>
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
     
-    <span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-    <span class="p">...:</span>     <span class="k">try</span><span class="p">:</span>
-    <span class="p">...:</span>         <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-    <span class="p">...:</span>     <span class="k">except</span> <span class="nb">StopIteration</span><span class="p">:</span>
-    <span class="p">...:</span>         <span class="k">break</span>
-    <span class="p">...:</span>
-    <span class="mi">1</span>
-    <span class="mi">2</span>
-    <span class="mi">3</span>
-    <span class="n">也可以使用for来做</span><span class="p">,</span><span class="n">上面的异常python已经内部自动处理</span><span class="p">:</span>
-    <span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">b</span><span class="p">:</span>
-   <span class="p">...:</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-   <span class="p">...:</span>
-    <span class="mi">1</span>
-    <span class="mi">2</span>
-    <span class="mi">3</span>
-</code></pre></div></div>
+      <a href="/tags/#docker" class="page__taxonomy-item p-category" rel="tag">Docker</a>
+    
+    </span>
+  </p>
 
-<p>定义一个可迭代对象和迭代器</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
-<span class="k">class</span> <span class="nc">TmptestIterator</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span>
-    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">tmp</span><span class="o">=</span><span class="n">choice</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
-        <span class="k">if</span> <span class="n">tmp</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="nb">StopIteration</span>
-        <span class="k">return</span> <span class="n">tmp</span>
 
-<span class="k">class</span> <span class="nc">TemTest</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">TmptestIterator</span><span class="p">()</span>
-</code></pre></div></div>
+ 
+        
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="o">=</span><span class="n">TemTest</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="n">TmptestIterator</span><span class="p">,</span><span class="n">TemTest</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
-    <span class="k">print</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time class="dt-published" datetime="2022-08-14T00:00:00+08:00">August 14, 2022</time></p>
+ 
+      </footer> -->
 
-<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="n">TmptestIterator</span><span class="s">'&gt; &lt;class '</span><span class="n">__main__</span><span class="p">.</span><span class="n">TemTest</span><span class="s">'&gt;
-6
-1
-1
-2
-2
-2
-1
-3
-</span></code></pre></div></div>
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
 
-<h4 id="参考">参考</h4>
-<p>https://docs.python.org/3/library/stdtypes.html#container.<strong>iter</strong>()</p>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
+  <a href="https://twitter.com/intent/tweet?text=docker+%E5%85%A5%E9%97%A8%E7%B3%BB%E7%BB%9F01%20%2Fdocker-01%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fdocker-01%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fdocker-01%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/python-iter-reversed-next/" class="pagination--pager" title="Python中的 __iter__ __reversed__ __next__
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    <!--  -->
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+
+    
+      <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+    
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2022 Your Name. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+  </body>
+</html>
