@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-14T22:44:27+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮的博客</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __iter__ __reversed__ __next__`</title><link href="/python-iter-reversed-next/" rel="alternate" type="text/html" title="`Python中的 __iter__ __reversed__ __next__`" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/python-iter-reversed-next</id><content type="html" xml:base="/python-iter-reversed-next/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-14T22:47:53+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮的博客</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __iter__ __reversed__ __next__`</title><link href="/python-iter-reversed-next/" rel="alternate" type="text/html" title="`Python中的 __iter__ __reversed__ __next__`" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/python-iter-reversed-next</id><content type="html" xml:base="/python-iter-reversed-next/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
 
 <h3 id="__reversed__说明">__reversed__说明</h3>
 
@@ -10,7 +10,7 @@
 
 <h5 id="iterable">iterable</h5>
 
-<p>如果对象实现了 <code class="language-plaintext highlighter-rouge">__iter__</code>  方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现 <code class="language-plaintext highlighter-rouge">__iter__</code>  ,实现了 <code class="language-plaintext highlighter-rouge">__getitem__</code>  方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
+<p>如果对象实现了__iter__方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现__iter__,实现了__getitem__方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
 
 <h5 id="iterator">iterator</h5>
 
@@ -94,4 +94,5 @@
 3
 </span></code></pre></div></div>
 
-<p>参考:https://docs.python.org/3/library/stdtypes.html#container.<strong>iter</strong>()</p>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
+<h4 id="参考">参考</h4>
+<p>https://docs.python.org/3/library/stdtypes.html#container.<strong>iter</strong>()</p>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>

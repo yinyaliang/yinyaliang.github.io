@@ -188,7 +188,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> On this page</h4></header>
-              <ul class="toc__menu"><li><a href="#__reversed__说明">__reversed__说明</a></li><li><a href="#特殊方法__next__和__iter__说明">特殊方法__next__和__iter__说明</a><ul><li><a href="#iterable">iterable</a></li><li><a href="#iterator">iterator</a></li></ul></li><li><a href="#code">code</a></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#__reversed__说明">__reversed__说明</a></li><li><a href="#特殊方法__next__和__iter__说明">特殊方法__next__和__iter__说明</a><ul><li><a href="#iterable">iterable</a></li><li><a href="#iterator">iterator</a></li></ul></li><li><a href="#code">code</a></li><li><a href="#参考">参考</a></li></ul></li></ul>
 
             </nav>
           </aside>
@@ -205,7 +205,7 @@
 
 <h5 id="iterable">iterable</h5>
 
-<p>如果对象实现了 <code class="language-plaintext highlighter-rouge">__iter__</code>  方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现 <code class="language-plaintext highlighter-rouge">__iter__</code>  ,实现了 <code class="language-plaintext highlighter-rouge">__getitem__</code>  方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
+<p>如果对象实现了__iter__方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现__iter__,实现了__getitem__方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
 
 <h5 id="iterator">iterator</h5>
 
@@ -289,7 +289,8 @@
 3
 </span></code></pre></div></div>
 
-<p>参考:https://docs.python.org/3/library/stdtypes.html#container.<strong>iter</strong>()</p>
+<h4 id="参考">参考</h4>
+<p>https://docs.python.org/3/library/stdtypes.html#container.<strong>iter</strong>()</p>
 
         
       </section>
