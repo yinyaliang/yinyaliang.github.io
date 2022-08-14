@@ -1,4 +1,97 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-14T22:00:29+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮的博客</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Layout: Post with Nested Table of Contents</title><link href="/edge-case-no-yaml-title/" rel="alternate" type="text/html" title="Layout: Post with Nested Table of Contents" /><published>2009-09-05T00:00:00+08:00</published><updated>2009-09-05T00:00:00+08:00</updated><id>/edge-case-no-yaml-title</id><content type="html" xml:base="/edge-case-no-yaml-title/"><![CDATA[<p>Tests table of contents with multiple levels to verify indentation is readible.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-14T22:12:49+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮的博客</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Python Iter Reversed Next</title><link href="/python-iter-reversed-next/" rel="alternate" type="text/html" title="Python Iter Reversed Next" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/python-iter-reversed-next</id><content type="html" xml:base="/python-iter-reversed-next/"><![CDATA[<h4 id="__reversed__">__reversed__</h4>
+
+<p>​    返回集合的倒叙迭代器,如果没有实现这个方法,reversed()会去使用__getitem__和__len__来实现</p>
+
+<h4 id="__next__-和-__iter__">__next__ 和 __iter__</h4>
+
+<p>​    介绍 __next__ 和  __iter__ 方法需要了解下可迭代对象(iterable)和迭代器(iterator):</p>
+
+<h5 id="可迭代对象-iterable">可迭代对象 iterable</h5>
+
+<p>​    如果对象实现了 __iter__  方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现 __iter__  ,实现了 __getitem__  方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
+
+<h5 id="迭代器-iterator">迭代器 iterator</h5>
+
+<p>​    标准的迭代器都有两个方法   ___next__ 和 __iter__:
+​        __next__  返回下一个可用的元素,如果没有元素了,抛出 StopIteration 异常
+​        __iter__   返回self</p>
+
+<h4 id="迭代器和可迭代对象的关系">迭代器和可迭代对象的关系</h4>
+
+<p>​    python从可迭代对象中获取迭代器(可迭代对象—iter()—&gt;迭代器—next()—&gt;值)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="nb">tuple</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">b</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">tuple_iterator</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="nb">list</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">b</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">list_iterator</span>
+    
+    <span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="p">...:</span>     <span class="k">try</span><span class="p">:</span>
+    <span class="p">...:</span>         <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+    <span class="p">...:</span>     <span class="k">except</span> <span class="nb">StopIteration</span><span class="p">:</span>
+    <span class="p">...:</span>         <span class="k">break</span>
+    <span class="p">...:</span>
+    <span class="mi">1</span>
+    <span class="mi">2</span>
+    <span class="mi">3</span>
+    <span class="n">也可以使用for来做</span><span class="p">,</span><span class="n">上面的异常python已经内部自动处理</span><span class="p">:</span>
+    <span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">b</span><span class="p">:</span>
+   <span class="p">...:</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+   <span class="p">...:</span>
+    <span class="mi">1</span>
+    <span class="mi">2</span>
+    <span class="mi">3</span>
+</code></pre></div></div>
+
+<p>定义一个可迭代对象和迭代器</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
+<span class="k">class</span> <span class="nc">TmptestIterator</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tmp</span><span class="o">=</span><span class="n">choice</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="n">tmp</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">StopIteration</span>
+        <span class="k">return</span> <span class="n">tmp</span>
+
+<span class="k">class</span> <span class="nc">TemTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">TmptestIterator</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="o">=</span><span class="n">TemTest</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">TmptestIterator</span><span class="p">,</span><span class="n">TemTest</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="n">TmptestIterator</span><span class="s">'&gt; &lt;class '</span><span class="n">__main__</span><span class="p">.</span><span class="n">TemTest</span><span class="s">'&gt;
+6
+1
+1
+2
+2
+2
+1
+3
+</span></code></pre></div></div>
+
+<p>参考:https://docs.python.org/3/library/stdtypes.html#container.<strong>iter</strong>()</p>]]></content><author><name>Your Name</name></author><summary type="html"><![CDATA[__reversed__]]></summary></entry><entry><title type="html">Layout: Post with Nested Table of Contents</title><link href="/edge-case-no-yaml-title/" rel="alternate" type="text/html" title="Layout: Post with Nested Table of Contents" /><published>2009-09-05T00:00:00+08:00</published><updated>2009-09-05T00:00:00+08:00</updated><id>/edge-case-no-yaml-title</id><content type="html" xml:base="/edge-case-no-yaml-title/"><![CDATA[<p>Tests table of contents with multiple levels to verify indentation is readible.</p>
 
 <h1 id="enim-laboris-id-ea-elit-elit-deserunt">Enim laboris id ea elit elit deserunt</h1>
 
