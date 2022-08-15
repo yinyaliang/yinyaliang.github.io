@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-15T15:22:53+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Centos Prometheus 安装</title><link href="/install-prometheus/" rel="alternate" type="text/html" title="Centos Prometheus 安装" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/install-prometheus</id><content type="html" xml:base="/install-prometheus/"><![CDATA[<p>Prometheus 在centos中的安装记录</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-15T16:06:11+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Centos Prometheus 安装</title><link href="/install-prometheus/" rel="alternate" type="text/html" title="Centos Prometheus 安装" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/install-prometheus</id><content type="html" xml:base="/install-prometheus/"><![CDATA[<p>Prometheus 在centos中的安装记录</p>
 
 <h3 id="下载">下载</h3>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
@@ -42,7 +42,100 @@ WantedBy=multi-user.target
 systemctl <span class="nb">enable </span>prometheus.service
 systemctl start prometheus.service
 systemctl status prometheus.service
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[Prometheus 在centos中的安装记录]]></summary></entry><entry><title type="html">docker 入门 – 01</title><link href="/docker-01/" rel="alternate" type="text/html" title="docker 入门 – 01" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/docker-01</id><content type="html" xml:base="/docker-01/"><![CDATA[<p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[Prometheus 在centos中的安装记录]]></summary></entry><entry><title type="html">`Python中的 __new__ __init__ __del__`</title><link href="/python_new_init_del/" rel="alternate" type="text/html" title="`Python中的 __new__ __init__ __del__`" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/python_new_init_del</id><content type="html" xml:base="/python_new_init_del/"><![CDATA[<p>Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象</p>
+
+<h3 id="第一个例子">第一个例子</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">inch</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__new__ "</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__new__ "</span><span class="p">)</span>
+
+<span class="n">__new__</span>
+<span class="bp">None</span>
+</code></pre></div></div>
+
+<p>因为我们没有从__new__返回任何结果，__init__这里不会调用。如果init被调用，我们就会看到我们在init中的打印语句。</p>
+
+<h3 id="第二个例子">第二个例子</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">inch</span><span class="p">():</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__new__ "</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">inch</span><span class="p">,</span> <span class="n">cls</span><span class="p">).</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span> 
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">inch</span><span class="p">,</span> <span class="n">cls</span><span class="p">).</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">inch</span><span class="p">())</span>
+
+<span class="n">__new__</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="p">.</span><span class="n">inch</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x002BF170</span><span class="o">&gt;</span>
+<span class="n">__init__</span>
+<span class="o">&lt;</span><span class="n">__main__</span><span class="p">.</span><span class="n">inch</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x002BF170</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>用于构建实例的是特殊方法 <strong>new</strong>：是个类方法(不需要使用@classmethod)，调用__init__方法时要传入实例，__new__必须返回一个实例。返回的实例会作为第一个参数（即 self）传给__init__ 方法。注意:__init__不允许返回任何值</p>
+
+<h3 id="第三个例子">第三个例子</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">inch</span><span class="p">(</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="n">cls</span><span class="p">.</span><span class="n">new</span> <span class="o">=</span> <span class="nb">float</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span><span class="n">args</span><span class="o">*</span><span class="mf">0.0254</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">new</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">object1</span><span class="o">=</span><span class="n">inch</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">object1</span><span class="p">.</span><span class="n">new</span><span class="p">)</span>
+
+<span class="n">__init__</span>
+<span class="mi">3</span>
+<span class="mf">0.07619999999999999</span>
+</code></pre></div></div>
+<p>可以看到__init__方法中除了self之外定义的参数，都必须与__new__方法中除cls参数之外的参数保持一致</p>
+
+<p>无论我们给超类的__new__传递的是哪个类，它都会创建该类的一个实例，如何我们想要创建一个inch的实例，所以，inch类必须作为第一个参数传递给float.<strong>new</strong>。在类inch的内部，cls指的是inch类，因此，我们需要将cls作为第一个参数传递给对象。</p>
+
+<h3 id="第四个例子">第四个例子</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">B</span><span class="p">(</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">inch</span><span class="p">(</span><span class="nb">float</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+        <span class="n">B</span><span class="p">.</span><span class="n">new</span> <span class="o">=</span> <span class="nb">float</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">B</span><span class="p">,</span><span class="n">args</span><span class="o">*</span><span class="mf">0.0254</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">B</span><span class="p">.</span><span class="n">new</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">a</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+
+<span class="n">object1</span><span class="o">=</span><span class="n">inch</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="nb">object</span><span class="p">))</span>
+<span class="k">print</span><span class="p">(</span><span class="n">object1</span><span class="p">.</span><span class="n">new</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="sa">B</span><span class="s">'&gt;
+0.0761999999999999
+</span></code></pre></div></div>
+
+<p>最后:__new__是用来创建一个实例的，从 object 类继承的已经很完善。所以我们基本上不需要自己编写__new__ 方法</p>
+
+<h3 id="第五个例子">第五个例子</h3>
+<p>一个__new__的应用，著名的单例模式(:python 中 None 对象就是单例):</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Singleton</span><span class="p">:</span>
+    <span class="n">_instance</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cls</span><span class="p">.</span><span class="n">_instance</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
+            <span class="n">cls</span><span class="p">.</span><span class="n">_instance</span> <span class="o">=</span> <span class="nb">object</span><span class="p">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">.</span><span class="n">_instance</span>
+
+<span class="n">a</span><span class="o">=</span><span class="n">Singleton</span><span class="p">()</span>
+<span class="n">b</span><span class="o">=</span><span class="n">Singleton</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="bp">True</span>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象]]></summary></entry><entry><title type="html">docker 入门 – 01</title><link href="/docker-01/" rel="alternate" type="text/html" title="docker 入门 – 01" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/docker-01</id><content type="html" xml:base="/docker-01/"><![CDATA[<p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
 
 <h2 id="初始化一台主机">初始化一台主机</h2>
 
