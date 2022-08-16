@@ -28,4 +28,10 @@ var store = [{
         "tags": ["Python"],
         "url": "/python-new-init-del/",
         "teaser": null
+      },{
+        "title": "`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`",
+        "excerpt":"Python 中特殊方法的一些理解笔记 __len__ 返回集合长度 __getitem__(self, item) 使用索引访问元素 __setitem__(self, key, value) 对索引赋值,使用 self[key] = value __delitem__(self, key) 删除索引值 del self[key] __contains__ 实现in运算符，如果没有实现这个方法python也会调用__getitem__来使in运算符可用 可变集合和不可变集合 可变集合需要实现: len getitem setitem delitem 不可变集合需要实现: len getitem code class TemTest: def __init__(self,): self.x=[i for i in range(10)] def __len__(self): return len(self.x) def __getitem__(self, item): return self.x[item] def...","categories": [],
+        "tags": ["Python"],
+        "url": "/python-len-getitem-setitem-delitem-contains/",
+        "teaser": null
       }]

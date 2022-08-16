@@ -1,4 +1,77 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-15T19:59:39+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Centos Prometheus 安装</title><link href="/install-prometheus/" rel="alternate" type="text/html" title="Centos Prometheus 安装" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/install-prometheus</id><content type="html" xml:base="/install-prometheus/"><![CDATA[<p>Prometheus 在centos中的安装记录</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-16T10:14:37+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+
+<h3 id="__len__">__len__</h3>
+<p>返回集合长度</p>
+
+<h3 id="__getitem__self-item">__getitem__(self, item)</h3>
+<p>使用索引访问元素</p>
+
+<h3 id="__setitem__self-key-value">__setitem__(self, key, value)</h3>
+<p>对索引赋值,使用 self[key] = value</p>
+
+<h3 id="__delitem__self-key">__delitem__(self, key)</h3>
+<p>删除索引值 del self[key]</p>
+
+<h3 id="__contains__">__contains__</h3>
+<p>实现in运算符，如果没有实现这个方法python也会调用__getitem__来使in运算符可用</p>
+
+<h3 id="可变集合和不可变集合">可变集合和不可变集合</h3>
+<p>可变集合需要实现: <strong>len</strong>  <strong>getitem</strong>    <strong>setitem</strong>  <strong>delitem</strong>
+不可变集合需要实现: <strong>len</strong>  <strong>getitem</strong></p>
+
+<h3 id="code">code</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TemTest</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span><span class="o">=</span><span class="n">TemTest</span><span class="p">()</span> <span class="c1">#实例化
+</span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">))</span> <span class="c1">#返回长度
+</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>   <span class="c1">#打印下标0的值
+</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>  <span class="c1">#切片
+</span>
+
+<span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">10</span>       <span class="c1">#将下标3的值替换为10
+</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+
+
+<span class="k">del</span> <span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>      <span class="c1">#删除下标3的值
+</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span>  <span class="c1">#测试in运算符
+</span><span class="k">print</span><span class="p">(</span><span class="mi">3</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">10</span>
+<span class="mi">0</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="bp">True</span>
+<span class="bp">False</span>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry><entry><title type="html">Centos Prometheus 安装</title><link href="/install-prometheus/" rel="alternate" type="text/html" title="Centos Prometheus 安装" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/install-prometheus</id><content type="html" xml:base="/install-prometheus/"><![CDATA[<p>Prometheus 在centos中的安装记录</p>
 
 <h3 id="下载">下载</h3>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
