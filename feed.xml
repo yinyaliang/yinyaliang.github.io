@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-16T17:48:05+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __call__`</title><link href="/python-call/" rel="alternate" type="text/html" title="`Python中的 __call__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-call</id><content type="html" xml:base="/python-call/"><![CDATA[<p>如果python中的一个类定义了 <strong>call</strong> 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-16T17:56:45+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __call__`</title><link href="/python-call/" rel="alternate" type="text/html" title="`Python中的 __call__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-call</id><content type="html" xml:base="/python-call/"><![CDATA[<p>如果python中的一个类定义了 <strong>call</strong> 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议</p>
 
 <h3 id="code">code</h3>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
@@ -32,7 +32,171 @@
 
 <span class="k">print</span><span class="p">(</span><span class="n">add_num</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
 <span class="mi">1</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[如果python中的一个类定义了 call 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议]]></summary></entry><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[如果python中的一个类定义了 call 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议]]></summary></entry><entry><title type="html">`Python中的 __enter__ __exit__`</title><link href="/python-enter-exit/" rel="alternate" type="text/html" title="`Python中的 __enter__ __exit__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-enter-exit</id><content type="html" xml:base="/python-enter-exit/"><![CDATA[<p>在python中实现了__enter__和__exit__方法，即支持上下文管理器协议。上下文管理器就是支持上下文管理器协议的对象，它是为了with而生。当with语句在开始运行时，会在上下文管理器对象上调用 <strong>enter</strong> 方法。with语句运行结束后，会在上下文管理器对象上调用 <strong>exit</strong> 方法</p>
+
+<h3 id="语法">语法</h3>
+<p>with的语法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">EXPR</span> <span class="k">as</span> <span class="n">VAR</span><span class="p">:</span>
+    <span class="n">BLOCK</span>
+</code></pre></div></div>
+
+<p>伪代码</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mgr</span> <span class="o">=</span> <span class="p">(</span><span class="n">EXPR</span><span class="p">)</span>   
+<span class="nb">exit</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mgr</span><span class="p">).</span><span class="n">__exit__</span>  <span class="c1"># Not calling it yet
+</span><span class="n">value</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mgr</span><span class="p">).</span><span class="n">__enter__</span><span class="p">(</span><span class="n">mgr</span><span class="p">)</span>    
+<span class="n">exc</span> <span class="o">=</span> <span class="bp">True</span>     
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">VAR</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># Only if "as VAR" is present
+</span>        <span class="n">BLOCK</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># The exceptional case is handled here
+</span>        <span class="n">exc</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">exit</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="o">*</span><span class="n">sys</span><span class="p">.</span><span class="n">exc_info</span><span class="p">()):</span>
+            <span class="k">raise</span>
+        <span class="c1"># The exception is swallowed if exit() returns true
+</span><span class="k">finally</span><span class="p">:</span>
+    <span class="c1"># The normal and non-local-goto cases are handled here
+</span>    <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>生成上下文管理器mgr</li>
+  <li>如果没有发现__exit__, __enter__两个方法，解释器会抛出AttributeError异常</li>
+  <li>调用上下文管理器的 <strong>enter</strong>() 方法</li>
+  <li>如果语法里的as VAR没有写，那么 伪代码里的 VAR= 这部分也会同样被忽略</li>
+  <li>如果BLOCK中的代码正常结束，或者是通过break, continue ,return 来结束，<strong>exit</strong>()会使用三个None的参数来返回</li>
+  <li>如果执行过程中出现异常，则使用 sys.exc_info的异常信息为参数调用 <strong>exit</strong>(exc_type, exc_value, exc_traceback)</li>
+</ul>
+
+<h3 id="对比">对比</h3>
+
+<p>之前我们对文件的操作是这样的</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'filename'</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Unexpected error:"</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">())</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>现在有了with语句可以使代码更加简洁，减少编码量,下面的语句会在执行完后自动关闭文件(即使出现异常也会)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'example.info'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="code">code</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+       <span class="c1"># return self.f
+</span>    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>上面例子的返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span> <span class="n">result</span><span class="p">:</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>这个例子里面__enter__没有返回，所以with语句里的”as t”到的是None，修改一下上面的例子</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">f</span>
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span> <span class="n">result</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_io</span><span class="p">.</span><span class="n">TextIOWrapper</span> <span class="n">name</span><span class="o">=</span><span class="s">'file'</span> <span class="n">mode</span><span class="o">=</span><span class="s">'r'</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'cp936'</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>如果在__init__或者__enter__中抛出异常，则不会进入到__exit__中</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="nb">ImportError</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__enter__"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">f</span>
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__exit__"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__init__</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"D:/pythonScript/leetcode/leetcode.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">14</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s">"D:/pythonScript/leetcode/leetcode.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">5</span><span class="p">,</span> <span class="ow">in</span> <span class="n">__init__</span>
+    <span class="k">raise</span> <span class="nb">ImportError</span>
+<span class="nb">ImportError</span>
+</code></pre></div></div>
+
+<p>如果在__exit__中返回True,则不会产生异常</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__enter__"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__exit__ {} "</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">exc_type</span><span class="p">))</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="k">raise</span> <span class="nb">ImportError</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"no error"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="n">__init__</span>
+<span class="n">__enter__</span>
+<span class="n">test</span> <span class="n">result</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_io</span><span class="p">.</span><span class="n">TextIOWrapper</span> <span class="n">name</span><span class="o">=</span><span class="s">'file'</span> <span class="n">mode</span><span class="o">=</span><span class="s">'r'</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'cp936'</span><span class="o">&gt;</span>
+<span class="n">__exit__</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">ImportError</span><span class="s">'&gt;
+no error
+</span></code></pre></div></div>
+
+<h3 id="参考">参考</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://python3-cookbook.readthedocs.io/zh_CN/latest/c08/p03_make_objects_support_context_management_protocol.html?highlight=with
+https://docs.python.org/3/library/stdtypes.html#typecontextmanager
+https://www.python.org/dev/peps/pep-0343/
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[在python中实现了__enter__和__exit__方法，即支持上下文管理器协议。上下文管理器就是支持上下文管理器协议的对象，它是为了with而生。当with语句在开始运行时，会在上下文管理器对象上调用 enter 方法。with语句运行结束后，会在上下文管理器对象上调用 exit 方法]]></summary></entry><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
 
 <h3 id="__len__">__len__</h3>
 <p>返回集合长度</p>

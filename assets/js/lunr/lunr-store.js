@@ -41,6 +41,12 @@ var store = [{
         "url": "/python-call/",
         "teaser": null
       },{
+        "title": "`Python中的 __enter__ __exit__`",
+        "excerpt":"在python中实现了__enter__和__exit__方法，即支持上下文管理器协议。上下文管理器就是支持上下文管理器协议的对象，它是为了with而生。当with语句在开始运行时，会在上下文管理器对象上调用 enter 方法。with语句运行结束后，会在上下文管理器对象上调用 exit 方法 语法 with的语法 with EXPR as VAR: BLOCK 伪代码 mgr = (EXPR) exit = type(mgr).__exit__ # Not calling it yet value = type(mgr).__enter__(mgr) exc = True try: try: VAR = value # Only if \"as VAR\" is present BLOCK except: # The exceptional case is handled...","categories": [],
+        "tags": ["Python"],
+        "url": "/python-enter-exit/",
+        "teaser": null
+      },{
         "title": "`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`",
         "excerpt":"Python 中特殊方法的一些理解笔记 __len__ 返回集合长度 __getitem__(self, item) 使用索引访问元素 __setitem__(self, key, value) 对索引赋值,使用 self[key] = value __delitem__(self, key) 删除索引值 del self[key] __contains__ 实现in运算符，如果没有实现这个方法python也会调用__getitem__来使in运算符可用 可变集合和不可变集合 可变集合需要实现: len getitem setitem delitem 不可变集合需要实现: len getitem code class TemTest: def __init__(self,): self.x=[i for i in range(10)] def __len__(self): return len(self.x) def __getitem__(self, item): return self.x[item] def...","categories": [],
         "tags": ["Python"],
