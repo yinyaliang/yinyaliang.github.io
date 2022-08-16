@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-16T16:23:31+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-16T16:34:42+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
 
 <h3 id="__len__">__len__</h3>
 <p>返回集合长度</p>
@@ -322,7 +322,88 @@ def __delattr__(self, item):
 <span class="k">print</span><span class="p">(</span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="bp">True</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象]]></summary></entry><entry><title type="html">docker 入门 – 01</title><link href="/docker-01/" rel="alternate" type="text/html" title="docker 入门 – 01" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/docker-01</id><content type="html" xml:base="/docker-01/"><![CDATA[<p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象]]></summary></entry><entry><title type="html">`Python中的 __repr__ __str__`</title><link href="/python-repr-str/" rel="alternate" type="text/html" title="`Python中的 __repr__ __str__`" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/python-repr-str</id><content type="html" xml:base="/python-repr-str/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+
+<h3 id="__repr__">__repr__</h3>
+<p>被内置函数repr用于把一个对象用”官方”的字符串形式表示出来(终端友好)</p>
+<ul>
+  <li>值传给eval()来返回一个对象的字符串表示形式</li>
+  <li>否则返回一个尖括号括起来的字符串，包含了对象类型的名称和附加的信息通常包括对象的名称和地址</li>
+  <li>一个类可以通过 __repr__方法来控制它的实例返回内容(也就是以上两点都通可以通过__repr__方法来定制)</li>
+  <li>返回 Unicode 字符串(str 类型)</li>
+</ul>
+
+<h3 id="__str__">__str__</h3>
+<p>被str(object) 和内置函数format()和print() 返回一个对象的’非正式’字符串形式(用户友好)</p>
+<ul>
+  <li>返回一个对象的字符串版本，如果对象没有提供，会返回空字符串，</li>
+  <li>对于字符串，会返回字符串本身，如果对象没有提供__str__方法，会使用__repr__方法(也就是repr(object))来提供返回值</li>
+  <li>返回 Unicode 字符串(str 类型)</li>
+</ul>
+
+<h3 id="code">code</h3>
+<p>这是django query的源码部分,使用__repr__来返回一个对象和查询的数据切片:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">[:</span><span class="n">REPR_OUTPUT_SIZE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">REPR_OUTPUT_SIZE</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">"…(remaining elements truncated)…"</span>
+        <span class="k">return</span> <span class="s">'&lt;%s %r&gt;'</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>注意:这里用到了%r,会返回数据的标准字符串形式，它和%s的区别看下面的例子:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">In</span> <span class="p">[</span><span class="mi">58</span><span class="p">]:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">58</span><span class="p">]:</span> <span class="s">'datetime.datetime(2018, 9, 13, 15, 22, 22, 124128)'</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">59</span><span class="p">]:</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">59</span><span class="p">]:</span> <span class="s">'2018-09-13 15:22:26.310367'</span>
+</code></pre></div></div>
+
+<p>再来看下__str__和__repr__的实现</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="k">class</span> <span class="nc">example</span><span class="p">:</span>
+    <span class="p">...:</span>     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="p">...:</span>         <span class="k">return</span> <span class="s">'str'</span>
+    <span class="p">...:</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="p">...:</span>         <span class="k">return</span> <span class="s">'repr'</span>
+    <span class="p">...:</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">69</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="n">example</span><span class="p">()</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">70</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+    <span class="nb">str</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">71</span><span class="p">]:</span> <span class="n">a</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">71</span><span class="p">]:</span> <span class="nb">repr</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">74</span><span class="p">]:</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__str__</span><span class="p">())</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">74</span><span class="p">]:</span> <span class="s">'str'</span>
+
+    <span class="n">In</span> <span class="p">[</span><span class="mi">75</span><span class="p">]:</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__repr__</span><span class="p">())</span>
+    <span class="n">Out</span><span class="p">[</span><span class="mi">75</span><span class="p">]:</span> <span class="s">'repr'</span> 
+</code></pre></div></div>
+
+<p>如果对象没有__str__方法，会使用__repr__来代替</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">76</span><span class="p">]:</span> <span class="k">class</span> <span class="nc">example</span><span class="p">:</span>
+    <span class="p">...:</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="p">...:</span>         <span class="k">return</span> <span class="s">'repr'</span>
+    <span class="p">...:</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="n">example</span><span class="p">()</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">repr</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">]:</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__str__</span><span class="p">())</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">79</span><span class="p">]:</span> <span class="s">'repr'</span>
+</code></pre></div></div>
+
+<p>如果我们只实现两个中的一个的话，只需要写__repr__就可以了</p>
+
+<h3 id="参考">参考</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://docs.python.org/3/reference/datamodel.html
+https://docs.python.org/3/library/functions.html#repr
+https://docs.python.org/3/library/stdtypes.html#str
+https://github.com/django/django/blob/master/django/db/models/query.py
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry><entry><title type="html">docker 入门 – 01</title><link href="/docker-01/" rel="alternate" type="text/html" title="docker 入门 – 01" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/docker-01</id><content type="html" xml:base="/docker-01/"><![CDATA[<p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
 
 <h2 id="初始化一台主机">初始化一台主机</h2>
 
