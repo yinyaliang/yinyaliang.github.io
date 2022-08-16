@@ -37,7 +37,7 @@ var store = [{
       },{
         "title": "`Centos 更新Glibc `",
         "excerpt":"写CBPF需要更新系统的Glibc 安装centos-release-scl yum install centos-release-scl 安装7版本的devtoolset yum install devtoolset-7-gcc* 激活 scl enable devtoolset-7 bash 查看gcc版本 gcc -v 下载安装包 cd /tmp wget https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz tar xf glibc-2.23.tar.gz cd glibc-2.23/ mkdir glibc-build cd glibc-build 安装 ../configure --prefix=/usr make make install 验证 ldd --version ldd (GNU libc) 2.23 Copyright (C) 2016 Free Software Foundation,...","categories": [],
-        "tags": ["Centos"],
+        "tags": ["Linux"],
         "url": "/centos-update-glibc/",
         "teaser": null
       },{
