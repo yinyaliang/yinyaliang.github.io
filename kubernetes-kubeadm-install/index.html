@@ -193,14 +193,14 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#使用kubeadm-部署集群">使用kubeadm 部署集群</a><ul><li><a href="#master上的组件">master上的组件</a></li><li><a href="#worker上的组件">worker上的组件</a></li><li><a href="#安装集群">安装集群</a></li><li><a href="#建立主机">建立主机</a></li><li><a href="#初始化配置">初始化配置</a></li><li><a href="#安装master">安装master</a></li></ul></li></ul></li><li><a href="#添加及删除worker">添加及删除worker</a><ul><li><a href="#安装calico">安装calico</a></li><li><a href="#设置tab补全">设置tab补全</a></li><li><a href="#删除节点">删除节点</a></li><li><a href="#常用命令">常用命令</a></li></ul></li></ul></li><li><a href="#查看pod及节点的负载">查看pod及节点的负载</a></li><li><a href="#了解及管理命名空间">了解及管理命名空间</a><ul><li><a href="#管理命令空间">管理命令空间</a></li></ul></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#使用kubeadm-部署集群">使用kubeadm 部署集群</a><ul><li><a href="#master上的组件">master上的组件</a></li><li><a href="#worker上的组件">worker上的组件</a></li><li><a href="#安装集群">安装集群</a></li><li><a href="#建立主机">建立主机</a></li><li><a href="#初始化配置">初始化配置</a></li><li><a href="#安装master">安装master</a></li></ul></li><li><a href="#添加及删除worker">添加及删除worker</a><ul><li><a href="#安装calico">安装calico</a></li><li><a href="#设置tab补全">设置tab补全</a></li><li><a href="#删除节点">删除节点</a></li><li><a href="#常用命令">常用命令</a></li></ul></li><li><a href="#查看pod及节点的负载">查看pod及节点的负载</a></li><li><a href="#了解及管理命名空间">了解及管理命名空间</a><ul><li><a href="#管理命令空间">管理命令空间</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
         <p>介绍使用kubeadm部署集群,测试环境为kvm</p>
 
-<h2 id="使用kubeadm-部署集群">使用kubeadm 部署集群</h2>
+<h3 id="使用kubeadm-部署集群">使用kubeadm 部署集群</h3>
 
 <h4 id="master上的组件">master上的组件</h4>
 
@@ -426,7 +426,7 @@ docker rmi coredns/coredns:1.8.0
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm token create <span class="nt">--print-join-command</span>
 </code></pre></div></div>
 
-<h2 id="添加及删除worker">添加及删除worker</h2>
+<h3 id="添加及删除worker">添加及删除worker</h3>
 
 <p>在node1和node2上分别执行</p>
 
@@ -650,7 +650,7 @@ storage.k8s.io/v1beta1
 v1
 </code></pre></div></div>
 
-<h2 id="查看pod及节点的负载">查看pod及节点的负载</h2>
+<h3 id="查看pod及节点的负载">查看pod及节点的负载</h3>
 
 <p>如果需要查看kubernetes集群每个节点及每个pod的CPU负载、内存负载、需要安装metric-serer</p>
 
@@ -773,7 +773,7 @@ kube-scheduler-master                      1/1     Running   1          109m   1
 metrics-server-6b7f4dfdcb-xfpl4            1/1     Running   0          3m     10.244.166.129    node1    &lt;none&gt;           &lt;none&gt;
 </code></pre></div></div>
 
-<h2 id="了解及管理命名空间">了解及管理命名空间</h2>
+<h3 id="了解及管理命名空间">了解及管理命名空间</h3>
 
 <h4 id="管理命令空间">管理命令空间</h4>
 

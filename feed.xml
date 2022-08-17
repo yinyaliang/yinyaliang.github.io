@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T18:05:15+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 02</title><link href="/docker-02/" rel="alternate" type="text/html" title="docker 入门 – 02" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/docker-02</id><content type="html" xml:base="/docker-02/"><![CDATA[<p>自定义镜像 数据卷  仓库</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T18:24:53+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 02</title><link href="/docker-02/" rel="alternate" type="text/html" title="docker 入门 – 02" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/docker-02</id><content type="html" xml:base="/docker-02/"><![CDATA[<p>自定义镜像 数据卷  仓库</p>
 
 <h4 id="自定义镜像">自定义镜像</h4>
 
@@ -339,7 +339,7 @@ Login Succeeded
 docker push 192.168.122.100/cka/centos:volume
 </code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[自定义镜像 数据卷 仓库]]></summary></entry><entry><title type="html">使用kubeadm 安装Kubernetes</title><link href="/kubernetes-kubeadm-install/" rel="alternate" type="text/html" title="使用kubeadm 安装Kubernetes" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/kubernetes-kubeadm-install</id><content type="html" xml:base="/kubernetes-kubeadm-install/"><![CDATA[<p>介绍使用kubeadm部署集群,测试环境为kvm</p>
 
-<h2 id="使用kubeadm-部署集群">使用kubeadm 部署集群</h2>
+<h3 id="使用kubeadm-部署集群">使用kubeadm 部署集群</h3>
 
 <h4 id="master上的组件">master上的组件</h4>
 
@@ -565,7 +565,7 @@ docker rmi coredns/coredns:1.8.0
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm token create <span class="nt">--print-join-command</span>
 </code></pre></div></div>
 
-<h2 id="添加及删除worker">添加及删除worker</h2>
+<h3 id="添加及删除worker">添加及删除worker</h3>
 
 <p>在node1和node2上分别执行</p>
 
@@ -789,7 +789,7 @@ storage.k8s.io/v1beta1
 v1
 </code></pre></div></div>
 
-<h2 id="查看pod及节点的负载">查看pod及节点的负载</h2>
+<h3 id="查看pod及节点的负载">查看pod及节点的负载</h3>
 
 <p>如果需要查看kubernetes集群每个节点及每个pod的CPU负载、内存负载、需要安装metric-serer</p>
 
@@ -912,7 +912,7 @@ kube-scheduler-master                      1/1     Running   1          109m   1
 metrics-server-6b7f4dfdcb-xfpl4            1/1     Running   0          3m     10.244.166.129    node1    &lt;none&gt;           &lt;none&gt;
 </code></pre></div></div>
 
-<h2 id="了解及管理命名空间">了解及管理命名空间</h2>
+<h3 id="了解及管理命名空间">了解及管理命名空间</h3>
 
 <h4 id="管理命令空间">管理命令空间</h4>
 
