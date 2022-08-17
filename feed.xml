@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T14:54:38+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 02</title><link href="/docker-02/" rel="alternate" type="text/html" title="docker 入门 – 02" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/docker-02</id><content type="html" xml:base="/docker-02/"><![CDATA[<p>自定义镜像 数据卷  仓库</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T15:11:54+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 02</title><link href="/docker-02/" rel="alternate" type="text/html" title="docker 入门 – 02" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/docker-02</id><content type="html" xml:base="/docker-02/"><![CDATA[<p>自定义镜像 数据卷  仓库</p>
 
 <h4 id="自定义镜像">自定义镜像</h4>
 
@@ -337,7 +337,147 @@ Login Succeeded
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag centos:volume 192.168.122.100/cka/centos:volume
 docker push 192.168.122.100/cka/centos:volume
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[自定义镜像 数据卷 仓库]]></summary></entry><entry><title type="html">`Centos 更新Glibc `</title><link href="/centos-update-glibc/" rel="alternate" type="text/html" title="`Centos 更新Glibc `" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/centos-update-glibc</id><content type="html" xml:base="/centos-update-glibc/"><![CDATA[<p>写CBPF需要更新系统的Glibc</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[自定义镜像 数据卷 仓库]]></summary></entry><entry><title type="html">ubuntu install zabbix agent2</title><link href="/ubuntu-install-zabbix-agent2/" rel="alternate" type="text/html" title="ubuntu install zabbix agent2" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/ubuntu-install-zabbix-agent2</id><content type="html" xml:base="/ubuntu-install-zabbix-agent2/"><![CDATA[<p>ubuntu install zabbix agent2</p>
+
+<h4 id="安装依赖">安装依赖</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    apt <span class="nb">install </span>gcc
+    apt <span class="nb">install </span>libpcre3 libpcre3-dev
+    apt-get <span class="nb">install </span>zlib1g-dev
+    apt <span class="nb">install </span>make
+</code></pre></div></div>
+
+<h4 id="golang-安装">golang 安装</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://go.dev/doc/install
+</code></pre></div></div>
+
+<h4 id="创建组和用户">创建组和用户</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    groupadd <span class="nt">-g</span> 2210 zabbix
+    useradd <span class="nt">-u</span> 2210 zabbix <span class="nt">-g</span> zabbix
+</code></pre></div></div>
+
+<h4 id="创建目录及赋权">创建目录及赋权</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="o">[</span> <span class="o">!</span> <span class="nt">-d</span> /data/scripts/oss/zabbix <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> <span class="nt">-p</span> /data/scripts/oss/zabbix
+    <span class="o">[</span> <span class="o">!</span> <span class="nt">-d</span> /data/logs/oss/zabbix <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> <span class="nt">-p</span> /data/logs/oss/zabbix
+    <span class="o">[</span> <span class="o">!</span> <span class="nt">-d</span> /data/config/oss/zabbix <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> <span class="nt">-p</span> /data/config/oss/zabbix
+    <span class="o">[</span> <span class="o">!</span> <span class="nt">-d</span> /data/run/oss/zabbix <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> <span class="nt">-p</span> /data/run/oss/zabbix
+    
+    <span class="nb">chown </span>zabbix:zabbix /data/config/oss/zabbix/<span class="k">*</span> <span class="nt">-Rf</span>
+    <span class="nb">chown </span>zabbix:zabbix /data/logs/oss/zabbix/<span class="k">*</span> <span class="nt">-Rf</span>
+    <span class="nb">chown </span>zabbix:zabbix /data/scripts/oss/zabbix/<span class="k">*</span> <span class="nt">-Rf</span>
+    <span class="nb">chown </span>zabbix:zabbix /data/run/oss/zabbix/<span class="k">*</span> <span class="nt">-Rf</span>
+    
+    <span class="nb">chown </span>zabbix: <span class="nt">-R</span> /data/logs/oss/zabbix/
+    <span class="nb">chown </span>zabbix: <span class="nt">-R</span> /data/run/oss/zabbix
+
+</code></pre></div></div>
+
+<h4 id="下载源文件">下载源文件</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">cd</span> /tmp
+    wget https://cdn.zabbix.com/zabbix/sources/stable/6.0/zabbix-6.0.0.tar.gz
+    <span class="nb">tar </span>zxvf zabbix-6.0.0.tar.gz
+    <span class="nb">cd </span>zabbix-6.0.0/
+
+</code></pre></div></div>
+
+<h4 id="编译安装">编译安装</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+  <span class="c"># 5.4版本</span>
+  <span class="c">#  ./configure --prefix=/usr/local/zabbix-6.0.0 --enable-agent --enable-agent2 --disable-dependency-tracking</span>
+   ./configure <span class="nt">--prefix</span><span class="o">=</span>/usr/local/zabbix-6.0.0 <span class="nt">--enable-agent</span> <span class="nt">--enable-agent2</span> 
+    make <span class="o">&amp;&amp;</span> make <span class="nb">install</span> 
+</code></pre></div></div>
+
+<h4 id="目录软件">目录软件</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nb">ln</span> <span class="nt">-s</span> /usr/local/zabbix-6.0.0 /usr/local/zabbix
+    <span class="nb">ln</span> <span class="nt">-s</span> /data/scripts/oss/zabbix /usr/local/zabbix/scripts
+    <span class="nb">ln</span> <span class="nt">-s</span> /usr/local/zabbix/sbin/zabbix_agentd /usr/local/bin/zabbix_agentd
+    <span class="nb">ln</span> <span class="nt">-s</span> /usr/local/zabbix/sbin/zabbix_agent2 /usr/local/bin/zabbix_agent2
+    
+    <span class="nb">cd</span> /usr/local/zabbix
+    <span class="nb">mv </span>etc/<span class="k">*</span> /data/config/oss/zabbix/
+    <span class="nb">ln</span> <span class="nt">-s</span> /data/config/oss/zabbix/ etc
+
+</code></pre></div></div>
+
+<h4 id="zabbix-配置文件">Zabbix 配置文件</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    配置启动文件:/data/config/oss/zabbix/zabbix_agentd.conf
+    	<span class="nv">PidFile</span><span class="o">=</span>/data/run/oss/zabbix/zabbix_agentd.pid
+    	<span class="nv">LogFile</span><span class="o">=</span>/data/logs/oss/zabbix/zabbix_agentd.log
+    	<span class="nv">AllowKey</span><span class="o">=</span>system.run[<span class="k">*</span><span class="o">]</span>
+    	<span class="nv">ListenPort</span><span class="o">=</span>31350
+    	<span class="nv">Hostname</span><span class="o">=</span>glb-ubuntu
+    	<span class="nv">BufferSize</span><span class="o">=</span>1000
+    	<span class="nv">Timeout</span><span class="o">=</span>3
+    	<span class="nv">Include</span><span class="o">=</span>/data/config/oss/zabbix/zabbix_agentd.conf.d/<span class="k">*</span>.conf
+    	<span class="nv">ListenIP</span><span class="o">=</span>10.0.9.150
+    	<span class="nv">ServerActive</span><span class="o">=</span>10.0.2.39:31351
+    	<span class="nv">Server</span><span class="o">=</span>10.0.2.39
+</code></pre></div></div>
+
+<h4 id="zabbix2-配置文件">Zabbix2 配置文件</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">PidFile</span><span class="o">=</span>/data/run/oss/zabbix/zabbix_agent2.pid
+<span class="nv">LogFile</span><span class="o">=</span>/data/logs/oss/zabbix/zabbix_agent2.log
+<span class="nv">Server</span><span class="o">=</span>10.0.2.39,10.0.2.40
+<span class="nv">ListenPort</span><span class="o">=</span>31350
+<span class="nv">ListenIP</span><span class="o">=</span>10.0.2.34
+<span class="nv">ServerActive</span><span class="o">=</span>10.0.2.39:31351<span class="p">;</span>10.0.2.40:31351
+<span class="nv">Hostname</span><span class="o">=</span>oif-ozw3
+<span class="nv">Timeout</span><span class="o">=</span>3
+<span class="nv">Include</span><span class="o">=</span>/data/config/oss/zabbix/zabbix_agentd.conf.d/<span class="k">*</span>.conf
+<span class="nv">ControlSocket</span><span class="o">=</span>/data/run/oss/zabbix/agent.sock
+</code></pre></div></div>
+
+<h4 id="systemd-配置-agentd">SYSTEMD 配置 agentd</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="o">[</span>Unit]
+	<span class="nv">Description</span><span class="o">=</span>Zabbix Agent
+	<span class="nv">After</span><span class="o">=</span>syslog.target
+	<span class="nv">After</span><span class="o">=</span>network.target
+
+	<span class="o">[</span>Service]
+	<span class="nv">Type</span><span class="o">=</span>forking
+	<span class="nv">User</span><span class="o">=</span>root
+	<span class="nv">Group</span><span class="o">=</span>root
+	<span class="nv">Environment</span><span class="o">=</span><span class="s2">"CONFFILE=/data/config/oss/zabbix/zabbix_agentd.conf"</span>
+	<span class="nv">ExecStart</span><span class="o">=</span>/usr/local/bin/zabbix_agentd <span class="nt">-c</span> <span class="nv">$CONFFILE</span>
+	<span class="nv">PIDFile</span><span class="o">=</span>/data/run/oss/zabbix/zabbix_agentd.pid
+	<span class="nv">KillSignal</span><span class="o">=</span>SIGQUIT
+
+	<span class="o">[</span>Install]
+	<span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div></div>
+
+<h4 id="systemd-配置-agent2">SYSTEMD 配置 agent2</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="o">[</span>Unit]
+    <span class="nv">Description</span><span class="o">=</span>Zabbix Agent
+    <span class="nv">After</span><span class="o">=</span>syslog.target
+    <span class="nv">After</span><span class="o">=</span>network.target
+
+    <span class="o">[</span>Service]
+<span class="c">#    Type=forking   会卡住,取消</span>
+    <span class="nv">User</span><span class="o">=</span>root
+    <span class="nv">Group</span><span class="o">=</span>root
+    <span class="nv">Environment</span><span class="o">=</span><span class="s2">"CONFFILE=/data/config/oss/zabbix/zabbix_agent2.conf"</span>
+    <span class="nv">ExecStart</span><span class="o">=</span>/usr/local/bin/zabbix_agent2 <span class="nt">-c</span> <span class="nv">$CONFFILE</span> 
+    <span class="nv">PIDFile</span><span class="o">=</span>/data/run/oss/zabbix/agent.sock
+    <span class="nv">KillSignal</span><span class="o">=</span>SIGQUIT
+
+    <span class="o">[</span>Install]
+    <span class="nv">WantedBy</span><span class="o">=</span>multi-user.target
+</code></pre></div></div>
+
+<h4 id="重载">重载</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    systemctl daemon-reload
+</code></pre></div></div>
+
+<h4 id="相关命令">相关命令</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    systemctl start zabbix_agent2.service
+    systemctl restart zabbix_agent2.service
+    systemctl stop zabbix_agent2.service
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[ubuntu install zabbix agent2]]></summary></entry><entry><title type="html">`Centos 更新Glibc `</title><link href="/centos-update-glibc/" rel="alternate" type="text/html" title="`Centos 更新Glibc `" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/centos-update-glibc</id><content type="html" xml:base="/centos-update-glibc/"><![CDATA[<p>写CBPF需要更新系统的Glibc</p>
 
 <h4 id="安装centos-release-scl">安装centos-release-scl</h4>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install centos-release-scl
@@ -1068,956 +1208,4 @@ def __delattr__(self, item):
 https://docs.python.org/3/library/functions.html#repr
 https://docs.python.org/3/library/stdtypes.html#str
 https://github.com/django/django/blob/master/django/db/models/query.py
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry><entry><title type="html">docker 入门 – 01</title><link href="/docker-01/" rel="alternate" type="text/html" title="docker 入门 – 01" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/docker-01</id><content type="html" xml:base="/docker-01/"><![CDATA[<p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
-
-<h2 id="初始化一台主机">初始化一台主机</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virt-install <span class="nt">--name</span> docker <span class="nt">--ram</span> 4096 <span class="nt">--vcpus</span><span class="o">=</span>4 <span class="nt">--os-type</span><span class="o">=</span>linux <span class="nt">--accelerate</span> <span class="nt">--cdrom</span><span class="o">=</span>/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso  <span class="nt">--disk</span> <span class="nv">path</span><span class="o">=</span>/home/kvm/docker.qcow2,size<span class="o">=</span>30,format<span class="o">=</span>qcow2,bus<span class="o">=</span>ide <span class="nt">--bridge</span><span class="o">=</span>virbr0 <span class="nt">--vnc</span> <span class="nt">--vncport</span><span class="o">=</span>60009 <span class="nt">--vnclisten</span><span class="o">=</span>0.0.0.0
-</code></pre></div></div>
-
-<table>
-  <thead>
-    <tr>
-      <th>主机名称</th>
-      <th>IP地址</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>docker</td>
-      <td>192.168.122.100</td>
-    </tr>
-  </tbody>
-</table>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl stop firewalld 
-systemctl disable firewalld 
-
-<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/enforcing/disabled/'</span> /etc/selinux/config 
-setenforce 0 
- 
-swapoff <span class="nt">-a</span>  
-<span class="nb">sed</span> <span class="nt">-ri</span> <span class="s1">'s/.*swap.*/#&amp;/'</span> /etc/fstab   
- 
-yum <span class="nb">install </span>ntpdate vim wget  <span class="nt">-y</span> 
-ntpdate time.windows.com
-
-hostnamectl set-hostname docker
-</code></pre></div></div>
-
-<h2 id="docker基础">docker基础</h2>
-
-<h3 id="安装docker-及下载镜像">安装docker 及下载镜像</h3>
-
-<h4 id="官方">官方</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash &lt;<span class="o">(</span>wget <span class="nt">-O-</span> get.docker.com<span class="o">)</span>
-</code></pre></div></div>
-
-<h4 id="手动安装">手动安装</h4>
-
-<p>下载</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
-wget https://download.docker.com/linux/static/stable/x86_64/docker-20.10.9.tgz 
-</code></pre></div></div>
-
-<p>解压</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar </span>zxvf docker-20.10.9.tgz
-<span class="nb">mv </span>docker/<span class="k">*</span> /usr/bin
-</code></pre></div></div>
-
-<p>systemd管理docker</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /usr/lib/systemd/system/docker.service <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
-[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network-online.target firewalld.service
-Wants=network-online.target
-
-[Service]
-Type=notify
-ExecStart=/usr/bin/dockerd
-ExecReload=/bin/kill -s HUP </span><span class="nv">$MAINPID</span><span class="sh">
-LimitNOFILE=infinity
-LimitNPROC=infinity
-LimitCORE=infinity
-TimeoutStartSec=0
-Delegate=yes
-KillMode=process
-Restart=on-failure
-StartLimitBurst=3
-StartLimitInterval=60s
-
-[Install]
-WantedBy=multi-user.target
-</span><span class="no">EOF
-</span></code></pre></div></div>
-
-<h4 id="yum安装">yum安装</h4>
-
-<p>配置yum源</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">rm</span> <span class="nt">-rf</span> /etc/yum.repos.d/<span class="k">*</span> <span class="p">;</span> wget <span class="nt">-P</span> /etc/yum.repos.d ftp://ftp.rhce.cc/k8s/<span class="k">*</span>
-</code></pre></div></div>
-
-<p>安装docker</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> <span class="nb">install </span>docker-ce 
-</code></pre></div></div>
-
-<h4 id="启动docker">启动docker</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl daemon-reload
-systemctl start docker
-systemctl <span class="nb">enable </span>docker
-systemctl status docker
-</code></pre></div></div>
-
-<h4 id="解决下载慢">解决下载慢</h4>
-
-<p>创建配置文件</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> /etc/docker
-<span class="nb">cat</span> <span class="o">&gt;</span> /etc/docker/daemon.json <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
-{
-  "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"]
-}
-</span><span class="no">EOF
-</span></code></pre></div></div>
-
-<p>重启docker</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart docker
-</code></pre></div></div>
-
-<h3 id="镜像如何管理">镜像如何管理</h3>
-
-<h4 id="如何命名">如何命名</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>服务器IP:端口/分类/镜像名称:tag
-</code></pre></div></div>
-
-<table>
-  <thead>
-    <tr>
-      <th>类型</th>
-      <th>默认</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>端口</td>
-      <td>80</td>
-    </tr>
-    <tr>
-      <td>tag</td>
-      <td>lastest</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>docker.io/library/nginx:latest   分类可以不写 docker.io/nginx</p>
-
-<h4 id="查看镜像">查看镜像</h4>
-
-<p>docker images</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker images
-REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
-nginx        latest    605c77e624dd   6 months ago   141MB
-</code></pre></div></div>
-
-<h4 id="重做标签">重做标签</h4>
-
-<p>docker tag 旧镜像名称 新的镜像名称:tag</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker tag nginx nginx:v1
-<span class="o">[</span>root@docker ~]# docker images
-REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
-nginx        latest    605c77e624dd   6 months ago   141MB
-nginx        v1        605c77e624dd   6 months ago   141MB
-</code></pre></div></div>
-
-<p>此处的nginx:latest 和 nginx:v1 对应同一个镜像,同时删除两个nginx才会删除对应的image</p>
-
-<h4 id="删除镜像">删除镜像</h4>
-
-<p>docker rmi 镜像名称:tag</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker rmi nginx:latest
-Untagged: nginx:latest
-<span class="o">[</span>root@docker ~]# docker images
-REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
-nginx        v1        605c77e624dd   6 months ago   141MB
-</code></pre></div></div>
-
-<h4 id="镜像的层结构">镜像的层结构</h4>
-
-<p>docker history 镜像名称:tag</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">history </span>nginx:v1
-IMAGE          CREATED        CREATED BY                                      SIZE      COMMENT
-605c77e624dd   6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  CMD ["nginx" "-g" "daemon…   0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  STOPSIGNAL SIGQUIT           0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  EXPOSE 80                    0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  ENTRYPOINT ["/docker-entr…   0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop) COPY file:09a214a3e07c919a…   4.61kB    </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop) COPY file:0fd5fca330dcd6a7…   1.04kB    </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop) COPY file:0b866ff3fc1ef5b0…   1.96kB    </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop) COPY file:65504f71f5855ca0…   1.2kB     </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="nb">set</span> <span class="nt">-x</span>     <span class="o">&amp;&amp;</span> addgroup <span class="nt">--system</span> -…   61.1MB    
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  ENV PKG_RELEASE=1~bullseye   0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  ENV NJS_VERSION=0.7.1        0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  ENV NGINX_VERSION=1.21.5     0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  LABEL maintainer=NGINX Do…   0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  CMD ["bash"]                 0B        </span>
-&lt;missing&gt;      6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop) ADD file:09675d11695f65c55…   80.4MB    </span>
-</code></pre></div></div>
-
-<h4 id="导出镜像">导出镜像</h4>
-
-<p>docker save 镜像名:tag 镜像名1:tag 镜像名2:tag 镜像名3:tag&gt; file.tar</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker save nginx:v1 <span class="o">&gt;</span> nginx.tar
-<span class="o">[</span>root@docker ~]# ll
-总用量 142492
-<span class="nt">-rw-------</span><span class="nb">.</span> 1 root root      1298 7月   9 22:07 anaconda-ks.cfg
-<span class="nt">-rw-r--r--</span><span class="nb">.</span> 1 root root 145905152 7月   9 22:22 nginx.tar
-</code></pre></div></div>
-
-<h4 id="删除所有镜像">删除所有镜像</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#/bin/bash</span>
-<span class="nv">file</span><span class="o">=</span>/tmp/dockerfile
-docker images | <span class="nb">grep</span> <span class="nt">-v</span> REPOSITORY | <span class="nb">awk</span> <span class="s1">'{print $1":"$2}'</span> <span class="o">&gt;&gt;</span> <span class="nv">$file</span>
-<span class="k">while </span><span class="nb">read </span>line <span class="p">;</span> <span class="k">do
-    </span>docker rmi <span class="nv">$line</span>
-<span class="k">done</span> &lt; <span class="nv">$file</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker images
-REPOSITORY   TAG       IMAGE ID   CREATED   SIZE
-</code></pre></div></div>
-
-<p>导入镜像</p>
-
-<p>docker load -i nginx.tar</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker load <span class="nt">-i</span> nginx.tar 
-2edcec3590a4: Loading layer <span class="o">[==================================================&gt;]</span>  83.86MB/83.86MB
-e379e8aedd4d: Loading layer <span class="o">[==================================================&gt;]</span>     62MB/62MB
-b8d6e692a25e: Loading layer <span class="o">[==================================================&gt;]</span>  3.072kB/3.072kB
-f1db227348d0: Loading layer <span class="o">[==================================================&gt;]</span>  4.096kB/4.096kB
-32ce5f6a5106: Loading layer <span class="o">[==================================================&gt;]</span>  3.584kB/3.584kB
-d874fd2bc83b: Loading layer <span class="o">[==================================================&gt;]</span>  7.168kB/7.168kB
-Loaded image: nginx:v1
-</code></pre></div></div>
-
-<h3 id="管理容器">管理容器</h3>
-
-<h4 id="运行一个最简单容器">运行一个最简单容器</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull centos
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run centos
-<span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-<span class="o">[</span>root@docker ~]# docker ps <span class="nt">-a</span>
-CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS                     PORTS     NAMES
-5a06d1d520dc   centos    <span class="s2">"/bin/bash"</span>   3 seconds ago   Exited <span class="o">(</span>0<span class="o">)</span> 2 seconds ago             nice_bartik
-</code></pre></div></div>
-
-<p>问题: docker ps 为什么看不到</p>
-
-<p>只有容器中的进程正常运行,容器才可以正常运行</p>
-
-<h4 id="删除容器">删除容器</h4>
-
-<p>docker rm 容器ID/容器名称</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">rm </span>5a06d1d520dc                                                                                      
-5a06d1d520dc  
-</code></pre></div></div>
-
-<h4 id="容器的生命周期">容器的生命周期</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">-ti</span> centos
-<span class="o">[</span>root@3331347e29ef /]# <span class="nb">ls</span> <span class="nt">-l</span>
-total 0
-lrwxrwxrwx.   1 root root   7 Nov  3  2020 bin -&gt; usr/bin
-drwxr-xr-x.   5 root root 360 Jul  9 14:54 dev
-drwxr-xr-x.   1 root root  66 Jul  9 14:54 etc
-drwxr-xr-x.   2 root root   6 Nov  3  2020 home
-lrwxrwxrwx.   1 root root   7 Nov  3  2020 lib -&gt; usr/lib
-lrwxrwxrwx.   1 root root   9 Nov  3  2020 lib64 -&gt; usr/lib64
-drwx------.   2 root root   6 Sep 15  2021 lost+found
-drwxr-xr-x.   2 root root   6 Nov  3  2020 media
-drwxr-xr-x.   2 root root   6 Nov  3  2020 mnt
-drwxr-xr-x.   2 root root   6 Nov  3  2020 opt
-dr-xr-xr-x. 126 root root   0 Jul  9 14:54 proc
-dr-xr-x---.   2 root root 162 Sep 15  2021 root
-drwxr-xr-x.  11 root root 163 Sep 15  2021 run
-lrwxrwxrwx.   1 root root   8 Nov  3  2020 sbin -&gt; usr/sbin
-drwxr-xr-x.   2 root root   6 Nov  3  2020 srv
-dr-xr-xr-x.  13 root root   0 Jul  9 14:07 sys
-drwxrwxrwt.   7 root root 171 Sep 15  2021 tmp
-drwxr-xr-x.  12 root root 144 Sep 15  2021 usr
-drwxr-xr-x.  20 root root 262 Sep 15  2021 var
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-t 模拟一个终端
--i 让用户进行交互 
-</code></pre></div></div>
-
-<p>再次查看</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND       CREATED              STATUS              PORTS     NAMES
-3331347e29ef   centos    <span class="s2">"/bin/bash"</span>   About a minute ago   Up About a minute             naughty_dijkstra
-</code></pre></div></div>
-
-<p>退出容器再查看</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-</code></pre></div></div>
-
-<p>可以看到只要退出容器就会自动关闭,我们把这个容器删除</p>
-
-<p>再次运行 增加 –restart=always</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">-dti</span> <span class="nt">--restart</span><span class="o">=</span>always centos
-1dc3a997c3da50b6dae0c5c622abd84cc837c901794c4a07991aadbf35cc54bf
-<span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND       CREATED         STATUS         PORTS     NAMES
-1dc3a997c3da   centos    <span class="s2">"/bin/bash"</span>   2 seconds ago   Up 2 seconds             inspiring_bell
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-d  创建好容器后不自动进入容器
-</code></pre></div></div>
-
-<p>进入容器再退出</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker attach 1d
-<span class="o">[</span>root@1dc3a997c3da /]# <span class="nb">exit</span>
-<span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS         PORTS     NAMES
-1dc3a997c3da   centos    <span class="s2">"/bin/bash"</span>   56 seconds ago   Up 2 seconds             inspiring_bell
-</code></pre></div></div>
-
-<p>容器依然存活,我们把它删掉</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">rm</span> <span class="nt">-f</span> 1d
-1d
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>-f 容器运行时候强制删除
-</code></pre></div></div>
-
-<p>给容器起个名字 –name</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">-dit</span> <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">--name</span><span class="o">=</span>dev centos
-a799cb31578c9938f2ff9094a379acdb098fca4fc071cba788cfe9ed9b46b846
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND       CREATED          STATUS          PORTS     NAMES
-a799cb31578c   centos    <span class="s2">"/bin/bash"</span>   20 seconds ago   Up 19 seconds             dev
-</code></pre></div></div>
-
-<p>删除这个容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">rm</span> <span class="nt">-f</span> dev
-</code></pre></div></div>
-
-<h4 id="临时容器">临时容器</h4>
-
-<p>–rm</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>tmp <span class="nt">--rm</span> centos
-<span class="o">[</span>root@8fb20792db93 /]# <span class="nb">exit</span>
-<span class="o">[</span>root@docker ~]# docker ps <span class="nt">-a</span>
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-</code></pre></div></div>
-
-<h4 id="指定容器中运行的命令">指定容器中运行的命令</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>tmp <span class="nt">--rm</span> centos <span class="nb">sleep </span>10 &amp;
-<span class="o">[</span>1] 4442
-<span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND      CREATED         STATUS        PORTS     NAMES
-3ecf6984377f   centos    <span class="s2">"sleep 10"</span>   2 seconds ago   Up 1 second             tmp
-</code></pre></div></div>
-
-<p>10s中之后再看</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-</code></pre></div></div>
-
-<h4 id="容器变量">容器变量</h4>
-
-<p>-e</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">-it</span> <span class="nt">--name</span><span class="o">=</span>dev <span class="nt">--rm</span> <span class="nt">-e</span> <span class="nv">a</span><span class="o">=</span>123 <span class="nt">-e</span> <span class="nv">b</span><span class="o">=</span>456 centos
-<span class="o">[</span>root@213f1a806bb1 /]# <span class="nb">echo</span> <span class="nv">$a</span>
-123
-<span class="o">[</span>root@213f1a806bb1 /]# <span class="nb">echo</span> <span class="nv">$b</span>
-456
-</code></pre></div></div>
-
-<h4 id="端口映射到物理机">端口映射到物理机</h4>
-
-<p>-p N 物理机随机生成一个端口映射到容器的端口N上</p>
-
-<p>-p M:N 把容器的端口N映射到物理机指定的端口M上</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> docker run <span class="nt">-d</span> <span class="nt">--name</span><span class="o">=</span>dev <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-p</span> 80 nginx:v1
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                                     NAMES
-e8ac73562da7   nginx     <span class="s2">"/docker-entrypoint.…"</span>   15 seconds ago   Up 14 seconds   0.0.0.0:49162-&gt;80/tcp, :::49162-&gt;80/tcp   dev
-</code></pre></div></div>
-
-<p>访问: http://192.168.122.100:49162/</p>
-
-<p>删除容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">rm</span> <span class="nt">-f</span> e8
-</code></pre></div></div>
-
-<p>把容器的80端口映射到物理机的90端口</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS        PORTS                               NAMES
-63d882dedf12   nginx     <span class="s2">"/docker-entrypoint.…"</span>   2 seconds ago   Up 1 second   0.0.0.0:90-&gt;80/tcp, :::90-&gt;80/tcp   dev
-</code></pre></div></div>
-
-<p>访问 : http://192.168.122.100:90</p>
-
-<p>删除容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">rm</span> <span class="nt">-f</span> 63
-</code></pre></div></div>
-
-<p>安装一个mysql容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">--name</span><span class="o">=</span>mysql01 <span class="nt">-d</span> mysql/mysql-server:latest
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">history </span>mysql
-IMAGE          CREATED        CREATED BY                                      SIZE      COMMENT
-3218b38490ce   6 months ago   /bin/sh <span class="nt">-c</span> <span class="c">#(nop)  CMD ["mysqld"]               0B   </span>
-</code></pre></div></div>
-
-<p>查看密码</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker logs mysql
-<span class="o">[</span>Entrypoint] GENERATED ROOT PASSWORD: 4_Ql?O+sN52,08.SA_7X8<span class="k">*</span>eDx4ynSy:q
-</code></pre></div></div>
-
-<p>连接</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec</span> <span class="nt">-it</span> mysql mysql <span class="nt">-uroot</span> <span class="nt">-p</span>
-</code></pre></div></div>
-
-<p>更改密码</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ALTER USER <span class="s1">'root'</span>@<span class="s1">'localhost'</span> IDENTIFIED BY <span class="s1">'newpassword'</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>删除容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">rm</span> <span class="nt">-f</span> 2f
-</code></pre></div></div>
-
-<h4 id="容器中执行命令">容器中执行命令</h4>
-
-<p>exec</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span><span class="o">=</span>dev <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-p</span> 80 nginx:v1
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker ps
-CONTAINER ID   IMAGE      COMMAND                  CREATED              STATUS              PORTS                                     NAMES
-2bc33f89a81d   nginx:v1   <span class="s2">"/docker-entrypoint.…"</span>   About a minute ago   Up About a minute   0.0.0.0:49163-&gt;80/tcp, :::49163-&gt;80/tcp   dev
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">exec </span>2b <span class="nb">df</span> <span class="nt">-h</span>
-</code></pre></div></div>
-
-<h4 id="拷贝文件">拷贝文件</h4>
-
-<p>docker cp /path/file 容器:/path  拷贝到容器</p>
-
-<p>docker cp 容器:/path/file /path  拷贝到本地</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">cp </span>test.sh 2b:/tmp/
-<span class="o">[</span>root@docker ~]# docker <span class="nb">exec </span>2b <span class="nb">ls</span> <span class="nt">-s</span> /tmp
-total 4
-4 test.sh
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">cp </span>2b:/etc/nginx/nginx.conf /tmp
-<span class="o">[</span>root@docker ~]# <span class="nb">ls</span> /tmp/nginx.conf 
-/tmp/nginx.conf
-</code></pre></div></div>
-
-<h4 id="关闭启动重启">关闭、启动、重启</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stop 容器
-
-docker start 容器
-
-docker restart 容器
-</code></pre></div></div>
-
-<h4 id="查看输出">查看输出</h4>
-
-<p>docker logs</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker logs 2b
-/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
-/docker-entrypoint.sh: Looking <span class="k">for </span>shell scripts <span class="k">in</span> /docker-entrypoint.d/
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
-10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 <span class="k">in</span> /etc/nginx/conf.d/default.conf
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
-/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
-/docker-entrypoint.sh: Configuration <span class="nb">complete</span><span class="p">;</span> ready <span class="k">for </span>start up
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: using the <span class="s2">"epoll"</span> event method
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: nginx/1.21.5
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: built by gcc 10.2.1 20210110 <span class="o">(</span>Debian 10.2.1-6<span class="o">)</span> 
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: OS: Linux 3.10.0-862.el7.x86_64
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: getrlimit<span class="o">(</span>RLIMIT_NOFILE<span class="o">)</span>: 65536:65536
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: start worker processes
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: start worker process 31
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: start worker process 32
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: start worker process 33
-2022/07/09 16:27:18 <span class="o">[</span>notice] 1#1: start worker process 34
-</code></pre></div></div>
-
-<p>docker inspect</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker inspect 2b
-<span class="o">[</span>
-    <span class="o">{</span>
-        <span class="s2">"Id"</span>: <span class="s2">"2bc33f89a81d54e0202f398b5c28a73f8ea97f66a34ab25e75a4bcf642ef5bc4"</span>,
-        <span class="s2">"Created"</span>: <span class="s2">"2022-07-09T16:27:17.846194185Z"</span>,
-        <span class="s2">"Path"</span>: <span class="s2">"/docker-entrypoint.sh"</span>,
-        <span class="s2">"Args"</span>: <span class="o">[</span>
-            <span class="s2">"nginx"</span>,
-            <span class="s2">"-g"</span>,
-            <span class="s2">"daemon off;"</span>
-        <span class="o">]</span>,
-        <span class="s2">"State"</span>: <span class="o">{</span>
-            <span class="s2">"Status"</span>: <span class="s2">"running"</span>,
-            <span class="s2">"Running"</span>: <span class="nb">true</span>,
-            <span class="s2">"Paused"</span>: <span class="nb">false</span>,
-            <span class="s2">"Restarting"</span>: <span class="nb">false</span>,
-            <span class="s2">"OOMKilled"</span>: <span class="nb">false</span>,
-            <span class="s2">"Dead"</span>: <span class="nb">false</span>,
-            <span class="s2">"Pid"</span>: 26562,
-            <span class="s2">"ExitCode"</span>: 0,
-            <span class="s2">"Error"</span>: <span class="s2">""</span>,
-            <span class="s2">"StartedAt"</span>: <span class="s2">"2022-07-09T16:27:18.332501966Z"</span>,
-            <span class="s2">"FinishedAt"</span>: <span class="s2">"0001-01-01T00:00:00Z"</span>
-        <span class="o">}</span>,
-        <span class="s2">"Image"</span>: <span class="s2">"sha256:605c77e624ddb75e6110f997c58876baa13f8754486b461117934b24a9dc3a85"</span>,
-        <span class="s2">"ResolvConfPath"</span>: <span class="s2">"/var/lib/docker/containers/2bc33f89a81d54e0202f398b5c28a73f8ea97f66a34ab25e75a4bcf642ef5bc4/resolv.conf"</span>,
-        <span class="s2">"HostnamePath"</span>: <span class="s2">"/var/lib/docker/containers/2bc33f89a81d54e0202f398b5c28a73f8ea97f66a34ab25e75a4bcf642ef5bc4/hostname"</span>,
-        <span class="s2">"HostsPath"</span>: <span class="s2">"/var/lib/docker/containers/2bc33f89a81d54e0202f398b5c28a73f8ea97f66a34ab25e75a4bcf642ef5bc4/hosts"</span>,
-        <span class="s2">"LogPath"</span>: <span class="s2">"/var/lib/docker/containers/2bc33f89a81d54e0202f398b5c28a73f8ea97f66a34ab25e75a4bcf642ef5bc4/2bc33f89a81d54e0202f398b5c28a73f8ea97f66a34ab25e75a4bcf642ef5bc4-json.log"</span>,
-        <span class="s2">"Name"</span>: <span class="s2">"/dev"</span>,
-        <span class="s2">"RestartCount"</span>: 0,
-        <span class="s2">"Driver"</span>: <span class="s2">"overlay2"</span>,
-        <span class="s2">"Platform"</span>: <span class="s2">"linux"</span>,
-        <span class="s2">"MountLabel"</span>: <span class="s2">""</span>,
-        <span class="s2">"ProcessLabel"</span>: <span class="s2">""</span>,
-        <span class="s2">"AppArmorProfile"</span>: <span class="s2">""</span>,
-        <span class="s2">"ExecIDs"</span>: null,
-        <span class="s2">"HostConfig"</span>: <span class="o">{</span>
-            <span class="s2">"Binds"</span>: null,
-            <span class="s2">"ContainerIDFile"</span>: <span class="s2">""</span>,
-            <span class="s2">"LogConfig"</span>: <span class="o">{</span>
-                <span class="s2">"Type"</span>: <span class="s2">"json-file"</span>,
-                <span class="s2">"Config"</span>: <span class="o">{}</span>
-            <span class="o">}</span>,
-            <span class="s2">"NetworkMode"</span>: <span class="s2">"default"</span>,
-            <span class="s2">"PortBindings"</span>: <span class="o">{</span>
-                <span class="s2">"80/tcp"</span>: <span class="o">[</span>
-                    <span class="o">{</span>
-                        <span class="s2">"HostIp"</span>: <span class="s2">""</span>,
-                        <span class="s2">"HostPort"</span>: <span class="s2">""</span>
-                    <span class="o">}</span>
-                <span class="o">]</span>
-            <span class="o">}</span>,
-            <span class="s2">"RestartPolicy"</span>: <span class="o">{</span>
-                <span class="s2">"Name"</span>: <span class="s2">"always"</span>,
-                <span class="s2">"MaximumRetryCount"</span>: 0
-            <span class="o">}</span>,
-            <span class="s2">"AutoRemove"</span>: <span class="nb">false</span>,
-            <span class="s2">"VolumeDriver"</span>: <span class="s2">""</span>,
-            <span class="s2">"VolumesFrom"</span>: null,
-            <span class="s2">"CapAdd"</span>: null,
-            <span class="s2">"CapDrop"</span>: null,
-            <span class="s2">"CgroupnsMode"</span>: <span class="s2">"host"</span>,
-            <span class="s2">"Dns"</span>: <span class="o">[]</span>,
-            <span class="s2">"DnsOptions"</span>: <span class="o">[]</span>,
-            <span class="s2">"DnsSearch"</span>: <span class="o">[]</span>,
-            <span class="s2">"ExtraHosts"</span>: null,
-            <span class="s2">"GroupAdd"</span>: null,
-            <span class="s2">"IpcMode"</span>: <span class="s2">"private"</span>,
-            <span class="s2">"Cgroup"</span>: <span class="s2">""</span>,
-            <span class="s2">"Links"</span>: null,
-            <span class="s2">"OomScoreAdj"</span>: 0,
-            <span class="s2">"PidMode"</span>: <span class="s2">""</span>,
-            <span class="s2">"Privileged"</span>: <span class="nb">false</span>,
-            <span class="s2">"PublishAllPorts"</span>: <span class="nb">false</span>,
-            <span class="s2">"ReadonlyRootfs"</span>: <span class="nb">false</span>,
-            <span class="s2">"SecurityOpt"</span>: null,
-            <span class="s2">"UTSMode"</span>: <span class="s2">""</span>,
-            <span class="s2">"UsernsMode"</span>: <span class="s2">""</span>,
-            <span class="s2">"ShmSize"</span>: 67108864,
-            <span class="s2">"Runtime"</span>: <span class="s2">"runc"</span>,
-            <span class="s2">"ConsoleSize"</span>: <span class="o">[</span>
-                0,
-                0
-            <span class="o">]</span>,
-            <span class="s2">"Isolation"</span>: <span class="s2">""</span>,
-            <span class="s2">"CpuShares"</span>: 0,
-            <span class="s2">"Memory"</span>: 0,
-            <span class="s2">"NanoCpus"</span>: 0,
-            <span class="s2">"CgroupParent"</span>: <span class="s2">""</span>,
-            <span class="s2">"BlkioWeight"</span>: 0,
-            <span class="s2">"BlkioWeightDevice"</span>: <span class="o">[]</span>,
-            <span class="s2">"BlkioDeviceReadBps"</span>: null,
-            <span class="s2">"BlkioDeviceWriteBps"</span>: null,
-            <span class="s2">"BlkioDeviceReadIOps"</span>: null,
-            <span class="s2">"BlkioDeviceWriteIOps"</span>: null,
-            <span class="s2">"CpuPeriod"</span>: 0,
-            <span class="s2">"CpuQuota"</span>: 0,
-            <span class="s2">"CpuRealtimePeriod"</span>: 0,
-            <span class="s2">"CpuRealtimeRuntime"</span>: 0,
-            <span class="s2">"CpusetCpus"</span>: <span class="s2">""</span>,
-            <span class="s2">"CpusetMems"</span>: <span class="s2">""</span>,
-            <span class="s2">"Devices"</span>: <span class="o">[]</span>,
-            <span class="s2">"DeviceCgroupRules"</span>: null,
-            <span class="s2">"DeviceRequests"</span>: null,
-            <span class="s2">"KernelMemory"</span>: 0,
-            <span class="s2">"KernelMemoryTCP"</span>: 0,
-            <span class="s2">"MemoryReservation"</span>: 0,
-            <span class="s2">"MemorySwap"</span>: 0,
-            <span class="s2">"MemorySwappiness"</span>: null,
-            <span class="s2">"OomKillDisable"</span>: <span class="nb">false</span>,
-            <span class="s2">"PidsLimit"</span>: null,
-            <span class="s2">"Ulimits"</span>: null,
-            <span class="s2">"CpuCount"</span>: 0,
-            <span class="s2">"CpuPercent"</span>: 0,
-            <span class="s2">"IOMaximumIOps"</span>: 0,
-            <span class="s2">"IOMaximumBandwidth"</span>: 0,
-            <span class="s2">"MaskedPaths"</span>: <span class="o">[</span>
-                <span class="s2">"/proc/asound"</span>,
-                <span class="s2">"/proc/acpi"</span>,
-                <span class="s2">"/proc/kcore"</span>,
-                <span class="s2">"/proc/keys"</span>,
-                <span class="s2">"/proc/latency_stats"</span>,
-                <span class="s2">"/proc/timer_list"</span>,
-                <span class="s2">"/proc/timer_stats"</span>,
-                <span class="s2">"/proc/sched_debug"</span>,
-                <span class="s2">"/proc/scsi"</span>,
-                <span class="s2">"/sys/firmware"</span>
-            <span class="o">]</span>,
-            <span class="s2">"ReadonlyPaths"</span>: <span class="o">[</span>
-                <span class="s2">"/proc/bus"</span>,
-                <span class="s2">"/proc/fs"</span>,
-                <span class="s2">"/proc/irq"</span>,
-                <span class="s2">"/proc/sys"</span>,
-                <span class="s2">"/proc/sysrq-trigger"</span>
-            <span class="o">]</span>
-        <span class="o">}</span>,
-        <span class="s2">"GraphDriver"</span>: <span class="o">{</span>
-            <span class="s2">"Data"</span>: <span class="o">{</span>
-                <span class="s2">"LowerDir"</span>: <span class="s2">"/var/lib/docker/overlay2/a3cef64eb106bf06bfe7502f144507d3728b1a41e39a0f03394643daafbafe74-init/diff:/var/lib/docker/overlay2/88142ac468525aef865ba5cb2a79ebc1fc8199a2e416c2a9f640bef1c742cf80/diff:/var/lib/docker/overlay2/cd085ea79ffe904c3f8b5c14adc885b450b7953326711c84623b34f4cb3a0af4/diff:/var/lib/docker/overlay2/eb3a1f852da111c76bb3300a0e00ddefc35eb21816f03108e696381d3f5aaead/diff:/var/lib/docker/overlay2/af8e350292a758089318dabe7d7c3e18b79c897bfa384e87060e1018d844881d/diff:/var/lib/docker/overlay2/75e31399862e9c7cea4df1948c4a1f1ebebb9705fe2c4e78fa0b557bba58cf5a/diff:/var/lib/docker/overlay2/5b9f1a9cb77e1d98801c627ec0eb2050d8976ece492aec7be51d4966f6899dc7/diff"</span>,
-                <span class="s2">"MergedDir"</span>: <span class="s2">"/var/lib/docker/overlay2/a3cef64eb106bf06bfe7502f144507d3728b1a41e39a0f03394643daafbafe74/merged"</span>,
-                <span class="s2">"UpperDir"</span>: <span class="s2">"/var/lib/docker/overlay2/a3cef64eb106bf06bfe7502f144507d3728b1a41e39a0f03394643daafbafe74/diff"</span>,
-                <span class="s2">"WorkDir"</span>: <span class="s2">"/var/lib/docker/overlay2/a3cef64eb106bf06bfe7502f144507d3728b1a41e39a0f03394643daafbafe74/work"</span>
-            <span class="o">}</span>,
-            <span class="s2">"Name"</span>: <span class="s2">"overlay2"</span>
-        <span class="o">}</span>,
-        <span class="s2">"Mounts"</span>: <span class="o">[]</span>,
-        <span class="s2">"Config"</span>: <span class="o">{</span>
-            <span class="s2">"Hostname"</span>: <span class="s2">"2bc33f89a81d"</span>,
-            <span class="s2">"Domainname"</span>: <span class="s2">""</span>,
-            <span class="s2">"User"</span>: <span class="s2">""</span>,
-            <span class="s2">"AttachStdin"</span>: <span class="nb">false</span>,
-            <span class="s2">"AttachStdout"</span>: <span class="nb">false</span>,
-            <span class="s2">"AttachStderr"</span>: <span class="nb">false</span>,
-            <span class="s2">"ExposedPorts"</span>: <span class="o">{</span>
-                <span class="s2">"80/tcp"</span>: <span class="o">{}</span>
-            <span class="o">}</span>,
-            <span class="s2">"Tty"</span>: <span class="nb">false</span>,
-            <span class="s2">"OpenStdin"</span>: <span class="nb">false</span>,
-            <span class="s2">"StdinOnce"</span>: <span class="nb">false</span>,
-            <span class="s2">"Env"</span>: <span class="o">[</span>
-                <span class="s2">"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"</span>,
-                <span class="s2">"NGINX_VERSION=1.21.5"</span>,
-                <span class="s2">"NJS_VERSION=0.7.1"</span>,
-                <span class="s2">"PKG_RELEASE=1~bullseye"</span>
-            <span class="o">]</span>,
-            <span class="s2">"Cmd"</span>: <span class="o">[</span>
-                <span class="s2">"nginx"</span>,
-                <span class="s2">"-g"</span>,
-                <span class="s2">"daemon off;"</span>
-            <span class="o">]</span>,
-            <span class="s2">"Image"</span>: <span class="s2">"nginx:v1"</span>,
-            <span class="s2">"Volumes"</span>: null,
-            <span class="s2">"WorkingDir"</span>: <span class="s2">""</span>,
-            <span class="s2">"Entrypoint"</span>: <span class="o">[</span>
-                <span class="s2">"/docker-entrypoint.sh"</span>
-            <span class="o">]</span>,
-            <span class="s2">"OnBuild"</span>: null,
-            <span class="s2">"Labels"</span>: <span class="o">{</span>
-                <span class="s2">"maintainer"</span>: <span class="s2">"NGINX Docker Maintainers &lt;docker-maint@nginx.com&gt;"</span>
-            <span class="o">}</span>,
-            <span class="s2">"StopSignal"</span>: <span class="s2">"SIGQUIT"</span>
-        <span class="o">}</span>,
-        <span class="s2">"NetworkSettings"</span>: <span class="o">{</span>
-            <span class="s2">"Bridge"</span>: <span class="s2">""</span>,
-            <span class="s2">"SandboxID"</span>: <span class="s2">"506053fe5f6ce65c7618a5e891730aa85d34d486adde141f33d61fd440e383a6"</span>,
-            <span class="s2">"HairpinMode"</span>: <span class="nb">false</span>,
-            <span class="s2">"LinkLocalIPv6Address"</span>: <span class="s2">""</span>,
-            <span class="s2">"LinkLocalIPv6PrefixLen"</span>: 0,
-            <span class="s2">"Ports"</span>: <span class="o">{</span>
-                <span class="s2">"80/tcp"</span>: <span class="o">[</span>
-                    <span class="o">{</span>
-                        <span class="s2">"HostIp"</span>: <span class="s2">"0.0.0.0"</span>,
-                        <span class="s2">"HostPort"</span>: <span class="s2">"49163"</span>
-                    <span class="o">}</span>,
-                    <span class="o">{</span>
-                        <span class="s2">"HostIp"</span>: <span class="s2">"::"</span>,
-                        <span class="s2">"HostPort"</span>: <span class="s2">"49163"</span>
-                    <span class="o">}</span>
-                <span class="o">]</span>
-            <span class="o">}</span>,
-            <span class="s2">"SandboxKey"</span>: <span class="s2">"/var/run/docker/netns/506053fe5f6c"</span>,
-            <span class="s2">"SecondaryIPAddresses"</span>: null,
-            <span class="s2">"SecondaryIPv6Addresses"</span>: null,
-            <span class="s2">"EndpointID"</span>: <span class="s2">"69aa406cc06ef167151018a9a0470a3c10f2f9bbbd51e67f062482806a7a9696"</span>,
-            <span class="s2">"Gateway"</span>: <span class="s2">"172.17.0.1"</span>,
-            <span class="s2">"GlobalIPv6Address"</span>: <span class="s2">""</span>,
-            <span class="s2">"GlobalIPv6PrefixLen"</span>: 0,
-            <span class="s2">"IPAddress"</span>: <span class="s2">"172.17.0.2"</span>,
-            <span class="s2">"IPPrefixLen"</span>: 16,
-            <span class="s2">"IPv6Gateway"</span>: <span class="s2">""</span>,
-            <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:02"</span>,
-            <span class="s2">"Networks"</span>: <span class="o">{</span>
-                <span class="s2">"bridge"</span>: <span class="o">{</span>
-                    <span class="s2">"IPAMConfig"</span>: null,
-                    <span class="s2">"Links"</span>: null,
-                    <span class="s2">"Aliases"</span>: null,
-                    <span class="s2">"NetworkID"</span>: <span class="s2">"2d3f9fe43aa1d20f917dbe56e1f5a140d15396abe67380c5c9601b47b2f06233"</span>,
-                    <span class="s2">"EndpointID"</span>: <span class="s2">"69aa406cc06ef167151018a9a0470a3c10f2f9bbbd51e67f062482806a7a9696"</span>,
-                    <span class="s2">"Gateway"</span>: <span class="s2">"172.17.0.1"</span>,
-                    <span class="s2">"IPAddress"</span>: <span class="s2">"172.17.0.2"</span>,
-                    <span class="s2">"IPPrefixLen"</span>: 16,
-                    <span class="s2">"IPv6Gateway"</span>: <span class="s2">""</span>,
-                    <span class="s2">"GlobalIPv6Address"</span>: <span class="s2">""</span>,
-                    <span class="s2">"GlobalIPv6PrefixLen"</span>: 0,
-                    <span class="s2">"MacAddress"</span>: <span class="s2">"02:42:ac:11:00:02"</span>,
-                    <span class="s2">"DriverOpts"</span>: null
-                <span class="o">}</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-<span class="o">]</span>
-</code></pre></div></div>
-
-<h4 id="数据卷">数据卷</h4>
-
-<p>容器创建后会映射到物理机的目录,容器删除对应的目录也会删除,如果希望保留数据，就需要配置数据卷,把容器中的指定目录挂载到物理机的目录</p>
-
-<p>命令</p>
-
-<p>-v /dir1 物理机的/var/lib/docker/volumes/ID/_data 会挂载到容器的/dir1目录,ID随机</p>
-
-<p>-v /dir2:/dir1 在物理机制定目录dir2映射到容器的/dir1目录</p>
-
-<p>默认会有rw选项,也可以使用ro    -v /dir2:/dir1:ro</p>
-
-<p>创建容器dev,物理机的随机目录挂在到容器的/data目录</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span><span class="o">=</span>dev <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-p</span> 80 <span class="nt">-v</span> /data nginx:v1
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker inspect dev | <span class="nb">grep</span> <span class="nt">-A5</span> Mounts
-        <span class="s2">"Mounts"</span>: <span class="o">[</span>
-            <span class="o">{</span>
-                <span class="s2">"Type"</span>: <span class="s2">"volume"</span>,
-                <span class="s2">"Name"</span>: <span class="s2">"3eb5f84b73eb39c50513f59823a9e62db157e4d3d00dd8fd1e7fb83a871d5d5d"</span>,
-                <span class="s2">"Source"</span>: <span class="s2">"/var/lib/docker/volumes/3eb5f84b73eb39c50513f59823a9e62db157e4d3d00dd8fd1e7fb83a871d5d5d/_data"</span>,
-                <span class="s2">"Destination"</span>: <span class="s2">"/data"</span>,
-</code></pre></div></div>
-
-<p>验证</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">cp </span>test.sh dev:/data
-<span class="o">[</span>root@docker ~]# ll /var/lib/docker/volumes/3eb5f84b73eb39c50513f59823a9e62db157e4d3d00dd8fd1e7fb83a871d5d5d/_data
-总用量 4
-<span class="nt">-rwxr-xr-x</span><span class="nb">.</span> 1 root root 155 7月   9 22:44 test.sh
-</code></pre></div></div>
-
-<p>删除容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">rm</span> <span class="nt">-f</span> dev
-</code></pre></div></div>
-
-<p>验证</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# ll /var/lib/docker/volumes/3eb5f84b73eb39c50513f59823a9e62db157e4d3d00dd8fd1e7fb83a871d5d5d/_data
-总用量 4
-<span class="nt">-rwxr-xr-x</span><span class="nb">.</span> 1 root root 155 7月   9 22:44 test.sh
-</code></pre></div></div>
-
-<p>物理机器也指定目录:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span><span class="o">=</span>dev <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-p</span> 80 <span class="nt">-v</span> /var/lib/docker/volumes/3eb5f84b73eb39c50513f59823a9e62db157e4d3d00dd8fd1e7fb83a871d5d5d/_data:/data nginx:v1
-</code></pre></div></div>
-
-<p>验证</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">exec </span>ae <span class="nb">ls</span> <span class="nt">-l</span> /data
-total 4
-<span class="nt">-rwxr-xr-x</span><span class="nb">.</span> 1 root root 155 Jul  9 14:44 test.sh
-</code></pre></div></div>
-
-<p>删除容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">rm</span> <span class="nt">-f</span> dev
-</code></pre></div></div>
-
-<h3 id="docker-网络">docker 网络</h3>
-
-<h4 id="查看网络">查看网络</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker network list
-NETWORK ID     NAME      DRIVER    SCOPE
-2d3f9fe43aa1   bridge    bridge    <span class="nb">local
-</span>38e49778ed64   host      host      <span class="nb">local
-</span>00c423b06436   none      null      <span class="nb">local</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker network inspect bridge
-<span class="o">[</span>
-    <span class="o">{</span>
-        <span class="s2">"Name"</span>: <span class="s2">"bridge"</span>,
-        <span class="s2">"Id"</span>: <span class="s2">"2d3f9fe43aa1d20f917dbe56e1f5a140d15396abe67380c5c9601b47b2f06233"</span>,
-        <span class="s2">"Created"</span>: <span class="s2">"2022-07-09T22:43:03.54433911+08:00"</span>,
-        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
-        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
-        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
-        <span class="s2">"IPAM"</span>: <span class="o">{</span>
-            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
-            <span class="s2">"Options"</span>: null,
-            <span class="s2">"Config"</span>: <span class="o">[</span>
-                <span class="o">{</span>
-                    <span class="s2">"Subnet"</span>: <span class="s2">"172.17.0.0/16"</span>,
-                    <span class="s2">"Gateway"</span>: <span class="s2">"172.17.0.1"</span>
-                <span class="o">}</span>
-            <span class="o">]</span>
-        <span class="o">}</span>,
-        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
-        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
-        <span class="s2">"Ingress"</span>: <span class="nb">false</span>,
-        <span class="s2">"ConfigFrom"</span>: <span class="o">{</span>
-            <span class="s2">"Network"</span>: <span class="s2">""</span>
-        <span class="o">}</span>,
-        <span class="s2">"ConfigOnly"</span>: <span class="nb">false</span>,
-        <span class="s2">"Containers"</span>: <span class="o">{}</span>,
-        <span class="s2">"Options"</span>: <span class="o">{</span>
-            <span class="s2">"com.docker.network.bridge.default_bridge"</span>: <span class="s2">"true"</span>,
-            <span class="s2">"com.docker.network.bridge.enable_icc"</span>: <span class="s2">"true"</span>,
-            <span class="s2">"com.docker.network.bridge.enable_ip_masquerade"</span>: <span class="s2">"true"</span>,
-            <span class="s2">"com.docker.network.bridge.host_binding_ipv4"</span>: <span class="s2">"0.0.0.0"</span>,
-            <span class="s2">"com.docker.network.bridge.name"</span>: <span class="s2">"docker0"</span>,
-            <span class="s2">"com.docker.network.driver.mtu"</span>: <span class="s2">"1500"</span>
-        <span class="o">}</span>,
-        <span class="s2">"Labels"</span>: <span class="o">{}</span>
-    <span class="o">}</span>
-<span class="o">]</span>
-</code></pre></div></div>
-
-<p>创建网络</p>
-
-<p>docker network create -d 类型 –subnet=网段 网络名</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker network create <span class="nt">-d</span> bridge <span class="nt">--subnet</span><span class="o">=</span>10.254.0.0/16 <span class="nb">test</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker network list
-NETWORK ID     NAME      DRIVER    SCOPE
-2d3f9fe43aa1   bridge    bridge    <span class="nb">local
-</span>38e49778ed64   host      host      <span class="nb">local
-</span>00c423b06436   none      null      <span class="nb">local
-</span>bd32a39a4617   <span class="nb">test      </span>bridge    <span class="nb">local</span>
-</code></pre></div></div>
-
-<p>查看手册</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>man docker-network-create
-</code></pre></div></div>
-
-<p>查看test网络</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker network inspect <span class="nb">test</span>
-<span class="o">[</span>
-    <span class="o">{</span>
-        <span class="s2">"Name"</span>: <span class="s2">"test"</span>,
-        <span class="s2">"Id"</span>: <span class="s2">"bd32a39a46172e50abd8a801dba9dedcd77a604eaa91cee07e65a69985a1045a"</span>,
-        <span class="s2">"Created"</span>: <span class="s2">"2022-07-10T01:04:12.629398704+08:00"</span>,
-        <span class="s2">"Scope"</span>: <span class="s2">"local"</span>,
-        <span class="s2">"Driver"</span>: <span class="s2">"bridge"</span>,
-        <span class="s2">"EnableIPv6"</span>: <span class="nb">false</span>,
-        <span class="s2">"IPAM"</span>: <span class="o">{</span>
-            <span class="s2">"Driver"</span>: <span class="s2">"default"</span>,
-            <span class="s2">"Options"</span>: <span class="o">{}</span>,
-            <span class="s2">"Config"</span>: <span class="o">[</span>
-                <span class="o">{</span>
-                    <span class="s2">"Subnet"</span>: <span class="s2">"10.254.0.0/16"</span>
-                <span class="o">}</span>
-            <span class="o">]</span>
-        <span class="o">}</span>,
-        <span class="s2">"Internal"</span>: <span class="nb">false</span>,
-        <span class="s2">"Attachable"</span>: <span class="nb">false</span>,
-        <span class="s2">"Ingress"</span>: <span class="nb">false</span>,
-        <span class="s2">"ConfigFrom"</span>: <span class="o">{</span>
-            <span class="s2">"Network"</span>: <span class="s2">""</span>
-        <span class="o">}</span>,
-        <span class="s2">"ConfigOnly"</span>: <span class="nb">false</span>,
-        <span class="s2">"Containers"</span>: <span class="o">{}</span>,
-        <span class="s2">"Options"</span>: <span class="o">{}</span>,
-        <span class="s2">"Labels"</span>: <span class="o">{}</span>
-    <span class="o">}</span>
-<span class="o">]</span>
-</code></pre></div></div>
-
-<p>把nginx分配到test网络里</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span><span class="o">=</span>dev <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-p</span> 80 <span class="nt">--net</span><span class="o">=</span><span class="nb">test </span>nginx:v1
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker inspect dev | <span class="nb">grep </span>IPAddress
-            <span class="s2">"SecondaryIPAddresses"</span>: null,
-            <span class="s2">"IPAddress"</span>: <span class="s2">""</span>,
-                    <span class="s2">"IPAddress"</span>: <span class="s2">"10.254.0.2"</span>,
-</code></pre></div></div>
-
-<p>删除容器</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">rm</span> <span class="nt">-f</span> e3
-e3
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[了解什么是容器,如何管理容器和镜像,了解docker网络]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
