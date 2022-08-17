@@ -360,7 +360,7 @@ def __delattr__(self, item):
 
     </div>
 
-      
+    <!--  -->
   </article>
 
 </div>
@@ -388,21 +388,27 @@ def __delattr__(self, item):
 
 
 
-    
-  <script>
-    var disqus_config = function () {
-      this.page.url = "/python-getattr-getattribute-setattr-delattr-dir/";  /* Replace PAGE_URL with your page's canonical URL variable */
-      this.page.identifier = "/python-getattr-getattribute-setattr-delattr-dir"; /* Replace PAGE_IDENTIFIER with your page's unique identifier variable */
-    };
-    (function() { /* DON'T EDIT BELOW THIS LINE */
-      var d = document, s = d.createElement('script');
-      s.src = 'https://myblog.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <script>
+  'use strict';
 
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-light');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
 
   
 
