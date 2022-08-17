@@ -1,4 +1,343 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T14:27:32+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Centos 更新Glibc `</title><link href="/centos-update-glibc/" rel="alternate" type="text/html" title="`Centos 更新Glibc `" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/centos-update-glibc</id><content type="html" xml:base="/centos-update-glibc/"><![CDATA[<p>写CBPF需要更新系统的Glibc</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T14:50:13+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 01</title><link href="/docker-02/" rel="alternate" type="text/html" title="docker 入门 – 01" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/docker-02</id><content type="html" xml:base="/docker-02/"><![CDATA[<p>了解什么是容器,如何管理容器和镜像,了解docker网络</p>
+
+<h4 id="自定义镜像">自定义镜像</h4>
+
+<p>需要写Dockerfile文件 ,如果名字不叫Dockerfile,则需要使用-f来指定文件</p>
+
+<p>常用命令:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM:                          指定基镜像
+MAINTAINER:                    维护者信息
+RUN:                           在临时容器里执行的操作系统命令
+ADD file /path/ :              把物理机里file拷贝到镜像的制定目录 /path
+COPY file /path/ :             把物理机里file拷贝到镜像的制定目录 /path
+ENV:                           指定变量
+USER:                          指定容器内部以哪个用户运行进程
+VOLUME:                        指定数据卷
+EXPOSE:                        指定镜像容器所使用的端口，只是一个标记
+CMD:                           指定镜像创建出来的容器运行在什么进程
+</code></pre></div></div>
+
+<h4 id="创建一个可以执行ipconfig的centos镜像">创建一个可以执行ipconfig的centos镜像</h4>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> centos:7</span>
+<span class="k">MAINTAINER</span><span class="s"> yaliang.yin@eeoa.com</span>
+<span class="k">RUN </span>yun <span class="nt">-y</span> <span class="nb">install </span>net-tools <span class="nt">-y</span>
+<span class="k">CMD</span><span class="s"> ["/bin/bash"]</span>
+</code></pre></div></div>
+
+<p>构建命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> centos:ifconfig <span class="nt">-f</span> Dockerfile
+</code></pre></div></div>
+
+<p>使用命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> centos:ifconfig <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>输出</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Sending build context to Docker daemon  2.048kB
+Step 1/4 : FROM centos:7
+7: Pulling from library/centos
+2d473b07cdd5: Pull <span class="nb">complete 
+</span>Digest: sha256:c73f515d06b0fa07bb18d8202035e739a494ce760aa73129f60f4bf2bd22b407
+Status: Downloaded newer image <span class="k">for </span>centos:7
+ <span class="nt">---</span><span class="o">&gt;</span> eeb6ee3f44bd
+Step 2/4 : MAINTAINER yaliang.yin@eeoa.com
+ <span class="nt">---</span><span class="o">&gt;</span> Running <span class="k">in </span>e818620bd59b
+Removing intermediate container e818620bd59b
+ <span class="nt">---</span><span class="o">&gt;</span> 3bb5dd251ef3
+Step 3/4 : RUN yum <span class="nb">install </span>net-tools <span class="nt">-y</span>
+ <span class="nt">---</span><span class="o">&gt;</span> Running <span class="k">in </span>ec51a9326dd6
+Loaded plugins: fastestmirror, ovl
+Determining fastest mirrors
+ <span class="k">*</span> base: mirrors.bfsu.edu.cn
+ <span class="k">*</span> extras: mirrors.bfsu.edu.cn
+ <span class="k">*</span> updates: mirrors.bfsu.edu.cn
+Resolving Dependencies
+<span class="nt">--</span><span class="o">&gt;</span> Running transaction check
+<span class="nt">---</span><span class="o">&gt;</span> Package net-tools.x86_64 0:2.0-0.25.20131004git.el7 will be installed
+<span class="nt">--</span><span class="o">&gt;</span> Finished Dependency Resolution
+
+Dependencies Resolved
+
+<span class="o">================================================================================</span>
+ Package         Arch         Version                          Repository  Size
+<span class="o">================================================================================</span>
+Installing:
+ net-tools       x86_64       2.0-0.25.20131004git.el7         base       306 k
+
+Transaction Summary
+<span class="o">================================================================================</span>
+Install  1 Package
+
+Total download size: 306 k
+Installed size: 917 k
+Downloading packages:
+warning: /var/cache/yum/x86_64/7/base/packages/net-tools-2.0-0.25.20131004git.el7.x86_64.rpm: Header V3 RSA/SHA256 Signature, key ID f4a80eb5: NOKEY
+Public key <span class="k">for </span>net-tools-2.0-0.25.20131004git.el7.x86_64.rpm is not installed
+Retrieving key from file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Importing GPG key 0xF4A80EB5:
+ Userid     : <span class="s2">"CentOS-7 Key (CentOS 7 Official Signing Key) &lt;security@centos.org&gt;"</span>
+ Fingerprint: 6341 ab27 53d7 8a78 a7c2 7bb1 24c6 a8a7 f4a8 0eb5
+ Package    : centos-release-7-9.2009.0.el7.centos.x86_64 <span class="o">(</span>@CentOS<span class="o">)</span>
+ From       : /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+Running transaction check
+Running transaction <span class="nb">test
+</span>Transaction <span class="nb">test </span>succeeded
+Running transaction
+  Installing : net-tools-2.0-0.25.20131004git.el7.x86_64                    1/1 
+  Verifying  : net-tools-2.0-0.25.20131004git.el7.x86_64                    1/1 
+
+Installed:
+  net-tools.x86_64 0:2.0-0.25.20131004git.el7                                   
+
+Complete!
+Removing intermediate container ec51a9326dd6
+ <span class="nt">---</span><span class="o">&gt;</span> 323418cab375
+Step 4/4 : CMD <span class="o">[</span><span class="s2">"/bin/bash"</span><span class="o">]</span>
+ <span class="nt">---</span><span class="o">&gt;</span> Running <span class="k">in </span>5bd2a3ebeaef
+Removing intermediate container 5bd2a3ebeaef
+ <span class="nt">---</span><span class="o">&gt;</span> 9d02a810de55
+Successfully built 9d02a810de55
+Successfully tagged centos:ifconfig
+</code></pre></div></div>
+
+<p>验证</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@docker:/tmp/docker# docker run <span class="nt">--rm</span> <span class="nt">-it</span> centos:ifconfig
+<span class="o">[</span>root@62d870933f79 /]# ifconfig
+eth0: <span class="nv">flags</span><span class="o">=</span>4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 192.168.0.2  netmask 255.255.255.0  broadcast 192.168.0.255
+        ether 02:42:c0:a8:00:02  txqueuelen 0  <span class="o">(</span>Ethernet<span class="o">)</span>
+        RX packets 9  bytes 979 <span class="o">(</span>979.0 B<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 <span class="o">(</span>0.0 B<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: <span class="nv">flags</span><span class="o">=</span>73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        loop  txqueuelen 1000  <span class="o">(</span>Local Loopback<span class="o">)</span>
+        RX packets 0  bytes 0 <span class="o">(</span>0.0 B<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 <span class="o">(</span>0.0 B<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</code></pre></div></div>
+
+<h4 id="自定义nginx镜像">自定义nginx镜像</h4>
+
+<p>拷贝repo文件</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> centos:7</span>
+<span class="k">MAINTAINER</span><span class="s"> yaliang.yin@eeoa.com</span>
+<span class="k">RUN </span>yum <span class="nt">-y</span> <span class="nb">install </span>epel-release
+<span class="k">RUN </span>yum <span class="nt">-y</span> update
+<span class="k">RUN </span>yum <span class="nt">-y</span> <span class="nb">install </span>nginx
+<span class="k">ADD</span><span class="s"> index.html /usr/share/nginx/html</span>
+<span class="k">EXPOSE</span><span class="s"> 80</span>
+<span class="k">CMD</span><span class="s"> ["nginx","-g","daemon off;"]</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>index.html
+nginx
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> centos:nginx <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>运行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-d</span> <span class="nt">--name</span><span class="o">=</span>nginx <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">-p80</span>:80 centos:nginx
+</code></pre></div></div>
+
+<p>访问测试</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# curl 192.168.122.100
+nginx
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">rm</span> <span class="nt">-f</span> d3
+d3
+</code></pre></div></div>
+
+<h4 id="add和copy的区别">ADD和COPY的区别</h4>
+
+<p>ADD 会解压</p>
+
+<p>COPY 不解压</p>
+
+<h4 id="user命令的使用">USER命令的使用</h4>
+
+<p>docker file</p>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> centos:7</span>
+<span class="k">MAINTAINER</span><span class="s"> yaliang.yin@eeoa.com</span>
+<span class="k">RUN </span>useradd zabbix
+<span class="k">USER</span><span class="s"> zabbix</span>
+<span class="k">CMD</span><span class="s"> ["bin/bash"]</span>
+</code></pre></div></div>
+
+<p>验证</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">--restart</span><span class="o">=</span>always <span class="nt">--name</span><span class="o">=</span>user <span class="nt">-it</span> centos:user
+<span class="o">[</span>zabbix@d783a47f5cad /]<span class="nv">$ </span><span class="nb">whoami
+</span>zabbix
+</code></pre></div></div>
+
+<p>指定用户运行</p>
+
+<p>–user</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">--user</span><span class="o">=</span>root user /bin/bash
+<span class="o">[</span>root@d783a47f5cad /]# <span class="nb">whoami
+</span>root
+</code></pre></div></div>
+
+<h4 id="使用env指定变量">使用ENV指定变量</h4>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@docker ~]# cat Dockerfile 
+<span class="k">FROM</span><span class="s"> centos:7</span>
+<span class="k">MAINTAINER</span><span class="s"> yaliang.yin@eeoa.com</span>
+<span class="k">ENV</span><span class="s"> zabbixdir=/tmp</span>
+<span class="k">CMD</span><span class="s"> ["bin/bash"]</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> centos:env <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>验证</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">--rm</span> <span class="nt">-it</span> centos:env
+<span class="o">[</span>root@c5e757373d8f /]# <span class="nb">echo</span> <span class="nv">$zabbixdir</span>
+/tmp
+</code></pre></div></div>
+
+<h4 id="数据卷">数据卷</h4>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> centos:7</span>
+<span class="k">MAINTAINER</span><span class="s"> yaliang.yin@eeoa.com</span>
+<span class="k">VOLUME</span><span class="s"> ["/data1"]</span>
+<span class="k">CMD</span><span class="s"> ["bin/bash"]</span>
+</code></pre></div></div>
+
+<p>绑定data1到物理机的随机目录</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker run <span class="nt">--rm</span> <span class="nt">-it</span> centos:volume
+<span class="o">[</span>root@58fa1b19ff20 /]# 
+
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker inspect 58 | <span class="nb">grep</span> <span class="nt">-A5</span>  Mounts
+        <span class="s2">"Mounts"</span>: <span class="o">[</span>
+            <span class="o">{</span>
+                <span class="s2">"Type"</span>: <span class="s2">"volume"</span>,
+                <span class="s2">"Name"</span>: <span class="s2">"113269358f756253dd6cd59063f91f3427438ae6121c981451a476fd50015506"</span>,
+                <span class="s2">"Source"</span>: <span class="s2">"/var/lib/docker/volumes/113269358f756253dd6cd59063f91f3427438ae6121c981451a476fd50015506/_data"</span>,
+                <span class="s2">"Destination"</span>: <span class="s2">"/data1"</span>,
+</code></pre></div></div>
+
+<h2 id="使用registry-搭建私有仓库">使用registry 搭建私有仓库</h2>
+
+<p>不做介绍</p>
+
+<h2 id="使用harbor搭建私有仓库">使用harbor搭建私有仓库</h2>
+
+<p>安装harbor需要docker-compose</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> <span class="nb">install </span>epel-release
+yum <span class="nt">-y</span> update
+yum <span class="nt">-y</span> <span class="nb">install </span>docker-compose
+</code></pre></div></div>
+
+<p>看下版本</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker-compose -v
+</code></pre></div></div>
+
+<p>修改docker的配置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/docker/daemon.json
+<span class="o">{</span>
+  <span class="s2">"registry-mirrors"</span>: <span class="o">[</span><span class="s2">"http://192.168.122.100"</span><span class="o">]</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>重启docker</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl daemon-reload
+systemctl restart docker
+</code></pre></div></div>
+
+<p>下载</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
+wget https://github.com/goharbor/harbor/releases/download/v2.5.3/harbor-offline-installer-v2.5.3.tgz
+<span class="nb">tar </span>zxvfp harbor-offline-installer-v2.5.3.tgz
+<span class="nb">cd </span>harbor
+docker load <span class="nt">-i</span> harbor.v2.5.3.tar.gz
+./prepare
+<span class="nb">cp </span>harbor.yml.tmpl harbor.yml
+</code></pre></div></div>
+
+<p>编辑harbor.yml文件,将hostname修改为本机名称</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 5 hostname: docker
+</code></pre></div></div>
+
+<p>注释以下几行</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 15 #  port: 443
+ 16   # The path of cert and key files for nginx
+ 17 #  certificate: /your/certificate/path
+ 18 #  private_key: /your/private/key/path
+</code></pre></div></div>
+
+<p>修改默认密码,默认为Harbor12345</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>34 harbor_admin_password: docker
+</code></pre></div></div>
+
+<p>安装</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./install.sh 
+</code></pre></div></div>
+
+<p>访问</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://192.168.122.100
+</code></pre></div></div>
+
+<p>修改 /etc/docker/daemon.json,增加</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s2">"insecure-registries"</span>:[<span class="s2">"192.168.122.100"</span><span class="o">]</span>
+</code></pre></div></div>
+
+<p>重启docker</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart docker
+</code></pre></div></div>
+
+<p>登录仓库</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker harbor]# docker login 192.168.122.100
+Username: yinyaliang
+Password: 
+WARNING! Your password will be stored unencrypted <span class="k">in</span> /root/.docker/config.json.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+Login Succeeded
+<span class="o">[</span>root@docker harbo
+</code></pre></div></div>
+
+<p>推送镜像</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag centos:volume 192.168.122.100/cka/centos:volume
+docker push 192.168.122.100/cka/centos:volume
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[了解什么是容器,如何管理容器和镜像,了解docker网络]]></summary></entry><entry><title type="html">`Centos 更新Glibc `</title><link href="/centos-update-glibc/" rel="alternate" type="text/html" title="`Centos 更新Glibc `" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/centos-update-glibc</id><content type="html" xml:base="/centos-update-glibc/"><![CDATA[<p>写CBPF需要更新系统的Glibc</p>
 
 <h4 id="安装centos-release-scl">安装centos-release-scl</h4>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install centos-release-scl
@@ -1681,101 +2020,4 @@ NETWORK ID     NAME      DRIVER    SCOPE
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@docker ~]# docker <span class="nb">rm</span> <span class="nt">-f</span> e3
 e3
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[了解什么是容器,如何管理容器和镜像,了解docker网络]]></summary></entry><entry><title type="html">`Python中的 __iter__ __reversed__ __next__`</title><link href="/python-iter-reversed-next/" rel="alternate" type="text/html" title="`Python中的 __iter__ __reversed__ __next__`" /><published>2022-08-14T00:00:00+08:00</published><updated>2022-08-14T00:00:00+08:00</updated><id>/python-iter-reversed-next</id><content type="html" xml:base="/python-iter-reversed-next/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
-
-<h3 id="__reversed__说明">__reversed__说明</h3>
-
-<p>返回集合的倒叙迭代器,如果没有实现这个方法,reversed()会去使用__getitem__和__len__来实现</p>
-
-<h3 id="特殊方法__next__和__iter__说明">特殊方法__next__和__iter__说明</h3>
-
-<p>介绍__next__和__iter__方法需要了解下可迭代对象(iterable)和迭代器(iterator):</p>
-
-<h5 id="iterable">iterable</h5>
-
-<p>如果对象实现了__iter__方法,那么对象就是可迭代的。python中的序列都可以迭代。如果没有实现__iter__,实现了__getitem__方法,而且参数是从零开始的索引,这种对象也可以迭代。</p>
-
-<h5 id="iterator">iterator</h5>
-
-<p>标准的迭代器都有两个方法___next__和__iter__:</p>
-<ul>
-  <li>__next__返回下一个可用的元素,如果没有元素了,抛出 StopIteration 异常</li>
-  <li>__iter__返回self</li>
-</ul>
-
-<h4 id="code">code</h4>
-<p>python从可迭代对象中获取迭代器(可迭代对象—iter()—&gt;迭代器—next()—&gt;值)</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="nb">tuple</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">b</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="n">tuple_iterator</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="nb">list</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">b</span><span class="o">=</span><span class="nb">iter</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">list_iterator</span>
-    
-    <span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-    <span class="p">...:</span>     <span class="k">try</span><span class="p">:</span>
-    <span class="p">...:</span>         <span class="k">print</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-    <span class="p">...:</span>     <span class="k">except</span> <span class="nb">StopIteration</span><span class="p">:</span>
-    <span class="p">...:</span>         <span class="k">break</span>
-    <span class="p">...:</span>
-    <span class="mi">1</span>
-    <span class="mi">2</span>
-    <span class="mi">3</span>
-    <span class="n">也可以使用for来做</span><span class="p">,</span><span class="n">上面的异常python已经内部自动处理</span><span class="p">:</span>
-    <span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">b</span><span class="p">:</span>
-   <span class="p">...:</span>     <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-   <span class="p">...:</span>
-    <span class="mi">1</span>
-    <span class="mi">2</span>
-    <span class="mi">3</span>
-</code></pre></div></div>
-
-<p>定义一个可迭代对象和迭代器</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choice</span>
-<span class="k">class</span> <span class="nc">TmptestIterator</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span>
-    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">tmp</span><span class="o">=</span><span class="n">choice</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
-        <span class="k">if</span> <span class="n">tmp</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="nb">StopIteration</span>
-        <span class="k">return</span> <span class="n">tmp</span>
-
-<span class="k">class</span> <span class="nc">TemTest</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">TmptestIterator</span><span class="p">()</span>
-</code></pre></div></div>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">a</span><span class="o">=</span><span class="n">TemTest</span><span class="p">()</span>
-<span class="k">print</span><span class="p">(</span><span class="n">TmptestIterator</span><span class="p">,</span><span class="n">TemTest</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
-    <span class="k">print</span> <span class="p">(</span><span class="n">i</span><span class="p">)</span>
-
-<span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="n">TmptestIterator</span><span class="s">'&gt; &lt;class '</span><span class="n">__main__</span><span class="p">.</span><span class="n">TemTest</span><span class="s">'&gt;
-6
-1
-1
-2
-2
-2
-1
-3
-</span></code></pre></div></div>
-
-<h4 id="参考">参考</h4>
-<p>https://docs.python.org/3/library/stdtypes.html#container.<strong>iter</strong>()</p>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[了解什么是容器,如何管理容器和镜像,了解docker网络]]></summary></entry></feed>
