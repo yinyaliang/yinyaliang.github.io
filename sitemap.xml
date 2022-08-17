@@ -45,6 +45,10 @@
 <lastmod>2022-08-17T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>/kubernetes-kubeadm-install/</loc>
+<lastmod>2022-08-17T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>/ubuntu-install-zabbix-agent2/</loc>
 <lastmod>2022-08-17T00:00:00+08:00</lastmod>
 </url>
@@ -74,5 +78,8 @@
 </url>
 <url>
 <loc>/page4/</loc>
+</url>
+<url>
+<loc>/page5/</loc>
 </url>
 </urlset>

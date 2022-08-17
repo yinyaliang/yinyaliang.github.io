@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T17:46:19+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 02</title><link href="/docker-02/" rel="alternate" type="text/html" title="docker 入门 – 02" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/docker-02</id><content type="html" xml:base="/docker-02/"><![CDATA[<p>自定义镜像 数据卷  仓库</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-17T18:05:15+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 02</title><link href="/docker-02/" rel="alternate" type="text/html" title="docker 入门 – 02" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/docker-02</id><content type="html" xml:base="/docker-02/"><![CDATA[<p>自定义镜像 数据卷  仓库</p>
 
 <h4 id="自定义镜像">自定义镜像</h4>
 
@@ -337,7 +337,622 @@ Login Succeeded
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag centos:volume 192.168.122.100/cka/centos:volume
 docker push 192.168.122.100/cka/centos:volume
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[自定义镜像 数据卷 仓库]]></summary></entry><entry><title type="html">ubuntu install zabbix agent2</title><link href="/ubuntu-install-zabbix-agent2/" rel="alternate" type="text/html" title="ubuntu install zabbix agent2" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/ubuntu-install-zabbix-agent2</id><content type="html" xml:base="/ubuntu-install-zabbix-agent2/"><![CDATA[<p>ubuntu install zabbix agent2</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[自定义镜像 数据卷 仓库]]></summary></entry><entry><title type="html">使用kubeadm 安装Kubernetes</title><link href="/kubernetes-kubeadm-install/" rel="alternate" type="text/html" title="使用kubeadm 安装Kubernetes" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/kubernetes-kubeadm-install</id><content type="html" xml:base="/kubernetes-kubeadm-install/"><![CDATA[<p>介绍使用kubeadm部署集群,测试环境为kvm</p>
+
+<h2 id="使用kubeadm-部署集群">使用kubeadm 部署集群</h2>
+
+<h4 id="master上的组件">master上的组件</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>kubectl</td>
+      <td>命令行工具，用户来创建、删除，都使用此工具</td>
+    </tr>
+    <tr>
+      <td>api-server</td>
+      <td>接口,接收用户发送的请求</td>
+    </tr>
+    <tr>
+      <td>scheduler</td>
+      <td>调度器,当用户创建pod时,判断这个pod会调度到哪个worker</td>
+    </tr>
+    <tr>
+      <td>controller-manager</td>
+      <td>k8s的大管家,包括监测节点的状态,pod的数目</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="worker上的组件">worker上的组件</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>kubelet</td>
+      <td>在包括master上的所有节点上运行,是一个代理,接受master分配的任务,并把节点的信息反馈给master上的api-server</td>
+    </tr>
+    <tr>
+      <td>kube-proxy</td>
+      <td>在包括master在内的所有节点上运行,用于把发送给server的请求转发给后端的Pod,有iptables和ipvs两种模式.</td>
+    </tr>
+    <tr>
+      <td>calico网络</td>
+      <td>使得节点的pod能够互相通信,集群安装好后,一定要安装它</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="安装集群">安装集群</h4>
+
+<h4 id="建立主机">建立主机</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>主机名</th>
+      <th>IP地址</th>
+      <th>内存需求</th>
+      <th>操作系统</th>
+      <th>角色</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>master</td>
+      <td>192.168.122.200</td>
+      <td>4GB</td>
+      <td>centos 7</td>
+      <td>master</td>
+    </tr>
+    <tr>
+      <td>node1</td>
+      <td>192.168.122.202</td>
+      <td>4GB</td>
+      <td>centos 7</td>
+      <td>node</td>
+    </tr>
+    <tr>
+      <td>node2</td>
+      <td>192.168.122.203</td>
+      <td>4GB</td>
+      <td>centos 7</td>
+      <td>node</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="初始化配置">初始化配置</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virt-install --name k8smaster --ram 4096 --vcpus=4 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso  --disk path=/home/kvm/k8smaster.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60011 --vnclisten=0.0.0.0
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virt-install --name k8snode1 --ram 4096 --vcpus=2 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso  --disk path=/home/kvm/k8snode1.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60012 --vnclisten=0.0.0.0
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virt-install --name k8snode2 --ram 4096 --vcpus=2 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso  --disk path=/home/kvm/k8snode2.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60013 --vnclisten=0.0.0.0
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># master node 关闭防火墙  </span>
+systemctl stop firewalld 
+systemctl disable firewalld 
+ 
+<span class="c"># master node 关闭selinux   </span>
+<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/enforcing/disabled/'</span> /etc/selinux/config  <span class="c"># 永久 </span>
+setenforce 0  <span class="c"># 临时 </span>
+ 
+<span class="c"># master node 关闭swap </span>
+swapoff <span class="nt">-a</span>  <span class="c"># 临时 </span>
+<span class="nb">sed</span> <span class="nt">-ri</span> <span class="s1">'s/.*swap.*/#&amp;/'</span> /etc/fstab    <span class="c"># 永久 </span>
+ 
+<span class="c"># master node 时间同步 </span>
+yum <span class="nb">install </span>ntpdate <span class="nt">-y</span> 
+ntpdate time.windows.com
+
+<span class="c"># master node 安装vim wget</span>
+yum <span class="nt">-y</span> <span class="nb">install </span>vim wget 
+ 
+<span class="c">#添加hosts </span>
+<span class="nb">cat</span> <span class="o">&gt;&gt;</span> /etc/hosts <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> 
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+</span><span class="no">EOF 
+ 
+</span><span class="c"># 将桥接的IPv4流量传递到iptables的链 </span>
+<span class="nb">cat</span> <span class="o">&gt;</span> /etc/sysctl.d/k8s.conf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> 
+net.bridge.bridge-nf-call-ip6tables = 1 
+net.bridge.bridge-nf-call-iptables = 1 
+</span><span class="no">EOF 
+
+</span>sysctl <span class="nt">--system</span>  <span class="c"># 生效 </span>
+ 
+<span class="c"># master 设置 </span>
+hostnamectl set-hostname master
+<span class="c"># node1 设置</span>
+hostnamectl set-hostname node1
+<span class="c"># node2 设置</span>
+hostnamectl set-hostname node2
+
+<span class="c"># 安装docker</span>
+bash &lt;<span class="o">(</span>wget <span class="nt">-O-</span> get.docker.com<span class="o">)</span>
+
+<span class="c">#启动并设置开机启动</span>
+systemctl daemon-reload
+systemctl start docker
+systemctl <span class="nb">enable </span>docker
+systemctl status docker
+
+<span class="c">#修改配置</span>
+<span class="nb">cat</span> <span class="o">&gt;</span> /etc/docker/daemon.json <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
+{
+  "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"]
+}
+</span><span class="no">EOF
+
+</span><span class="c">#重启</span>
+systemctl restart docker
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mv</span> /etc/yum.repos.d/<span class="k">*</span> /tmp/
+wget <span class="nt">-P</span> /etc/yum.repos.d/ ftp://ftp.rhce.cc/k8s/<span class="k">*</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> kubelet-1.21.1-0 kubeadm-1.21.1-0 kubectl-1.21.1-0 <span class="nt">--disableexcludes</span><span class="o">=</span>kubernetes
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart kubelet
+systemctl <span class="nb">enable </span>kubelet
+</code></pre></div></div>
+
+<p>此时的kubelet状态</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Active: activating
+</code></pre></div></div>
+
+<h4 id="安装master">安装master</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubeadm config images list
+I0710 19:43:05.808790   15767 version.go:254] remote version is much newer: v1.24.2<span class="p">;</span> falling back to: stable-1.21
+k8s.gcr.io/kube-apiserver:v1.21.14
+k8s.gcr.io/kube-controller-manager:v1.21.14
+k8s.gcr.io/kube-scheduler:v1.21.14
+k8s.gcr.io/kube-proxy:v1.21.14
+k8s.gcr.io/pause:3.4.1
+k8s.gcr.io/etcd:3.4.13-0
+k8s.gcr.io/coredns/coredns:v1.8.0
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull coredns/coredns:1.8.0
+docker tag coredns/coredns:1.8.0 registry.aliyuncs.com/google_containers/coredns/coredns:v1.8.0
+docker rmi coredns/coredns:1.8.0
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init <span class="nt">--image-repository</span><span class="o">=</span>registry.aliyuncs.com/google_containers <span class="nt">--kubernetes-version</span><span class="o">=</span>v1.21.1 <span class="nt">--pod-network-cidr</span><span class="o">=</span>10.244.0.0/16
+</code></pre></div></div>
+
+<p>–image-repository 使用阿里云镜像</p>
+
+<p>–pod-network-cidr 制定pod网段</p>
+
+<p>复制kubeconfig文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
+<span class="nb">sudo cp</span> <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
+<span class="nb">sudo chown</span> <span class="si">$(</span><span class="nb">id</span> <span class="nt">-u</span><span class="si">)</span>:<span class="si">$(</span><span class="nb">id</span> <span class="nt">-g</span><span class="si">)</span> <span class="nv">$HOME</span>/.kube/config
+</code></pre></div></div>
+
+<p>把worker加入集群的命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm <span class="nb">join </span>192.168.122.200:6443 <span class="nt">--token</span> jtukiq.4perijhdbyzrtgiz <span class="se">\</span>
+        <span class="nt">--discovery-token-ca-cert-hash</span> sha256:82d9f6ab3f416feeb452f37fae396439a65173b51ed0dc23c2680ed4ad5f9cc6 
+</code></pre></div></div>
+
+<p>忘记这个命令可以使用</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm token create <span class="nt">--print-join-command</span>
+</code></pre></div></div>
+
+<h2 id="添加及删除worker">添加及删除worker</h2>
+
+<p>在node1和node2上分别执行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm <span class="nb">join </span>192.168.122.200:6443 <span class="nt">--token</span> jtukiq.4perijhdbyzrtgiz <span class="se">\</span>
+        <span class="nt">--discovery-token-ca-cert-hash</span> sha256:82d9f6ab3f416feeb452f37fae396439a65173b51ed0dc23c2680ed4ad5f9cc6 
+</code></pre></div></div>
+
+<p>返回数据</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@node1 ~]# kubeadm <span class="nb">join </span>192.168.122.200:6443 <span class="nt">--token</span> jtukiq.4perijhdbyzrtgiz <span class="se">\</span>
+<span class="o">&gt;</span>         <span class="nt">--discovery-token-ca-cert-hash</span> sha256:82d9f6ab3f416feeb452f37fae396439a65173b51ed0dc23c2680ed4ad5f9cc6
+<span class="o">[</span>preflight] Running pre-flight checks
+        <span class="o">[</span>WARNING IsDockerSystemdCheck]: detected <span class="s2">"cgroupfs"</span> as the Docker cgroup driver. The recommended driver is <span class="s2">"systemd"</span><span class="nb">.</span> Please follow the guide at https://kubernetes.io/docs/setup/cri/
+<span class="o">[</span>preflight] Reading configuration from the cluster...
+<span class="o">[</span>preflight] FYI: You can look at this config file with <span class="s1">'kubectl -n kube-system get cm kubeadm-config -o yaml'</span>
+<span class="o">[</span>kubelet-start] Writing kubelet configuration to file <span class="s2">"/var/lib/kubelet/config.yaml"</span>
+<span class="o">[</span>kubelet-start] Writing kubelet environment file with flags to file <span class="s2">"/var/lib/kubelet/kubeadm-flags.env"</span>
+<span class="o">[</span>kubelet-start] Starting the kubelet
+<span class="o">[</span>kubelet-start] Waiting <span class="k">for </span>the kubelet to perform the TLS Bootstrap...
+
+This node has joined the cluster:
+<span class="k">*</span> Certificate signing request was sent to apiserver and a response was received.
+<span class="k">*</span> The Kubelet was informed of the new secure connection details.
+
+Run <span class="s1">'kubectl get nodes'</span> on the control-plane to see this node <span class="nb">join </span>the cluster.
+
+</code></pre></div></div>
+
+<p>在master上查看node节点</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl get nodes
+NAME     STATUS     ROLES                  AGE     VERSION
+master   NotReady   control-plane,master   6m59s   v1.21.1
+node1    NotReady   &lt;none&gt;                 14s     v1.21.1
+node2    NotReady   &lt;none&gt;                 11s     v1.21.1
+</code></pre></div></div>
+
+<h4 id="安装calico">安装calico</h4>
+
+<p>master上执行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
+wget https://docs.projectcalico.org/v3.19/manifests/calico.yaml <span class="nt">--no-check-certificate</span>
+</code></pre></div></div>
+
+<p>修改</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">CALICO_IPV4POOL_CIDR</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">192.168.0.0/16"</span>
+</code></pre></div></div>
+
+<p>为</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">CALICO_IPV4POOL_CIDR</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">10.244.0.0/16"</span>
+</code></pre></div></div>
+
+<p>修改</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">policy/v1beat1</span>
+</code></pre></div></div>
+
+<p>为</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">policy/v1</span>
+</code></pre></div></div>
+
+<p>下载镜像</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@master tmp]# grep image calico.yaml 
+          image: docker.io/calico/cni:v3.19.4
+          image: docker.io/calico/cni:v3.19.4
+          image: docker.io/calico/pod2daemon-flexvol:v3.19.4
+          image: docker.io/calico/node:v3.19.4
+          image: docker.io/calico/kube-controllers:v3.19.4
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>calico/cni:v3.19.4 calico/pod2daemon-flexvol:v3.19.4  calico/node:v3.19.4 calico/kube-controllers:v3.19.4 <span class="p">;</span><span class="k">do </span>docker pull <span class="nv">$i</span><span class="p">;</span><span class="k">done</span>
+</code></pre></div></div>
+
+<p>安装calico</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> calico.yaml
+</code></pre></div></div>
+
+<p>查看节点</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl get nodes
+NAME     STATUS   ROLES                  AGE   VERSION
+master   Ready    control-plane,master   17m   v1.21.1
+node1    Ready    &lt;none&gt;                 10m   v1.21.1
+node2    Ready    &lt;none&gt;                 10m   v1.21.1
+</code></pre></div></div>
+
+<h4 id="设置tab补全">设置tab补全</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/profile
+<span class="nb">source</span> &lt;<span class="o">(</span>kubectl completion bash<span class="o">)</span>
+</code></pre></div></div>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>source /etc/profile
+</code></pre></div></div>
+
+<h4 id="删除节点">删除节点</h4>
+
+<p>设置维护模式</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl drain node1 <span class="nt">--delete-local-data</span> <span class="nt">--force</span> <span class="nt">--ignore-daemonsets</span>
+</code></pre></div></div>
+
+<p>删除节点</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl delete node node1
+node <span class="s2">"node1"</span> deleted
+</code></pre></div></div>
+
+<p>再次加入节点</p>
+
+<p>在node1上执行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@node1 ~]# kubeadm reset
+<span class="o">[</span>reset] WARNING: Changes made to this host by <span class="s1">'kubeadm init'</span> or <span class="s1">'kubeadm join'</span> will be reverted.
+<span class="o">[</span>reset] Are you sure you want to proceed? <span class="o">[</span>y/N]: y
+<span class="o">[</span>preflight] Running pre-flight checks
+W0710 20:41:03.391549    4728 removeetcdmember.go:79] <span class="o">[</span>reset] No kubeadm config, using etcd pod spec to get data directory
+<span class="o">[</span>reset] No etcd config found. Assuming external etcd
+<span class="o">[</span>reset] Please, manually reset etcd to prevent further issues
+<span class="o">[</span>reset] Stopping the kubelet service
+<span class="o">[</span>reset] Unmounting mounted directories <span class="k">in</span> <span class="s2">"/var/lib/kubelet"</span>
+<span class="o">[</span>reset] Deleting contents of config directories: <span class="o">[</span>/etc/kubernetes/manifests /etc/kubernetes/pki]
+<span class="o">[</span>reset] Deleting files: <span class="o">[</span>/etc/kubernetes/admin.conf /etc/kubernetes/kubelet.conf /etc/kubernetes/bootstrap-kubelet.conf /etc/kubernetes/controller-manager.conf /etc/kubernetes/scheduler.conf]
+<span class="o">[</span>reset] Deleting contents of stateful directories: <span class="o">[</span>/var/lib/kubelet /var/lib/dockershim /var/run/kubernetes /var/lib/cni]
+
+The reset process does not clean CNI configuration. To <span class="k">do </span>so, you must remove /etc/cni/net.d
+
+The reset process does not reset or clean up iptables rules or IPVS tables.
+If you wish to reset iptables, you must <span class="k">do </span>so manually by using the <span class="s2">"iptables"</span> command.
+
+If your cluster was setup to utilize IPVS, run ipvsadm <span class="nt">--clear</span> <span class="o">(</span>or similar<span class="o">)</span>
+to reset your system<span class="s1">'s IPVS tables.
+
+The reset process does not clean your kubeconfig files and you must remove them manually.
+Please, check the contents of the $HOME/.kube/config file.
+</span></code></pre></div></div>
+
+<p>重新加入集群</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@node1 ~]# kubeadm <span class="nb">join </span>192.168.122.200:6443 <span class="nt">--token</span> jtukiq.4perijhdbyzrtgiz <span class="se">\</span>
+<span class="o">&gt;</span>         <span class="nt">--discovery-token-ca-cert-hash</span> sha256:82d9f6ab3f416feeb452f37fae396439a65173b51ed0dc23c2680ed4ad5f9cc6
+</code></pre></div></div>
+
+<p>出错处理</p>
+
+<p>手动删除 /etc/kubernetes/pki/和/var/lib/kubelet/两个目录</p>
+
+<h4 id="常用命令">常用命令</h4>
+
+<p>查看集群信息</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl cluster-info
+Kubernetes control plane is running at https://192.168.122.200:6443
+CoreDNS is running at https://192.168.122.200:6443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use <span class="s1">'kubectl cluster-info dump'</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<p>查看版本</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl version
+Client Version: version.Info<span class="o">{</span>Major:<span class="s2">"1"</span>, Minor:<span class="s2">"21"</span>, GitVersion:<span class="s2">"v1.21.1"</span>, GitCommit:<span class="s2">"5e58841cce77d4bc13713ad2b91fa0d961e69192"</span>, GitTreeState:<span class="s2">"clean"</span>, BuildDate:<span class="s2">"2021-05-12T14:18:45Z"</span>, GoVersion:<span class="s2">"go1.16.4"</span>, Compiler:<span class="s2">"gc"</span>, Platform:<span class="s2">"linux/amd64"</span><span class="o">}</span>
+Server Version: version.Info<span class="o">{</span>Major:<span class="s2">"1"</span>, Minor:<span class="s2">"21"</span>, GitVersion:<span class="s2">"v1.21.1"</span>, GitCommit:<span class="s2">"5e58841cce77d4bc13713ad2b91fa0d961e69192"</span>, GitTreeState:<span class="s2">"clean"</span>, BuildDate:<span class="s2">"2021-05-12T14:12:29Z"</span>, GoVersion:<span class="s2">"go1.16.4"</span>, Compiler:<span class="s2">"gc"</span>, Platform:<span class="s2">"linux/amd64"</span><span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl version <span class="nt">--short</span>
+Client Version: v1.21.1
+Server Version: v1.21.1
+</code></pre></div></div>
+
+<p>查看支持的api-version</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl api-versions
+admissionregistration.k8s.io/v1
+admissionregistration.k8s.io/v1beta1
+apiextensions.k8s.io/v1
+apiextensions.k8s.io/v1beta1
+apiregistration.k8s.io/v1
+apiregistration.k8s.io/v1beta1
+apps/v1
+authentication.k8s.io/v1
+authentication.k8s.io/v1beta1
+authorization.k8s.io/v1
+authorization.k8s.io/v1beta1
+autoscaling/v1
+autoscaling/v2beta1
+autoscaling/v2beta2
+batch/v1
+batch/v1beta1
+certificates.k8s.io/v1
+certificates.k8s.io/v1beta1
+coordination.k8s.io/v1
+coordination.k8s.io/v1beta1
+crd.projectcalico.org/v1
+discovery.k8s.io/v1
+discovery.k8s.io/v1beta1
+events.k8s.io/v1
+events.k8s.io/v1beta1
+extensions/v1beta1
+flowcontrol.apiserver.k8s.io/v1beta1
+networking.k8s.io/v1
+networking.k8s.io/v1beta1
+node.k8s.io/v1
+node.k8s.io/v1beta1
+policy/v1
+policy/v1beta1
+rbac.authorization.k8s.io/v1
+rbac.authorization.k8s.io/v1beta1
+scheduling.k8s.io/v1
+scheduling.k8s.io/v1beta1
+storage.k8s.io/v1
+storage.k8s.io/v1beta1
+v1
+</code></pre></div></div>
+
+<h2 id="查看pod及节点的负载">查看pod及节点的负载</h2>
+
+<p>如果需要查看kubernetes集群每个节点及每个pod的CPU负载、内存负载、需要安装metric-serer</p>
+
+<p>所有节点安装</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull mirrorgooglecontainers/metrics-server-amd64:v0.3.6
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag mirrorgooglecontainers/metrics-server-amd64:v0.3.6 k8s.gcr.io/metrics-server-amd64:v0.3.6
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker rmi mirrorgooglecontainers/metrics-server-amd64:v0.3.6
+</code></pre></div></div>
+
+<p>master</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp
+curl -Ls https://api.github.com/repos/kubernetes-sigs/metrics-server/tarball/v0.3.6 -o metrics-server-v0.3.6.tar.gz
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar </span>zxvfp metrics-server-v0.3.6.tar.gz
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>kubernetes-sigs-metrics-server-d1f4f6f/deploy/1.8+/
+</code></pre></div></div>
+
+<p>修改</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@node2 1.8+]# <span class="nb">cat </span>metrics-server-deployment.yaml 
+<span class="nt">---</span>
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: metrics-server
+  namespace: kube-system
+<span class="nt">---</span>
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-server
+  namespace: kube-system
+  labels:
+    k8s-app: metrics-server
+spec:
+  selector:
+    matchLabels:
+      k8s-app: metrics-server
+  template:
+    metadata:
+      name: metrics-server
+      labels:
+        k8s-app: metrics-server
+    spec:
+      serviceAccountName: metrics-server
+      volumes:
+      <span class="c"># mount in tmp so we can safely use from-scratch images and/or read-only containers</span>
+      - name: tmp-dir
+        emptyDir: <span class="o">{}</span>
+      containers:
+      - name: metrics-server
+        image: k8s.gcr.io/metrics-server-amd64:v0.3.6
+        imagePullPolicy: IfNotPresent
+        <span class="nb">command</span>:
+        - /metrics-server
+        - <span class="nt">--metric-resolution</span><span class="o">=</span>30s
+        - <span class="nt">--kubelet-insecure-tls</span>
+        - <span class="nt">--kubelet-preferred-address-types</span><span class="o">=</span>InternalIP
+        volumeMounts:
+</code></pre></div></div>
+
+<p>运行当强目录</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master 1.8+]# kubectl apply <span class="nt">-f</span> <span class="nb">.</span>
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+Warning: rbac.authorization.k8s.io/v1beta1 ClusterRoleBinding is deprecated <span class="k">in </span>v1.17+, unavailable <span class="k">in </span>v1.22+<span class="p">;</span> use rbac.authorization.k8s.io/v1 ClusterRoleBinding
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+Warning: rbac.authorization.k8s.io/v1beta1 RoleBinding is deprecated <span class="k">in </span>v1.17+, unavailable <span class="k">in </span>v1.22+<span class="p">;</span> use rbac.authorization.k8s.io/v1 RoleBinding
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+Warning: apiregistration.k8s.io/v1beta1 APIService is deprecated <span class="k">in </span>v1.19+, unavailable <span class="k">in </span>v1.22+<span class="p">;</span> use apiregistration.k8s.io/v1 APIService
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+serviceaccount/metrics-server created
+deployment.apps/metrics-server created
+service/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+</code></pre></div></div>
+
+<p>查看pod的状态</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master 1.8+]# kubectl get pods <span class="nt">-n</span> kube-system | <span class="nb">grep </span>metric
+metrics-server-6b7f4dfdcb-xfpl4            1/1     Running   0          59s
+</code></pre></div></div>
+
+<p>查看节点负载</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master 1.8+]# kubectl top nodes <span class="nt">--use-protocol-buffers</span>
+NAME     CPU<span class="o">(</span>cores<span class="o">)</span>   CPU%   MEMORY<span class="o">(</span>bytes<span class="o">)</span>   MEMORY%   
+master   245m         6%     1270Mi          32%       
+node1    88m          4%     579Mi           15%       
+node2    106m         5%     638Mi           16%    
+</code></pre></div></div>
+
+<p>查看metrics-server的IP地址</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master 1.8+]# kubectl get pods <span class="nt">-n</span> kube-system <span class="nt">-o</span> wide 
+NAME                                       READY   STATUS    RESTARTS   AGE    IP                NODE     NOMINATED NODE   READINESS GATES
+calico-kube-controllers-7cc8dd57d9-mwx5q   1/1     Running   1          92m    10.244.104.2      node2    &lt;none&gt;           &lt;none&gt;
+calico-node-54njj                          1/1     Running   1          92m    192.168.122.203   node2    &lt;none&gt;           &lt;none&gt;
+calico-node-559jn                          1/1     Running   1          92m    192.168.122.200   master   &lt;none&gt;           &lt;none&gt;
+calico-node-w6rwp                          1/1     Running   0          76m    192.168.122.202   node1    &lt;none&gt;           &lt;none&gt;
+coredns-545d6fc579-j9f7q                   1/1     Running   1          109m   10.244.219.65     master   &lt;none&gt;           &lt;none&gt;
+coredns-545d6fc579-t7st8                   1/1     Running   1          109m   10.244.219.66     master   &lt;none&gt;           &lt;none&gt;
+etcd-master                                1/1     Running   1          109m   192.168.122.200   master   &lt;none&gt;           &lt;none&gt;
+kube-apiserver-master                      1/1     Running   1          109m   192.168.122.200   master   &lt;none&gt;           &lt;none&gt;
+kube-controller-manager-master             1/1     Running   1          109m   192.168.122.200   master   &lt;none&gt;           &lt;none&gt;
+kube-proxy-j28gq                           1/1     Running   1          109m   192.168.122.200   master   &lt;none&gt;           &lt;none&gt;
+kube-proxy-jgsxd                           1/1     Running   1          102m   192.168.122.203   node2    &lt;none&gt;           &lt;none&gt;
+kube-proxy-qrf8c                           1/1     Running   0          76m    192.168.122.202   node1    &lt;none&gt;           &lt;none&gt;
+kube-scheduler-master                      1/1     Running   1          109m   192.168.122.200   master   &lt;none&gt;           &lt;none&gt;
+metrics-server-6b7f4dfdcb-xfpl4            1/1     Running   0          3m     10.244.166.129    node1    &lt;none&gt;           &lt;none&gt;
+</code></pre></div></div>
+
+<h2 id="了解及管理命名空间">了解及管理命名空间</h2>
+
+<h4 id="管理命令空间">管理命令空间</h4>
+
+<p>查看</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master 1.8+]# kubectl get ns
+NAME              STATUS   AGE
+default           Active   112m
+kube-node-lease   Active   112m
+kube-public       Active   112m
+kube-system       Active   112m
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">default</code> 没有指明使用其它名字空间的对象所使用的默认名字空间</li>
+  <li><code class="language-plaintext highlighter-rouge">kube-system</code> Kubernetes 系统创建对象所使用的名字空间</li>
+  <li><code class="language-plaintext highlighter-rouge">kube-public</code> 这个名字空间是自动创建的，所有用户（包括未经过身份验证的用户）都可以读取它。 这个名字空间主要用于集群使用，以防某些资源在整个集群中应该是可见和可读的。 这个名字空间的公共方面只是一种约定，而不是要求。</li>
+  <li><code class="language-plaintext highlighter-rouge">kube-node-lease</code> 此名字空间用于与各个节点相关的 <a href="https://kubernetes.io/docs/reference/kubernetes-api/cluster-resources/lease-v1/">租约（Lease）</a>对象。 节点租期允许 kubelet 发送<a href="https://kubernetes.io/zh-cn/docs/concepts/architecture/nodes/#heartbeats">心跳</a>，由此控制面能够检测到节点故障</li>
+</ul>
+
+<p>创建一个命名空间</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl create ns ns1
+namespace/ns1 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl get ns
+NAME              STATUS   AGE
+default           Active   114m
+kube-node-lease   Active   114m
+kube-public       Active   114m
+kube-system       Active   114m
+ns1               Active   17s
+</code></pre></div></div>
+
+<p>删除命名空间</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl delete ns ns1
+namespace <span class="s2">"ns1"</span> deleted
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[介绍使用kubeadm部署集群,测试环境为kvm]]></summary></entry><entry><title type="html">ubuntu install zabbix agent2</title><link href="/ubuntu-install-zabbix-agent2/" rel="alternate" type="text/html" title="ubuntu install zabbix agent2" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/ubuntu-install-zabbix-agent2</id><content type="html" xml:base="/ubuntu-install-zabbix-agent2/"><![CDATA[<p>ubuntu install zabbix agent2</p>
 
 <h4 id="安装依赖">安装依赖</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    apt <span class="nb">install </span>gcc
@@ -1127,85 +1742,4 @@ def __delattr__(self, item):
 <span class="k">print</span><span class="p">(</span><span class="n">a</span> <span class="ow">is</span> <span class="n">b</span><span class="p">)</span>
 
 <span class="bp">True</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象]]></summary></entry><entry><title type="html">`Python中的 __repr__ __str__`</title><link href="/python-repr-str/" rel="alternate" type="text/html" title="`Python中的 __repr__ __str__`" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/python-repr-str</id><content type="html" xml:base="/python-repr-str/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
-
-<h3 id="__repr__">__repr__</h3>
-<p>被内置函数repr用于把一个对象用”官方”的字符串形式表示出来(终端友好)</p>
-<ul>
-  <li>值传给eval()来返回一个对象的字符串表示形式</li>
-  <li>否则返回一个尖括号括起来的字符串，包含了对象类型的名称和附加的信息通常包括对象的名称和地址</li>
-  <li>一个类可以通过 __repr__方法来控制它的实例返回内容(也就是以上两点都通可以通过__repr__方法来定制)</li>
-  <li>返回 Unicode 字符串(str 类型)</li>
-</ul>
-
-<h3 id="__str__">__str__</h3>
-<p>被str(object) 和内置函数format()和print() 返回一个对象的’非正式’字符串形式(用户友好)</p>
-<ul>
-  <li>返回一个对象的字符串版本，如果对象没有提供，会返回空字符串，</li>
-  <li>对于字符串，会返回字符串本身，如果对象没有提供__str__方法，会使用__repr__方法(也就是repr(object))来提供返回值</li>
-  <li>返回 Unicode 字符串(str 类型)</li>
-</ul>
-
-<h3 id="code">code</h3>
-<p>这是django query的源码部分,使用__repr__来返回一个对象和查询的数据切片:</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">[:</span><span class="n">REPR_OUTPUT_SIZE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">REPR_OUTPUT_SIZE</span><span class="p">:</span>
-            <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s">"…(remaining elements truncated)…"</span>
-        <span class="k">return</span> <span class="s">'&lt;%s %r&gt;'</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">__class__</span><span class="p">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>注意:这里用到了%r,会返回数据的标准字符串形式，它和%s的区别看下面的例子:</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">In</span> <span class="p">[</span><span class="mi">58</span><span class="p">]:</span> <span class="nb">repr</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">())</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">58</span><span class="p">]:</span> <span class="s">'datetime.datetime(2018, 9, 13, 15, 22, 22, 124128)'</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">59</span><span class="p">]:</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">())</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">59</span><span class="p">]:</span> <span class="s">'2018-09-13 15:22:26.310367'</span>
-</code></pre></div></div>
-
-<p>再来看下__str__和__repr__的实现</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   <span class="n">In</span> <span class="p">[</span><span class="mi">68</span><span class="p">]:</span> <span class="k">class</span> <span class="nc">example</span><span class="p">:</span>
-    <span class="p">...:</span>     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="p">...:</span>         <span class="k">return</span> <span class="s">'str'</span>
-    <span class="p">...:</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="p">...:</span>         <span class="k">return</span> <span class="s">'repr'</span>
-    <span class="p">...:</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">69</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="n">example</span><span class="p">()</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">70</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-    <span class="nb">str</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">71</span><span class="p">]:</span> <span class="n">a</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">71</span><span class="p">]:</span> <span class="nb">repr</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">74</span><span class="p">]:</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__str__</span><span class="p">())</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">74</span><span class="p">]:</span> <span class="s">'str'</span>
-
-    <span class="n">In</span> <span class="p">[</span><span class="mi">75</span><span class="p">]:</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__repr__</span><span class="p">())</span>
-    <span class="n">Out</span><span class="p">[</span><span class="mi">75</span><span class="p">]:</span> <span class="s">'repr'</span> 
-</code></pre></div></div>
-
-<p>如果对象没有__str__方法，会使用__repr__来代替</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">76</span><span class="p">]:</span> <span class="k">class</span> <span class="nc">example</span><span class="p">:</span>
-    <span class="p">...:</span>     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="p">...:</span>         <span class="k">return</span> <span class="s">'repr'</span>
-    <span class="p">...:</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">77</span><span class="p">]:</span> <span class="n">a</span><span class="o">=</span><span class="n">example</span><span class="p">()</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="nb">repr</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">]:</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">__str__</span><span class="p">())</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">79</span><span class="p">]:</span> <span class="s">'repr'</span>
-</code></pre></div></div>
-
-<p>如果我们只实现两个中的一个的话，只需要写__repr__就可以了</p>
-
-<h3 id="参考">参考</h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://docs.python.org/3/reference/datamodel.html
-https://docs.python.org/3/library/functions.html#repr
-https://docs.python.org/3/library/stdtypes.html#str
-https://github.com/django/django/blob/master/django/db/models/query.py
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象]]></summary></entry></feed>

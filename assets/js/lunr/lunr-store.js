@@ -65,6 +65,12 @@ var store = [{
         "url": "/docker-02/",
         "teaser": null
       },{
+        "title": "使用kubeadm 安装Kubernetes",
+        "excerpt":"介绍使用kubeadm部署集群,测试环境为kvm 使用kubeadm 部署集群 master上的组件 名称 作用 kubectl 命令行工具，用户来创建、删除，都使用此工具 api-server 接口,接收用户发送的请求 scheduler 调度器,当用户创建pod时,判断这个pod会调度到哪个worker controller-manager k8s的大管家,包括监测节点的状态,pod的数目 worker上的组件 名称 作用 kubelet 在包括master上的所有节点上运行,是一个代理,接受master分配的任务,并把节点的信息反馈给master上的api-server kube-proxy 在包括master在内的所有节点上运行,用于把发送给server的请求转发给后端的Pod,有iptables和ipvs两种模式. calico网络 使得节点的pod能够互相通信,集群安装好后,一定要安装它 安装集群 建立主机 主机名 IP地址 内存需求 操作系统 角色 master 192.168.122.200 4GB centos 7 master node1 192.168.122.202 4GB centos 7 node node2 192.168.122.203 4GB centos 7 node 初始化配置 virt-install...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-install/",
+        "teaser": null
+      },{
         "title": "ubuntu install zabbix agent2",
         "excerpt":"ubuntu install zabbix agent2 安装依赖 apt install gcc apt install libpcre3 libpcre3-dev apt-get install zlib1g-dev apt install make golang 安装 https://go.dev/doc/install 创建组和用户 groupadd -g 2210 zabbix useradd -u 2210 zabbix -g zabbix 创建目录及赋权 [ ! -d /data/scripts/oss/zabbix ] &amp;&amp; mkdir -p /data/scripts/oss/zabbix [ ! -d /data/logs/oss/zabbix ] &amp;&amp; mkdir -p...","categories": [],
         "tags": ["Application"],
