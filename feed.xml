@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-18T15:17:36+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">使用kubeadm 升级Kubernetes</title><link href="/kubernetes-kubeadm-update/" rel="alternate" type="text/html" title="使用kubeadm 升级Kubernetes" /><published>2022-08-18T00:00:00+08:00</published><updated>2022-08-18T00:00:00+08:00</updated><id>/kubernetes-kubeadm-update</id><content type="html" xml:base="/kubernetes-kubeadm-update/"><![CDATA[<p>升级kubernetes版本</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-18T15:18:35+08:00</updated><id>/feed.xml</id><title type="html">Flash Boxer</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">使用kubeadm 升级Kubernetes</title><link href="/kubernetes-kubeadm-update/" rel="alternate" type="text/html" title="使用kubeadm 升级Kubernetes" /><published>2022-08-18T00:00:00+08:00</published><updated>2022-08-18T00:00:00+08:00</updated><id>/kubernetes-kubeadm-update</id><content type="html" xml:base="/kubernetes-kubeadm-update/"><![CDATA[<p>升级kubernetes版本</p>
 
 <h3 id="安装一套v1201集群">安装一套v1.20.1集群</h3>
 
@@ -846,7 +846,7 @@ Login Succeeded
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag centos:volume 192.168.122.100/cka/centos:volume
 docker push 192.168.122.100/cka/centos:volume
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[自定义镜像 数据卷 仓库]]></summary></entry><entry><title type="html">使用kubeadm 安装Kubernetes</title><link href="/kubernetes-kubeadm-install/" rel="alternate" type="text/html" title="使用kubeadm 安装Kubernetes" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/kubernetes-kubeadm-install</id><content type="html" xml:base="/kubernetes-kubeadm-install/"><![CDATA[<p>介绍使用kubeadm部署集群,测试环境为kvm</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[自定义镜像 数据卷 仓库]]></summary></entry><entry><title type="html">使用kubeadm 安装Kubernetes</title><link href="/kubernetes-kubeadm-install/" rel="alternate" type="text/html" title="使用kubeadm 安装Kubernetes" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/kubernetes-kubeadm-install</id><content type="html" xml:base="/kubernetes-kubeadm-install/"><![CDATA[<p>介绍使用kubeadm部署集群</p>
 
 <h3 id="使用kubeadm-部署集群">使用kubeadm 部署集群</h3>
 
@@ -1461,7 +1461,7 @@ ns1               Active   17s
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl delete ns ns1
 namespace <span class="s2">"ns1"</span> deleted
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[介绍使用kubeadm部署集群,测试环境为kvm]]></summary></entry><entry><title type="html">ubuntu install zabbix agent2</title><link href="/ubuntu-install-zabbix-agent2/" rel="alternate" type="text/html" title="ubuntu install zabbix agent2" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/ubuntu-install-zabbix-agent2</id><content type="html" xml:base="/ubuntu-install-zabbix-agent2/"><![CDATA[<p>ubuntu install zabbix agent2</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[介绍使用kubeadm部署集群]]></summary></entry><entry><title type="html">ubuntu install zabbix agent2</title><link href="/ubuntu-install-zabbix-agent2/" rel="alternate" type="text/html" title="ubuntu install zabbix agent2" /><published>2022-08-17T00:00:00+08:00</published><updated>2022-08-17T00:00:00+08:00</updated><id>/ubuntu-install-zabbix-agent2</id><content type="html" xml:base="/ubuntu-install-zabbix-agent2/"><![CDATA[<p>ubuntu install zabbix agent2</p>
 
 <h4 id="安装依赖">安装依赖</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    apt <span class="nb">install </span>gcc
