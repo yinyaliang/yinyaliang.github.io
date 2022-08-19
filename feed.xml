@@ -1,4 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-18T18:13:45+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">使用kubeadm 升级Kubernetes</title><link href="/kubernetes-kubeadm-update/" rel="alternate" type="text/html" title="使用kubeadm 升级Kubernetes" /><published>2022-08-18T00:00:00+08:00</published><updated>2022-08-18T00:00:00+08:00</updated><id>/kubernetes-kubeadm-update</id><content type="html" xml:base="/kubernetes-kubeadm-update/"><![CDATA[<p>升级kubernetes版本</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-19T15:10:57+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
+
+<h3 id="系统">系统</h3>
+<p>Centos 7</p>
+
+<h3 id="安装pgsql">安装pgsql</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+<span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> postgresql12-server
+<span class="nb">sudo</span> /usr/pgsql-12/bin/postgresql-12-setup initdb
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>postgresql-12
+<span class="nb">sudo </span>systemctl start postgresql-12
+</code></pre></div></div>
+
+<h3 id="数据库设置">数据库设置</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>su postgres
+psql
+CREATE USER zbx_monitor WITH PASSWORD <span class="s1">'monitor'</span> INHERIT<span class="p">;</span>
+GRANT EXECUTE ON FUNCTION pg_catalog.pg_ls_dir<span class="o">(</span>text<span class="o">)</span> TO zbx_monitor<span class="p">;</span>
+GRANT EXECUTE ON FUNCTION pg_catalog.pg_stat_file<span class="o">(</span>text<span class="o">)</span> TO zbx_monitor<span class="p">;</span>
+GRANT EXECUTE ON FUNCTION pg_catalog.pg_ls_waldir<span class="o">()</span> TO zbx_monitor<span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="监控配置">监控配置</h3>
+<p>监控页面添加主机挂载对应pgsql模板</p>
+
+<h3 id="参考">参考</h3>
+<p>https://www.postgresql.org/download/linux/redhat/</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[测试pgsql监控]]></summary></entry><entry><title type="html">使用kubeadm 升级Kubernetes</title><link href="/kubernetes-kubeadm-update/" rel="alternate" type="text/html" title="使用kubeadm 升级Kubernetes" /><published>2022-08-18T00:00:00+08:00</published><updated>2022-08-18T00:00:00+08:00</updated><id>/kubernetes-kubeadm-update</id><content type="html" xml:base="/kubernetes-kubeadm-update/"><![CDATA[<p>升级kubernetes版本</p>
 
 <h3 id="安装一套v1201集群">安装一套v1.20.1集群</h3>
 
@@ -2046,116 +2073,4 @@ WantedBy=multi-user.target
 systemctl <span class="nb">enable </span>prometheus.service
 systemctl start prometheus.service
 systemctl status prometheus.service
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[Prometheus 在centos中的安装记录]]></summary></entry><entry><title type="html">`Python中的 __getattr__、__getattribute__、__setattr__、__delattr__、__dir__`</title><link href="/python-getattr-getattribute-setattr-delattr-dir/" rel="alternate" type="text/html" title="`Python中的 __getattr__、__getattribute__、__setattr__、__delattr__、__dir__`" /><published>2022-08-15T00:00:00+08:00</published><updated>2022-08-15T00:00:00+08:00</updated><id>/python-getattr-getattribute-setattr-delattr-dir</id><content type="html" xml:base="/python-getattr-getattribute-setattr-delattr-dir/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
-
-<h3 id="__getattr__">__getattr__</h3>
-
-<p>属性查找失败后会调用__getattr__方法</p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">tmp</span> <span class="o">=</span> <span class="s">'tmp123'</span>
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="nb">AttributeError</span><span class="p">(</span><span class="s">'{} object has no attribute {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">item</span><span class="p">))</span>
-<span class="n">a</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">()</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">tmp</span><span class="p">)</span>
-<span class="n">结果</span><span class="p">:</span>
-    <span class="n">tmp123</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">tmpnone</span><span class="p">)</span>
-<span class="n">结果</span><span class="p">:</span>
-    <span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
-      <span class="n">File</span> <span class="s">"D:/pythonScript/leetcode/leetcode.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">12</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">tmpnone</span><span class="p">)</span>
-      <span class="n">File</span> <span class="s">"D:/pythonScript/leetcode/leetcode.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">7</span><span class="p">,</span> <span class="ow">in</span> <span class="n">__getattr__</span>
-        <span class="k">raise</span> <span class="nb">AttributeError</span><span class="p">(</span><span class="n">msg</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">tmp_cls</span><span class="p">,</span> <span class="n">item</span><span class="p">))</span>
-    <span class="nb">AttributeError</span><span class="p">:</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">__main__</span><span class="p">.</span><span class="n">TmpTest</span><span class="s">'&gt; object has no attribute tmpnone
-</span></code></pre></div></div>
-
-<p>a.tmpnone 表达式执行顺序:</p>
-<ul>
-  <li>首先会检查a实例有没有名为tmpnone的属性</li>
-  <li>到类（a.<strong>class</strong>）中查找</li>
-  <li>顺着继承树继续查找.</li>
-  <li>调用a所属类中定义的 <strong>getattr</strong> 方法,传入self和属性名称的字符串形式（如 ‘tmpnone’）.</li>
-</ul>
-
-<h3 id="__getattribute__和__setattr__">__getattribute__和__setattr__:</h3>
-
-<h4 id="__getattribute__">__getattribute__</h4>
-<ul>
-  <li>尝试获取指定的属性时总会调用这个方法,寻找的属性是特殊属性或特殊方法时除外.</li>
-  <li>点号与 getattr 和 hasattr 内置函数会触发这个方法.</li>
-  <li>调用__getattribute__方法且抛出 AttributeError 异常时,才会调用__getattr__方法.</li>
-  <li>为了在获取实例的属性时不导致无限递归,__getattribute__方法的实现要使用 super().__getattribute__(name)</li>
-</ul>
-
-<h4 id="__setattr__">__setattr__</h4>
-<ul>
-  <li>尝试设置指定的属性时会调用这个方法.点号和 setattr 内置函数会触发这个方法.例如我们下面的例子a.x=’getattr’和 setattr(a, ‘x’, “getattr”) 都会触发TmpTest.__setattr__(a, ‘x’, “getattr”) 方法.,</li>
-  <li>如果实现了__getattr__方法,最好同时定义__setattr__方法</li>
-</ul>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
-
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">"getting __getattr__ {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="o">=</span> <span class="s">'__getattr__'</span>
-        <span class="k">return</span> <span class="s">'__getattr__'</span>
-
-    <span class="k">def</span> <span class="nf">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">print</span> <span class="p">(</span><span class="s">"getting __getattribute__ {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">item</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">item</span><span class="o">==</span><span class="s">'x'</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="nb">AttributeError</span>
-        <span class="k">return</span> <span class="nb">object</span><span class="p">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">"getting __setattr__ {}"</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">key</span><span class="p">))</span>
-        <span class="k">return</span> <span class="nb">object</span><span class="p">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-<span class="n">a</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">()</span>
-<span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="s">'getattr'</span>
-<span class="k">print</span> <span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
-
-<span class="n">结果</span><span class="p">:</span>
-<span class="n">getting</span> <span class="n">__setattr__</span> <span class="n">x</span>   
-<span class="n">getting</span> <span class="n">__getattribute__</span> <span class="n">x</span>       <span class="c1">#抛出异常
-</span><span class="n">getting</span> <span class="n">__getattr__</span> <span class="n">x</span>            <span class="c1">#执行__getattr__
-</span><span class="n">getting</span> <span class="n">__getattribute__</span> <span class="n">__dict__</span>  
-<span class="n">__getattr__</span>
-</code></pre></div></div>
-
-<h3 id="__delattr__">__delattr__</h3>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>只要使用del语句删除属性,就会调用这个方法.例如,del a.x 语句触发 Class.__delattr__(a, 'x') 方法 ```python
-def __delattr__(self, item):
-    print ("getting __delattr__ {}".format(item))
-    del self.__dict__[item] ```
-</code></pre></div></div>
-
-<h3 id="dir">dir()</h3>
-<ul>
-  <li>在没有参数的情况下，返回当前作用域内的名称列表。</li>
-  <li>如果对象有一个名为dir()的方法，那么这个方法就会被调用</li>
-  <li>模块对象，返回模块的属性列表</li>
-  <li>类对象，返回累的属性名称和基类的属性列表</li>
-</ul>
-
-<p>看下官方的文档例子</p>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">struct</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">()</span>   <span class="c1"># show the names in the module namespace  
-</span>    <span class="p">[</span><span class="s">'__builtins__'</span><span class="p">,</span> <span class="s">'__name__'</span><span class="p">,</span> <span class="s">'struct'</span><span class="p">]</span>
-    
-    <span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">struct</span><span class="p">)</span>   <span class="c1"># show the names in the struct module
-</span>    <span class="p">[</span><span class="s">'Struct'</span><span class="p">,</span> <span class="s">'__all__'</span><span class="p">,</span> <span class="s">'__builtins__'</span><span class="p">,</span> <span class="s">'__cached__'</span><span class="p">,</span> <span class="s">'__doc__'</span><span class="p">,</span> <span class="s">'__file__'</span><span class="p">,</span>
-     <span class="s">'__initializing__'</span><span class="p">,</span> <span class="s">'__loader__'</span><span class="p">,</span> <span class="s">'__name__'</span><span class="p">,</span> <span class="s">'__package__'</span><span class="p">,</span>
-     <span class="s">'_clearcache'</span><span class="p">,</span> <span class="s">'calcsize'</span><span class="p">,</span> <span class="s">'error'</span><span class="p">,</span> <span class="s">'pack'</span><span class="p">,</span> <span class="s">'pack_into'</span><span class="p">,</span>
-     <span class="s">'unpack'</span><span class="p">,</span> <span class="s">'unpack_from'</span><span class="p">]</span>
-     
-    <span class="o">&gt;&gt;&gt;</span> <span class="k">class</span> <span class="nc">Shape</span><span class="p">:</span>
-    <span class="p">...</span>     <span class="k">def</span> <span class="nf">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="p">...</span>         <span class="k">return</span> <span class="p">[</span><span class="s">'area'</span><span class="p">,</span> <span class="s">'perimeter'</span><span class="p">,</span> <span class="s">'location'</span><span class="p">]</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Shape</span><span class="p">()</span>
-    <span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-    <span class="p">[</span><span class="s">'area'</span><span class="p">,</span> <span class="s">'location'</span><span class="p">,</span> <span class="s">'perimeter'</span><span class="p">]</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[Prometheus 在centos中的安装记录]]></summary></entry></feed>
