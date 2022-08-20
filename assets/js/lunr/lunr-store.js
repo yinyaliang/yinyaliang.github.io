@@ -94,4 +94,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-ospf-01/",
         "teaser": null
+      },{
+        "title": "ospf笔记-常规配置",
+        "excerpt":"OSPF备忘信息 配置OSPF进程的步骤 router ospf process-id [vrf vpn-name]在路由器上启用OSPF 进程 network ip address wildcard-mask area area-id 指定路由器的哪些接口将参与OSPF进程以及网络所属的OSPF区域 接口配置命令 ip ospf process-id area area-id [secondaries none],优先于命令network area 区域OSPF配置示例 路由器ID router-id ip-address 路由器ID设置为最大的活动环回接口地址 最大的活动物理接口IP地址 OSPF数据库使用路由器ID来唯一地标识网络中的每台路由器,因此在整个OSPF自治系统中，路由器ID都不能重复 查看OSPF的运行 show ip ospf显示OSPF路由器ID（RID）、OSPF定时器、执行了 SPF 算法多少次以及LSA信息。 show ip ospf interface [type number] [ brief]：查看接口是否被加入到正确的区域中；该命令还显示各种定时器（包括Hello间隔）和邻接关系 show ip ospf neighbor detail...","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-ospf-02/",
+        "teaser": null
       }]

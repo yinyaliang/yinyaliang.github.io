@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-20T17:38:30+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-20T17:51:25+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
 
 <h3 id="链路状态协议的特点">链路状态协议的特点</h3>
 <ul>
@@ -95,6 +95,60 @@
     <p><img src="/assets/images/ospf/07.png" /></p>
 
     <p><img src="/assets/images/ospf/08.png" /></p>
+  </li>
+</ul>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">ospf笔记-常规配置</title><link href="/rs-ospf-02/" rel="alternate" type="text/html" title="ospf笔记-常规配置" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-02</id><content type="html" xml:base="/rs-ospf-02/"><![CDATA[<p>OSPF备忘信息</p>
+
+<h3 id="配置ospf进程的步骤">配置OSPF进程的步骤</h3>
+
+<ul>
+  <li>router ospf process-id [vrf vpn-name]在路由器上启用OSPF 进程</li>
+  <li>network ip address wildcard-mask area area-id 指定路由器的哪些接口将参与OSPF进程以及网络所属的OSPF区域</li>
+</ul>
+
+<p><img src="/assets/images/ospf/9.png" /></p>
+
+<p><img src="/assets/images/ospf/10.png" /></p>
+
+<p><strong>接口配置命令 ip ospf process-id area area-id [secondaries none],优先于命令network area</strong></p>
+
+<p><img src="/assets/images/ospf/11.png" /></p>
+
+<p><img src="/assets/images/ospf/12.png" /></p>
+
+<p>区域OSPF配置示例</p>
+
+<p><img src="/assets/images/ospf/13.png" /></p>
+
+<h3 id="路由器id">路由器ID</h3>
+<ul>
+  <li>router-id ip-address</li>
+  <li>路由器ID设置为最大的活动环回接口地址</li>
+  <li>最大的活动物理接口IP地址</li>
+</ul>
+
+<p><strong>OSPF数据库使用路由器ID来唯一地标识网络中的每台路由器,因此在整个OSPF自治系统中，路由器ID都不能重复</strong></p>
+
+<p><img src="/assets/images/ospf/14.png" /></p>
+
+<h3 id="查看ospf的运行">查看OSPF的运行</h3>
+<ul>
+  <li>show ip ospf显示OSPF路由器ID（RID）、OSPF定时器、执行了 SPF 算法多少次以及LSA信息。</li>
+  <li>show ip ospf interface [type number] [ brief]：查看接口是否被加入到正确的区域中；该命令还显示各种定时器（包括Hello间隔）和邻接关系</li>
+  <li>show ip ospf neighbor detail [type number] [neighbor-id] [detail]：显示一个邻居列表，包括它们的OSPF路由器ID、OSPF优先级、邻接关系状态（如init、预启动或完全邻接）及失效定时器</li>
+  <li>show ip route ospf：显示路由器知道的 OSPF 路由，它是判断本地路由器和互连网络其他部分之间的连接性的最佳方法之一。该命令还有可选参数，让您能够进一步指定要显示的信息，如OSPF进程ID</li>
+  <li>show ip protocols：显示 IP 路由协议参数，包括定时器、过滤器、度量值、网络及路由器的其他信息</li>
+  <li>
+    <p>debug ip ospf events显示与OSPF相关的事件，如建立邻接关系、扩散信息、DR选举和SPF计算</p>
+
+    <p><img src="/assets/images/ospf/15.png" /></p>
+
+    <p><img src="/assets/images/ospf/16.png" /></p>
+
+    <p><img src="/assets/images/ospf/17.png" /></p>
+
+    <p><img src="/assets/images/ospf/18.png" /></p>
+
+    <p><img src="/assets/images/ospf/19.png" /></p>
   </li>
 </ul>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
 
@@ -2052,79 +2106,4 @@ no error
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://python3-cookbook.readthedocs.io/zh_CN/latest/c08/p03_make_objects_support_context_management_protocol.html?highlight=with
 https://docs.python.org/3/library/stdtypes.html#typecontextmanager
 https://www.python.org/dev/peps/pep-0343/
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[在python中实现了__enter__和__exit__方法，即支持上下文管理器协议。上下文管理器就是支持上下文管理器协议的对象，它是为了with而生。当with语句在开始运行时，会在上下文管理器对象上调用__enter__方法。with语句运行结束后，会在上下文管理器对象上调用__exit__方法]]></summary></entry><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
-
-<h3 id="__len__">__len__</h3>
-<p>返回集合长度</p>
-
-<h3 id="__getitem__self-item">__getitem__(self, item)</h3>
-<p>使用索引访问元素</p>
-
-<h3 id="__setitem__self-key-value">__setitem__(self, key, value)</h3>
-<p>对索引赋值,使用 self[key] = value</p>
-
-<h3 id="__delitem__self-key">__delitem__(self, key)</h3>
-<p>删除索引值 del self[key]</p>
-
-<h3 id="__contains__">__contains__</h3>
-<p>实现in运算符，如果没有实现这个方法python也会调用__getitem__来使in运算符可用</p>
-
-<h3 id="可变集合和不可变集合">可变集合和不可变集合</h3>
-<ul>
-  <li>可变集合需要实现: <strong>len</strong>  <strong>getitem</strong>    <strong>setitem</strong>  <strong>delitem</strong></li>
-  <li>不可变集合需要实现: <strong>len</strong>  <strong>getitem</strong></li>
-</ul>
-
-<h3 id="code">code</h3>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TemTest</span><span class="p">:</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
-</code></pre></div></div>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span><span class="o">=</span><span class="n">TemTest</span><span class="p">()</span> <span class="c1">#实例化
-</span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">))</span> <span class="c1">#返回长度
-</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>   <span class="c1">#打印下标0的值
-</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>  <span class="c1">#切片
-</span>
-
-<span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">10</span>       <span class="c1">#将下标3的值替换为10
-</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
-
-
-<span class="k">del</span> <span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>      <span class="c1">#删除下标3的值
-</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
-
-
-<span class="k">print</span><span class="p">(</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span>  <span class="c1">#测试in运算符
-</span><span class="k">print</span><span class="p">(</span><span class="mi">3</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span> 
-</code></pre></div></div>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">10</span>
-<span class="mi">0</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-<span class="bp">True</span>
-<span class="bp">False</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[在python中实现了__enter__和__exit__方法，即支持上下文管理器协议。上下文管理器就是支持上下文管理器协议的对象，它是为了with而生。当with语句在开始运行时，会在上下文管理器对象上调用__enter__方法。with语句运行结束后，会在上下文管理器对象上调用__exit__方法]]></summary></entry></feed>
