@@ -112,4 +112,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-ospf-04/",
         "teaser": null
+      },{
+        "title": "ospf笔记-高级功能",
+        "excerpt":"OSPF备忘信息   passive-interface      路由器配置命令 passive-interface type number [default]禁止通过指定的路由器接口向外发送路由更新         OSPF的默认路由  要让 OSPF 生成默认路由，必须使用命令 default-information originate，在 OSPF 路由器中配置命令 default-information originate（或将路由重分发到OSPF）后，该路由器就将变成ASBR                   路由汇总  路由汇总指的是将多条路由汇总成一条通告，路由汇总对OSPF路由进程占用的带宽、CPU周期和内存资源有直接影响      每个区域都将生成1类和2类LSA，这些LSA被转换为3类LSA并传输到其他区域。通过路由汇总，ABR和ASBR可将多条路由合并成少量的通告,ABR汇总3类LSA，而ASBR汇总5类LSA   汇总LSA不会被汇总   两种汇总方式     区域间路由汇总   区域间路由汇总是在ABR上进行的，针对的是每个区域内的路由。这种汇总不能用于通过重分发被导入到 OSPF 中的外部路由。要实现有效的区域间路由汇总，区域内的网络号应该是连续的，这样可以最大限度地减少汇总后的地址数。   外部路由汇总    外部路由汇总专门针对通过重分发被导入到OSPF中的外部路由。同样，确保要对其进行汇总的外部地址范围的连续性至关重要。通常，只在ASBR上汇总外部路由   任何EIGRP路由器都可执行汇总。然而，在OSPF中，只能在ABR和ASBR处进行汇总      在ABR上配置区域间OSPF路由汇总  , OSPF不（在主网络边界或其他地方）自动执行汇总。在ABR上手工配置域间路由汇总的步骤如下         在ASBR上配置外部OSPF路由汇总 ,在 ASBR 中，可对 5 类 LSA（重分发而来的路由）进行汇总，然后将其注入OSPF域。对于每个汇总范围，将自动创建一条指向接口null0的汇总路由。      OSPF虚链路                           虚链路的LSDB条目            修改度量开销 要调整开销度量值，可使用命令 ip ospf cost、bandwidth和 auto-cost reference-ban-dwidth  ","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-ospf-05/",
+        "teaser": null
       }]

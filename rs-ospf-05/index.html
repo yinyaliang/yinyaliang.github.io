@@ -11,7 +11,7 @@
      crossorigin="anonymous"></script>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>ospf笔记-LSA - 尹亚亮</title>
+<!-- begin _includes/seo.html --><title>ospf笔记-高级功能 - 尹亚亮</title>
 <meta name="description" content="OSPF备忘信息">
 
 
@@ -24,8 +24,8 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="尹亚亮">
-<meta property="og:title" content="ospf笔记-LSA">
-<meta property="og:url" content="/rs-ospf-04/">
+<meta property="og:title" content="ospf笔记-高级功能">
+<meta property="og:url" content="/rs-ospf-05/">
 
 
   <meta property="og:description" content="OSPF备忘信息">
@@ -47,7 +47,7 @@
   
 
 
-<link rel="canonical" href="/rs-ospf-04/">
+<link rel="canonical" href="/rs-ospf-05/">
 
 
 
@@ -155,7 +155,7 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="ospf笔记-LSA">
+    <meta itemprop="headline" content="ospf笔记-高级功能">
     <meta itemprop="description" content="OSPF备忘信息">
     <meta itemprop="datePublished" content="2022-08-20T00:00:00+08:00">
     
@@ -164,7 +164,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="/rs-ospf-04/" class="u-url" itemprop="url">ospf笔记-LSA
+            <a href="/rs-ospf-05/" class="u-url" itemprop="url">ospf笔记-高级功能
 </a>
           </h1>
           
@@ -193,78 +193,94 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#1类lsa">1类LSA</a></li><li><a href="#2类lsa">2类LSA</a></li><li><a href="#3类lsa">3类LSA</a></li><li><a href="#4类lsa">4类LSA</a></li><li><a href="#5类lsa">5类LSA</a></li><li><a href="#ospf的路由表和路由类型">OSPF的路由表和路由类型</a></li><li><a href="#计算o-e1-和-o-e2的开销">计算O E1 和 O E2的开销</a></li><li><a href="#lsdb的过载保护">LSDB的过载保护</a></li></ul>
+              <ul class="toc__menu"><li><a href="#passive-interface">passive-interface</a></li><li><a href="#ospf的默认路由">OSPF的默认路由</a></li><li><a href="#路由汇总">路由汇总</a></li><li><a href="#ospf虚链路">OSPF虚链路</a></li></ul>
 
             </nav>
           </aside>
         
         <p>OSPF备忘信息</p>
 
-<p><img src="/assets/images/ospf/30.png" />
-<img src="/assets/images/ospf/31.png" /></p>
+<h3 id="passive-interface">passive-interface</h3>
 
+<p><img src="/assets/images/ospf/43.png" /></p>
+
+<p>路由器配置命令 passive-interface type number [default]禁止通过指定的路由器接口向外发送路由更新</p>
+
+<p><img src="/assets/images/ospf/44.png" /></p>
+
+<p><img src="/assets/images/ospf/45.png" /></p>
+
+<h3 id="ospf的默认路由">OSPF的默认路由</h3>
+<p>要让 OSPF 生成默认路由，必须使用命令 default-information originate，在 OSPF 路由器中配置命令 default-information originate（或将路由重分发到OSPF）后，该路由器就将变成ASBR
+<img src="/assets/images/ospf/46.png" /></p>
+
+<p><img src="/assets/images/ospf/47.png" /></p>
+
+<p><img src="/assets/images/ospf/48.png" /></p>
+
+<p><img src="/assets/images/ospf/49.png" /></p>
+
+<p><img src="/assets/images/ospf/50.png" /></p>
+
+<p><img src="/assets/images/ospf/51.png" /></p>
+
+<h3 id="路由汇总">路由汇总</h3>
+<p>路由汇总指的是将多条路由汇总成一条通告，路由汇总对OSPF路由进程占用的带宽、CPU周期和内存资源有直接影响</p>
+
+<p><img src="/assets/images/ospf/52.png" /></p>
+
+<p>每个区域都将生成1类和2类LSA，这些LSA被转换为3类LSA并传输到其他区域。通过路由汇总，ABR和ASBR可将多条路由合并成少量的通告,ABR汇总3类LSA，而ASBR汇总5类LSA</p>
+
+<p><strong>汇总LSA不会被汇总</strong></p>
+
+<p>两种汇总方式</p>
 <ul>
-  <li>1类（路由器LSA）：每台路由器都生成有关其所属区域的路由器链路通告。路由器链路通告描述了路由器连接到区域的链路的状态，只在区域内扩散。每种LSA的报头都是20字节，其中一个字段是链路状态ID。对于1类LSA，该字段的值为最初发送LSA的路由器的ID。</li>
-  <li>2类（网络LSA）：DR为多路访问网络生成的网络链路通告，描述了特定多路访问网络上的一组路由器。网络链路通告在网络所在的区域内扩散。2类LSA的链路状态ID为DR的IP接口地址。</li>
-  <li>3类和4类（汇总LSA）：汇总链路通告是由ABR生成的，描述了下述区域间路由
-    3类 LSA描述了前往网络的路由（还可能包含汇总路由）
-    4类 LSA描述了前往ASBR的路由</li>
-  <li>5类（自治系统外部LSA）：自治系统外部链路状态通告是由ASBR生成的，描述了前往自治系统外部的目标网络的路由，被扩散到除各种末节区域外的其他所有地方。5类LSA的链路状态ID为外部网络的地址。</li>
-  <li>6 类（多播 OSPF LSA）：这些 LSA 用于 OSPF 多播应用中</li>
-  <li>7类（用于NSSA的LSA）：这些LSA用于NSSA中，将在本章后面的“配置NSSA”一节介绍</li>
-  <li>8类（BGP的外部属性LSA）：这些LSA用于互联OSPF和BGP</li>
-  <li>9、10和11类（不透明LSA）：这些LSA用于升级到OSPF，旨在在OSPF域中分发应用程序特定的信息。例如，Cisco使用9类不透明LSA在OSPF中实现MPLS流量工程。分发不透明LSA时，使用的是标准的LSDB扩散机制。这3种LSA的扩散范围各不相同，9类LSA只在本地网络或子网内扩散，10类LSA只在当前区域内扩散，而11类LSA扩散到整个自治系统（与5类LSA相同）。不透明LSA是在 RFC 5250（The OSPF Opaque LSA Option）中定义的。</li>
+  <li>区域间路由汇总   区域间路由汇总是在ABR上进行的，针对的是每个区域内的路由。这种汇总不能用于通过重分发被导入到 OSPF 中的外部路由。要实现有效的区域间路由汇总，区域内的网络号应该是连续的，这样可以最大限度地减少汇总后的地址数。</li>
+  <li>外部路由汇总    外部路由汇总专门针对通过重分发被导入到OSPF中的外部路由。同样，确保要对其进行汇总的外部地址范围的连续性至关重要。通常，只在ASBR上汇总外部路由</li>
 </ul>
 
-<p><strong>在Cisco路由器中，OSPFv2不支持6类和8类LSA</strong></p>
+<p><strong>任何EIGRP路由器都可执行汇总。然而，在OSPF中，只能在ABR和ASBR处进行汇总</strong></p>
 
-<h3 id="1类lsa">1类LSA</h3>
-<p>路由器通告1类LSA，这种LSA被扩散到当前区域内的所有路由器，1类LSA指出了每条链路的OSPF开销以及路由器是不是ABR或ASBR</p>
+<p><img src="/assets/images/ospf/53.png" /></p>
 
-<p><img src="/assets/images/ospf/32.png" /></p>
+<p>在ABR上配置区域间OSPF路由汇总  , OSPF不（在主网络边界或其他地方）自动执行汇总。在ABR上手工配置域间路由汇总的步骤如下</p>
 
-<p><img src="/assets/images/ospf/33.png" /></p>
+<p><img src="/assets/images/ospf/54.png" /></p>
 
-<h3 id="2类lsa">2类LSA</h3>
-<p>2 类 LSA 是为区域中每个中转的广播或 NBMA 网络生成的，中转网络至少与两台OSPF 路由器直接相连</p>
+<p><img src="/assets/images/ospf/55.png" /></p>
 
-<p><img src="/assets/images/ospf/34.png" /></p>
+<p>在ASBR上配置外部OSPF路由汇总 ,在 ASBR 中，可对 5 类 LSA（重分发而来的路由）进行汇总，然后将其注入OSPF域。对于每个汇总范围，将自动创建一条指向接口null0的汇总路由。</p>
 
-<h3 id="3类lsa">3类LSA</h3>
-<p>3类（汇总）LSA由ABR生成，它将一个区域内的网络通告给OSPF自治系统中的其他区域</p>
+<p><img src="/assets/images/ospf/56.png" /></p>
 
-<p><img src="/assets/images/ospf/35.png" /></p>
+<h3 id="ospf虚链路">OSPF虚链路</h3>
 
-<h3 id="4类lsa">4类LSA</h3>
-<p>仅当区域中有ASBR时，ABR才会生成4类（汇总）LSA。4类LSA标识ASBR，并提供一条前往该ASBR的路由</p>
+<p><img src="/assets/images/ospf/57.png" /></p>
 
-<p><img src="/assets/images/ospf/36.png" /></p>
+<p><img src="/assets/images/ospf/58.png" /></p>
 
-<h3 id="5类lsa">5类LSA</h3>
-<p>5类LSA描述了前往OSPF自治系统外的网络的路由，它由ASBR发送并被扩散到整个AS</p>
+<p><img src="/assets/images/ospf/59.png" /></p>
 
-<p><img src="/assets/images/ospf/37.png" /></p>
+<p><img src="/assets/images/ospf/60.png" /></p>
 
-<p><img src="/assets/images/ospf/38.png" /></p>
+<p><img src="/assets/images/ospf/61.png" /></p>
 
-<h3 id="ospf的路由表和路由类型">OSPF的路由表和路由类型</h3>
+<p><img src="/assets/images/ospf/62.png" /></p>
 
-<p><img src="/assets/images/ospf/39.png" /></p>
+<p><img src="/assets/images/ospf/63.png" /></p>
 
-<p><img src="/assets/images/ospf/40.png" /></p>
+<p><img src="/assets/images/ospf/64.png" /></p>
 
-<h3 id="计算o-e1-和-o-e2的开销">计算O E1 和 O E2的开销</h3>
+<p>虚链路的LSDB条目</p>
 
-<p><img src="/assets/images/ospf/41.png" /></p>
+<p><img src="/assets/images/ospf/65.png" /></p>
 
-<ul>
-  <li>对于O E1 外部路由，开销为外部开销加上分组经过的每条链路的内部开销。多个ASBR将同一条外部路由通告到同一个自治系统中时，应使用这种类型，以避免次优路由</li>
-  <li>O E2路由的开销总是只包含外部开销。只有一台 ASBR将外部路由通告到自治系统中时，使用这种类型</li>
-</ul>
+<p><img src="/assets/images/ospf/66.png" /></p>
 
-<h3 id="lsdb的过载保护">LSDB的过载保护</h3>
+<p><img src="/assets/images/ospf/67.png" /></p>
 
-<p><img src="/assets/images/ospf/42.png" /></p>
+<p>修改度量开销
+要调整开销度量值，可使用命令 ip ospf cost、bandwidth和 auto-cost reference-ban-dwidth</p>
 
         
       </section>
@@ -300,23 +316,22 @@
     <h4 class="page__share-title">分享</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=ospf%E7%AC%94%E8%AE%B0-LSA%20%2Frs-ospf-04%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=ospf%E7%AC%94%E8%AE%B0-%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%20%2Frs-ospf-05%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Frs-ospf-04%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Frs-ospf-05%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Frs-ospf-04%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Frs-ospf-05%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
  -->
 
       
   <nav class="pagination">
     
-      <a href="/rs-ospf-03/" class="pagination--pager" title="ospf笔记-网络类型
+      <a href="/rs-ospf-04/" class="pagination--pager" title="ospf笔记-LSA
 ">上一页</a>
     
     
-      <a href="/rs-ospf-05/" class="pagination--pager" title="ospf笔记-高级功能
-">下一页</a>
+      <a href="#" class="pagination--pager disabled">下一页</a>
     
   </nav>
 

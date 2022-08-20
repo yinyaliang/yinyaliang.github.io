@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-20T18:32:35+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-20T18:43:38+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
 
 <h3 id="链路状态协议的特点">链路状态协议的特点</h3>
 <ul>
@@ -242,7 +242,89 @@ DR和BDR的价值体现在以下方面</p>
 
 <h3 id="lsdb的过载保护">LSDB的过载保护</h3>
 
-<p><img src="/assets/images/ospf/42.png" /></p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
+<p><img src="/assets/images/ospf/42.png" /></p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">ospf笔记-高级功能</title><link href="/rs-ospf-05/" rel="alternate" type="text/html" title="ospf笔记-高级功能" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-05</id><content type="html" xml:base="/rs-ospf-05/"><![CDATA[<p>OSPF备忘信息</p>
+
+<h3 id="passive-interface">passive-interface</h3>
+
+<p><img src="/assets/images/ospf/43.png" /></p>
+
+<p>路由器配置命令 passive-interface type number [default]禁止通过指定的路由器接口向外发送路由更新</p>
+
+<p><img src="/assets/images/ospf/44.png" /></p>
+
+<p><img src="/assets/images/ospf/45.png" /></p>
+
+<h3 id="ospf的默认路由">OSPF的默认路由</h3>
+<p>要让 OSPF 生成默认路由，必须使用命令 default-information originate，在 OSPF 路由器中配置命令 default-information originate（或将路由重分发到OSPF）后，该路由器就将变成ASBR
+<img src="/assets/images/ospf/46.png" /></p>
+
+<p><img src="/assets/images/ospf/47.png" /></p>
+
+<p><img src="/assets/images/ospf/48.png" /></p>
+
+<p><img src="/assets/images/ospf/49.png" /></p>
+
+<p><img src="/assets/images/ospf/50.png" /></p>
+
+<p><img src="/assets/images/ospf/51.png" /></p>
+
+<h3 id="路由汇总">路由汇总</h3>
+<p>路由汇总指的是将多条路由汇总成一条通告，路由汇总对OSPF路由进程占用的带宽、CPU周期和内存资源有直接影响</p>
+
+<p><img src="/assets/images/ospf/52.png" /></p>
+
+<p>每个区域都将生成1类和2类LSA，这些LSA被转换为3类LSA并传输到其他区域。通过路由汇总，ABR和ASBR可将多条路由合并成少量的通告,ABR汇总3类LSA，而ASBR汇总5类LSA</p>
+
+<p><strong>汇总LSA不会被汇总</strong></p>
+
+<p>两种汇总方式</p>
+<ul>
+  <li>区域间路由汇总   区域间路由汇总是在ABR上进行的，针对的是每个区域内的路由。这种汇总不能用于通过重分发被导入到 OSPF 中的外部路由。要实现有效的区域间路由汇总，区域内的网络号应该是连续的，这样可以最大限度地减少汇总后的地址数。</li>
+  <li>外部路由汇总    外部路由汇总专门针对通过重分发被导入到OSPF中的外部路由。同样，确保要对其进行汇总的外部地址范围的连续性至关重要。通常，只在ASBR上汇总外部路由</li>
+</ul>
+
+<p><strong>任何EIGRP路由器都可执行汇总。然而，在OSPF中，只能在ABR和ASBR处进行汇总</strong></p>
+
+<p><img src="/assets/images/ospf/53.png" /></p>
+
+<p>在ABR上配置区域间OSPF路由汇总  , OSPF不（在主网络边界或其他地方）自动执行汇总。在ABR上手工配置域间路由汇总的步骤如下</p>
+
+<p><img src="/assets/images/ospf/54.png" /></p>
+
+<p><img src="/assets/images/ospf/55.png" /></p>
+
+<p>在ASBR上配置外部OSPF路由汇总 ,在 ASBR 中，可对 5 类 LSA（重分发而来的路由）进行汇总，然后将其注入OSPF域。对于每个汇总范围，将自动创建一条指向接口null0的汇总路由。</p>
+
+<p><img src="/assets/images/ospf/56.png" /></p>
+
+<h3 id="ospf虚链路">OSPF虚链路</h3>
+
+<p><img src="/assets/images/ospf/57.png" /></p>
+
+<p><img src="/assets/images/ospf/58.png" /></p>
+
+<p><img src="/assets/images/ospf/59.png" /></p>
+
+<p><img src="/assets/images/ospf/60.png" /></p>
+
+<p><img src="/assets/images/ospf/61.png" /></p>
+
+<p><img src="/assets/images/ospf/62.png" /></p>
+
+<p><img src="/assets/images/ospf/63.png" /></p>
+
+<p><img src="/assets/images/ospf/64.png" /></p>
+
+<p>虚链路的LSDB条目</p>
+
+<p><img src="/assets/images/ospf/65.png" /></p>
+
+<p><img src="/assets/images/ospf/66.png" /></p>
+
+<p><img src="/assets/images/ospf/67.png" /></p>
+
+<p>修改度量开销
+要调整开销度量值，可使用命令 ip ospf cost、bandwidth和 auto-cost reference-ban-dwidth</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
 
 <h3 id="系统">系统</h3>
 <p>Centos 7</p>
@@ -1872,132 +1954,4 @@ namespace <span class="s2">"ns1"</span> deleted
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    systemctl start zabbix_agent2.service
     systemctl restart zabbix_agent2.service
     systemctl stop zabbix_agent2.service
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[ubuntu install zabbix agent2]]></summary></entry><entry><title type="html">`Centos 更新Glibc `</title><link href="/centos-update-glibc/" rel="alternate" type="text/html" title="`Centos 更新Glibc `" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/centos-update-glibc</id><content type="html" xml:base="/centos-update-glibc/"><![CDATA[<p>写CBPF需要更新系统的Glibc</p>
-
-<h4 id="安装centos-release-scl">安装centos-release-scl</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install centos-release-scl
-</code></pre></div></div>
-
-<h4 id="安装7版本的devtoolset">安装7版本的devtoolset</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install devtoolset-7-gcc*
-</code></pre></div></div>
-
-<h4 id="激活">激活</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scl enable devtoolset-7 bash
-</code></pre></div></div>
-
-<h4 id="查看gcc版本">查看gcc版本</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc -v
-</code></pre></div></div>
-
-<h4 id="下载安装包">下载安装包</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp
-wget https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz
-tar xf glibc-2.23.tar.gz
-cd glibc-2.23/
-mkdir glibc-build
-cd glibc-build 
-</code></pre></div></div>
-
-<h4 id="安装">安装</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../configure --prefix=/usr
-make
-make install
-</code></pre></div></div>
-
-<h4 id="验证">验证</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ldd --version
-ldd (GNU libc) 2.23
-
-Copyright (C) 2016 Free Software Foundation, Inc.
-
-This is free software; see the source for copying conditions.  There is NO
-
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-Written by Roland McGrath and Ulrich Drepper.
-</code></pre></div></div>
-
-<h4 id="排错">排错</h4>
-<p>1、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setenv.c:279:6: error: suggest explicit braces to avoid ambiguous ‘else’ [-Werror=dangling-else]
-   if (ep != NULL)
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>增加{}
-</code></pre></div></div>
-
-<p>2、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../sysdeps/ieee754/dbl-64/e_pow.c:469:13: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-       if (n &lt;&lt; (k - 20))
-           ~~^~~~~~~~~~~
-../sysdeps/ieee754/dbl-64/e_pow.c:471:17: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-       return (n &lt;&lt; (k - 21)) ? -1 : 1;
-              ~~~^~~~~~~~~~~~
-../sysdeps/ieee754/dbl-64/e_pow.c:477:9: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-   if (m &lt;&lt; (k + 12))
-       ~~^~~~~~~~~~~
-../sysdeps/ieee754/dbl-64/e_pow.c:479:13: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-   return (m &lt;&lt; (k + 11)) ? -1 : 1;
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> if (n &lt;&lt; (k - 20)!=0)
-
- (n &lt;&lt; (k - 21)!=0) ? -1 : 1;
-
- (m &lt;&lt; (k + 12)!=0)
-
- (m &lt;&lt; (k + 11)!=0) ? -1 : 1;
-</code></pre></div></div>
-
-<p>3、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpc_parse.c: In function ‘get_prog_declaration’:
-rpc_parse.c:543:23: error: ‘%d’ directive writing between 1 and 10 bytes into a region of size 7 [-Werror=format-overflow=]
-     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
-                       ^~
-rpc_parse.c:543:20: note: directive argument in the range [1, 2147483647]
-     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
-                    ^~~~~~
-rpc_parse.c:543:5: note: ‘sprintf’ output between 5 and 14 bytes into a destination of size 10
-     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sprintf (name, "%s%d", ARGNAME, (short)num)
-</code></pre></div></div>
-
-<p>4、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nis_call.c:682:6: error: suggest explicit braces to avoid ambiguous ‘else’ [-Werror=dangling-else]
-   if (*loc != NULL)
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (*loc != NULL)
-{ 
-  for (i = 1; i &lt; 16; ++i)
-    if (nis_server_cache[i] == NULL)
-  {
-    loc = &amp;nis_server_cache[i];
-    break;
-  }
-    else if ((*loc)-&gt;uses &gt; nis_server_cache[i]-&gt;uses
-         || ((*loc)-&gt;uses == nis_server_cache[i]-&gt;uses
-         &amp;&amp; (*loc)-&gt;expires &gt; nis_server_cache[i]-&gt;expires))
-  loc = &amp;nis_server_cache[i];
-}
-</code></pre></div></div>
-
-<p>5、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nss_nisplus/nisplus-alias.c:300:12: error: argument 1 null where non-null expected [-Werror=nonnull]
-   char buf[strlen (name) + 9 + tablename_len];
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>char buf[tablename_len + 9];
-snprintf (buf, sizeof (buf), "[name=],%s", tablename_val);
-</code></pre></div></div>
-
-<p>6、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gawk '/\.gnu\.glibc-stub\./ { \
-	  sub(/\.gnu\.glibc-stub\./, "", $2); \
-	  stubs[$2] = 1; } \
-	END { for (s in stubs) print "#define __stub_" s }' &gt; /tmp/glibc-2.23/glibc-build/math/stubsT
-gawk: error while loading shared libraries: /lib64/libm.so.6: invalid ELF header
-make[2]: *** [/tmp/glibc-2.23/glibc-build/math/stubs] Error 127
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /lib64
-unlink libm.so.6
-ln -s libm-2.23.so libm.so.6
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Linux" /><summary type="html"><![CDATA[写CBPF需要更新系统的Glibc]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[ubuntu install zabbix agent2]]></summary></entry></feed>
