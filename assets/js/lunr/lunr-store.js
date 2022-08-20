@@ -106,4 +106,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-ospf-03/",
         "teaser": null
+      },{
+        "title": "ospf笔记-LSA",
+        "excerpt":"OSPF备忘信息 1类（路由器LSA）：每台路由器都生成有关其所属区域的路由器链路通告。路由器链路通告描述了路由器连接到区域的链路的状态，只在区域内扩散。每种LSA的报头都是20字节，其中一个字段是链路状态ID。对于1类LSA，该字段的值为最初发送LSA的路由器的ID。 2类（网络LSA）：DR为多路访问网络生成的网络链路通告，描述了特定多路访问网络上的一组路由器。网络链路通告在网络所在的区域内扩散。2类LSA的链路状态ID为DR的IP接口地址。 3类和4类（汇总LSA）：汇总链路通告是由ABR生成的，描述了下述区域间路由 3类 LSA描述了前往网络的路由（还可能包含汇总路由） 4类 LSA描述了前往ASBR的路由 5类（自治系统外部LSA）：自治系统外部链路状态通告是由ASBR生成的，描述了前往自治系统外部的目标网络的路由，被扩散到除各种末节区域外的其他所有地方。5类LSA的链路状态ID为外部网络的地址。 6 类（多播 OSPF LSA）：这些 LSA 用于 OSPF 多播应用中 7类（用于NSSA的LSA）：这些LSA用于NSSA中，将在本章后面的“配置NSSA”一节介绍 8类（BGP的外部属性LSA）：这些LSA用于互联OSPF和BGP 9、10和11类（不透明LSA）：这些LSA用于升级到OSPF，旨在在OSPF域中分发应用程序特定的信息。例如，Cisco使用9类不透明LSA在OSPF中实现MPLS流量工程。分发不透明LSA时，使用的是标准的LSDB扩散机制。这3种LSA的扩散范围各不相同，9类LSA只在本地网络或子网内扩散，10类LSA只在当前区域内扩散，而11类LSA扩散到整个自治系统（与5类LSA相同）。不透明LSA是在 RFC 5250（The OSPF Opaque LSA Option）中定义的。 在Cisco路由器中，OSPFv2不支持6类和8类LSA 1类LSA 路由器通告1类LSA，这种LSA被扩散到当前区域内的所有路由器，1类LSA指出了每条链路的OSPF开销以及路由器是不是ABR或ASBR 2类LSA 2 类 LSA 是为区域中每个中转的广播或 NBMA 网络生成的，中转网络至少与两台OSPF 路由器直接相连 3类LSA 3类（汇总）LSA由ABR生成，它将一个区域内的网络通告给OSPF自治系统中的其他区域 4类LSA 仅当区域中有ASBR时，ABR才会生成4类（汇总）LSA。4类LSA标识ASBR，并提供一条前往该ASBR的路由 5类LSA 5类LSA描述了前往OSPF自治系统外的网络的路由，它由ASBR发送并被扩散到整个AS OSPF的路由表和路由类型 计算O E1 和 O E2的开销 对于O...","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-ospf-04/",
+        "teaser": null
       }]
