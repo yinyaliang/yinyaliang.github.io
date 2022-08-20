@@ -100,4 +100,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-ospf-02/",
         "teaser": null
+      },{
+        "title": "ospf笔记-网络类型",
+        "excerpt":"OSPF备忘信息   DR和BDR         优先级最高的路由器成为DR   优先级次高的路由器成为BDR   接口的OSPF优先级默认为1   优先级为0的路由器不能成为DR或BDR   优先级更高的路由器加入网络时，并不会抢占DR或BDR   DR 概念是链路级的，牢记这一点很重要。在多路访问广播环境中，每个网段都有自己的DR和BDR   要指定将多路访问链路上的哪个路由器接口用做DR或BDR，可使用接口配置命令ip ospf priority number。默认的优先级为 0，其取值范围为0～255 DR和BDR的价值体现在以下方面      减少路由更新数据流   管理链路状态同步        ","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-ospf-03/",
+        "teaser": null
       }]
