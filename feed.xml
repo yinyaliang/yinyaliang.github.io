@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-20T17:32:47+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<h3 id="链路状态协议的特点">链路状态协议的特点</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-20T17:37:41+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF的日常记录</p>
+
+<h3 id="链路状态协议的特点">链路状态协议的特点</h3>
 <ul>
   <li>快速适应网络变化</li>
   <li>在网络发生变化时发送触发更新</li>
@@ -94,7 +96,7 @@
 
     <p><img src="/assets/images/ospf/08.png" /></p>
   </li>
-</ul>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[链路状态协议的特点 快速适应网络变化 在网络发生变化时发送触发更新 以较低的频率（如每隔30分钟）发送定期更新，这被称为链路状态刷新]]></summary></entry><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
+</ul>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF的日常记录]]></summary></entry><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
 
 <h3 id="系统">系统</h3>
 <p>Centos 7</p>
