@@ -1,0 +1,418 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.24.0 by Michael Rose
+  Copyright 2013-2020 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>ospf 基础术语 - 尹亚亮</title>
+<meta name="description" content="链路状态协议的特点    快速适应网络变化   在网络发生变化时发送触发更新   以较低的频率（如每隔30分钟）发送定期更新，这被称为链路状态刷新">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="ospf 基础术语">
+<meta property="og:url" content="/rs-ospf-01/">
+
+
+  <meta property="og:description" content="链路状态协议的特点    快速适应网络变化   在网络发生变化时发送触发更新   以较低的频率（如每隔30分钟）发送定期更新，这被称为链路状态刷新">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-08-20T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/rs-ospf-01/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="ospf 基础术语">
+    <meta itemprop="description" content="链路状态协议的特点  快速适应网络变化  在网络发生变化时发送触发更新  以较低的频率（如每隔30分钟）发送定期更新，这被称为链路状态刷新">
+    <meta itemprop="datePublished" content="2022-08-20T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/rs-ospf-01/" class="u-url" itemprop="url">ospf 基础术语
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-08-20T00:00:00+08:00">August 20, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#链路状态协议的特点">链路状态协议的特点</a></li><li><a href="#每台路由器都必须记录下述信息">每台路由器都必须记录下述信息</a></li><li><a href="#ospf使用的各种表">OSPF使用的各种表</a></li><li><a href="#区域结构">区域结构</a></li><li><a href="#邻接路由器要建立邻接关系hello分组的如下字段必须匹配">邻接路由器要建立邻接关系，Hello分组的如下字段必须匹配</a></li><li><a href="#ospf-邻接关系状态">OSPF 邻接关系状态</a></li><li><a href="#满足如下条件时lsa将被视为更新的">满足如下条件时，LSA将被视为更新的</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h3 id="链路状态协议的特点">链路状态协议的特点</h3>
+<ul>
+  <li>快速适应网络变化</li>
+  <li>在网络发生变化时发送触发更新</li>
+  <li>以较低的频率（如每隔30分钟）发送定期更新，这被称为链路状态刷新</li>
+</ul>
+
+<h3 id="每台路由器都必须记录下述信息">每台路由器都必须记录下述信息</h3>
+<ul>
+  <li>直接相连的邻接路由器</li>
+  <li>网络或区域内的其他路由器及其连接的网络</li>
+  <li>前往每个目的地的最佳路径</li>
+</ul>
+
+<h3 id="ospf使用的各种表">OSPF使用的各种表</h3>
+<ul>
+  <li>OSPF邻居表=邻接关系数据库</li>
+  <li>OSPF拓扑表=OSPF拓扑数据库=LSDB</li>
+  <li>路由表=转发数据库</li>
+</ul>
+
+<h3 id="区域结构">区域结构</h3>
+<ul>
+  <li>内部路由器：所有接口都位于同一个区域中的路由器，同一区域中所有内部路由器的LSDB都相同</li>
+  <li>骨干路由器：位于骨干区域0边缘的路由器，至少有一个接口与区域0相连。骨干路由器在维护OSPF路由信息时采用的步骤和算法与内部路由器相同</li>
+  <li>区域边界路由器（ABR）：连接多个区域的路由器，为其连接的每个区域维护一个LSDB，并路由前往/来自其他区域的数据流</li>
+  <li>
+    <p>自治系统边界路由器（ASBR）：至少有一个接口与其他域（如另一个OSPF自治系统或使用增强内部网关协议[EIGRP]的域）相连</p>
+
+    <p><img src="/assets/images/ospf/01.png" /></p>
+  </li>
+</ul>
+
+<p>在多路访问广播环境中，每个网段都有独立的DR和BDR
+在路由器链路通告中，以链路开销的方式通告它。默认的OSPF开销如下</p>
+<ul>
+  <li>56kbit/s 的串行链路：默认开销为1785</li>
+  <li>64kbit/s 的串行链路：默认开销为1562</li>
+  <li>T1（1.544Mbit/s 的串行链路）：默认开销为64</li>
+  <li>E1（2.048Mbit/s 的串行链路）：默认开销为48</li>
+  <li>以太网：默认开销为10</li>
+  <li>快速以太网：默认开销为1</li>
+  <li>FDDI：默认开销为1</li>
+  <li>
+    <p>ATM：默认开销为1</p>
+
+    <p><img src="/assets/images/ospf/02.png" /></p>
+
+    <p><img src="/assets/images/ospf/03.png" /></p>
+
+    <p><img src="/assets/images/ospf/04.png" /></p>
+
+    <p><img src="/assets/images/ospf/05.png" /></p>
+  </li>
+</ul>
+
+<p>这5种OSPF分组都被直接封装到IP分组的有效负载中，OSPF分组不使用传输控制协议（TCP）和用户数据报协议（UDP）</p>
+
+<h3 id="邻接路由器要建立邻接关系hello分组的如下字段必须匹配">邻接路由器要建立邻接关系，Hello分组的如下字段必须匹配</h3>
+<ul>
+  <li>Hello 间隔</li>
+  <li>失效间隔</li>
+  <li>区域ID</li>
+  <li>身份验证密码</li>
+  <li>末节区域标记</li>
+</ul>
+
+<p><strong>要让路由器通过接口建立邻接关系，接口的主IP地址必须位于同一个子网且子网掩码相同，接口的最大传输单元（MTU）也必须匹配</strong></p>
+
+<h3 id="ospf-邻接关系状态">OSPF 邻接关系状态</h3>
+<ul>
+  <li>Down：没有检测到活动邻居</li>
+  <li>Init：收到Hello分组</li>
+  <li>双向：路由器在其收到的Hello分组中看到了自己的路由器ID</li>
+  <li>预启动：确定了主/从角色</li>
+  <li>交换：发送DBD（LSDB摘要）</li>
+  <li>加载：交换LSR和LSU以填充LSDB</li>
+  <li>完全邻接：邻居处于完全邻接状态</li>
+</ul>
+
+<p><strong>如果邻居是通过 NBMA 接口（如帧中继）相连的，OSPF 还可能在 Init 状态前进入Atempt状态</strong></p>
+
+<h3 id="满足如下条件时lsa将被视为更新的">满足如下条件时，LSA将被视为更新的</h3>
+<ul>
+  <li>序列号更大</li>
+  <li>校验和更大（如果序列号相同）</li>
+  <li>年龄等于maxage（这表明LSA被抑制）</li>
+  <li>
+    <p>LS 年龄小得多</p>
+
+    <p><img src="/assets/images/ospf/06.png" /></p>
+
+    <p><img src="/assets/images/ospf/07.png" /></p>
+
+    <p><img src="/assets/images/ospf/08.png" /></p>
+  </li>
+</ul>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#rs" class="page__taxonomy-item p-category" rel="tag">RS</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-08-20T00:00:00+08:00">August 20, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=ospf+%E5%9F%BA%E7%A1%80%E6%9C%AF%E8%AF%AD%20%2Frs-ospf-01%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Frs-ospf-01%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Frs-ospf-01%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/monitor-pgsql/" class="pagination--pager" title="pgsql监控
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

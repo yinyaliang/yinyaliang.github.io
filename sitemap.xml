@@ -61,6 +61,10 @@
 <lastmod>2022-08-19T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>/rs-ospf-01/</loc>
+<lastmod>2022-08-20T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>/about/</loc>
 </url>
 <url>
@@ -89,5 +93,8 @@
 </url>
 <url>
 <loc>/page5/</loc>
+</url>
+<url>
+<loc>/page6/</loc>
 </url>
 </urlset>
