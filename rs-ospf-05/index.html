@@ -11,7 +11,7 @@
      crossorigin="anonymous"></script>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>ospf笔记-高级功能 - 尹亚亮</title>
+<!-- begin _includes/seo.html --><title>ospf笔记-特殊区域 - 尹亚亮</title>
 <meta name="description" content="OSPF备忘信息">
 
 
@@ -24,7 +24,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="尹亚亮">
-<meta property="og:title" content="ospf笔记-高级功能">
+<meta property="og:title" content="ospf笔记-特殊区域">
 <meta property="og:url" content="/rs-ospf-05/">
 
 
@@ -155,7 +155,7 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="ospf笔记-高级功能">
+    <meta itemprop="headline" content="ospf笔记-特殊区域">
     <meta itemprop="description" content="OSPF备忘信息">
     <meta itemprop="datePublished" content="2022-08-20T00:00:00+08:00">
     
@@ -164,7 +164,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="/rs-ospf-05/" class="u-url" itemprop="url">ospf笔记-高级功能
+            <a href="/rs-ospf-05/" class="u-url" itemprop="url">ospf笔记-特殊区域
 </a>
           </h1>
           
@@ -193,94 +193,146 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#passive-interface">passive-interface</a></li><li><a href="#ospf的默认路由">OSPF的默认路由</a></li><li><a href="#路由汇总">路由汇总</a></li><li><a href="#ospf虚链路">OSPF虚链路</a></li></ul>
+              <ul class="toc__menu"><li><a href="#标准区域">标准区域</a></li><li><a href="#骨干区域">骨干区域</a></li><li><a href="#末节区域">末节区域</a></li><li><a href="#绝对末节区域">绝对末节区域</a></li><li><a href="#nssa">NSSA</a></li><li><a href="#绝对末节nssa">绝对末节NSSA</a></li><li><a href="#配置末节区域">配置末节区域</a></li><li><a href="#配置绝对末节区域cisco专有">配置绝对末节区域(CISCO专有)</a></li><li><a href="#ospf的路由表">OSPF的路由表</a></li><li><a href="#配置nssa">配置NSSA</a></li><li><a href="#ospf-nssa-的-lsdb">OSPF NSSA 的 LSDB</a></li><li><a href="#配置绝对末节nssacisco专有">配置绝对末节NSSA(CISCO专有)</a></li><li><a href="#默认路由">默认路由</a></li></ul>
 
             </nav>
           </aside>
         
         <p>OSPF备忘信息</p>
 
-<h3 id="passive-interface">passive-interface</h3>
+<h3 id="标准区域">标准区域</h3>
+<p>这是默认的区域类型，它接受链路更新、汇总路由和外部路由。</p>
 
-<p><img src="/assets/images/ospf/43.png" /></p>
+<h3 id="骨干区域">骨干区域</h3>
+<p>骨干区域为区域0，其他区域都与之相连以交换和路由信息。OSPF骨干区域具有标准OSPF区域的所有特征</p>
 
-<p>路由器配置命令 passive-interface type number [default]禁止通过指定的路由器接口向外发送路由更新</p>
+<h3 id="末节区域">末节区域</h3>
+<p>这种区域不接受关于自治系统外部的路由的信息，如来自非 OSPF 路由器的路由。需要路由到自治系统外部的网络时，路由器使用默认路由（用0.0.0.0表示）。末节区域不能包含ASBR（除非ABR也是ASBR）</p>
 
-<p><img src="/assets/images/ospf/44.png" /></p>
+<h3 id="绝对末节区域">绝对末节区域</h3>
+<p>这种 Cisco 专用的区域不接受来自自治系统外部的路由以及来自自治系统中其他区域的汇总路由。需要将分组发送到区域外的网络时，路由器使用默认路由。绝对末节区域中不能有ASBR（除非ABR也是ASBR）</p>
 
-<p><img src="/assets/images/ospf/45.png" /></p>
+<h3 id="nssa">NSSA</h3>
+<p>NSSA 是对OSPF RFC的补充。这种区域定义了一种特殊的 LSA——7类LSA。NSSA具有末节区域的优点，它们不接受有关自治系统外部的路由的信息，而使用默认路由前往外部网络。然而，NSSA可以包含ASBR，这违反了关于末节区域的规则。</p>
 
-<h3 id="ospf的默认路由">OSPF的默认路由</h3>
-<p>要让 OSPF 生成默认路由，必须使用命令 default-information originate，在 OSPF 路由器中配置命令 default-information originate（或将路由重分发到OSPF）后，该路由器就将变成ASBR
-<img src="/assets/images/ospf/46.png" /></p>
+<h3 id="绝对末节nssa">绝对末节NSSA</h3>
+<p>Cisco路由器也允许将区域配置为绝对末节NSSA，这种区域可包含 ASBR，但不接受外部路由和来自其他区域的汇总路由。它使用默认路由前往区域外的网络。</p>
 
-<p><img src="/assets/images/ospf/47.png" /></p>
+<p><img src="/assets/images/ospf/70.png" /></p>
 
-<p><img src="/assets/images/ospf/48.png" /></p>
+<p><img src="/assets/images/ospf/71.png" /></p>
 
-<p><img src="/assets/images/ospf/49.png" /></p>
+<h3 id="配置末节区域">配置末节区域</h3>
 
-<p><img src="/assets/images/ospf/50.png" /></p>
+<p><img src="/assets/images/ospf/72.png" /></p>
 
-<p><img src="/assets/images/ospf/51.png" /></p>
-
-<h3 id="路由汇总">路由汇总</h3>
-<p>路由汇总指的是将多条路由汇总成一条通告，路由汇总对OSPF路由进程占用的带宽、CPU周期和内存资源有直接影响</p>
-
-<p><img src="/assets/images/ospf/52.png" /></p>
-
-<p>每个区域都将生成1类和2类LSA，这些LSA被转换为3类LSA并传输到其他区域。通过路由汇总，ABR和ASBR可将多条路由合并成少量的通告,ABR汇总3类LSA，而ASBR汇总5类LSA</p>
-
-<p><strong>汇总LSA不会被汇总</strong></p>
-
-<p>两种汇总方式</p>
+<p>步骤</p>
 <ul>
-  <li>区域间路由汇总   区域间路由汇总是在ABR上进行的，针对的是每个区域内的路由。这种汇总不能用于通过重分发被导入到 OSPF 中的外部路由。要实现有效的区域间路由汇总，区域内的网络号应该是连续的，这样可以最大限度地减少汇总后的地址数。</li>
-  <li>外部路由汇总    外部路由汇总专门针对通过重分发被导入到OSPF中的外部路由。同样，确保要对其进行汇总的外部地址范围的连续性至关重要。通常，只在ASBR上汇总外部路由</li>
+  <li>在区域内的所有路由器上配置OSPF</li>
+  <li>在区域中所有的路由器上配置路由器配置命令area area-id stub</li>
+  <li>（可选）在ABR中配置默认路由的开销</li>
 </ul>
 
-<p><strong>任何EIGRP路由器都可执行汇总。然而，在OSPF中，只能在ABR和ASBR处进行汇总</strong></p>
+<p><img src="/assets/images/ospf/73.png" /></p>
 
-<p><img src="/assets/images/ospf/53.png" /></p>
+<p><img src="/assets/images/ospf/74.png" /></p>
 
-<p>在ABR上配置区域间OSPF路由汇总  , OSPF不（在主网络边界或其他地方）自动执行汇总。在ABR上手工配置域间路由汇总的步骤如下</p>
+<h3 id="配置绝对末节区域cisco专有">配置绝对末节区域(CISCO专有)</h3>
+<p>5类外部LSA以及3类和4类汇总LSA（区域间路由）不能传播到绝对末节区域中</p>
 
-<p><img src="/assets/images/ospf/54.png" /></p>
+<p><img src="/assets/images/ospf/75.png" /></p>
 
-<p><img src="/assets/images/ospf/55.png" /></p>
+<p>步骤</p>
+<h1 id="在区域内的所有路由器上配置ospf">在区域内的所有路由器上配置OSPF</h1>
+<h1 id="在区域中所有的路由器上配置路由器配置命令area-area-id-stub">在区域中所有的路由器上配置路由器配置命令area area-id stub</h1>
+<h1 id="在abr上在命令area-area-id-stub中指定关键字no-summary这让区域变成绝对末节的">在ABR上，在命令area area-id stub中指定关键字no-summary，这让区域变成绝对末节的</h1>
+<p>#（可选）在ABR上，配置默认路由的开销</p>
 
-<p>在ASBR上配置外部OSPF路由汇总 ,在 ASBR 中，可对 5 类 LSA（重分发而来的路由）进行汇总，然后将其注入OSPF域。对于每个汇总范围，将自动创建一条指向接口null0的汇总路由。</p>
+<p><img src="/assets/images/ospf/76.png" /></p>
 
-<p><img src="/assets/images/ospf/56.png" /></p>
+<p><img src="/assets/images/ospf/77.png" /></p>
 
-<h3 id="ospf虚链路">OSPF虚链路</h3>
+<p><img src="/assets/images/ospf/78.png" /></p>
 
-<p><img src="/assets/images/ospf/57.png" /></p>
+<h3 id="ospf的路由表">OSPF的路由表</h3>
 
-<p><img src="/assets/images/ospf/58.png" /></p>
+<p><img src="/assets/images/ospf/79.png" /></p>
 
-<p><img src="/assets/images/ospf/59.png" /></p>
+<p>（没有任何末节配置的）标准区域中OSPF路由器的路由表，其中包括区域内路由（O）、区域间路由（O IA）和外部路由（O E1和 O E2）</p>
 
-<p><img src="/assets/images/ospf/60.png" /></p>
+<p><img src="/assets/images/ospf/80.png" /></p>
 
-<p><img src="/assets/images/ospf/61.png" /></p>
+<p>配置为末节区域后的路由表，其中包含区域内路由（O）和区域间路由（O IA），但不包含外部路由（O E1和 O E2），因为这些路由被区域间默认路由（O*IA）取代</p>
 
-<p><img src="/assets/images/ospf/62.png" /></p>
+<p><img src="/assets/images/ospf/81.png" /></p>
 
-<p><img src="/assets/images/ospf/63.png" /></p>
+<p><img src="/assets/images/ospf/82.png" /></p>
 
-<p><img src="/assets/images/ospf/64.png" /></p>
+<p>ABR上执行汇总（区域仍被配置为末节的）后的路由表，其中包含区域内路由（O）和区域间汇总路由（O IA，这里将路由 172.31.11.1 和 172.31.11.2 汇总成了172.31.11.0/24），但不包含外部路由，（O E1 和 O E2），因为这些路由被区域间默认路由（O*IA）取代</p>
 
-<p>虚链路的LSDB条目</p>
+<p><img src="/assets/images/ospf/83.png" /></p>
 
-<p><img src="/assets/images/ospf/65.png" /></p>
+<p>绝对末节区域后的路由表。注意到在绝对末节区域中，路由器的路由表最小，其中只包含区域内路由（O），而不包含区域间路由（O IA）和外部路由（O E1和 O E2），因为用区域间默认路由（O*IA）取代了这些路由</p>
 
-<p><img src="/assets/images/ospf/66.png" /></p>
+<h3 id="配置nssa">配置NSSA</h3>
+<p>将路由重分发到NSSA中时，将创建一种特殊的LSA——7类LSA，这种LSA只能出现在NSSA中，它是由NSSA ASBR生成的，而NSSA ABR将其转换为5类LSA并在OSPF域中传播。7类LSA的LSA报头中有一个传播（P）位，用于避免在NSSA和骨干区域之间循环传播它。7类LSA的格式与5类LSA相同。</p>
 
-<p><img src="/assets/images/ospf/67.png" /></p>
+<p><img src="/assets/images/ospf/84.png" /></p>
 
-<p>修改度量开销
-要调整开销度量值，可使用命令 ip ospf cost、bandwidth和 auto-cost reference-ban-dwidth</p>
+<p>步骤</p>
+<ul>
+  <li>在区域内的所有路由器上配置OSPF</li>
+  <li>在区域内的所有路由器上配置路由器配置命令 area area-id nssa [no-redistr-ibution] [default-information-originate] [metric metric-value] [metric-type type-value]而不是 area area-id stub</li>
+  <li>(可选)ABR上配置默认路由的开销。</li>
+</ul>
+
+<p><img src="/assets/images/ospf/85.png" /></p>
+
+<p><img src="/assets/images/ospf/86.png" /></p>
+
+<p><img src="/assets/images/ospf/87.png" /></p>
+
+<h3 id="ospf-nssa-的-lsdb">OSPF NSSA 的 LSDB</h3>
+
+<p><img src="/assets/images/ospf/88.png" /></p>
+
+<p><img src="/assets/images/ospf/89.png" /></p>
+
+<p><img src="/assets/images/ospf/90.png" /></p>
+
+<p>注意到这里没有使用ASBR汇总（4类）LSA，因为5类外部LSA来自ABR而不是ASBR，而ABR在区域0内。如果区域为标准区域，ASBR将生成5类LSA，而ABR将创建4类LSA，以告诉其他路由器如何前往ASBR。</p>
+
+<h3 id="配置绝对末节nssacisco专有">配置绝对末节NSSA(CISCO专有)</h3>
+<p>步骤</p>
+<ul>
+  <li>在区域内的所有路由器上配置OSPF</li>
+  <li>在区域内的所有路由器上配置路由器配置命令 area area-id nssa [no-redistr-ibution] [default-information-originate] [metric metric-value] [metric-type type-value]而不是area area-id stub</li>
+  <li>在ABR上，在命令area area-id nssa中添加关键字no-summary</li>
+  <li>(可选)在ABR上配置默认路由的开销</li>
+</ul>
+
+<p><img src="/assets/images/ospf/91.png" /></p>
+
+<p><img src="/assets/images/ospf/92.png" /></p>
+
+<p><img src="/assets/images/ospf/93.png" /></p>
+
+<p>#各种OSPF区域示例</p>
+
+<p><img src="/assets/images/ospf/94.png" /></p>
+
+<p>区域11为标准区域，它接受链路更新、汇总和外部路由。
+区域14为末节区域，它不接受4类汇总LSA和5类外部LSA，但接受3类汇总LSA。
+区域12为绝对末节区域，它不接受汇总LSA和外部LSA。
+区域10为NSSA，它不接受4类汇总LSA和5类外部LSA，但接受3类汇总LSA且可以有ASBR。
+区域13为绝对末节NSSA，它不接受汇总LSA和外部LSA，但可以有ASBR</p>
+
+<p><img src="/assets/images/ospf/95.png" /></p>
+
+<h3 id="默认路由">默认路由</h3>
+<p>在标准区域中，路由器不生成默认路由 ，可使用命令default-information originate [always] [metric metric-value]  [metric-typetype-value] [route-map map-name]。默认情况下，该命令生成一条E2 路由，其链路状态ID为0.0.0.0，网络掩码为0.0.0.0，导致路由器成为ASBR。
+末节区域和绝对末节区域，与末节区域相连的ABR将生成一个链路状态ID为0.0.0.0的汇总LSA，即使该ABR没有默认路由
+对于NSSA，默认路由是由与之相连的ABR生成的，但默认情况下不会生成。要让ABR生成默认路由，可使用命令area area-idnssa default-information-originate。ABR将生成一个链路状态ID为0.0.0.0的7类LSA。如果只想将路由导入到标准区域中，而不想将其导入到NSSA中，可在NSSA ABR上使用选项no-redistribution。绝对末节NSSA的ABR自动生成一条默认路由</p>
 
         
       </section>
@@ -316,7 +368,7 @@
     <h4 class="page__share-title">分享</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=ospf%E7%AC%94%E8%AE%B0-%E9%AB%98%E7%BA%A7%E5%8A%9F%E8%83%BD%20%2Frs-ospf-05%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=ospf%E7%AC%94%E8%AE%B0-%E7%89%B9%E6%AE%8A%E5%8C%BA%E5%9F%9F%20%2Frs-ospf-05%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=%2Frs-ospf-05%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
