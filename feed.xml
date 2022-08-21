@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-21T09:04:35+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-21T09:11:08+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
 
 <h2 id="基础术语">基础术语</h2>
 
@@ -378,7 +378,72 @@ DR和BDR的价值体现在以下方面</p>
 <h3 id="默认路由">默认路由</h3>
 <p>在标准区域中，路由器不生成默认路由 ，可使用命令default-information originate [always] [metric metric-value]  [metric-typetype-value] [route-map map-name]。默认情况下，该命令生成一条E2 路由，其链路状态ID为0.0.0.0，网络掩码为0.0.0.0，导致路由器成为ASBR。
 末节区域和绝对末节区域，与末节区域相连的ABR将生成一个链路状态ID为0.0.0.0的汇总LSA，即使该ABR没有默认路由
-对于NSSA，默认路由是由与之相连的ABR生成的，但默认情况下不会生成。要让ABR生成默认路由，可使用命令area area-idnssa default-information-originate。ABR将生成一个链路状态ID为0.0.0.0的7类LSA。如果只想将路由导入到标准区域中，而不想将其导入到NSSA中，可在NSSA ABR上使用选项no-redistribution。绝对末节NSSA的ABR自动生成一条默认路由</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
+对于NSSA，默认路由是由与之相连的ABR生成的，但默认情况下不会生成。要让ABR生成默认路由，可使用命令area area-idnssa default-information-originate。ABR将生成一个链路状态ID为0.0.0.0的7类LSA。如果只想将路由导入到标准区域中，而不想将其导入到NSSA中，可在NSSA ABR上使用选项no-redistribution。绝对末节NSSA的ABR自动生成一条默认路由</p>
+
+<h2 id="身份认证">身份认证</h2>
+
+<h3 id="配置简单密码身份验证">配置简单密码身份验证</h3>
+
+<p>步骤</p>
+<ul>
+  <li>使用接口配置命令 ip ospf authentication-key password指定一个密码</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>使用接口配置命令 ip ospf authentication [message-digest</td>
+          <td>null] md5指定身份验证类型</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<p>如果要使用简单身份验证，可在配置命令 area authentication 时不指定任何参数。</p>
+
+<p><img src="/assets/images/ospf/100.png" /></p>
+
+<p>示例</p>
+
+<p><img src="/assets/images/ospf/101.png" /></p>
+
+<p><img src="/assets/images/ospf/102.png" /></p>
+
+<p><img src="/assets/images/ospf/103.png" /></p>
+
+<p>验证</p>
+
+<p><img src="/assets/images/ospf/104.png" /></p>
+
+<p><img src="/assets/images/ospf/105.png" /></p>
+
+<p>排障</p>
+<ul>
+  <li>没有在两台路由器上都配置身份验证</li>
+  <li>两台路由器配置的身份验证类型不同</li>
+  <li>两台路由器配置的密码不同</li>
+</ul>
+
+<p>在虚链路上配置OSPF简单密码身份验证</p>
+
+<p><img src="/assets/images/ospf/106.png" /></p>
+
+<h3 id="md5身份验证的配置-验证-和故障排除">MD5身份验证的配置 验证 和故障排除</h3>
+
+<p><img src="/assets/images/ospf/107.png" /></p>
+
+<p><img src="/assets/images/ospf/108.png" /></p>
+
+<p>验证</p>
+
+<p><img src="/assets/images/ospf/109.png" /></p>
+
+<p>排障
+简单密码身份验证一样，命令 debug ip ospf obj 显示与 OSPF 邻接关系相关的事件，对于排除MD5身份验证故障很有帮助</p>
+
+<p><img src="/assets/images/ospf/110.png" /></p>
+
+<p><img src="/assets/images/ospf/111.png" /></p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">pgsql监控</title><link href="/monitor-pgsql/" rel="alternate" type="text/html" title="pgsql监控" /><published>2022-08-19T00:00:00+08:00</published><updated>2022-08-19T00:00:00+08:00</updated><id>/monitor-pgsql</id><content type="html" xml:base="/monitor-pgsql/"><![CDATA[<p>测试pgsql监控</p>
 
 <h3 id="系统">系统</h3>
 <p>Centos 7</p>
