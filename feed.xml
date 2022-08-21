@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-21T11:28:59+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-21T18:15:08+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
 
 <h2 id="基础术语">基础术语</h2>
 
@@ -289,10 +289,12 @@ DR和BDR的价值体现在以下方面</p>
 <p><img src="/assets/images/ospf/75.png" /></p>
 
 <p>步骤</p>
-<h1 id="在区域内的所有路由器上配置ospf">在区域内的所有路由器上配置OSPF</h1>
-<h1 id="在区域中所有的路由器上配置路由器配置命令area-area-id-stub">在区域中所有的路由器上配置路由器配置命令area area-id stub</h1>
-<h1 id="在abr上在命令area-area-id-stub中指定关键字no-summary这让区域变成绝对末节的">在ABR上，在命令area area-id stub中指定关键字no-summary，这让区域变成绝对末节的</h1>
-<p>#（可选）在ABR上，配置默认路由的开销</p>
+<ul>
+  <li>在区域内的所有路由器上配置OSPF</li>
+  <li>在区域中所有的路由器上配置路由器配置命令area area-id stub</li>
+  <li>在ABR上，在命令area area-id stub中指定关键字no-summary，这让区域变成绝对末节的</li>
+  <li>(可选)在ABR上，配置默认路由的开销</li>
+</ul>
 
 <p><img src="/assets/images/ospf/76.png" /></p>
 
