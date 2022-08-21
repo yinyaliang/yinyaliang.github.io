@@ -1,4 +1,102 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-21T18:21:14+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-21T18:32:00+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">路由交换 - rip - 01</title><link href="/rs-rip-01/" rel="alternate" type="text/html" title="路由交换 - rip - 01" /><published>2022-08-21T00:00:00+08:00</published><updated>2022-08-21T00:00:00+08:00</updated><id>/rs-rip-01</id><content type="html" xml:base="/rs-rip-01/"><![CDATA[<p>RIP 笔记</p>
+
+<h3 id="rip的基本原理与实现">RIP的基本原理与实现</h3>
+
+<p>RIP的端口: UDP 520</p>
+
+<h4 id="rip的计时器和稳定性">RIP的计时器和稳定性</h4>
+
+<ul>
+  <li>启动后，每隔30s从启动协议的接口发送更新信息，包含整个路由表。更新的目的地址是广播地址 255.255.255.255</li>
+  <li>rip也使用无效计时器，也成为限时计时器，初始化时间为180s，如果超过这个时间还没有收到这条路有的更新，就将这条路有的跳数设置为16跳</li>
+  <li>另一种计时器称为垃圾收集或刷新计时器，一般比限时计时器长240-60s，如果到时，这条路由就会被宣告为一条度量值为不可达的路由</li>
+  <li>第三个计时器是抑制计时器。如果一条路由更新的跳数大于路由表已记录的该路由的跳数，那么将会引起该路由进入180s的抑制状态阶段</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>timers basic update invalid holddown flush
+</code></pre></div></div>
+
+<blockquote>
+  <p>默认不建议更改计时器，如果一台路由器更改，那这个RIP域中的路由器都需要更改</p>
+</blockquote>
+
+<p>RIP使用带毒性逆转的水平分隔和触发更新，触发更新只有在路由的度量值发生变化时产生，触发更新会有一个1-5s的随机计时器，以免产生触发更新风暴</p>
+
+<h4 id="rip的消息格式">RIP的消息格式</h4>
+
+<p><img src="/assets/images/rip/r01.png" /></p>
+
+<h4 id="请求消息类型">请求消息类型</h4>
+
+<p>可以请求整个路由表信息，也可以请求某些具体路由信息</p>
+
+<h4 id="有类别路由选择">有类别路由选择</h4>
+
+<p>RIP的管理距离为120
+数据包选路过程</p>
+<ul>
+  <li>读出目的地址的网络部分(A\B\C类)，查看在路由表中是否有匹配的条目，没有则丢弃，同时发出一个ICMP目的不可达的消息给源</li>
+  <li>如果存在匹配该数据包网络部分的主类网络，会在路由器的主网络的子网中查找，找到匹配则转发，否则发送ICMP目的不可达消息</li>
+</ul>
+
+<p>有类别路由选择:直连的子网络</p>
+
+<p><img src="/assets/images/rip/r02.png" /></p>
+
+<ul>
+  <li>192.168.35.3数据包进入路由器，路由器没有发现192.168.35.0的条目，该数据包则丢弃</li>
+  <li>172.25.33.89数据包进入路由器，路由器中有一个B类172.25.0.0条目，但没有发现172.25.0.0的子网条目，该数据包丢弃</li>
+  <li>172.25.153.220数据包进入路由器，路由器中有172.25.0.0的条目并找到172.25.153.0的条目，该数据包被转发到172.25.15.2</li>
+</ul>
+
+<p><strong>有类别路由选择:在边界路由器上汇总路由</strong></p>
+
+<p>如果没有和某个目的网络直连，那么该路由器仅仅需要一条路由指向直接相连的路由器</p>
+
+<h4 id="有类别路由选择小结">有类别路由选择:小结</h4>
+<ul>
+  <li>特点：在通告目的地址时无法通告它的掩码</li>
+  <li>如果目的地址是一个和路由器直接相连的主网络成员，那么该网络的路由器接口上配置的子网掩码将被用来确定目的地址的子网</li>
+  <li>如果目的地址不是一个和路由器直接相连的主网络的成员，那么路由器会尝试匹配A\B\C类的主网络号</li>
+</ul>
+
+<h3 id="配置rip">配置RIP</h3>
+
+<ul>
+  <li>router rip</li>
+  <li>network 指定主网络</li>
+</ul>
+
+<h4 id="被动接口">被动接口</h4>
+<p><img src="/assets/images/rip/r03.png" /></p>
+
+<h4 id="配置单播更新">配置单播更新</h4>
+<p><img src="/assets/images/rip/r04.png" /></p>
+
+<p>为了防止广播更新，也需要加上一条passive-interface命令</p>
+
+<h4 id="不连续的子网">不连续的子网</h4>
+
+<p><img src="/assets/images/rip/r05.png" /></p>
+
+<p><img src="/assets/images/rip/r06.png" /></p>
+
+<h4 id="控制rip的度量">控制RIP的度量</h4>
+<p>可以使用offset-list来改变路由的度量值</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>offset-list <span class="o">{</span>access-list-number | name<span class="o">}</span> <span class="o">{</span><span class="k">in</span> | out<span class="o">}</span> offset <span class="o">{</span><span class="nb">type </span>number<span class="o">}</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/rip/r07.png" /></p>
+
+<p>将serial0的入方向的10.33.0.0的路由加大2跳</p>
+
+<h4 id="最小化更新信息的影响">最小化更新信息的影响</h4>
+<ul>
+  <li>调整路由选择协议的计时器频率</li>
+  <li>配置触发扩展特性消除周期性的RIP更新</li>
+</ul>
+
+<p>链路上的两台路由器都必须配置ip rip triggered命令，仅仅发送路由表最初的交换信息和路由表发生变化使得更新信息，只在串行链路上生效</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[RIP 笔记]]></summary></entry><entry><title type="html">路由交换 - OSPF - 01</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="路由交换 - OSPF - 01" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
 
 <h2 id="基础术语">基础术语</h2>
 
@@ -2558,79 +2656,4 @@ no error
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://python3-cookbook.readthedocs.io/zh_CN/latest/c08/p03_make_objects_support_context_management_protocol.html?highlight=with
 https://docs.python.org/3/library/stdtypes.html#typecontextmanager
 https://www.python.org/dev/peps/pep-0343/
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
-
-<h3 id="__len__">__len__</h3>
-<p>返回集合长度</p>
-
-<h3 id="__getitem__self-item">__getitem__(self, item)</h3>
-<p>使用索引访问元素</p>
-
-<h3 id="__setitem__self-key-value">__setitem__(self, key, value)</h3>
-<p>对索引赋值,使用 self[key] = value</p>
-
-<h3 id="__delitem__self-key">__delitem__(self, key)</h3>
-<p>删除索引值 del self[key]</p>
-
-<h3 id="__contains__">__contains__</h3>
-<p>实现in运算符，如果没有实现这个方法python也会调用__getitem__来使in运算符可用</p>
-
-<h3 id="可变集合和不可变集合">可变集合和不可变集合</h3>
-<ul>
-  <li>可变集合需要实现: <strong>len</strong>  <strong>getitem</strong>    <strong>setitem</strong>  <strong>delitem</strong></li>
-  <li>不可变集合需要实现: <strong>len</strong>  <strong>getitem</strong></li>
-</ul>
-
-<h3 id="code">code</h3>
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TemTest</span><span class="p">:</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
-
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">value</span>
-
-    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
-        <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
-</code></pre></div></div>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span><span class="o">=</span><span class="n">TemTest</span><span class="p">()</span> <span class="c1">#实例化
-</span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">))</span> <span class="c1">#返回长度
-</span>
-
-<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>   <span class="c1">#打印下标0的值
-</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>  <span class="c1">#切片
-</span>
-
-<span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">10</span>       <span class="c1">#将下标3的值替换为10
-</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
-
-
-<span class="k">del</span> <span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>      <span class="c1">#删除下标3的值
-</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
-
-
-<span class="k">print</span><span class="p">(</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span>  <span class="c1">#测试in运算符
-</span><span class="k">print</span><span class="p">(</span><span class="mi">3</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span> 
-</code></pre></div></div>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">10</span>
-<span class="mi">0</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-<span class="bp">True</span>
-<span class="bp">False</span>
 </code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
