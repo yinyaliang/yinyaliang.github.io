@@ -6,7 +6,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>Python中的 __call__ - 尹亚亮</title>
-<meta name="description" content="如果python中的一个类定义了 call 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议">
+<meta name="description" content="Python 中特殊方法的一些理解笔记">
 
 
   <meta name="author" content="Your Name">
@@ -22,7 +22,7 @@
 <meta property="og:url" content="/python-call/">
 
 
-  <meta property="og:description" content="如果python中的一个类定义了 call 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议">
+  <meta property="og:description" content="Python 中特殊方法的一些理解笔记">
 
 
 
@@ -150,7 +150,7 @@
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Python中的 __call__">
-    <meta itemprop="description" content="如果python中的一个类定义了 call 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议">
+    <meta itemprop="description" content="Python 中特殊方法的一些理解笔记">
     <meta itemprop="datePublished" content="2022-08-16T00:00:00+08:00">
     
 
@@ -192,7 +192,9 @@
             </nav>
           </aside>
         
-        <p>如果python中的一个类定义了 <strong>call</strong> 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议</p>
+        <p>Python 中特殊方法的一些理解笔记</p>
+
+<p>如果python中的一个类定义了 <strong>call</strong> 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议</p>
 
 <h3 id="code">code</h3>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>

@@ -6,7 +6,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>Python中的 __new__ __init__ __del__ - 尹亚亮</title>
-<meta name="description" content="Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象">
+<meta name="description" content="Python 中特殊方法的一些理解笔记">
 
 
   <meta name="author" content="Your Name">
@@ -22,7 +22,7 @@
 <meta property="og:url" content="/python-new-init-del/">
 
 
-  <meta property="og:description" content="Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象">
+  <meta property="og:description" content="Python 中特殊方法的一些理解笔记">
 
 
 
@@ -150,7 +150,7 @@
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Python中的 __new__ __init__ __del__">
-    <meta itemprop="description" content="Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象">
+    <meta itemprop="description" content="Python 中特殊方法的一些理解笔记">
     <meta itemprop="datePublished" content="2022-08-15T00:00:00+08:00">
     
 
@@ -192,7 +192,9 @@
             </nav>
           </aside>
         
-        <p>Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象</p>
+        <p>Python 中特殊方法的一些理解笔记</p>
+
+<p>Python中的__new__ __init__ __del__三个方法用于实例的创建和销毁,在使用python的类中，我们最常用的是__init__方法，通常称为构造方法,__new__方法几乎不会使用，这篇文章是基于Python3.6为基础来做实验，主要谈一谈python的__new__和__init__，__init__通常称为构造方法,但其实它是个“初始化方法”，真正的构造方法是__new__,__init__既然是初始化方法，那么肯定是对对象的初始化，也就是存在一个被初始化的对象</p>
 
 <h3 id="第一个例子">第一个例子</h3>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">inch</span><span class="p">():</span>
