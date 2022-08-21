@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-20T19:07:58+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-21T09:04:35+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">ospf笔记-基础术语</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="ospf笔记-基础术语" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
+
+<h2 id="基础术语">基础术语</h2>
 
 <h3 id="链路状态协议的特点">链路状态协议的特点</h3>
 <ul>
@@ -26,12 +28,10 @@
   <li>内部路由器：所有接口都位于同一个区域中的路由器，同一区域中所有内部路由器的LSDB都相同</li>
   <li>骨干路由器：位于骨干区域0边缘的路由器，至少有一个接口与区域0相连。骨干路由器在维护OSPF路由信息时采用的步骤和算法与内部路由器相同</li>
   <li>区域边界路由器（ABR）：连接多个区域的路由器，为其连接的每个区域维护一个LSDB，并路由前往/来自其他区域的数据流</li>
-  <li>
-    <p>自治系统边界路由器（ASBR）：至少有一个接口与其他域（如另一个OSPF自治系统或使用增强内部网关协议[EIGRP]的域）相连</p>
-
-    <p><img src="/assets/images/ospf/01.png" /></p>
-  </li>
+  <li>自治系统边界路由器（ASBR）：至少有一个接口与其他域（如另一个OSPF自治系统或使用增强内部网关协议[EIGRP]的域）相连</li>
 </ul>
+
+<p><img src="/assets/images/ospf/01.png" /></p>
 
 <p>在多路访问广播环境中，每个网段都有独立的DR和BDR
 在路由器链路通告中，以链路开销的方式通告它。默认的OSPF开销如下</p>
@@ -43,18 +43,16 @@
   <li>以太网：默认开销为10</li>
   <li>快速以太网：默认开销为1</li>
   <li>FDDI：默认开销为1</li>
-  <li>
-    <p>ATM：默认开销为1</p>
-
-    <p><img src="/assets/images/ospf/02.png" /></p>
-
-    <p><img src="/assets/images/ospf/03.png" /></p>
-
-    <p><img src="/assets/images/ospf/04.png" /></p>
-
-    <p><img src="/assets/images/ospf/05.png" /></p>
-  </li>
+  <li>ATM：默认开销为1</li>
 </ul>
+
+<p><img src="/assets/images/ospf/02.png" /></p>
+
+<p><img src="/assets/images/ospf/03.png" /></p>
+
+<p><img src="/assets/images/ospf/04.png" /></p>
+
+<p><img src="/assets/images/ospf/05.png" /></p>
 
 <p>这5种OSPF分组都被直接封装到IP分组的有效负载中，OSPF分组不使用传输控制协议（TCP）和用户数据报协议（UDP）</p>
 
@@ -87,16 +85,16 @@
   <li>序列号更大</li>
   <li>校验和更大（如果序列号相同）</li>
   <li>年龄等于maxage（这表明LSA被抑制）</li>
-  <li>
-    <p>LS 年龄小得多</p>
+  <li>LS 年龄小得多</li>
+</ul>
 
-    <p><img src="/assets/images/ospf/06.png" /></p>
+<p><img src="/assets/images/ospf/06.png" /></p>
 
-    <p><img src="/assets/images/ospf/07.png" /></p>
+<p><img src="/assets/images/ospf/07.png" /></p>
 
-    <p><img src="/assets/images/ospf/08.png" /></p>
-  </li>
-</ul>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">ospf笔记-常规配置</title><link href="/rs-ospf-02/" rel="alternate" type="text/html" title="ospf笔记-常规配置" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-02</id><content type="html" xml:base="/rs-ospf-02/"><![CDATA[<p>OSPF备忘信息</p>
+<p><img src="/assets/images/ospf/08.png" /></p>
+
+<h2 id="常规配置">常规配置</h2>
 
 <h3 id="配置ospf进程的步骤">配置OSPF进程的步骤</h3>
 
@@ -137,20 +135,20 @@
   <li>show ip ospf neighbor detail [type number] [neighbor-id] [detail]：显示一个邻居列表，包括它们的OSPF路由器ID、OSPF优先级、邻接关系状态（如init、预启动或完全邻接）及失效定时器</li>
   <li>show ip route ospf：显示路由器知道的 OSPF 路由，它是判断本地路由器和互连网络其他部分之间的连接性的最佳方法之一。该命令还有可选参数，让您能够进一步指定要显示的信息，如OSPF进程ID</li>
   <li>show ip protocols：显示 IP 路由协议参数，包括定时器、过滤器、度量值、网络及路由器的其他信息</li>
-  <li>
-    <p>debug ip ospf events显示与OSPF相关的事件，如建立邻接关系、扩散信息、DR选举和SPF计算</p>
+  <li>debug ip ospf events显示与OSPF相关的事件，如建立邻接关系、扩散信息、DR选举和SPF计算</li>
+</ul>
 
-    <p><img src="/assets/images/ospf/15.png" /></p>
+<p><img src="/assets/images/ospf/15.png" /></p>
 
-    <p><img src="/assets/images/ospf/16.png" /></p>
+<p><img src="/assets/images/ospf/16.png" /></p>
 
-    <p><img src="/assets/images/ospf/17.png" /></p>
+<p><img src="/assets/images/ospf/17.png" /></p>
 
-    <p><img src="/assets/images/ospf/18.png" /></p>
+<p><img src="/assets/images/ospf/18.png" /></p>
 
-    <p><img src="/assets/images/ospf/19.png" /></p>
-  </li>
-</ul>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">ospf笔记-网络类型</title><link href="/rs-ospf-03/" rel="alternate" type="text/html" title="ospf笔记-网络类型" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-03</id><content type="html" xml:base="/rs-ospf-03/"><![CDATA[<p>OSPF备忘信息</p>
+<p><img src="/assets/images/ospf/19.png" /></p>
+
+<h2 id="网络类型">网络类型</h2>
 
 <h3 id="dr和bdr">DR和BDR</h3>
 
@@ -176,7 +174,9 @@ DR和BDR的价值体现在以下方面</p>
 
 <p><img src="/assets/images/ospf/21.png" /></p>
 
-<p><img src="/assets/images/ospf/22.png" /></p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">ospf笔记-LSA</title><link href="/rs-ospf-04/" rel="alternate" type="text/html" title="ospf笔记-LSA" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-04</id><content type="html" xml:base="/rs-ospf-04/"><![CDATA[<p>OSPF备忘信息</p>
+<p><img src="/assets/images/ospf/22.png" /></p>
+
+<h2 id="lsa">LSA</h2>
 
 <p><img src="/assets/images/ospf/30.png" />
 <img src="/assets/images/ospf/31.png" /></p>
@@ -242,7 +242,9 @@ DR和BDR的价值体现在以下方面</p>
 
 <h3 id="lsdb的过载保护">LSDB的过载保护</h3>
 
-<p><img src="/assets/images/ospf/42.png" /></p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry><entry><title type="html">ospf笔记-特殊区域</title><link href="/rs-ospf-05/" rel="alternate" type="text/html" title="ospf笔记-特殊区域" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-05</id><content type="html" xml:base="/rs-ospf-05/"><![CDATA[<p>OSPF备忘信息</p>
+<p><img src="/assets/images/ospf/42.png" /></p>
+
+<h2 id="特殊区域">特殊区域</h2>
 
 <h3 id="标准区域">标准区域</h3>
 <p>这是默认的区域类型，它接受链路更新、汇总路由和外部路由。</p>
@@ -2006,4 +2008,407 @@ namespace <span class="s2">"ns1"</span> deleted
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    systemctl start zabbix_agent2.service
     systemctl restart zabbix_agent2.service
     systemctl stop zabbix_agent2.service
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[ubuntu install zabbix agent2]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[ubuntu install zabbix agent2]]></summary></entry><entry><title type="html">`Centos 更新Glibc `</title><link href="/centos-update-glibc/" rel="alternate" type="text/html" title="`Centos 更新Glibc `" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/centos-update-glibc</id><content type="html" xml:base="/centos-update-glibc/"><![CDATA[<p>写CBPF需要更新系统的Glibc</p>
+
+<h4 id="安装centos-release-scl">安装centos-release-scl</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install centos-release-scl
+</code></pre></div></div>
+
+<h4 id="安装7版本的devtoolset">安装7版本的devtoolset</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install devtoolset-7-gcc*
+</code></pre></div></div>
+
+<h4 id="激活">激活</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scl enable devtoolset-7 bash
+</code></pre></div></div>
+
+<h4 id="查看gcc版本">查看gcc版本</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc -v
+</code></pre></div></div>
+
+<h4 id="下载安装包">下载安装包</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp
+wget https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz
+tar xf glibc-2.23.tar.gz
+cd glibc-2.23/
+mkdir glibc-build
+cd glibc-build 
+</code></pre></div></div>
+
+<h4 id="安装">安装</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../configure --prefix=/usr
+make
+make install
+</code></pre></div></div>
+
+<h4 id="验证">验证</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ldd --version
+ldd (GNU libc) 2.23
+
+Copyright (C) 2016 Free Software Foundation, Inc.
+
+This is free software; see the source for copying conditions.  There is NO
+
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Written by Roland McGrath and Ulrich Drepper.
+</code></pre></div></div>
+
+<h4 id="排错">排错</h4>
+<p>1、</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setenv.c:279:6: error: suggest explicit braces to avoid ambiguous ‘else’ [-Werror=dangling-else]
+   if (ep != NULL)
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>增加{}
+</code></pre></div></div>
+
+<p>2、</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../sysdeps/ieee754/dbl-64/e_pow.c:469:13: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
+       if (n &lt;&lt; (k - 20))
+           ~~^~~~~~~~~~~
+../sysdeps/ieee754/dbl-64/e_pow.c:471:17: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
+       return (n &lt;&lt; (k - 21)) ? -1 : 1;
+              ~~~^~~~~~~~~~~~
+../sysdeps/ieee754/dbl-64/e_pow.c:477:9: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
+   if (m &lt;&lt; (k + 12))
+       ~~^~~~~~~~~~~
+../sysdeps/ieee754/dbl-64/e_pow.c:479:13: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
+   return (m &lt;&lt; (k + 11)) ? -1 : 1;
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> if (n &lt;&lt; (k - 20)!=0)
+
+ (n &lt;&lt; (k - 21)!=0) ? -1 : 1;
+
+ (m &lt;&lt; (k + 12)!=0)
+
+ (m &lt;&lt; (k + 11)!=0) ? -1 : 1;
+</code></pre></div></div>
+
+<p>3、</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpc_parse.c: In function ‘get_prog_declaration’:
+rpc_parse.c:543:23: error: ‘%d’ directive writing between 1 and 10 bytes into a region of size 7 [-Werror=format-overflow=]
+     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
+                       ^~
+rpc_parse.c:543:20: note: directive argument in the range [1, 2147483647]
+     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
+                    ^~~~~~
+rpc_parse.c:543:5: note: ‘sprintf’ output between 5 and 14 bytes into a destination of size 10
+     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sprintf (name, "%s%d", ARGNAME, (short)num)
+</code></pre></div></div>
+
+<p>4、</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nis_call.c:682:6: error: suggest explicit braces to avoid ambiguous ‘else’ [-Werror=dangling-else]
+   if (*loc != NULL)
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (*loc != NULL)
+{ 
+  for (i = 1; i &lt; 16; ++i)
+    if (nis_server_cache[i] == NULL)
+  {
+    loc = &amp;nis_server_cache[i];
+    break;
+  }
+    else if ((*loc)-&gt;uses &gt; nis_server_cache[i]-&gt;uses
+         || ((*loc)-&gt;uses == nis_server_cache[i]-&gt;uses
+         &amp;&amp; (*loc)-&gt;expires &gt; nis_server_cache[i]-&gt;expires))
+  loc = &amp;nis_server_cache[i];
+}
+</code></pre></div></div>
+
+<p>5、</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nss_nisplus/nisplus-alias.c:300:12: error: argument 1 null where non-null expected [-Werror=nonnull]
+   char buf[strlen (name) + 9 + tablename_len];
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>char buf[tablename_len + 9];
+snprintf (buf, sizeof (buf), "[name=],%s", tablename_val);
+</code></pre></div></div>
+
+<p>6、</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gawk '/\.gnu\.glibc-stub\./ { \
+	  sub(/\.gnu\.glibc-stub\./, "", $2); \
+	  stubs[$2] = 1; } \
+	END { for (s in stubs) print "#define __stub_" s }' &gt; /tmp/glibc-2.23/glibc-build/math/stubsT
+gawk: error while loading shared libraries: /lib64/libm.so.6: invalid ELF header
+make[2]: *** [/tmp/glibc-2.23/glibc-build/math/stubs] Error 127
+</code></pre></div></div>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /lib64
+unlink libm.so.6
+ln -s libm-2.23.so libm.so.6
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Linux" /><summary type="html"><![CDATA[写CBPF需要更新系统的Glibc]]></summary></entry><entry><title type="html">`Python中的 __call__`</title><link href="/python-call/" rel="alternate" type="text/html" title="`Python中的 __call__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-call</id><content type="html" xml:base="/python-call/"><![CDATA[<p>如果python中的一个类定义了 <strong>call</strong> 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议</p>
+
+<h3 id="code">code</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+
+<span class="n">a</span> <span class="o">=</span> <span class="n">TmpTest</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">a</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+<span class="mi">4</span> <span class="mi">5</span>
+</code></pre></div></div>
+
+<p>在本文中不讨论装饰部分的内容，借用装饰器来讲解一个__call__方法的使用，如果需要将一个类作为装饰器，那需要为这个类实现__call__方法，一个使用__call__来实现类装饰器的例子</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">func</span><span class="o">=</span><span class="n">func</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">=</span><span class="bp">self</span><span class="p">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="o">@</span><span class="n">TmpTest</span>
+<span class="k">def</span> <span class="nf">add_num</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="n">y</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">add_num</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="mi">1</span>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[如果python中的一个类定义了 call 方法，那么这个类它的实例就可以作为函数调用,也就是实现了 () 运算符，即可调用对象协议]]></summary></entry><entry><title type="html">`Python中的 __enter__ __exit__`</title><link href="/python-enter-exit/" rel="alternate" type="text/html" title="`Python中的 __enter__ __exit__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-enter-exit</id><content type="html" xml:base="/python-enter-exit/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+
+<p>在python中实现了__enter__和__exit__方法，即支持上下文管理器协议。上下文管理器就是支持上下文管理器协议的对象，它是为了with而生。当with语句在开始运行时，会在上下文管理器对象上调用__enter__方法。with语句运行结束后，会在上下文管理器对象上调用__exit__方法</p>
+
+<h3 id="语法">语法</h3>
+<p>with的语法</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="n">EXPR</span> <span class="k">as</span> <span class="n">VAR</span><span class="p">:</span>
+    <span class="n">BLOCK</span>
+</code></pre></div></div>
+
+<p>伪代码</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">mgr</span> <span class="o">=</span> <span class="p">(</span><span class="n">EXPR</span><span class="p">)</span>   
+<span class="nb">exit</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mgr</span><span class="p">).</span><span class="n">__exit__</span>  <span class="c1"># Not calling it yet
+</span><span class="n">value</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">mgr</span><span class="p">).</span><span class="n">__enter__</span><span class="p">(</span><span class="n">mgr</span><span class="p">)</span>    
+<span class="n">exc</span> <span class="o">=</span> <span class="bp">True</span>     
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">VAR</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># Only if "as VAR" is present
+</span>        <span class="n">BLOCK</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="c1"># The exceptional case is handled here
+</span>        <span class="n">exc</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">exit</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="o">*</span><span class="n">sys</span><span class="p">.</span><span class="n">exc_info</span><span class="p">()):</span>
+            <span class="k">raise</span>
+        <span class="c1"># The exception is swallowed if exit() returns true
+</span><span class="k">finally</span><span class="p">:</span>
+    <span class="c1"># The normal and non-local-goto cases are handled here
+</span>    <span class="k">if</span> <span class="n">exc</span><span class="p">:</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="n">mgr</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>生成上下文管理器mgr</li>
+  <li>如果没有发现__exit__, __enter__两个方法，解释器会抛出AttributeError异常</li>
+  <li>调用上下文管理器的 <strong>enter</strong>() 方法</li>
+  <li>如果语法里的as VAR没有写，那么 伪代码里的 VAR= 这部分也会同样被忽略</li>
+  <li>如果BLOCK中的代码正常结束，或者是通过break, continue ,return 来结束，<strong>exit</strong>()会使用三个None的参数来返回</li>
+  <li>如果执行过程中出现异常，则使用 sys.exc_info的异常信息为参数调用 <strong>exit</strong>(exc_type, exc_value, exc_traceback)</li>
+</ul>
+
+<h3 id="对比">对比</h3>
+
+<p>之前我们对文件的操作是这样的</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'filename'</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Unexpected error:"</span><span class="p">,</span> <span class="n">sys</span><span class="p">.</span><span class="n">exc_info</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">())</span>
+    <span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>现在有了with语句可以使代码更加简洁，减少编码量,下面的语句会在执行完后自动关闭文件(即使出现异常也会)</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">'example.info'</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="n">readlines</span><span class="p">())</span>
+</code></pre></div></div>
+
+<h3 id="code">code</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+       <span class="c1"># return self.f
+</span>    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>上面例子的返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span> <span class="n">result</span><span class="p">:</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<p>这个例子里面__enter__没有返回，所以with语句里的”as t”到的是None，修改一下上面的例子</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">f</span>
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span> <span class="n">result</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_io</span><span class="p">.</span><span class="n">TextIOWrapper</span> <span class="n">name</span><span class="o">=</span><span class="s">'file'</span> <span class="n">mode</span><span class="o">=</span><span class="s">'r'</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'cp936'</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>如果在__init__或者__enter__中抛出异常，则不会进入到__exit__中</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="nb">ImportError</span>
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__enter__"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">f</span>
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__exit__"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">__init__</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"D:/pythonScript/leetcode/leetcode.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">14</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+    <span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+  <span class="n">File</span> <span class="s">"D:/pythonScript/leetcode/leetcode.py"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">5</span><span class="p">,</span> <span class="ow">in</span> <span class="n">__init__</span>
+    <span class="k">raise</span> <span class="nb">ImportError</span>
+<span class="nb">ImportError</span>
+</code></pre></div></div>
+
+<p>如果在__exit__中返回True,则不会产生异常</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TmpTest</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">filename</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="o">=</span><span class="n">filename</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__init__"</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__enter__"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">f</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_val</span><span class="p">,</span> <span class="n">exc_tb</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"__exit__ {} "</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">exc_type</span><span class="p">))</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">f</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+<span class="n">test</span><span class="o">=</span><span class="n">TmpTest</span><span class="p">(</span><span class="s">'file'</span><span class="p">)</span>
+<span class="k">with</span> <span class="n">test</span> <span class="k">as</span> <span class="n">t</span><span class="p">:</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s">'test result: {}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+    <span class="k">raise</span> <span class="nb">ImportError</span>
+<span class="k">print</span><span class="p">(</span><span class="s">"no error"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>返回</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="n">__init__</span>
+<span class="n">__enter__</span>
+<span class="n">test</span> <span class="n">result</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">_io</span><span class="p">.</span><span class="n">TextIOWrapper</span> <span class="n">name</span><span class="o">=</span><span class="s">'file'</span> <span class="n">mode</span><span class="o">=</span><span class="s">'r'</span> <span class="n">encoding</span><span class="o">=</span><span class="s">'cp936'</span><span class="o">&gt;</span>
+<span class="n">__exit__</span> <span class="o">&lt;</span><span class="k">class</span> <span class="err">'</span><span class="nc">ImportError</span><span class="s">'&gt;
+no error
+</span></code></pre></div></div>
+
+<h3 id="参考">参考</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://python3-cookbook.readthedocs.io/zh_CN/latest/c08/p03_make_objects_support_context_management_protocol.html?highlight=with
+https://docs.python.org/3/library/stdtypes.html#typecontextmanager
+https://www.python.org/dev/peps/pep-0343/
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry><entry><title type="html">`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`</title><link href="/python-len-getitem-setitem-delitem-contains/" rel="alternate" type="text/html" title="`Python中的 __len__、__getitem__、__setitem__、__delitem__、__contains__`" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/python-len-getitem-setitem-delitem-contains</id><content type="html" xml:base="/python-len-getitem-setitem-delitem-contains/"><![CDATA[<p>Python 中特殊方法的一些理解笔记</p>
+
+<h3 id="__len__">__len__</h3>
+<p>返回集合长度</p>
+
+<h3 id="__getitem__self-item">__getitem__(self, item)</h3>
+<p>使用索引访问元素</p>
+
+<h3 id="__setitem__self-key-value">__setitem__(self, key, value)</h3>
+<p>对索引赋值,使用 self[key] = value</p>
+
+<h3 id="__delitem__self-key">__delitem__(self, key)</h3>
+<p>删除索引值 del self[key]</p>
+
+<h3 id="__contains__">__contains__</h3>
+<p>实现in运算符，如果没有实现这个方法python也会调用__getitem__来使in运算符可用</p>
+
+<h3 id="可变集合和不可变集合">可变集合和不可变集合</h3>
+<ul>
+  <li>可变集合需要实现: <strong>len</strong>  <strong>getitem</strong>    <strong>setitem</strong>  <strong>delitem</strong></li>
+  <li>不可变集合需要实现: <strong>len</strong>  <strong>getitem</strong></li>
+</ul>
+
+<h3 id="code">code</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">TemTest</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">=</span><span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__delitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">.</span><span class="n">x</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">'{}'</span><span class="p">.</span><span class="nb">format</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">test</span><span class="o">=</span><span class="n">TemTest</span><span class="p">()</span> <span class="c1">#实例化
+</span><span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test</span><span class="p">))</span> <span class="c1">#返回长度
+</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>   <span class="c1">#打印下标0的值
+</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">[:</span><span class="mi">3</span><span class="p">])</span>  <span class="c1">#切片
+</span>
+
+<span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">=</span><span class="mi">10</span>       <span class="c1">#将下标3的值替换为10
+</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+
+
+<span class="k">del</span> <span class="n">test</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>      <span class="c1">#删除下标3的值
+</span><span class="k">print</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="mi">1</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span>  <span class="c1">#测试in运算符
+</span><span class="k">print</span><span class="p">(</span><span class="mi">3</span> <span class="ow">in</span> <span class="n">test</span><span class="p">)</span> 
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">10</span>
+<span class="mi">0</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+<span class="bp">True</span>
+<span class="bp">False</span>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Python" /><summary type="html"><![CDATA[Python 中特殊方法的一些理解笔记]]></summary></entry></feed>
