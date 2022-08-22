@@ -1,0 +1,1089 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Python 装饰器 - 02 - 尹亚亮</title>
+<meta name="description" content="Python装饰器介绍">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="Python 装饰器 - 02">
+<meta property="og:url" content="/python-decorator-02/">
+
+
+  <meta property="og:description" content="Python装饰器介绍">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-08-22T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/python-decorator-02/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Python 装饰器 - 02">
+    <meta itemprop="description" content="Python装饰器介绍">
+    <meta itemprop="datePublished" content="2022-08-22T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/python-decorator-02/" class="u-url" itemprop="url"><code class="language-plaintext highlighter-rouge">Python 装饰器 - 02</code>
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-08-22T00:00:00+08:00">August 22, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#装饰类">装饰类</a></li><li><a href="#嵌套的装饰器">嵌套的装饰器</a></li><li><a href="#带参数的装饰器">带参数的装饰器</a></li><li><a href="#both-please-but-never-mind-the-bread">Both Please, But Never Mind the Bread</a></li><li><a href="#有状态的装饰器">有状态的装饰器</a></li><li><a href="#类装饰器">类装饰器</a></li><li><a href="#更多现实中的例子">更多现实中的例子</a><ul><li><a href="#代码降速重新访问">代码降速,重新访问</a></li><li><a href="#创建单例模式">创建单例模式</a></li><li><a href="#缓存返回值">缓存返回值</a></li><li><a href="#添加单元信息">添加单元信息</a></li><li><a href="#验证json">验证JSON</a></li></ul></li><li><a href="#引用地址">引用地址</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Python装饰器介绍</p>
+
+<h3 id="装饰类">装饰类</h3>
+
+<p>在类中有两种不通的方式使用装饰器，第一个和我们之前做过的函数非常相似:在类的方法上应用。这也是当时引入装饰器的原因之一</p>
+
+<p>一些常用的装饰器已经内置到python中，像@classmethod @staticmethod @property。这三个装饰器我们之前都介绍过，这段就不翻译了(打字手酸，偷懒下)</p>
+
+<p>下面的Circle 类使用了@classmethod @staticmethod和@property三个装饰器</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Circle</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">radius</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Get value of radius"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">_radius</span>
+
+    <span class="o">@</span><span class="n">radius</span><span class="p">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">radius</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="s">"""Set radius, raise error if negative"""</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">.</span><span class="n">_radius</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"Radius must be positive"</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="nb">property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Calculate area inside circle"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">pi</span><span class="p">()</span> <span class="o">*</span> <span class="bp">self</span><span class="p">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">cylinder_volume</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+        <span class="s">"""Calculate volume of cylinder with circle as base"""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">area</span> <span class="o">*</span> <span class="n">height</span>
+
+    <span class="o">@</span><span class="nb">classmethod</span>
+    <span class="k">def</span> <span class="nf">unit_circle</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="s">"""Factory method creating a circle with radius 1"""</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="o">@</span><span class="nb">staticmethod</span>
+    <span class="k">def</span> <span class="nf">pi</span><span class="p">():</span>
+        <span class="s">"""Value of π, could use math.pi instead though"""</span>
+        <span class="k">return</span> <span class="mf">3.1415926535</span>
+</code></pre></div></div>
+
+<p>在这个类中
+    .cylinder_volume()是一个常规函数
+    .radius是一个可变属性:它可以被设置不同的值.然而通过定义setter方法，我们可以做一些判断来确保它不会被设置成一个没有意义的负数，.radius作为属性访问，不使用括号
+    .area 是一个不可变的属性:没有.setter()方法的属性是无法更改的，即使它被定义为一个方法，它也被作为不需要括号的属性来使用。
+    .unit_circle() 是一个类方法。它不被绑定到Circle的实例上.类方法通常用在工厂模式，用来创建类的特殊实例
+    .pi() 是一个静态方法.除了命名空间外它不依赖Circle类。静态方法可以在实例或类上调用。</p>
+
+<p>Circle类的使用例子</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">radius</span>
+<span class="mi">5</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">area</span>
+<span class="mf">78.5398163375</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">area</span>
+<span class="mf">12.566370614</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">c</span><span class="p">.</span><span class="n">area</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="nb">AttributeError</span><span class="p">:</span> <span class="n">can</span><span class="s">'t set attribute
+
+&gt;&gt;&gt; c.cylinder_volume(height=4)
+50.265482456
+
+&gt;&gt;&gt; c.radius = -1
+ValueError: Radius must be positive
+
+&gt;&gt;&gt; c = Circle.unit_circle()
+&gt;&gt;&gt; c.radius
+1
+
+&gt;&gt;&gt; c.pi()
+3.1415926535
+
+&gt;&gt;&gt; Circle.pi()
+3.1415926535
+</span></code></pre></div></div>
+
+<p>让我们定义一个类，在这个类中，我们会用到前面的@debug和@timer装饰器:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">decorators</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">timer</span>
+
+<span class="k">class</span> <span class="nc">TimeWaster</span><span class="p">:</span>
+    <span class="o">@</span><span class="n">debug</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_num</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">max_num</span> <span class="o">=</span> <span class="n">max_num</span>
+
+    <span class="o">@</span><span class="n">timer</span>
+    <span class="k">def</span> <span class="nf">waste_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_times</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+            <span class="nb">sum</span><span class="p">([</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">max_num</span><span class="p">)])</span>
+</code></pre></div></div>
+
+<p>看一下结果:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">tw</span> <span class="o">=</span> <span class="n">TimeWaster</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">Calling</span> <span class="n">__init__</span><span class="p">(</span><span class="o">&lt;</span><span class="n">time_waster</span><span class="p">.</span><span class="n">TimeWaster</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x7efccce03908</span><span class="o">&gt;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="s">'__init__'</span> <span class="n">returned</span> <span class="bp">None</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tw</span><span class="p">.</span><span class="n">waste_time</span><span class="p">(</span><span class="mi">999</span><span class="p">)</span>
+<span class="n">Finished</span> <span class="s">'waste_time'</span> <span class="ow">in</span> <span class="mf">0.3376</span> <span class="n">secs</span>
+</code></pre></div></div>
+
+<p>另外一种方式是在整个类上使用装饰器.这里有个Python3.7中的dataclasses方法用例:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="o">@</span><span class="n">dataclass</span>
+<span class="k">class</span> <span class="nc">PlayingCard</span><span class="p">:</span>
+    <span class="n">rank</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">suit</span><span class="p">:</span> <span class="nb">str</span>
+</code></pre></div></div>
+
+<p>语法的类似于函数装饰器。在上面的例子中，也可以通过PlayingCard = dataclass(PlayingCard)来实现。</p>
+
+<p>类装饰器的一种简单用法是作为元类方式的替代.在两种情况下，你都在动态的改变一个类的定义</p>
+
+<p>类的装饰器和函数的装饰器语法接近，不同的是装饰器需要接收一个类而不是一个函数作为参数.事实上，上面的装饰器都可以作用于类，但当你这么用的时候，你可能得不到预期的结果。下面将@timer装饰器应用到一个类</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">decorators</span> <span class="kn">import</span> <span class="n">timer</span>
+
+<span class="o">@</span><span class="n">timer</span>
+<span class="k">class</span> <span class="nc">TimeWaster</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_num</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">max_num</span> <span class="o">=</span> <span class="n">max_num</span>
+
+    <span class="k">def</span> <span class="nf">waste_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_times</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+            <span class="nb">sum</span><span class="p">([</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="p">.</span><span class="n">max_num</span><span class="p">)])</span>
+</code></pre></div></div>
+
+<p>@timer只是TimeWaster = timer(TimeWaster)的缩写</p>
+
+<p>在这里@timer只能显示类实例化需要的时间</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">tw</span> <span class="o">=</span> <span class="n">TimeWaster</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">Finished</span> <span class="s">'TimeWaster'</span> <span class="ow">in</span> <span class="mf">0.0000</span> <span class="n">secs</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">tw</span><span class="p">.</span><span class="n">waste_time</span><span class="p">(</span><span class="mi">999</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span>
+</code></pre></div></div>
+<p>在后面会有一个正确的类装饰器的示例@singleton。它保证一个类只有一个实例</p>
+
+<h3 id="嵌套的装饰器">嵌套的装饰器</h3>
+
+<p>可以将多个装饰器叠加到一个函数上</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">decorators</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">do_twice</span>
+
+<span class="o">@</span><span class="n">debug</span>
+<span class="o">@</span><span class="n">do_twice</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>运行的顺序会按照叠加的顺序, @debug 调用 @do_twice @do_twice 调用greet()，或者debug(do_twice(greet()))</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">greet</span><span class="p">(</span><span class="s">"Eva"</span><span class="p">)</span>
+<span class="n">Calling</span> <span class="n">greet</span><span class="p">(</span><span class="s">'Eva'</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">Eva</span>
+<span class="n">Hello</span> <span class="n">Eva</span>
+<span class="s">'greet'</span> <span class="n">returned</span> <span class="bp">None</span>
+</code></pre></div></div>
+<p>更改@debug和@do_twice的顺序:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">decorators</span> <span class="kn">import</span> <span class="n">debug</span><span class="p">,</span> <span class="n">do_twice</span>
+
+<span class="o">@</span><span class="n">do_twice</span>
+<span class="o">@</span><span class="n">debug</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>  
+</code></pre></div></div>
+<p>在这种情况下，@do_twice也会被应用到@debug中:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">greet</span><span class="p">(</span><span class="s">"Eva"</span><span class="p">)</span>
+<span class="n">Calling</span> <span class="n">greet</span><span class="p">(</span><span class="s">'Eva'</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">Eva</span>
+<span class="s">'greet'</span> <span class="n">returned</span> <span class="bp">None</span>
+<span class="n">Calling</span> <span class="n">greet</span><span class="p">(</span><span class="s">'Eva'</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">Eva</span>
+<span class="s">'greet'</span> <span class="n">returned</span> <span class="bp">None</span>
+</code></pre></div></div>
+
+<h3 id="带参数的装饰器">带参数的装饰器</h3>
+<p>在需要传参给你的装饰器是这个例子会非常有用。例如,@do_twice可以扩展到@repeat(num_times)装饰器.然后，可以将执行的被装饰函数的次数作为参数给出。    <br />
+可以这么做:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">repeat</span><span class="p">(</span><span class="n">num_times</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>      
+        
+<span class="o">&gt;&gt;&gt;</span> <span class="n">greet</span><span class="p">(</span><span class="s">"World"</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="n">Hello</span> <span class="n">World</span> 
+</code></pre></div></div>
+
+<p>考虑下如何实现这个功能</p>
+
+<p>到目前为止,写在@后面写的名字引用一个可以被另外一个函数调用的函数对象，需要repeat(num_times=4)来返回一个函数对象，这个对象可以被作为装饰器，幸运的是，我们已经知道如何返回函数!一般来说，需要以下内容:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator_repeat</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="p">...</span>  <span class="c1"># Create and return a wrapper function
+</span>    <span class="k">return</span> <span class="n">decorator_repeat</span>
+</code></pre></div></div>
+
+<p>通常，装饰器创建并返回一个内部包装函数，所以完整地写出这个例子会给你一个内部函数</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator_repeat</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper_repeat</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">wrapper_repeat</span>
+    <span class="k">return</span> <span class="n">decorator_repeat</span>
+</code></pre></div></div>
+<p>例子看起来有点乱，但我们只是添加了一个def来接收参数，这个装饰器语法我们之前处理过多次.让我们从最里面的函数开始:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">wrapper_repeat</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+</code></pre></div></div>
+
+<p>wrapper_repeat()函数接收任意参数，并放回被装饰函数的值，func(). 这个包装函数还包括了被装饰函数num_times的循环 ，除了必须要使用外部参数num_times外，和之前看到的装饰器函数没有什么不同，</p>
+
+<p>再走一步，你就会发现装饰器函数:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">decorator_repeat</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper_repeat</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="p">...</span>
+    <span class="k">return</span> <span class="n">wrapper_repeat</span>
+</code></pre></div></div>
+
+<p>decorator_repeat()和我们之前写的装饰器函数非常像,除了他的名字不同,因为我们为最外层的函数保留了基础名称repeat()，这个是用户要调用的函数。</p>
+
+<p>最外层返回装饰器函数的引用</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator_repeat</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="p">...</span>
+    <span class="k">return</span> <span class="n">decorator_repeat</span>
+</code></pre></div></div>
+
+<p>在repeat()中有一些细节:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    将decorator_repeat()作为一个内部函数意味着repeat()将引用一个函数对象-decotator_repeat.之前，我们用没有括号的repeat来引用函数对象.定义带有参数的装饰器，就需要添加括号
+    
+    num_times参数看起来没有在repeat()本身中使用，但是通过传递num_times，会创建一个闭包，来存储num_times的值，直到wrapper_repeat()使用它为止。
+</code></pre></div></div>
+
+<p>一切就绪后，让我们看看结果:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">repeat</span><span class="p">(</span><span class="n">num_times</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">greet</span><span class="p">(</span><span class="s">"World"</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="n">Hello</span> <span class="n">World</span>
+<span class="n">Hello</span> <span class="n">World</span>
+</code></pre></div></div>
+
+<p>这是我们想要的结果</p>
+
+<h3 id="both-please-but-never-mind-the-bread">Both Please, But Never Mind the Bread</h3>
+
+<p>稍微注意下.你可以把装饰器同时定义为带参数或者不带参数.你可能不需要这样，但更有灵活性也不错</p>
+
+<p>前面已经看到，当装饰器需要参数的时候，需要有一个额外的外部函数，困难在于，代码需要知道装饰器是否被调用了，是否有参数</p>
+
+<p>因为只有在没有参数的情况下调用装饰器时才会直接传递装饰的函数，这个函数必须是可选参数.意味着装饰器参数必须要友关键字指定，可以使用特殊的*，也就是说，下面的参数都是关键字</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">_func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">kw1</span><span class="o">=</span><span class="n">val1</span><span class="p">,</span> <span class="n">kw2</span><span class="o">=</span><span class="n">val2</span><span class="p">,</span> <span class="p">...):</span>  <span class="c1"># 1
+</span>    <span class="k">def</span> <span class="nf">decorator_name</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="p">...</span>  <span class="c1"># Create and return a wrapper function.
+</span>
+    <span class="k">if</span> <span class="n">_func</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator_name</span>                      <span class="c1"># 2
+</span>    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator_name</span><span class="p">(</span><span class="n">_func</span><span class="p">)</span>               <span class="c1"># 3
+</span></code></pre></div></div>
+
+<p>_func参数是一个标记，提示装饰器被调用的时候是否有参数
+    1.如果name调用的时候没有传参,被装饰函数会被作为_func传入.如果有参数传入,_func会被置为None,一些关键字参数可能已不再是默认值， 参数列表中的*表示其余参数不能作为位置参数调用。
+    2.装饰器可以传参调用，返回一个装饰器函数，它可以读取和返回一个函数
+    3.装饰器不可以传参调用,会只将装饰器应用到函数上</p>
+
+<p>改造下之前的@repeat装饰器</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">repeat</span><span class="p">(</span><span class="n">_func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">num_times</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">decorator_repeat</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper_repeat</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_times</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">wrapper_repeat</span>
+
+    <span class="k">if</span> <span class="n">_func</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator_repeat</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator_repeat</span><span class="p">(</span><span class="n">_func</span><span class="p">)</span><span class="n">n</span>
+</code></pre></div></div>
+
+<p>和之前的对比,唯一的变化是在末尾添加了_func参数和if-else。
+这些例子表明，@repeat现在可以在有或没有参数的情况下使用:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">repeat</span>
+<span class="k">def</span> <span class="nf">say_whee</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Whee!"</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">repeat</span><span class="p">(</span><span class="n">num_times</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Hello </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>默认情况num_times的值是2</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">say_whee</span><span class="p">()</span>
+<span class="n">Whee</span><span class="err">!</span>
+<span class="n">Whee</span><span class="err">!</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">greet</span><span class="p">(</span><span class="s">"Penny"</span><span class="p">)</span>
+<span class="n">Hello</span> <span class="n">Penny</span>
+<span class="n">Hello</span> <span class="n">Penny</span>
+<span class="n">Hello</span> <span class="n">Penny</span>
+</code></pre></div></div>
+
+<h3 id="有状态的装饰器">有状态的装饰器</h3>
+<p>有时候，可以跟踪状态的装饰器也是很有用的.一个简单的例子，我们会创建一个统计函数调用次数的装饰器</p>
+
+<p>注意:在教程的前面，我们讨论了基于给定参数返回值的纯函数.有状态的装饰器正好相反,返回值取决于当前状态以及给定的参数。</p>
+
+<p>在下一节中，您将看到如何使用类来保持状态。但在简单的情况下，也可以使用函数属性</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="k">def</span> <span class="nf">count_calls</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper_count_calls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">wrapper_count_calls</span><span class="p">.</span><span class="n">num_calls</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Call </span><span class="si">{</span><span class="n">wrapper_count_calls</span><span class="p">.</span><span class="n">num_calls</span><span class="si">}</span><span class="s"> of </span><span class="si">{</span><span class="n">func</span><span class="p">.</span><span class="n">__name__</span><span class="si">!r}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">wrapper_count_calls</span><span class="p">.</span><span class="n">num_calls</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">wrapper_count_calls</span>
+
+<span class="o">@</span><span class="n">count_calls</span>
+<span class="k">def</span> <span class="nf">say_whee</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Whee!"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>状态——函数的调用次数——存储在包裹函数(wrapper_count_calls)的函数属性.num_calls中。下面是使用它的效果:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">say_whee</span><span class="p">()</span>
+<span class="n">Call</span> <span class="mi">1</span> <span class="n">of</span> <span class="s">'say_whee'</span>
+<span class="n">Whee</span><span class="err">!</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">say_whee</span><span class="p">()</span>
+<span class="n">Call</span> <span class="mi">2</span> <span class="n">of</span> <span class="s">'say_whee'</span>
+<span class="n">Whee</span><span class="err">!</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">say_whee</span><span class="p">.</span><span class="n">num_calls</span>
+<span class="mi">2</span>
+</code></pre></div></div>
+
+<h3 id="类装饰器">类装饰器</h3>
+<p>典型的维护状态的方式是使用类。在本节中，将看到如何重写@count_calls的例子来实现类装饰器</p>
+
+<p>回想一下，装饰器语法@my_decorator只是func = my_decorator(func)一种方便快捷的用法.因此，如果my_decorator是一个类，需要在它的.__init__方法中接收func作为一个参数.而且,这个类需要是可以被调用的,这样它就可以替代装饰器函数了</p>
+
+<p>如果需要一个类可以被调用,要实现.__call__方法</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Counter</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">start</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Current count is </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">count</span><span class="si">}</span><span class="s">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>__call__方法每次运行都会尝试调用一个类的实例：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span><span class="p">()</span>
+<span class="n">Current</span> <span class="n">count</span> <span class="ow">is</span> <span class="mi">1</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span><span class="p">()</span>
+<span class="n">Current</span> <span class="n">count</span> <span class="ow">is</span> <span class="mi">2</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counter</span><span class="p">.</span><span class="n">count</span>
+<span class="mi">2</span>
+</code></pre></div></div>
+
+<p>因此，实现类装饰器需要实现.<strong>init__和.__call</strong></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="k">class</span> <span class="nc">CountCalls</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="n">functools</span><span class="p">.</span><span class="n">update_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_calls</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="p">.</span><span class="n">num_calls</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Call </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">num_calls</span><span class="si">}</span><span class="s"> of </span><span class="si">{</span><span class="bp">self</span><span class="p">.</span><span class="n">func</span><span class="p">.</span><span class="n">__name__</span><span class="si">!r}</span><span class="s">"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">.</span><span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">CountCalls</span>
+<span class="k">def</span> <span class="nf">say_whee</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Whee!"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>.__init__方法必须可以存储一个函数的引用和能够做一些必要的初始化. 调用.__call__方法来替代装饰器函数.它做的和我们之前的 wrapper()函数基本一样，注意，这里使用functools.update_wrapper()函数，而不是@functools.wraps</p>
+
+<p>这个@CountCalls装饰器的工作原理与前一节相同:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">say_whee</span><span class="p">()</span>
+<span class="n">Call</span> <span class="mi">1</span> <span class="n">of</span> <span class="s">'say_whee'</span>
+<span class="n">Whee</span><span class="err">!</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">say_whee</span><span class="p">()</span>
+<span class="n">Call</span> <span class="mi">2</span> <span class="n">of</span> <span class="s">'say_whee'</span>
+<span class="n">Whee</span><span class="err">!</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">say_whee</span><span class="p">.</span><span class="n">num_calls</span>
+<span class="mi">2</span>
+</code></pre></div></div>
+
+<h3 id="更多现实中的例子">更多现实中的例子</h3>
+
+<p>我们已经学到了很多(看了下翻译的行数量，已经1K+了，确实很多)，已经学会如何创建各种各样的装饰师，把我们的新知识应用到创建更多的示例中，这些示例在现实中可能非常有用。</p>
+
+<h4 id="代码降速重新访问">代码降速,重新访问</h4>
+
+<p>我们之前实现的@slow_down一直是保持sleep 1秒.现在你知道了如何给装饰器添加参数,因此，让我们来重写@slow_down，使用一个可选的rate参数来控制它的sleep时间:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="k">def</span> <span class="nf">slow_down</span><span class="p">(</span><span class="n">_func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">rate</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="s">"""Sleep given amount of seconds before calling the function"""</span>
+    <span class="k">def</span> <span class="nf">decorator_slow_down</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper_slow_down</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper_slow_down</span>
+
+    <span class="k">if</span> <span class="n">_func</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator_slow_down</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator_slow_down</span><span class="p">(</span><span class="n">_func</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>我们使用  Both Please, But Never Mind the Bread  这里的样例来让@slow_down有参数和没有参数时都可调用，countdown()函数现在在每次计数之间休眠2秒:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">slow_down</span><span class="p">(</span><span class="n">rate</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">countdown</span><span class="p">(</span><span class="n">from_number</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">from_number</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Liftoff!"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">from_number</span><span class="p">)</span>
+        <span class="n">countdown</span><span class="p">(</span><span class="n">from_number</span> <span class="o">-</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<p>和前面一样，你最好自己写写，跑下看看结果</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">countdown</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="mi">2</span>
+<span class="mi">1</span>
+<span class="n">Liftoff</span><span class="err">!</span>
+</code></pre></div></div>
+
+<h4 id="创建单例模式">创建单例模式</h4>
+
+<p>单例模式是一个只有一个实例的类.在Python经常使用的单例对象包括None,True和False.可以使用is来比较,像我们之前在Both Please的章节中:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">_func</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">decorator_name</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">decorator_name</span><span class="p">(</span><span class="n">_func</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>is只对完全相同实例的对象返回True。下面的@singleton装饰器将类的第一个实例存储为属性，从而将类转换为单例对象。之后创建实例只是返回已经存储的实例</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="k">def</span> <span class="nf">singleton</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+    <span class="s">"""Make a class a Singleton class (only one instance)"""</span>
+    <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper_singleton</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">wrapper_singleton</span><span class="p">.</span><span class="n">instance</span><span class="p">:</span>
+            <span class="n">wrapper_singleton</span><span class="p">.</span><span class="n">instance</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper_singleton</span><span class="p">.</span><span class="n">instance</span>
+    <span class="n">wrapper_singleton</span><span class="p">.</span><span class="n">instance</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="n">wrapper_singleton</span>
+
+<span class="o">@</span><span class="n">singleton</span>
+<span class="k">class</span> <span class="nc">TheOne</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div></div>
+
+<p>这个类装饰器和我们的函数装饰器基本一样.唯一不同的地方在于使用cls代替了fun来表示这是一个类装饰器</p>
+
+<p>看下运行结果</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">first_one</span> <span class="o">=</span> <span class="n">TheOne</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">another_one</span> <span class="o">=</span> <span class="n">TheOne</span><span class="p">()</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">id</span><span class="p">(</span><span class="n">first_one</span><span class="p">)</span>
+<span class="mi">140094218762280</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">id</span><span class="p">(</span><span class="n">another_one</span><span class="p">)</span>
+<span class="mi">140094218762280</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">first_one</span> <span class="ow">is</span> <span class="n">another_one</span>
+<span class="bp">True</span>
+</code></pre></div></div>
+<p>很明显，first_one确实与另一个实例完全相同。</p>
+
+<h4 id="缓存返回值">缓存返回值</h4>
+
+<p>装饰器可以提供很方便的缓存和记忆机制.作为一个例子，我们来看看斐波那契数列的递归定义:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">decorators</span> <span class="kn">import</span> <span class="n">count_calls</span>
+
+<span class="o">@</span><span class="n">count_calls</span>
+<span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">num</span>
+    <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>实现很简单，性能很糟糕</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">Lots</span> <span class="n">of</span> <span class="n">output</span> <span class="k">from</span> <span class="n">count_calls</span><span class="o">&gt;</span>
+<span class="mi">55</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">.</span><span class="n">num_calls</span>
+<span class="mi">177</span>
+</code></pre></div></div>
+<p>为了计算第10个斐波那契数，你实际上只需要计算前面的斐波那契数，但是这个实现需要177次计算。更糟糕的是:斐波纳契数列(20)需要21891次计算，第30次需要270万次计算。这是因为代码一直在重新计算已知的斐波那契数。</p>
+
+<p>通常的解决方案是使用for循环和查找表来实现斐波那契数。但是，简单的计算缓存也可以做到这一点</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">from</span> <span class="nn">decorators</span> <span class="kn">import</span> <span class="n">count_calls</span>
+
+<span class="k">def</span> <span class="nf">cache</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="s">"""Keep a cache of previous function calls"""</span>
+    <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper_cache</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">cache_key</span> <span class="o">=</span> <span class="n">args</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">kwargs</span><span class="p">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">wrapper_cache</span><span class="p">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="n">wrapper_cache</span><span class="p">.</span><span class="n">cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper_cache</span><span class="p">.</span><span class="n">cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+    <span class="n">wrapper_cache</span><span class="p">.</span><span class="n">cache</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">wrapper_cache</span>
+
+<span class="o">@</span><span class="n">cache</span>
+<span class="o">@</span><span class="n">count_calls</span>
+<span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">num</span>
+    <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>缓存作为查找表工作，所以现在fibonacci()只执行一次计算</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">Call</span> <span class="mi">1</span> <span class="n">of</span> <span class="s">'fibonacci'</span>
+<span class="p">...</span>
+<span class="n">Call</span> <span class="mi">11</span> <span class="n">of</span> <span class="s">'fibonacci'</span>
+<span class="mi">55</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="mi">21</span>
+</code></pre></div></div>
+<p>注意，在对fibonacci(8)的最后调用中，没有进行新的计算，因为fibonacci(10)已经计算了第8个fibonacci数。
+在标准库中，提供了@functools.lru_cache。</p>
+
+<p>这个装饰器比上面的例子要具备更多特性.我们应该使用@functools.lru_cache来代替我们自己写的缓存装饰器</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">fibonacci</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="sa">f</span><span class="s">"Calculating fibonacci(</span><span class="si">{</span><span class="n">num</span><span class="si">}</span><span class="s">)"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">num</span>
+    <span class="k">return</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="p">(</span><span class="n">num</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>maxsize参数指定缓存了多少次调用。默认值是128，但是可以指定maxsize=None来缓存所有函数调用。但是，请注意，如果正在缓存许多很大的对象，这可能会导致内存问题。</p>
+
+<p>可以使用.cache_info()方法查看缓存的执行情况，并在需要时进行调优。在我们的示例中，我们设定一个小maxsize来查看从缓存中删除元素的效果:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="mi">55</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="mi">21</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="mi">5</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+<span class="n">Calculating</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+<span class="mi">21</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="mi">5</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">fibonacci</span><span class="p">.</span><span class="n">cache_info</span><span class="p">()</span>
+<span class="n">CacheInfo</span><span class="p">(</span><span class="n">hits</span><span class="o">=</span><span class="mi">17</span><span class="p">,</span> <span class="n">misses</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">maxsize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">currsize</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="添加单元信息">添加单元信息</h4>
+
+<p>下面的示例与前面的Registering Plugins示例有点类似，因为它不会真正改变被装饰函数的行为。相反，它只是将unit添加为函数属性</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">set_unit</span><span class="p">(</span><span class="n">unit</span><span class="p">):</span>
+    <span class="s">"""Register a unit on a function"""</span>
+    <span class="k">def</span> <span class="nf">decorator_set_unit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="n">func</span><span class="p">.</span><span class="n">unit</span> <span class="o">=</span> <span class="n">unit</span>
+        <span class="k">return</span> <span class="n">func</span>
+    <span class="k">return</span> <span class="n">decorator_set_unit</span>
+</code></pre></div></div>
+<p>下面的示例根据圆柱体的半径和高度(以厘米为单位)来计算体积</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="o">@</span><span class="n">set_unit</span><span class="p">(</span><span class="s">"cm^3"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">math</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">height</span>   
+    
+<span class="n">这个</span><span class="p">.</span><span class="n">unit函数属性是可以访问的</span><span class="p">:</span>    
+<span class="o">&gt;&gt;&gt;</span> <span class="n">volume</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="mf">141.3716694115407</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">volume</span><span class="p">.</span><span class="n">unit</span>
+<span class="s">'cm^3'</span> 
+</code></pre></div></div>
+<p>注意，可以使用函数注释实现类似的功能</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">math</span>
+
+<span class="k">def</span> <span class="nf">volume</span><span class="p">(</span><span class="n">radius</span><span class="p">,</span> <span class="n">height</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s">"cm^3"</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">math</span><span class="p">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">height</span>
+</code></pre></div></div>
+
+<p>但是，由于注释用于类型提示，因此很难将注释和静态类型检查相结合。</p>
+
+<p>在连接到一个能够在单位间转换的库，单位可以变得更加强大和有趣.pip install pint,  您可以将体积转换为立方英寸或加仑:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">复制代码</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">pint</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">ureg</span> <span class="o">=</span> <span class="n">pint</span><span class="p">.</span><span class="n">UnitRegistry</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vol</span> <span class="o">=</span> <span class="n">volume</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="p">(</span><span class="n">volume</span><span class="p">.</span><span class="n">unit</span><span class="p">)</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vol</span>
+<span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">141.3716694115407</span><span class="p">,</span> <span class="s">'centimeter ** 3'</span><span class="p">)</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vol</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="s">"cubic inches"</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">8.627028576414954</span><span class="p">,</span> <span class="s">'inch ** 3'</span><span class="p">)</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">vol</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="s">"gallons"</span><span class="p">).</span><span class="n">m</span>  <span class="c1"># Magnitude
+</span><span class="mf">0.0373464440537444</span>  
+</code></pre></div></div>
+
+<p>你还可以修改装饰器来直接返回一个Pint数量.数量是通过与单位相乘得到的，在pint中，units必须只能在UnitRegistry中查询.这里注册用来存储函数属性来避免命名空间混乱</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">use_unit</span><span class="p">(</span><span class="n">unit</span><span class="p">):</span>
+    <span class="s">"""Have a function return a Quantity with given unit"""</span>
+    <span class="n">use_unit</span><span class="p">.</span><span class="n">ureg</span> <span class="o">=</span> <span class="n">pint</span><span class="p">.</span><span class="n">UnitRegistry</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">decorator_use_unit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper_use_unit</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="n">use_unit</span><span class="p">.</span><span class="n">ureg</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper_use_unit</span>
+    <span class="k">return</span> <span class="n">decorator_use_unit</span>
+
+<span class="o">@</span><span class="n">use_unit</span><span class="p">(</span><span class="s">"meters per second"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">average_speed</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">distance</span> <span class="o">/</span> <span class="n">duration</span>
+</code></pre></div></div>
+
+<p>使用@use_unit装饰器，转换单位实际上是很容易</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">bolt</span> <span class="o">=</span> <span class="n">average_speed</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">9.58</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bolt</span>
+<span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">10.438413361169102</span><span class="p">,</span> <span class="s">'meter / second'</span><span class="p">)</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bolt</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="s">"km per hour"</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">37.578288100208766</span><span class="p">,</span> <span class="s">'kilometer / hour'</span><span class="p">)</span><span class="o">&gt;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">bolt</span><span class="p">.</span><span class="n">to</span><span class="p">(</span><span class="s">"mph"</span><span class="p">).</span><span class="n">m</span>  <span class="c1"># Magnitude
+</span><span class="mf">23.350065679064745</span>
+</code></pre></div></div>
+
+<h4 id="验证json">验证JSON</h4>
+
+<p>让我们看最后一个用例。快速看下Flask路由的管理程序</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">"/grade"</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">"POST"</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">update_grade</span><span class="p">():</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s">"student_id"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">json_data</span><span class="p">:</span>
+        <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+    <span class="c1"># Update database
+</span>    <span class="k">return</span> <span class="s">"success!"</span>
+</code></pre></div></div>
+
+<p>这里我们确保key student_id是请求的一部分.虽然验证有效，但它实际上并不属于函数本身.另外，可能还有其他使用相同验证的路由。因此，让我们Don’t repeat yourself，来使用装饰器抽象出任何不必要的逻辑，下面的@validate_json装饰器会完成这个工作</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">abort</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">validate_json</span><span class="p">(</span><span class="o">*</span><span class="n">expected_args</span><span class="p">):</span>                  <span class="c1"># 1
+</span>    <span class="k">def</span> <span class="nf">decorator_validate_json</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="o">@</span><span class="n">functools</span><span class="p">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper_validate_json</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">json_object</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">get_json</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">expected_arg</span> <span class="ow">in</span> <span class="n">expected_args</span><span class="p">:</span>      <span class="c1"># 2
+</span>                <span class="k">if</span> <span class="n">expected_arg</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">json_object</span><span class="p">:</span>
+                    <span class="n">abort</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper_validate_json</span>
+    <span class="k">return</span> <span class="n">decorator_validate_json</span>
+</code></pre></div></div>
+
+<p>在上面的代码中，装饰器采用了一个可变长度列表作为参数，这样我们就可以传递尽可能多的字符串参数，每个参数都代表一个用于验证JSON数据的键:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1.json的keys列表作为参数传递给装饰器
+2.包裹函数验证JSON数据中出现的每个预期键
+</code></pre></div></div>
+
+<p>然后，路由管理程序可以关注其真正的业务级别——因为它可以安全地假设JSON数据是有效的:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">"/grade"</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s">"POST"</span><span class="p">])</span>
+<span class="o">@</span><span class="n">validate_json</span><span class="p">(</span><span class="s">"student_id"</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">update_grade</span><span class="p">():</span>
+    <span class="n">json_data</span> <span class="o">=</span> <span class="n">request</span><span class="p">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="c1"># Update database.
+</span>    <span class="k">return</span> <span class="s">"success!"</span>
+</code></pre></div></div>
+
+<h3 id="引用地址">引用地址</h3>
+<p>https://realpython.com/primer-on-python-decorators/</p>
+
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#python" class="page__taxonomy-item p-category" rel="tag">Python</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-08-22T00:00:00+08:00">August 22, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%60Python+%E8%A3%85%E9%A5%B0%E5%99%A8+-+02%60%20%2Fpython-decorator-02%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fpython-decorator-02%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fpython-decorator-02%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/rs-rip-01/" class="pagination--pager" title="路由交换 - RIP - 01
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

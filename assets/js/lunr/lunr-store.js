@@ -106,4 +106,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-rip-01/",
         "teaser": null
+      },{
+        "title": "`Python 装饰器 - 02`",
+        "excerpt":"Python装饰器介绍 装饰类 在类中有两种不通的方式使用装饰器，第一个和我们之前做过的函数非常相似:在类的方法上应用。这也是当时引入装饰器的原因之一 一些常用的装饰器已经内置到python中，像@classmethod @staticmethod @property。这三个装饰器我们之前都介绍过，这段就不翻译了(打字手酸，偷懒下) 下面的Circle 类使用了@classmethod @staticmethod和@property三个装饰器 class Circle: def __init__(self, radius): self._radius = radius @property def radius(self): \"\"\"Get value of radius\"\"\" return self._radius @radius.setter def radius(self, value): \"\"\"Set radius, raise error if negative\"\"\" if value &gt;= 0: self._radius = value else: raise ValueError(\"Radius must be positive\") @property...","categories": [],
+        "tags": ["Python"],
+        "url": "/python-decorator-02/",
+        "teaser": null
       }]
