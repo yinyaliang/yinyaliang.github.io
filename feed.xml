@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-22T15:33:53+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python 装饰器 - 02`</title><link href="/python-decorator-02/" rel="alternate" type="text/html" title="`Python 装饰器 - 02`" /><published>2022-08-22T00:00:00+08:00</published><updated>2022-08-22T00:00:00+08:00</updated><id>/python-decorator-02</id><content type="html" xml:base="/python-decorator-02/"><![CDATA[<p>Python装饰器介绍</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-22T15:48:31+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python 装饰器 - 02`</title><link href="/python-decorator-02/" rel="alternate" type="text/html" title="`Python 装饰器 - 02`" /><published>2022-08-22T00:00:00+08:00</published><updated>2022-08-22T00:00:00+08:00</updated><id>/python-decorator-02</id><content type="html" xml:base="/python-decorator-02/"><![CDATA[<p>Python装饰器介绍</p>
 
 <h3 id="装饰类">装饰类</h3>
 
@@ -45,12 +45,14 @@
         <span class="k">return</span> <span class="mf">3.1415926535</span>
 </code></pre></div></div>
 
-<p>在这个类中
-    .cylinder_volume()是一个常规函数
-    .radius是一个可变属性:它可以被设置不同的值.然而通过定义setter方法，我们可以做一些判断来确保它不会被设置成一个没有意义的负数，.radius作为属性访问，不使用括号
-    .area 是一个不可变的属性:没有.setter()方法的属性是无法更改的，即使它被定义为一个方法，它也被作为不需要括号的属性来使用。
-    .unit_circle() 是一个类方法。它不被绑定到Circle的实例上.类方法通常用在工厂模式，用来创建类的特殊实例
-    .pi() 是一个静态方法.除了命名空间外它不依赖Circle类。静态方法可以在实例或类上调用。</p>
+<p>在这个类中</p>
+<blockquote>
+  <p>.cylinder_volume()是一个常规函数
+.radius是一个可变属性:它可以被设置不同的值.然而通过定义setter方法，我们可以做一些判断来确保它不会被设置成一个没有意义的负数，.radius作为属性访问，不使用括号
+.area 是一个不可变的属性:没有.setter()方法的属性是无法更改的，即使它被定义为一个方法，它也被作为不需要括号的属性来使用。
+.unit_circle() 是一个类方法。它不被绑定到Circle的实例上.类方法通常用在工厂模式，用来创建类的特殊实例
+.pi() 是一个静态方法.除了命名空间外它不依赖Circle类。静态方法可以在实例或类上调用。</p>
+</blockquote>
 
 <p>Circle类的使用例子</p>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
