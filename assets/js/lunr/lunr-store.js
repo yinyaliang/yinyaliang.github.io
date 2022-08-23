@@ -112,4 +112,10 @@ var store = [{
         "tags": ["Python"],
         "url": "/python-decorator-02/",
         "teaser": null
+      },{
+        "title": "路由交换 - BGP - 01",
+        "excerpt":"BGP总结01 BGP如何工作? BGP使用TCP 179端口作为传输协议，两台BGP路由器基于TCP建立连接，建立连接后的路由器成为对等(peer)，对等路由器通过交换信息打开和确认连接参数 BGP路由器交换网络可达信息，信息主要指示出路由必须经过的完整路径，以便到达目标网络。使用BGP的AS号标记路径，用于构建无环的AS图，还显示了在何处应用路由策略，以便对路由行为实施一些限制 为了交换BGP路由信息而形成TCP连接的任何两个路由器都是“对等”或“邻居”，BGP对等初始会交换完整的BGP路由表，交换之后，当路由表发生更改时，对等只会发送增量更新，BGP会对BGP表维持一个版本号，所有的BGP对等都会保持版本号一致，每当BGP路由信息发生更改而更新表时，版本号就会随之更改，keepalive数据包用来确保BGP对等之间的连接是活动的，通知包会在出现错误或特殊情况时发出 EBGP 和 IBGP 如果一个AS自治系统内有许多BGP路由器(speakers),这个AS可以为其它AS提供过境服务(传递路由)，如图所示，AS200 作为AS100和AS300的过境AS 为了发送信息到外部的AS，必须要保证网络的可达性，为了保证网络的可达性，会发生以下的过程: 内部BGP(ibgp)对等会在一个AS的路由器上运行 将BGP信息重新分发给运行在AS中的IGP协议 当BGP在属于两个不同AS的路由器之间运行时，这称为外部BGP (eBGP)。当BGP在路由器之间以相同的方式运行时，这称为iBGP 启用BGP路由 完成下面的配置以启用和配置BGP 假定你有两台路由器RTA和RTB，在第一个例子中，RTA和RTB在不通的AS中，在第二个例子中，两台路由器在一样的AS中 定义路由器进程和路由器所属的AS号。 使用下面的命令在路由器上启用BGP RTA# router bgp 100 RTB# router bgp 200 这些语句表明RTA运行BGP，属于AS100。RTB运行BGP，属于AS200 定义BGP邻居 BGP邻居结构表示试图通过BGP通信的路由器，BGP邻居的部分解释了这个过程 BGP邻居 路由器之间建立TCP连接后，两个BGP路由器成为邻居。为了让两个对等路由器开始交换路由更新，TCP连接是必不可少的 在TCP连接成功后，路由器会发送open信息来交换值，路由器交换的值包括AS号、路由器运行的BGP版本、BGP路由器ID和keepalive保持时间，在确认和接受这些值之后，会建立邻居，除了Established状态外，任何状态都表明这两个路由器没有成为邻居，并且路由器不能交换BGP更新。 使用neighbor命令建立TCP连接 neighbor ip-address remote-as number 命令中的number表示要连接到的路由器的AS号， ip-address为直接连接eBGP的下一跳地址，在ibgp中，ip-address可以是其它路由器的任何IP地址，在对等路由器上的neighbor命令后面的Ip地址要相互可达，可以使用扩展ping来验证可达性，扩展ping要使用neighbor的IP地址来作为ping的源地址，而不能使用路由器的数据包发出地址 如果BGP的配置有任何的变化，你必须重置邻居连接以使新的参数生效 clear ip bgp address clear ip bgp...","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-bgp-01/",
+        "teaser": null
       }]

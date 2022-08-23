@@ -1,4 +1,500 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-22T15:48:31+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">`Python 装饰器 - 02`</title><link href="/python-decorator-02/" rel="alternate" type="text/html" title="`Python 装饰器 - 02`" /><published>2022-08-22T00:00:00+08:00</published><updated>2022-08-22T00:00:00+08:00</updated><id>/python-decorator-02</id><content type="html" xml:base="/python-decorator-02/"><![CDATA[<p>Python装饰器介绍</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-23T13:04:13+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">路由交换 - BGP - 01</title><link href="/rs-bgp-01/" rel="alternate" type="text/html" title="路由交换 - BGP - 01" /><published>2022-08-23T00:00:00+08:00</published><updated>2022-08-23T00:00:00+08:00</updated><id>/rs-bgp-01</id><content type="html" xml:base="/rs-bgp-01/"><![CDATA[<p>BGP总结01</p>
+
+<h3 id="bgp如何工作">BGP如何工作?</h3>
+<p>BGP使用TCP 179端口作为传输协议，两台BGP路由器基于TCP建立连接，建立连接后的路由器成为对等(peer)，对等路由器通过交换信息打开和确认连接参数
+BGP路由器交换网络可达信息，信息主要指示出路由必须经过的完整路径，以便到达目标网络。使用BGP的AS号标记路径，用于构建无环的AS图，还显示了在何处应用路由策略，以便对路由行为实施一些限制
+为了交换BGP路由信息而形成TCP连接的任何两个路由器都是“对等”或“邻居”，BGP对等初始会交换完整的BGP路由表，交换之后，当路由表发生更改时，对等只会发送增量更新，BGP会对BGP表维持一个版本号，所有的BGP对等都会保持版本号一致，每当BGP路由信息发生更改而更新表时，版本号就会随之更改，keepalive数据包用来确保BGP对等之间的连接是活动的，通知包会在出现错误或特殊情况时发出</p>
+
+<h3 id="ebgp-和-ibgp">EBGP 和 IBGP</h3>
+
+<p>如果一个AS自治系统内有许多BGP路由器(speakers),这个AS可以为其它AS提供过境服务(传递路由)，如图所示，AS200 作为AS100和AS300的过境AS</p>
+
+<p>为了发送信息到外部的AS，必须要保证网络的可达性，为了保证网络的可达性，会发生以下的过程:</p>
+
+<ul>
+  <li>内部BGP(ibgp)对等会在一个AS的路由器上运行</li>
+  <li>将BGP信息重新分发给运行在AS中的IGP协议</li>
+</ul>
+
+<p>当BGP在属于两个不同AS的路由器之间运行时，这称为外部BGP (eBGP)。当BGP在路由器之间以相同的方式运行时，这称为iBGP</p>
+
+<p><img src="/assets/images/bgp/b1.png" /></p>
+
+<h3 id="启用bgp路由">启用BGP路由</h3>
+
+<p>完成下面的配置以启用和配置BGP</p>
+
+<p>假定你有两台路由器RTA和RTB，在第一个例子中，RTA和RTB在不通的AS中，在第二个例子中，两台路由器在一样的AS中</p>
+
+<p>定义路由器进程和路由器所属的AS号。 使用下面的命令在路由器上启用BGP</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA#
+router bgp 100
+
+RTB#
+router bgp 200
+</code></pre></div></div>
+
+<blockquote>
+  <p>这些语句表明RTA运行BGP，属于AS100。RTB运行BGP，属于AS200</p>
+</blockquote>
+
+<p>定义BGP邻居</p>
+
+<p>BGP邻居结构表示试图通过BGP通信的路由器，BGP邻居的部分解释了这个过程</p>
+
+<h3 id="bgp邻居">BGP邻居</h3>
+
+<p>路由器之间建立TCP连接后，两个BGP路由器成为邻居。为了让两个对等路由器开始交换路由更新，TCP连接是必不可少的</p>
+
+<p>在TCP连接成功后，路由器会发送open信息来交换值，路由器交换的值包括AS号、路由器运行的BGP版本、BGP路由器ID和keepalive保持时间，在确认和接受这些值之后，会建立邻居，除了Established状态外，任何状态都表明这两个路由器没有成为邻居，并且路由器不能交换BGP更新。</p>
+
+<p>使用neighbor命令建立TCP连接</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor ip-address remote-as number
+</code></pre></div></div>
+
+<p>命令中的number表示要连接到的路由器的AS号， ip-address为直接连接eBGP的下一跳地址，在ibgp中，ip-address可以是其它路由器的任何IP地址，在对等路由器上的neighbor命令后面的Ip地址要相互可达，可以使用扩展ping来验证可达性，扩展ping要使用neighbor的IP地址来作为ping的源地址，而不能使用路由器的数据包发出地址</p>
+
+<p>如果BGP的配置有任何的变化，你必须重置邻居连接以使新的参数生效</p>
+
+<ul>
+  <li>clear ip bgp address</li>
+  <li>clear ip bgp *</li>
+</ul>
+
+<blockquote>
+  <p>第一个命令的address 代表邻居的地址，第二个命令表示清楚所有的邻居连接</p>
+</blockquote>
+
+<p>默认情况下，BGP会话使用BGP 4版本并且向下兼容，如果需要，可以通过在路由器上强制设置BGP版本来实现邻居间的通信而避免协商，可以在路由器上使用下面的命令配置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor <span class="o">{</span>ip address | peer-group-name<span class="o">}</span> version value
+</code></pre></div></div>
+
+<p>这是一个neighbor命令配置的例子</p>
+
+<p><img src="/assets/images/bgp/b2.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA#
+router bgp 100
+neighbor 129.213.1.1 remote-as 200
+
+RTB#
+router bgp 200
+neighbor 129.213.1.2 remote-as 100
+neighbor 175.220.1.2 remote-as 200
+
+RTC#
+router bgp 200
+neighbor 175.220.212.1 remote-as 200
+</code></pre></div></div>
+
+<p>在这个例子中，RTA和RTB运行EBGP,RTB和RTC运行IBGP,  remote-as后面的as号码指向外部或者内部的AS，表示是EBGP或者IBGP，而且，EBGP对等是直连，IBGP对等没有直连，IBGP路由器不需要直连，单数，它们之间不许有一些IGP运行来确保两个邻居之间可达</p>
+
+<p>show ip bgp neighbors命令显示信息的样例</p>
+
+<blockquote>
+  <p>特别需要注意BGP的状态，除了Established，其它状态都代表对等(peers)之间没有UP</p>
+</blockquote>
+
+<blockquote>
+  <p>同样，注意下面几项:</p>
+  <ul>
+    <li>BGP的版本，4</li>
+    <li>远程路由器的router id，这个数字是路由器上最大的IP地址，或者是最高的环回接口(如果存在的话)</li>
+    <li>表的版本，表版本提供表的状态。每当新信息出现时，该表都会增加版本。一个不断增加的版本表示有一些路由抖动导致路由的不断更新</li>
+  </ul>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># show ip bgp neighbors</span>
+     BGP neighbor is 129.213.1.1, remote AS 200, external <span class="nb">link 
+     </span>BGP version 4, remote router ID 175.220.12.1 
+     BGP state <span class="o">=</span> Established, table version <span class="o">=</span> 3, up <span class="k">for </span>0:10:59 
+     Last <span class="nb">read </span>0:00:29, hold <span class="nb">time </span>is 180, keepalive interval is 60 seconds 
+     Minimum <span class="nb">time </span>between advertisement runs is 30 seconds 
+     Received 2828 messages, 0 notifications, 0 <span class="k">in </span>queue 
+     Sent 2826 messages, 0 notifications, 0 <span class="k">in </span>queue 
+     Connections established 11<span class="p">;</span> dropped 10 
+</code></pre></div></div>
+
+<h4 id="bgp-and-loopback-interfaces">BGP and Loopback Interfaces</h4>
+
+<p>在IBGP中通常使用loopback来定义邻居，但在EBGP中却不常见，通常，在IBGP中，使用loopback接口来确保邻居的IP地址保持正常，并且独立于正常运行的硬件。在eBGP的情况下，对等路由器经常具有直接连接，所以， 环回口不适用EBGP</p>
+
+<p>如果你在neighbor命令中使用loopback接口的IP地址，你需要在邻居路由器中敲一些额外的配置，邻居路由器需要通知BGP使用环回接口而不是物理接口来启动BGP邻居TCP连接，为了指明使用环回口，参考下面的命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor ip-address update-source interface
+</code></pre></div></div>
+
+<p>这个例子演示了命令的用法</p>
+
+<p><img src="/assets/images/bgp/b3.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
+     router bgp 100 
+     neighbor 190.225.11.1 remote-as 100 
+     neighbor 190.225.11.1 update-source loopback 1 
+RTB# 
+     router bgp 100 
+     neighbor 150.212.1.1 remote-as 100 
+</code></pre></div></div>
+
+<p>这个例子中，RTA和RTB运行IBGP，AS号是100。在neighbor命令中，RTB使用RTA的loopback接口，150.212.1.1，这种情况下，RTA必须强制BGP在TCP邻居连接中使用loopback IP地址作为源,为了可以执行这个动作(将loopback作为源)，RTA添加了  update-source interface-type interface-number命令，也就是 neighbor 190.225.11.1 update-source loopback 1，这句话表示，当BGP和邻居190.225.11.1 通话的时候，强制使用loopback接口的IP地址</p>
+
+<blockquote>
+  <p>RTA使用RTB的物理接口190.224.11.1，作为邻居，使用物理接口地址 RTB不需要任何其它的配置，有关完整的网络场景示例配置，请参考  <a href="https://www.cisco.com/en/US/tech/tk365/technologies_configuration_example09186a0080093f25.shtml">Sample Configuration for iBGP and eBGP With or Without a Loopback Address</a></p>
+</blockquote>
+
+<h3 id="ebgp-multihop">EBGP Multihop</h3>
+
+<p>有一些情况，思科路由器可以和不允许直连的其它路由器之间运行EBGP，为了实现这种连接，你可以使用EBGP多跳，EBGP多跳可以将两台无法直连的外部对等中间实现连接，多跳只可以在ebgp中实现，不支持ibgp，下面是ebgp 多跳的例子</p>
+
+<p><img src="/assets/images/bgp/b4.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
+router bgp 100 
+neighbor 180.225.11.1 remote-as 300 
+neighbor 180.225.11.1 ebgp-multihop 
+RTB# 
+router bgp 300 
+neighbor 129.213.1.2 remote-as 100
+</code></pre></div></div>
+
+<p>RTA显示没有直接连接的外部邻居，RTA需要使用 <a href="https://www.cisco.com/en/US/docs/ios/iproute_bgp/command/reference/irg_bgp3.html#wp1106590">neighbor ebgp-multihop</a>命令，在另一边，RTB指出直连的邻居，129.213.1.2，因为是直连，RTB不需要使用 neighbor ebgp-multihop命令，你还应该配置IGP或静态路由，以允许没有连接的邻居彼此连接。</p>
+
+<p><a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#ebgpmulithoploadbal">eBGP Multihop (Load Balancing)</a> 演示如何在使用EBGP平行连接的情况下使用BGP实现负载平衡。</p>
+
+<p>eBGP Multihop (Load Balancing)</p>
+
+<p><img src="/assets/images/bgp/b5.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
+int loopback 0 
+ip address 150.10.1.1 255.255.255.0 
+router bgp 100 
+neighbor 160.10.1.1 remote-as 200 
+neighbor 160.10.1.1 ebgp-multihop 
+neighbor 160.10.1.1 update-source loopback 0 
+network 150.10.0.0 
+ 
+ip route 160.10.0.0 255.255.0.0 1.1.1.2 
+ip route 160.10.0.0 255.255.0.0 2.2.2.2 
+RTB# 
+int loopback 0 
+ip address 160.10.1.1 255.255.255.0 
+router bgp 200 
+neighbor 150.10.1.1 remote-as 100 
+neighbor 150.10.1.1 update-source loopback 0 
+neighbor 150.10.1.1 ebgp-multihop 
+network 160.10.0.0 
+ 
+ip route 150.10.0.0 255.255.0.0 1.1.1.1 
+ip route 150.10.0.0 255.255.0.0 2.2.2.1
+</code></pre></div></div>
+
+<p>这个例子演示了使用 loopback interfaces, update-source, and ebgp-multihop,该示例是一个解决方案，目的是在并行串行线路上实现两个EBGP路由器之间的负载平衡。在正常情况下，BGP会选择一条线路发包，不会发生负载均衡的情况，但引入了环回口，EBGP的吓一跳是环回口，你使用静态路由，或者是IGP,引入两条相等cost路径到达目的地,RTA有两个选择到达下一跳160.10.1.1,一条路径通过1.1.1.2，另一条路径通过2.2.2.2。RTB也有同样的选择</p>
+
+<h3 id="route-maps">Route Maps</h3>
+
+<p>在BGP中大量使用route maps,在BGP的环境中，route map是一种控制和修改路由信息的方法。路由信息的控制和修改是通过定义从一个路由协议到另一个路由协议的路由重分发条件来实现的，或者路由信息的控制可以在BGP进入和发出的时候，route map的命令格式如下</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>route-map map-tag <span class="o">[[</span>permit | deny] | <span class="o">[</span>sequence-number]] 
+</code></pre></div></div>
+
+<p>map tag 是给route map起个名字。可以为相同名字或者route map定义多个实例，序列号用来指明在route map中的位置</p>
+
+<p>在这个例子中，为route map定义了两个实例，使用MYMAP的名字.洗一个实例使用10的序号，第二个实例使用20的序号</p>
+
+<ul>
+  <li>route-map MYMAP permit 10 (这里设置第一个条件)</li>
+  <li>route-map MYMAP permit 20 (这里设置第二个条件)</li>
+</ul>
+
+<p>当将route map应用到路由的出方向或者入方向，第一个条件通过实例10来应用，如果第一个条件没有满足，则会继续匹配更高序号的条件</p>
+
+<h4 id="match-and-set-configuration-commands">match and set Configuration Commands</h4>
+
+<p>每个route map 由一组match 和set配置命令组成。match指定匹配条件，set 指定一个set操作，如果match匹配则会执行set操作</p>
+
+<p>例如，你可以定义一个route map检查发出去的更新，如果匹配ip 1.1.1.1的地址，就把这个更新的metric设置为5</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>match ip address 1.1.1.1 
+<span class="nb">set </span>metric 5
+</code></pre></div></div>
+
+<p>现在，如果你匹配了条件并且添加了permit，就会对路由重新发布，进行set的操作，并且退出</p>
+
+<p>如果你匹配到了条件，并且添加了deny，没有对路由的重新分配或控制，并且退出</p>
+
+<p>如果match没有匹配到并且你设置了permit或者deny，会检查route map的下一个实例。例如，检查实例20。下一个实例检查将继续进行，直到断开或完成route map的所有实例。如果所有的实例都检查完却没有匹配上，则不会接受这条路由或者不转发这条路由</p>
+
+<p>在思科的IOS 11.2之前的版本，如果你使用route maps过滤BGP更新而不是使用在协议间使用重分发,在IP地址上使用match命令时，无法对入站进行筛选，出站可以过滤，11.2之后的版本没有这个限制</p>
+
+<p>相关的match命令</p>
+<ul>
+  <li>match as-path</li>
+  <li>match community</li>
+  <li>match clns</li>
+  <li>match interface</li>
+  <li>match ip address</li>
+  <li>match ip next-hop</li>
+  <li>match ip route-source</li>
+  <li>match metric</li>
+  <li>match route-type</li>
+  <li>match tag</li>
+</ul>
+
+<p>set相关</p>
+<ul>
+  <li>set as-path</li>
+  <li>set clns</li>
+  <li>set automatic-tag</li>
+  <li>set community</li>
+  <li>set interface</li>
+  <li>set default interface</li>
+  <li>set ip default next-hop</li>
+  <li>set level</li>
+  <li>set local-preference</li>
+  <li>set metric</li>
+  <li>set metric-type</li>
+  <li>set next-hop</li>
+  <li>set origin</li>
+  <li>set tag set weight</li>
+</ul>
+
+<p>看一个route map的例子</p>
+
+<p><img src="/assets/images/bgp/b6.png" /></p>
+
+<p>假设RTA和RTB运行路由信息协议(RIP)， RTA和RTC运行BGP。RTA通过BGP获取更新并将更新重新分发到RIP。假设RTA希望将170.10.0.0路由重分发到RTB设置度量为2，而所有其他路由的度量为5。在这种情况下，可以使用这种配置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA#
+router rip
+network 3.0.0.0
+network 2.0.0.0
+network 150.10.0.0
+passive-interface Serial0
+redistribute bgp 100 route-map SETMETRIC
+
+router bgp 100
+neighbor 2.2.2.3 remote-as 300
+network 150.10.0.0
+
+route-map SETMETRIC permit 10
+match ip-address 1
+<span class="nb">set </span>metric 2
+
+route-map SETMETRIC permit 20
+<span class="nb">set </span>metric 5
+
+access-list 1 permit 170.10.0.0 0.0.255.255
+
+</code></pre></div></div>
+
+<p>在本例中，如果路由匹配IP地址170.10.0.0，则该路由的度量为2。然后，退出route map。如果没有匹配，您将继续执行route map，会将其他所有的metric 设置为 5(也就是没有match 默认匹配所有)</p>
+
+<blockquote>
+  <p>不匹配任何匹配语句的路由会发生什么情况? 默认情况下，这些路由将被删除</p>
+</blockquote>
+
+<p>例子2</p>
+
+<p>假设，在示例1中，不希望AS100接受关于170.10.0.0的更新。当将IP地址作为基础匹配时，不能将route map应用于入站方向。因此，你必须在RTC上的出站方向使用route map:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC#
+
+router bgp 300
+network 170.10.0.0
+neighbor 2.2.2.2 remote-as 100
+neighbor 2.2.2.2 route-map STOPUPDATES out
+
+route-map STOPUPDATES permit 10
+match ip address 1
+
+access-list 1 deny 170.10.0.0 0.0.255.255
+access-list 1 permit 0.0.0.0 255.255.255.255
+</code></pre></div></div>
+
+<p>现在，已经对如何启动BGP和如何定义邻居已经比较熟悉了，接下来看看如何启动网络信息交换。
+使用BGP发送网络信息有多种方式。这些部分将逐一介绍这些方法</p>
+
+<ul>
+  <li>Network Command</li>
+  <li>Redistribution</li>
+  <li>Static Routes and Redistribution</li>
+</ul>
+
+<h3 id="network-command">network Command</h3>
+
+<p>network 的命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>network network-number <span class="o">[</span>mask network-mask]
+</code></pre></div></div>
+
+<p>network命令不同于IGRP和RIP，不要尝试在接口上运行BGP，network命令使用mask部分,因为BGP version 4 (BGP4)可以处理子网和上网。最多可以接受200个网络命令条目。</p>
+
+<p>如果路由器知道要宣告的网络，无论是连接的、静态的还是动态学习的，network命令都可以工作。</p>
+
+<p>一个network命令的例子</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA#
+router bgp 1
+network 192.213.0.0 mask 255.255.0.0
+ip route 192.213.0.0 255.255.0.0 null 0
+</code></pre></div></div>
+
+<p>这个例子表明路由器A为192.213.0.0/16生成一个网络条目。/16表示您使用了一个类C地址的超网络，并为前两个八位或前16位做了宣告</p>
+
+<blockquote>
+  <p>需要使用静态路由使路由器生成192.213.0.0，因为静态路由会在路由表中放入一个匹配的条目</p>
+</blockquote>
+
+<h4 id="redistribution">Redistribution</h4>
+
+<p>network命令是通过BGP宣告网络的一种方式，另外一种方式是重发布你的IGP到BGP中，IGP可以是IGRP\OSPF\RIP\EIGRP\或者其它协议.重发布看起来很恐怖，因为会将所有内部路由都转储到BGP中。其中一些路由是通过BGP学习的，所以不需要再次发送它们，要仔细筛选路由信息，以确保你想发布到internet的是唯一的路由，而不是发送有的的路由出去</p>
+
+<p>RTA宣布129.213.1.0,RTC宣布175.220.0.0。看看RTC配置</p>
+
+<p><img src="/assets/images/bgp/b7.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC#
+router eigrp 10
+network 175.220.0.0
+redistribute bgp 200
+default-metric 1000 100 250 100 1500
+
+router bgp 200
+neighbor 1.1.1.1 remote-as 300
+network 175.220.0.0 mask 255.255.0.0 
+</code></pre></div></div>
+
+<p>如果你使用重发布</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC#
+router eigrp 10
+network 175.220.0.0
+redistribute bgp 200
+default-metric 1000 100 250 100 1500
+
+router bgp 200
+neighbor 1.1.1.1 remote-as 300
+redistribute eigrp 10
+</code></pre></div></div>
+
+<blockquote>
+  <p>EIGRP注入129.213.1.0到BGP中</p>
+</blockquote>
+
+<p>这种重新分配会导致AS生成129.213.1.0网段。但你不是129.213.1.0的来源，AS100是源。因此，必须使用过滤器来防止AS将源从网络中删除。正确的配置是</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC#
+router eigrp 10
+network 175.220.0.0
+redistribute bgp 200
+default-metric 1000 100 250 100 1500
+
+router bgp 200
+neighbor 1.1.1.1 remote-as 300
+neighbor 1.1.1.1 distribute-list 1 out
+redistribute eigrp 10
+
+access-list 1 permit 175.220.0.0 0.0.255.255
+</code></pre></div></div>
+
+<p>可以使用access-list命令来控制源自AS200的网络</p>
+
+<p>OSPF在BGP中的重分布与在其他igp中的重分布略有不同，redistribute ospf 1 在router bgp下不会生效，需要指明 internal, external, 和nssa-external，参考  <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a00800943c5.shtml">Understanding Redistribution of OSPF Routes into BGP</a></p>
+
+<h4 id="static-routes-and-redistribution">Static Routes and Redistribution</h4>
+
+<p>可以使用静态路由去创建一个网络或者子网的路由，唯一不同的是BGP会认为这个路由是未知的或者是不完整的，下面是和重分布例子一样的结果</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC#
+router eigrp 10
+network 175.220.0.0
+redistribute bgp 200
+default-metric 1000 100 250 100 1500
+
+router bgp 200
+neighbor 1.1.1.1 remote-as 300
+redistribute static
+...
+ip route 175.220.0.0 255.255.255.0 null0
+....
+
+</code></pre></div></div>
+
+<p>null0接口会忽略掉这个包，所以，如果你接收到一个包，而且可以匹配到比175.220.0.0更精确的路由，路由器会通过这个更精确的路由发送包，然而，如果匹配不到，路由器会忽略这个包，这个办法是宣告超网的好办法</p>
+
+<p>本文讨论了如何使用不同的方法从AS中创建路由，请记住，这些路由是在BGP通过邻居学习的其他BGP路由之外生成的(内部或者外部),BGP将通过BGP从其它对等学习到的信息传递给其它对等，不同之处在于，路由是从network命令、重发布，或者是静态作为这些路由器的源，重分布一直都是将BGP引入IGP的方法</p>
+
+<p><img src="/assets/images/bgp/b8.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA#
+router bgp 100
+neighbor 150.10.20.2 remote-as 300
+network 150.10.0.0
+
+RTB#
+router bgp 200
+neighbor 160.10.20.2 remote-as 300
+network 160.10.0.0
+
+RTC#
+router bgp 300
+neighbor 150.10.20.1 remote-as 100
+neighbor 160.10.20.1 remote-as 200
+network 170.10.00
+</code></pre></div></div>
+
+<blockquote>
+  <p>在RTC中，不需要网络150.10.0.0或网络160.10.0.0，除非希望RTC生成这些网络，并在这些网络从AS100和AS200传入时传递这些网络。同样，区别在于network命令为这些相同的网络添加了一个额外的宣告，这表明AS300也是这些路由的来源</p>
+</blockquote>
+
+<blockquote>
+  <p>请记住，BGP不接受源自其自身的AS更新。确保无环的域间拓扑</p>
+</blockquote>
+
+<p>例如，例子中的AS200和AS100有一个直连，RTA产生一个路由150.10.0.0并且发送这个路由到AS300，然后，RTC将路由传递到AS200，源为AS100，RTB传递150.10.0.0到AS100，源仍然是AS100。RTA注意到更新源自它自己的AS，忽略了更新</p>
+
+<h3 id="ibgp">IBGP</h3>
+
+<p>可以使用IBGP作为其它AS的中转AS.通过学习EBGP，重新分布到IGP中，然后再重新分布到另一个AS中，可以实现同样的功能麽?是的，但是IBGP提供了更灵活和更有效的方法来在AS中交换信息,例如BGP提供一种方式控制local preference来作为AS的出口，<a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#localpref">Local Preference Attribute</a>提供更多的信息</p>
+
+<p><img src="/assets/images/bgp/b9.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA#
+router bgp 100
+neighbor 190.10.50.1 remote-as 100
+neighbor 170.10.20.2 remote-as 300
+network 150.10.0.0
+
+RTB#
+router bgp 100
+neighbor 150.10.30.1 remote-as 100
+neighbor 175.10.40.1 remote-as 400
+network 190.10.50.0
+
+RTC#
+router bgp 400
+neighbor 175.10.40.2 remote-as 100
+network 175.10.0.0
+</code></pre></div></div>
+
+<blockquote>
+  <p>记住，当一个自治系统中的BGP路由器接收到来自其它路由器的更新信息，收到更新信息的BGP路由器不会将该信息重新分发给其它BGP路由器(同一个AS内)，接收更新的BGP路由器会将信息重新分发给AS之外的其他BGP路由器，因此，在一个AS中要保持IBGP路由器之间的全互联</p>
+</blockquote>
+
+<p>上面的例子中，RTA和RTB运行IBGP，RTA和RTD运行IBGP，RTB的BGP的更新到RTA传到RTE，RTE是外部AS，更新不会传给RTD，因为是内部AS，因此，在RTB和RTD之间建立一个IBGP对等，以避免中断更新信息</p>
+
+<h4 id="the-bgp-decision-algorithm">The BGP Decision Algorithm</h4>
+
+<p>当BGP接收到来自不同自治系统的关于不同目的地的更新后，协议必须选择到达特定目的地的路径。BGP只选择一条路径到达特定的目的地。</p>
+
+<p>BGP基于不同的属性进行决策，例如next hop, administrative weights, local preference, route origin, path length, origin code, metric和其它属性</p>
+
+<p>BGP总是向邻居传递最佳路径,参考  <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094431.shtml">BGP Best Path Selection Algorithm</a></p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[BGP总结01]]></summary></entry><entry><title type="html">`Python 装饰器 - 02`</title><link href="/python-decorator-02/" rel="alternate" type="text/html" title="`Python 装饰器 - 02`" /><published>2022-08-22T00:00:00+08:00</published><updated>2022-08-22T00:00:00+08:00</updated><id>/python-decorator-02</id><content type="html" xml:base="/python-decorator-02/"><![CDATA[<p>Python装饰器介绍</p>
 
 <h3 id="装饰类">装饰类</h3>
 
@@ -3756,132 +4252,4 @@ namespace <span class="s2">"ns1"</span> deleted
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    systemctl start zabbix_agent2.service
     systemctl restart zabbix_agent2.service
     systemctl stop zabbix_agent2.service
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[ubuntu install zabbix agent2]]></summary></entry><entry><title type="html">`Centos 更新Glibc `</title><link href="/centos-update-glibc/" rel="alternate" type="text/html" title="`Centos 更新Glibc `" /><published>2022-08-16T00:00:00+08:00</published><updated>2022-08-16T00:00:00+08:00</updated><id>/centos-update-glibc</id><content type="html" xml:base="/centos-update-glibc/"><![CDATA[<p>写CBPF需要更新系统的Glibc</p>
-
-<h4 id="安装centos-release-scl">安装centos-release-scl</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install centos-release-scl
-</code></pre></div></div>
-
-<h4 id="安装7版本的devtoolset">安装7版本的devtoolset</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install devtoolset-7-gcc*
-</code></pre></div></div>
-
-<h4 id="激活">激活</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>scl enable devtoolset-7 bash
-</code></pre></div></div>
-
-<h4 id="查看gcc版本">查看gcc版本</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc -v
-</code></pre></div></div>
-
-<h4 id="下载安装包">下载安装包</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp
-wget https://ftp.gnu.org/gnu/glibc/glibc-2.23.tar.gz
-tar xf glibc-2.23.tar.gz
-cd glibc-2.23/
-mkdir glibc-build
-cd glibc-build 
-</code></pre></div></div>
-
-<h4 id="安装">安装</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../configure --prefix=/usr
-make
-make install
-</code></pre></div></div>
-
-<h4 id="验证">验证</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ldd --version
-ldd (GNU libc) 2.23
-
-Copyright (C) 2016 Free Software Foundation, Inc.
-
-This is free software; see the source for copying conditions.  There is NO
-
-warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-Written by Roland McGrath and Ulrich Drepper.
-</code></pre></div></div>
-
-<h4 id="排错">排错</h4>
-<p>1、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>setenv.c:279:6: error: suggest explicit braces to avoid ambiguous ‘else’ [-Werror=dangling-else]
-   if (ep != NULL)
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>增加{}
-</code></pre></div></div>
-
-<p>2、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>../sysdeps/ieee754/dbl-64/e_pow.c:469:13: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-       if (n &lt;&lt; (k - 20))
-           ~~^~~~~~~~~~~
-../sysdeps/ieee754/dbl-64/e_pow.c:471:17: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-       return (n &lt;&lt; (k - 21)) ? -1 : 1;
-              ~~~^~~~~~~~~~~~
-../sysdeps/ieee754/dbl-64/e_pow.c:477:9: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-   if (m &lt;&lt; (k + 12))
-       ~~^~~~~~~~~~~
-../sysdeps/ieee754/dbl-64/e_pow.c:479:13: error: ‘&lt;&lt;’ in boolean context, did you mean ‘&lt;’ ? [-Werror=int-in-bool-context]
-   return (m &lt;&lt; (k + 11)) ? -1 : 1;
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> if (n &lt;&lt; (k - 20)!=0)
-
- (n &lt;&lt; (k - 21)!=0) ? -1 : 1;
-
- (m &lt;&lt; (k + 12)!=0)
-
- (m &lt;&lt; (k + 11)!=0) ? -1 : 1;
-</code></pre></div></div>
-
-<p>3、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpc_parse.c: In function ‘get_prog_declaration’:
-rpc_parse.c:543:23: error: ‘%d’ directive writing between 1 and 10 bytes into a region of size 7 [-Werror=format-overflow=]
-     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
-                       ^~
-rpc_parse.c:543:20: note: directive argument in the range [1, 2147483647]
-     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
-                    ^~~~~~
-rpc_parse.c:543:5: note: ‘sprintf’ output between 5 and 14 bytes into a destination of size 10
-     sprintf (name, "%s%d", ARGNAME, num); /* default name of argument */
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>sprintf (name, "%s%d", ARGNAME, (short)num)
-</code></pre></div></div>
-
-<p>4、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nis_call.c:682:6: error: suggest explicit braces to avoid ambiguous ‘else’ [-Werror=dangling-else]
-   if (*loc != NULL)
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if (*loc != NULL)
-{ 
-  for (i = 1; i &lt; 16; ++i)
-    if (nis_server_cache[i] == NULL)
-  {
-    loc = &amp;nis_server_cache[i];
-    break;
-  }
-    else if ((*loc)-&gt;uses &gt; nis_server_cache[i]-&gt;uses
-         || ((*loc)-&gt;uses == nis_server_cache[i]-&gt;uses
-         &amp;&amp; (*loc)-&gt;expires &gt; nis_server_cache[i]-&gt;expires))
-  loc = &amp;nis_server_cache[i];
-}
-</code></pre></div></div>
-
-<p>5、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nss_nisplus/nisplus-alias.c:300:12: error: argument 1 null where non-null expected [-Werror=nonnull]
-   char buf[strlen (name) + 9 + tablename_len];
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>char buf[tablename_len + 9];
-snprintf (buf, sizeof (buf), "[name=],%s", tablename_val);
-</code></pre></div></div>
-
-<p>6、</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gawk '/\.gnu\.glibc-stub\./ { \
-	  sub(/\.gnu\.glibc-stub\./, "", $2); \
-	  stubs[$2] = 1; } \
-	END { for (s in stubs) print "#define __stub_" s }' &gt; /tmp/glibc-2.23/glibc-build/math/stubsT
-gawk: error while loading shared libraries: /lib64/libm.so.6: invalid ELF header
-make[2]: *** [/tmp/glibc-2.23/glibc-build/math/stubs] Error 127
-</code></pre></div></div>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /lib64
-unlink libm.so.6
-ln -s libm-2.23.so libm.so.6
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Linux" /><summary type="html"><![CDATA[写CBPF需要更新系统的Glibc]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[ubuntu install zabbix agent2]]></summary></entry></feed>
