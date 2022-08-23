@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-23T13:06:38+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">路由交换 - BGP - 01</title><link href="/rs-bgp-01/" rel="alternate" type="text/html" title="路由交换 - BGP - 01" /><published>2022-08-23T00:00:00+08:00</published><updated>2022-08-23T00:00:00+08:00</updated><id>/rs-bgp-01</id><content type="html" xml:base="/rs-bgp-01/"><![CDATA[<p>BGP总结01</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-23T13:07:52+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">路由交换 - BGP - 01</title><link href="/rs-bgp-01/" rel="alternate" type="text/html" title="路由交换 - BGP - 01" /><published>2022-08-23T00:00:00+08:00</published><updated>2022-08-23T00:00:00+08:00</updated><id>/rs-bgp-01</id><content type="html" xml:base="/rs-bgp-01/"><![CDATA[<p>BGP总结01</p>
 
 <h3 id="bgp如何工作">BGP如何工作?</h3>
 <p>BGP使用TCP 179端口作为传输协议，两台BGP路由器基于TCP建立连接，建立连接后的路由器成为对等(peer)，对等路由器通过交换信息打开和确认连接参数
@@ -24,7 +24,7 @@ BGP路由器交换网络可达信息，信息主要指示出路由必须经过�
 
 <p>完成下面的配置以启用和配置BGP</p>
 
-<p>假定你有两台路由器RTA和RTB，在第一个例子中，RTA和RTB在不通的AS中，在第二个例子中，两台路由器在一样的AS中</p>
+<p>假定你有两台路由器RTA和RTB，在第一个例子中，RTA和RTB在不同的AS中，在第二个例子中，两台路由器在一样的AS中</p>
 
 <p>定义路由器进程和路由器所属的AS号。 使用下面的命令在路由器上启用BGP</p>
 
