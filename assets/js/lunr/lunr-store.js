@@ -118,4 +118,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-bgp-01/",
         "teaser": null
+      },{
+        "title": "路由交换 - BGP - 02",
+        "excerpt":"BGP总结02 AS_PATH Attribute 当路由更新通过一个AS的时候，AS的编号会成为这个更新的前缀，AS_PATH属性实际上是一个路由为到达目的地而穿过的AS编号列表.AS_SET是已穿过的所有AS的有序数学集合{}。AS_SET示例: CIDR Example 2 (as-set) 在本小节的例子中，RTB在AS200中宣告网络190.10.0.0，当路由穿过AS300，RTC添加它自己的AS号码到network，所以当190.10.0.0到达RTA，这个network会被添加两个AS号码，第一个是200，然后是300，RTA上到达190.10.0.0是(300,200) 同样的过程也适用于170.10.0.0和180.10.0.0。RTB必须选择path (300,100)，为了达到170.10.0.0,RTB穿过AS300和AS100。RTC必须穿过路径(200)才能达到190.10.0.0，路径(100)才能达到170.10.0.0 Origin Attribute origin是一个强制性属性，定义路径信息的起源，origion属性能够假定三个值 IGP 网络层可达性信息(NLRI)是网络产生之初的内部信息。这通常发生在发出 bgp network 命令时。BGP表中的i表示IGP。 EBGP NLRI是通过外部网关协议(EGP)学习的。BGP表中的e表示EGP INCOMPLETE NLRI是未知的，或者是通过其他方式习得的。当您将路由从其他路由协议重新分发到BGP并且路由的起源不完整时，通常会产生不完整的情况。一个?在BGP表中表示INCOMPLETE RTA# router bgp 100 neighbor 190.10.50.1 remote-as 100 neighbor 170.10.20.2 remote-as 300 network 150.10.0.0 redistribute static ip route 190.10.0.0 255.255.0.0 null0 RTB# router bgp 100 neighbor 150.10.30.1...","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-bgp-02/",
+        "teaser": null
       }]

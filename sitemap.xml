@@ -81,6 +81,10 @@
 <lastmod>2022-08-23T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>/rs-bgp-02/</loc>
+<lastmod>2022-08-24T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>/about/</loc>
 </url>
 <url>
@@ -97,5 +101,8 @@
 </url>
 <url>
 <loc>/year-archive/</loc>
+</url>
+<url>
+<loc>/page2/</loc>
 </url>
 </urlset>
