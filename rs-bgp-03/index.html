@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>路由交换 - BGP案例 - 03 - 尹亚亮</title>
+<meta name="description" content="BGP案例03 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="路由交换 - BGP案例 - 03">
+<meta property="og:url" content="/rs-bgp-03/">
+
+
+  <meta property="og:description" content="BGP案例03 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-08-26T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/rs-bgp-03/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="路由交换 - BGP案例 - 03">
+    <meta itemprop="description" content="BGP案例03(参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)">
+    <meta itemprop="datePublished" content="2022-08-26T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/rs-bgp-03/" class="u-url" itemprop="url">路由交换 - BGP案例 - 03
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-08-26T00:00:00+08:00">August 26, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#bgp-filtering">BGP Filtering</a><ul><li><a href="#route-filtering">Route Filtering</a></li><li><a href="#path-filtering">Path Filtering</a></li></ul></li><li><a href="#as-regular-expression">AS Regular Expression</a><ul><li><a href="#bgp-community-filtering">BGP Community Filtering</a></li></ul></li><li><a href="#bgp-neighbors-and-route-maps">BGP Neighbors and Route Maps</a><ul><li><a href="#use-of-set-as-path-prepend-command">Use of set as-path prepend Command</a></li><li><a href="#bgp-peer-groups">BGP Peer Groups</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>BGP案例03
+(参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)</p>
+
+<h3 id="bgp-filtering">BGP Filtering</h3>
+
+<p>有很多方法可以控制发送和接收的BGP更新，可以使用路由信息作为基础过滤BGP更新，或者使用路径信息或社区作为基础过滤BGP更新，这些方法都可以得到一样的结果。使用哪种方法却决于特定的网络情况</p>
+
+<h4 id="route-filtering">Route Filtering</h4>
+
+<p><img src="/assets/images/bgp/b21.png" /></p>
+
+<p>为了可以限制路由学习到的更新或者宣告的更新，你可以从一个特定的邻居使用路由更新过滤BGP，可以定义一个控制访问列表，然后应用到一个邻居的更新中，配置命令:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor <span class="o">{</span>ip-address | peer-group-name<span class="o">}</span> distribute-list access-list-number <span class="o">{</span><span class="k">in</span> | out<span class="o">}</span> 
+</code></pre></div></div>
+
+<p>在这个例子中，RTB作为160.10.0.0的源网络发送 更新到RTC.如果RTC不想发布更新到AS100，需要定义一个访问控制列表，并把这个访问控制列表应用到路由进程配置中</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+router bgp 300 
+network 170.10.0.0 
+neighbor 3.3.3.3 remote-as 200 
+neighbor 2.2.2.2 remote-as 100 
+neighbor 2.2.2.2 distribute-list 1 out 
+
+access-list 1 deny 160.10.0.0 0.0.255.255 
+
+access-list 1 permit 0.0.0.0 255.255.255.255
+</code></pre></div></div>
+
+<blockquote>
+  <p>过滤掉所有到160.10.0.0的路由更新</p>
+</blockquote>
+
+<p>在处理一些超网的时候访问控制列表可能会有一些棘手</p>
+
+<p>假定，在本节的例子中，RTB有160.10.x.x的不同子网，您的目标是过滤更新并只发布160.0.0.0/8</p>
+
+<p>命令 access-list 1 permit 160.0.0.0 0.255.255.255允许60.0.0.0/8, 160.0.0.0/9，为了将更新限制为仅160.0.0.0/8，必须使用这种格式的扩展访问列表</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>access-list 101 permit ip 160.0.0.0 0.255.255.255 255.0.0.0 0.0.0.0.
+</code></pre></div></div>
+
+<p>这个列表只允许160.0.0.0/8</p>
+
+<p>参考 <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a00801310cb.shtml">How to Block One or More Networks From a BGP Peer</a> 里面有关如何过滤来自BGP对等的网络的示例配置，该方法使用具有标准和扩展访问控制列表(acl)的distribution -list命令，以及前缀列表过滤</p>
+
+<h4 id="path-filtering">Path Filtering</h4>
+
+<p>另外一种筛选的方法 path filtering</p>
+
+<p><img src="/assets/images/bgp/b22.png" /></p>
+
+<p>可以使用BGP AS 路径信息 在访问控制列表中应用到出方向和入方向的更新.本节的图中，你可以阻止160.10.0.0的更新去往AS100，若要阻止更新，在RTC上定义一个访问列表，防止将源自AS200的任何更新传输到AS100</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip as-path access-list access-list-number <span class="o">{</span>permit | deny<span class="o">}</span> as-regular-expression
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor <span class="o">{</span>ip-address | peer-group-name<span class="o">}</span> filter-list access-list-number <span class="o">{</span><span class="k">in</span> | out<span class="o">}</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+router bgp 300 
+neighbor 3.3.3.3 remote-as 200 
+neighbor 2.2.2.2 remote-as 100 
+neighbor 2.2.2.2 filter-list 1 out
+
+<span class="o">!</span><span class="nt">---</span> The 1 is the access list number below.
+
+ip as-path access-list 1 deny ^200<span class="nv">$ </span>
+ip as-path access-list 1 permit .<span class="k">*</span>
+</code></pre></div></div>
+
+<p>本例中的access-list 1命令强制拒绝包含以200开头和以200结尾的路径信息的任何更新，命令中的^200$是一个“正则表达式”，其中^表示匹配开头，$表示匹配结尾，因为RTB发送关于160.10.0.0的更新，其中包含以200开头和以200结尾的路径信息，更新与访问列表匹配。访问列表拒绝这些更新。</p>
+
+<p>：*是另一个正则表达式，.表示“任何字符”，<em>表示“该字符的重复”。所以.</em>表示任何路径信息，这是允许传输所有其他更新所必需的。</p>
+
+<p>如果不是使用^200$，而是使用^200，这本章的图中显示，AS400源的更新具有的路径信息(200,400)。200在前，400在后，这些更新与访问列表^200匹配，因为路径信息以200开头，访问列表阻止将这些更新传输到RTA</p>
+
+<p><a href="https://www.cisco.com/en/US/docs/ios/iproute_bgp/command/reference/irg_bgp5.html#wp1161831">show ip bgp regexp regular-expression</a>命令显示与正则表达式配置匹配的所有路径</p>
+
+<h3 id="as-regular-expression">AS Regular Expression</h3>
+
+<p>正则表达式是与输入字符串匹配的模式。当构建正则表达式时，指定输入必须匹配的字符串。对于BGP，指定一个字符串，该字符串包含输入必须匹配的路径信息</p>
+
+<p>在 <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#pathfilter">Path Filtering</a>的示例中，指定了字符串^200$。需要更新内部的路径信息来匹配字符串，以便做出决策</p>
+
+<p>正则表达式包括</p>
+
+<p>Range</p>
+
+<p>范围是左方括号和右方括号中的字符序列。例如[abcd]</p>
+
+<p>Atom</p>
+
+<p>Piece</p>
+
+<p>Branch</p>
+
+<p><a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094a92.shtml">Using Regular Expressions in BGP</a>   参考提供的样例</p>
+
+<h4 id="bgp-community-filtering">BGP Community Filtering</h4>
+
+<p>本文档介绍路由过滤和AS-path过滤的内容，还有一个方法是community过滤.  <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#communityattribute">Community Attribute</a>  讨论community，本章提供一些使用community的例子</p>
+
+<p><img src="/assets/images/bgp/b23.png" /></p>
+
+<p>在例子中，你希望RTB为BGP路由设置community属性，使RTC不能传递路由到外部对等体，使用no-export 的community 属性</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
+router bgp 200 
+network 160.10.0.0 
+neighbor 3.3.3.1 remote-as 300 
+neighbor 3.3.3.1 send-community 
+neighbor 3.3.3.1 route-map setcommunity out 
+
+route-map setcommunity 
+match ip address 1 
+<span class="nb">set </span>community no-export  
+
+access-list 1 permit 0.0.0.0 255.255.255.255 
+</code></pre></div></div>
+
+<blockquote>
+  <p>本例使用route-map setcommunity命令将community设置为no-export</p>
+</blockquote>
+
+<blockquote>
+  <p>要将此属性发送到RTC，必须使用 neighbor send-community 命令</p>
+</blockquote>
+
+<p>当RTC使用NO_EXPORT属性获取更新时，RTC不会将更新传播给外部对等方RTA</p>
+
+<p>在本例中，RTB将community属性设置为 100 200 additive。在向RTC传输之前会在已经存在的community 的值添加100 200</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
+   router bgp 200 
+   network 160.10.0.0 
+   neighbor 3.3.3.1 remote-as 300 
+   neighbor 3.3.3.1 send-community 
+   neighbor 3.3.3.1 route-map setcommunity out 
+
+route-map setcommunity 
+match ip address 2 
+<span class="nb">set </span>community 100 200 additive 
+
+access-list 2 permit 0.0.0.0 255.255.255.255
+</code></pre></div></div>
+
+<p>community list是route map的match子句中使用的一组communities。community list 允许根据不同的community 号码 列表 筛选或设置属性</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip community-list community-list-number <span class="o">{</span>permit | deny<span class="o">}</span> community-number
+</code></pre></div></div>
+
+<p>例如，你可以定义route map，match-on-community:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>route-map match-on-community 
+match community 10
+
+<span class="o">!</span><span class="nt">---</span> The community list number is 10.
+
+<span class="nb">set </span>weight 20
+ip community-list 10 permit 200 300
+
+<span class="o">!</span><span class="nt">---</span> The community number is 200 300.
+</code></pre></div></div>
+
+<p>可以使用community列表来过滤或设置某些参数，比如权重和度量，以community值作为基础进行某些更新,在本节的第二个示例中，RTB向RTC发送了一个community为100 200的更新。如果RTC希望以这些值为基础设置权重,可以做如下操作</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+router bgp 300 
+neighbor 3.3.3.3 remote-as 200 
+neighbor 3.3.3.3 route-map check-community <span class="k">in 
+
+</span>route-map check-community permit 10 
+match community 1 
+<span class="nb">set </span>weight 20 
+
+route-map check-community permit 20 
+match community 2 exact 
+<span class="nb">set </span>weight 10 
+
+route-map check-community permit 30 
+match community 3 
+
+ip community-list 1 permit 100 
+ip community-list 2 permit 200 
+ip community-list 3 permit internet 
+</code></pre></div></div>
+
+<p>任何在community属性中包含100的路由都匹配列表1，这条路由的权重设为20。任何只有200的路由匹配community的列表2，并且权重为20。关键字 exact 说明社区只由200个成员组成，没有其他内容。这里是最后一个社区列表，以确保不会删除其他更新，在默认情况下，任何不匹配的内容都会自动删除，关键字internet表示所有路由，因为所有路由都是internet社区的成员</p>
+
+<p>参考   <a href="https://www.cisco.com/en/US/tech/tk365/technologies_configuration_example09186a00801475b2.shtml">Using BGP Community Values to Control Routing Policy in an Upstream Provider Network</a> 获取更多信息</p>
+
+<h3 id="bgp-neighbors-and-route-maps">BGP Neighbors and Route Maps</h3>
+
+<p><img src="/assets/images/bgp/b24.png" /></p>
+
+<p>可以使用neighbor命令和route map结合在一起对进入或者出去的更新进行过滤或者设置参数</p>
+
+<p>当基于IP做匹配的时候，route maps 和 neighbor对进入的更新不起作用</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor ip-address route-map route-map-name
+</code></pre></div></div>
+
+<p>假定图中你想RTC只学习到AS200的网络，并且设置权重为20，可以联合使用neighbor和as-path 访问控制列表</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+   router bgp 300 
+   network 170.10.0.0 
+   neighbor 3.3.3.3 remote-as 200 
+   neighbor 3.3.3.3 route-map stamp <span class="k">in 
+
+</span>route-map stamp 
+match as-path 1 
+<span class="nb">set </span>weight 20 
+
+ip as-path access-list 1 permit ^200<span class="err">$</span>
+</code></pre></div></div>
+
+<p>任何源自AS200的更新都具有以200开头、以200结尾的路径信息。这些更新是允许的。任何其他更新都会丢弃。</p>
+
+<p>假定你希望实现下面的功能:</p>
+<ul>
+  <li>接受来自AS200的、权重为20的更新</li>
+  <li>删除源自AS400的更新</li>
+  <li>其他更新的权重为10</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+router bgp 300 
+network 170.10.0.0 
+neighbor 3.3.3.3 remote-as 200 
+neighbor 3.3.3.3 route-map stamp <span class="k">in 
+
+</span>route-map stamp permit 10 
+match as-path 1 
+<span class="nb">set </span>weight 20 
+
+route-map stamp permit 20 
+match as-path 2 
+<span class="nb">set </span>weight 10 
+
+ip as-path access-list 1 permit ^200<span class="nv">$ </span>
+ip as-path access-list 2 permit ^200 600 .<span class="k">*</span>
+</code></pre></div></div>
+
+<p>该语句将本地更新的权重设置为20。该语句还为AS400后面的更新设置了10的权重，并丢弃了来自AS400的更新。</p>
+
+<h4 id="use-of-set-as-path-prepend-command">Use of set as-path prepend Command</h4>
+
+<p>在某些情况下，为了操作BGP决策过程，必须要操作路径信息。可以在route map中使用下面的命令:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set </span>as-path prepend as-path# as-path#
+</code></pre></div></div>
+
+<p>假设，在  <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps">BGP Neighbors and Route Maps</a>  这章中，RTC向两个不同的ASs (AS100和AS200)宣告自己的网络170.10.0.0。当信息传播到AS600时，AS600到170.10.0.0网络在的路由器可以通过两条不同的路由到达。第一个路由是通过AS100(100,300)，第二个路由是通过AS400(400,200,300)。如果所有其它属性都相同，AS600选择最短路径并通过AS100选择路由</p>
+
+<p>AS300通过AS100获得所有的流量。如果您想从AS300改变路由，可以使通过AS100的路径看起来比通过AS400的路径长。如果将宣告中的现有路径信息作为数字添加到AS100中，则可以这样做。一个常见的做法是这样重复你自己的AS号码</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+router bgp 300 
+network 170.10.0.0 
+neighbor 2.2.2.2 remote-as 100 
+neighbor 2.2.2.2 route-map SETPATH out 
+
+route-map SETPATH 
+<span class="nb">set </span>as-path prepend 300 300
+</code></pre></div></div>
+
+<p>由于这个配置，AS600通过AS100接收关于170.10.0.0的更新，路径信息为:(100,300,300,300)。这个路径信息比AS600从AS400接收到的(400、200、300)长</p>
+
+<h4 id="bgp-peer-groups">BGP Peer Groups</h4>
+
+<p><img src="/assets/images/bgp/b25.png" /></p>
+
+<p>BGP对等组是一组具有相同更新策略的BGP邻居。roupte maps、distribute lists和filter lists通常设置更新策略。不能为每个单独的邻居定义相同的策略;但可以定义一个对等组名称并将这些策略分配给对等组</p>
+
+<p>对等组的成员继承对等组的所有配置选项。如果这些选项不影响出站更新，还可以配置成员覆盖这些选项。但只能覆盖入站设置的选项</p>
+
+<p>要定义对等组的命令:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor peer-group-name peer-group
+</code></pre></div></div>
+
+<p>此示例将对等组应用于内部和外部BGP邻居</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+   router bgp 300 
+   neighbor internalmap peer-group 
+   neighbor internalmap remote-as 300 
+   neighbor internalmap route-map SETMETRIC out 
+   neighbor internalmap filter-list 1 out 
+   neighbor internalmap filter-list 2 <span class="k">in 
+   </span>neighbor 5.5.5.2 peer-group internalmap 
+   neighbor 5.6.6.2 peer-group internalmap 
+   neighbor 3.3.3.2 peer-group internalmap 
+   neighbor 3.3.3.2 filter-list 3 <span class="k">in</span>
+</code></pre></div></div>
+
+<p>这个配置定义了一个名为internalmap的对等组。该配置为组定义了一些策略，例如将度量设置为5的route map SETMETRIC和两个不同的filter-list 1和2。该配置将对等组应用于所有内部邻居RTE、RTF和RTG。此外，该配置还为邻居RTE定义了一个单独的列表3。此列表覆盖对等组中的列表2</p>
+
+<blockquote>
+  <p>只能覆盖影响入站更新的选项</p>
+</blockquote>
+
+<p>现在，看看如何使用外部邻居的对等组。可以使用对等组externalmap配置RTC，并将对等组应用于外部邻居</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+   router bgp 300 
+   neighbor externalmap peer-group 
+   neighbor externalmap route-map SETMETRIC 
+   neighbor externalmap filter-list 1 out 
+   neighbor externalmap filter-list 2 <span class="k">in 
+   </span>neighbor 2.2.2.2 remote-as 100 
+   neighbor 2.2.2.2 peer-group externalmap 
+   neighbor 4.4.4.2 remote-as 600 
+   neighbor 4.4.4.2 peer-group externalmap 
+   neighbor 1.1.1.2 remote-as 200 
+   neighbor 1.1.1.2 peer-group externalmap 
+   neighbor 1.1.1.2 filter-list 3 <span class="k">in</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>在这些配置中，将remote定义为对等组之外的语句，因为必须定义不同的外部ASs</p>
+</blockquote>
+
+<p>更多关于对等体组的信息请参考 <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080093fb7.shtml">BGP Peer Groups</a>.</p>
+
+<blockquote>
+  <p>在Cisco IOS软件发布12.0(24)S中，Cisco引入了BGP动态更新对等组特性。该功能也可以在以后的Cisco IOS软件版本中使用。该特性引入了一种新的算法，详细信息参考  <a href="https://www.cisco.com/univercd/cc/td/doc/product/software/ios120/120newft/120limit/120s/120s24/s_bgpdpg.htm">BGP Dynamic Update Peer-Groups</a></p>
+</blockquote>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#rs" class="page__taxonomy-item p-category" rel="tag">RS</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-08-26T00:00:00+08:00">August 26, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2+-+BGP%E6%A1%88%E4%BE%8B+-+03%20%2Frs-bgp-03%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Frs-bgp-03%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Frs-bgp-03%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/rs-bgp-02/" class="pagination--pager" title="路由交换 - BGP案例 - 02
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>
