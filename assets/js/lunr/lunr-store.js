@@ -125,6 +125,12 @@ var store = [{
         "url": "/rs-bgp-02/",
         "teaser": null
       },{
+        "title": "etcd集群监控",
+        "excerpt":"etcd集群监控   系统  Centos 7   测试接口   curl --cert /opt/etcd/ssl/server.pem --key /opt/etcd/ssl/server-key.pem https://10.0.2.45:2379/metrics --insecure   prometheus 配置   添加 etcd主机组 prometheus.yml    - job_name: \"etcd cluster\"     scheme: https     static_configs:       - targets: [\"10.0.2.44:2379\",\"10.0.2.45:2379\",\"10.0.2.46:2379\"]     tls_config:       insecure_skip_verify: true       cert_file: \"/data/config/oss/prometheus/etcd_ca/server.pem\"       key_file: \"/data/config/oss/prometheus/etcd_ca/server-key.pem\"   ","categories": [],
+        "tags": ["Monitor"],
+        "url": "/monitor-etcd/",
+        "teaser": null
+      },{
         "title": "路由交换 - BGP案例 - 03",
         "excerpt":"BGP案例03 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps) BGP Filtering 有很多方法可以控制发送和接收的BGP更新，可以使用路由信息作为基础过滤BGP更新，或者使用路径信息或社区作为基础过滤BGP更新，这些方法都可以得到一样的结果。使用哪种方法却决于特定的网络情况 Route Filtering 为了可以限制路由学习到的更新或者宣告的更新，你可以从一个特定的邻居使用路由更新过滤BGP，可以定义一个控制访问列表，然后应用到一个邻居的更新中，配置命令: neighbor {ip-address | peer-group-name} distribute-list access-list-number {in | out} 在这个例子中，RTB作为160.10.0.0的源网络发送 更新到RTC.如果RTC不想发布更新到AS100，需要定义一个访问控制列表，并把这个访问控制列表应用到路由进程配置中 RTC# router bgp 300 network 170.10.0.0 neighbor 3.3.3.3 remote-as 200 neighbor 2.2.2.2 remote-as 100 neighbor 2.2.2.2 distribute-list 1 out access-list 1 deny 160.10.0.0 0.0.255.255 access-list 1 permit 0.0.0.0 255.255.255.255 过滤掉所有到160.10.0.0的路由更新 在处理一些超网的时候访问控制列表可能会有一些棘手...","categories": [],
         "tags": ["RS"],
