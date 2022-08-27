@@ -138,7 +138,7 @@ var store = [{
         "teaser": null
       },{
         "title": "php 配置fcgi 获取监控数据",
-        "excerpt":"etcd集群监控 安装 在 centos上可以通过下面的方式安装 yum --enablerepo=epel install fcgi FasdCGI在命令行访问需要通过配置环境变量,连接到一个FastCGI接口,需要有–bind和–conect参数: cgi-fcgi -bind -connect 127.0.0.1:端口 配置 php-fpm的conf 需要配置 pm.status_path = /status listen = 61185 listen.allowed_clients = 127.0.0.1 测试 SCRIPT_NAME=/status SCRIPT_FILENAME=/status REQUEST_METHOD=GET QUERY_STRING=xml cgi-fcgi -bind -connect 127.0.0.1:61185 Expires: Thu, 01 Jan 1970 00:00:00 GMT Cache-Control: no-cache, no-store, must-revalidate, max-age=0 Content-Type: text/xml &lt;?xml version=\"1.0\"...","categories": [],
+        "excerpt":"规避Nginx,通过fcgi接口取值 安装 在 centos上可以通过下面的方式安装 yum --enablerepo=epel install fcgi FasdCGI在命令行访问需要通过配置环境变量,连接到一个FastCGI接口,需要有–bind和–conect参数: cgi-fcgi -bind -connect 127.0.0.1:端口 配置 php-fpm的conf 需要配置 pm.status_path = /status listen = 61185 listen.allowed_clients = 127.0.0.1 测试 SCRIPT_NAME=/status SCRIPT_FILENAME=/status REQUEST_METHOD=GET QUERY_STRING=xml cgi-fcgi -bind -connect 127.0.0.1:61185 Expires: Thu, 01 Jan 1970 00:00:00 GMT Cache-Control: no-cache, no-store, must-revalidate, max-age=0 Content-Type: text/xml &lt;?xml version=\"1.0\"...","categories": [],
         "tags": ["Monitor"],
         "url": "/monitor-php/",
         "teaser": null

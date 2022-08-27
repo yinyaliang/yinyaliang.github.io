@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-27T22:05:35+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">php 配置fcgi 获取监控数据</title><link href="/monitor-php/" rel="alternate" type="text/html" title="php 配置fcgi 获取监控数据" /><published>2022-08-27T00:00:00+08:00</published><updated>2022-08-27T00:00:00+08:00</updated><id>/monitor-php</id><content type="html" xml:base="/monitor-php/"><![CDATA[<p>etcd集群监控</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-27T22:29:29+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">php 配置fcgi 获取监控数据</title><link href="/monitor-php/" rel="alternate" type="text/html" title="php 配置fcgi 获取监控数据" /><published>2022-08-27T00:00:00+08:00</published><updated>2022-08-27T00:00:00+08:00</updated><id>/monitor-php</id><content type="html" xml:base="/monitor-php/"><![CDATA[<p>规避Nginx,通过fcgi接口取值</p>
 
 <h3 id="安装">安装</h3>
 
@@ -69,7 +69,7 @@ Content-Type: text/xml
 
 <h3 id="排错">排错</h3>
 
-<p>如果上面的命令返回空,将listen.allowed_clients的127.0.0.1放在第一位</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[etcd集群监控]]></summary></entry><entry><title type="html">etcd集群监控</title><link href="/monitor-etcd/" rel="alternate" type="text/html" title="etcd集群监控" /><published>2022-08-26T00:00:00+08:00</published><updated>2022-08-26T00:00:00+08:00</updated><id>/monitor-etcd</id><content type="html" xml:base="/monitor-etcd/"><![CDATA[<p>etcd集群监控</p>
+<p>如果上面的命令返回空,将listen.allowed_clients的127.0.0.1放在第一位</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[规避Nginx,通过fcgi接口取值]]></summary></entry><entry><title type="html">etcd集群监控</title><link href="/monitor-etcd/" rel="alternate" type="text/html" title="etcd集群监控" /><published>2022-08-26T00:00:00+08:00</published><updated>2022-08-26T00:00:00+08:00</updated><id>/monitor-etcd</id><content type="html" xml:base="/monitor-etcd/"><![CDATA[<p>etcd集群监控</p>
 
 <h3 id="系统">系统</h3>
 <p>Centos 7</p>
