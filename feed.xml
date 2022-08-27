@@ -1,4 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-26T18:53:41+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">etcd集群监控</title><link href="/monitor-etcd/" rel="alternate" type="text/html" title="etcd集群监控" /><published>2022-08-26T00:00:00+08:00</published><updated>2022-08-26T00:00:00+08:00</updated><id>/monitor-etcd</id><content type="html" xml:base="/monitor-etcd/"><![CDATA[<p>etcd集群监控</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-27T21:47:44+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">php 配置fcgi 监控状态</title><link href="/monitor-php/" rel="alternate" type="text/html" title="php 配置fcgi 监控状态" /><published>2022-08-27T00:00:00+08:00</published><updated>2022-08-27T00:00:00+08:00</updated><id>/monitor-php</id><content type="html" xml:base="/monitor-php/"><![CDATA[<p>etcd集群监控</p>
+
+<h3 id="安装">安装</h3>
+
+<p>在 centos上可以通过下面的方式安装</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">--enablerepo</span><span class="o">=</span>epel <span class="nb">install </span>fcgi
+</code></pre></div></div>
+
+<p>FasdCGI在命令行访问需要通过配置环境变量,连接到一个FastCGI接口,需要有–bind和–conect参数:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cgi-fcgi -bind -connect 127.0.0.1:端口
+</code></pre></div></div>
+
+<h3 id="配置">配置</h3>
+
+<p>php-fpm的conf 需要配置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pm.status_path <span class="o">=</span> /status
+listen <span class="o">=</span> 61185
+listen.allowed_clients <span class="o">=</span> 127.0.0.1
+</code></pre></div></div>
+
+<h3 id="测试">测试</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">SCRIPT_NAME</span><span class="o">=</span>/status <span class="nv">SCRIPT_FILENAME</span><span class="o">=</span>/status <span class="nv">REQUEST_METHOD</span><span class="o">=</span>GET <span class="nv">QUERY_STRING</span><span class="o">=</span>xml cgi-fcgi <span class="nt">-bind</span> <span class="nt">-connect</span> 127.0.0.1:61185
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: no-cache, no-store, must-revalidate, max-age<span class="o">=</span>0
+Content-Type: text/xml
+
+&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> ?&gt;
+&lt;status&gt;
+&lt;pool&gt;www&lt;/pool&gt;
+&lt;process-manager&gt;dynamic&lt;/process-manager&gt;
+&lt;start-time&gt;1661607804&lt;/start-time&gt;
+&lt;start-since&gt;135&lt;/start-since&gt;
+&lt;accepted-conn&gt;21&lt;/accepted-conn&gt;
+&lt;listen-queue&gt;0&lt;/listen-queue&gt;
+&lt;max-listen-queue&gt;0&lt;/max-listen-queue&gt;
+&lt;listen-queue-len&gt;128&lt;/listen-queue-len&gt;
+&lt;idle-processes&gt;5&lt;/idle-processes&gt;
+&lt;active-processes&gt;1&lt;/active-processes&gt;
+&lt;total-processes&gt;6&lt;/total-processes&gt;
+&lt;max-active-processes&gt;1&lt;/max-active-processes&gt;
+&lt;max-children-reached&gt;0&lt;/max-children-reached&gt;
+&lt;slow-requests&gt;0&lt;/slow-requests&gt;
+&lt;/status&gt;
+</code></pre></div></div>
+
+<p>以上返回值表示正常获取到值,参数还可以支持 json,xml,html</p>
+
+<h3 id="排错">排错</h3>
+
+<p>如果上面的命令返回空,将listen.allowed_clients的127.0.0.1放在第一位</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[etcd集群监控]]></summary></entry><entry><title type="html">etcd集群监控</title><link href="/monitor-etcd/" rel="alternate" type="text/html" title="etcd集群监控" /><published>2022-08-26T00:00:00+08:00</published><updated>2022-08-26T00:00:00+08:00</updated><id>/monitor-etcd</id><content type="html" xml:base="/monitor-etcd/"><![CDATA[<p>etcd集群监控</p>
 
 <h3 id="系统">系统</h3>
 <p>Centos 7</p>
@@ -3544,513 +3597,4 @@ GRANT EXECUTE ON FUNCTION pg_catalog.pg_ls_waldir<span class="o">()</span> TO zb
 <p>监控页面添加主机挂载对应pgsql模板</p>
 
 <h3 id="参考">参考</h3>
-<p>https://www.postgresql.org/download/linux/redhat/</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[测试pgsql监控]]></summary></entry><entry><title type="html">使用kubeadm 升级Kubernetes</title><link href="/kubernetes-kubeadm-update/" rel="alternate" type="text/html" title="使用kubeadm 升级Kubernetes" /><published>2022-08-18T00:00:00+08:00</published><updated>2022-08-18T00:00:00+08:00</updated><id>/kubernetes-kubeadm-update</id><content type="html" xml:base="/kubernetes-kubeadm-update/"><![CDATA[<p>升级kubernetes版本</p>
-
-<h3 id="安装一套v1201集群">安装一套v1.20.1集群</h3>
-
-<h4 id="创建两台主机">创建两台主机</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th>主机名</th>
-      <th>IP地址</th>
-      <th>内存需求</th>
-      <th>操作系统</th>
-      <th>角色</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>umaster</td>
-      <td>192.168.122.240</td>
-      <td>4GB</td>
-      <td>centos 7</td>
-      <td>master</td>
-    </tr>
-    <tr>
-      <td>unode1</td>
-      <td>192.168.122.241</td>
-      <td>4GB</td>
-      <td>centos 7</td>
-      <td>node</td>
-    </tr>
-  </tbody>
-</table>
-
-<h4 id="初始化配置">初始化配置</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virt-install --name umaster --ram 4096 --vcpus=4 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso  --disk path=/home/kvm/umaster.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60021 --vnclisten=0.0.0.0
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>virt-install --name unode1 --ram 4096 --vcpus=2 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso  --disk path=/home/kvm/unode1.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60022 --vnclisten=0.0.0.0
-</code></pre></div></div>
-
-<p>所有节点初始化</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># master node 关闭防火墙  </span>
-systemctl stop firewalld 
-systemctl disable firewalld 
- 
-<span class="c"># master node 关闭selinux   </span>
-<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s/enforcing/disabled/'</span> /etc/selinux/config  <span class="c"># 永久 </span>
-setenforce 0  <span class="c"># 临时 </span>
- 
-<span class="c"># master node 关闭swap </span>
-swapoff <span class="nt">-a</span>  <span class="c"># 临时 </span>
-<span class="nb">sed</span> <span class="nt">-ri</span> <span class="s1">'s/.*swap.*/#&amp;/'</span> /etc/fstab    <span class="c"># 永久 </span>
- 
-<span class="c"># master node 时间同步 </span>
-yum <span class="nb">install </span>ntpdate <span class="nt">-y</span> 
-ntpdate time.windows.com
-
-<span class="c"># master node 安装vim wget</span>
-yum <span class="nt">-y</span> <span class="nb">install </span>vim wget 
- 
-<span class="c">#添加hosts </span>
-<span class="nb">cat</span> <span class="o">&gt;&gt;</span> /etc/hosts <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> 
-192.168.122.240 master
-192.168.122.241 node1 
-</span><span class="no">EOF 
- 
-</span><span class="c"># 将桥接的IPv4流量传递到iptables的链 </span>
-<span class="nb">cat</span> <span class="o">&gt;</span> /etc/sysctl.d/k8s.conf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> 
-net.bridge.bridge-nf-call-ip6tables = 1 
-net.bridge.bridge-nf-call-iptables = 1 
-</span><span class="no">EOF 
-
-</span>sysctl <span class="nt">--system</span>  <span class="c"># 生效 </span>
- 
-<span class="c"># master 设置 </span>
-hostnamectl set-hostname master
-<span class="c"># node1 设置</span>
-hostnamectl set-hostname node1
-<span class="c"># node2 设置</span>
-hostnamectl set-hostname node2
-
-<span class="c"># 安装docker</span>
-bash &lt;<span class="o">(</span>wget <span class="nt">-O-</span> get.docker.com<span class="o">)</span>
-
-<span class="c">#启动并设置开机启动</span>
-systemctl daemon-reload
-systemctl start docker
-systemctl <span class="nb">enable </span>docker
-systemctl status docker
-
-<span class="c">#修改配置</span>
-<span class="nb">cat</span> <span class="o">&gt;</span> /etc/docker/daemon.json <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
-{
-  "registry-mirrors": ["https://b9pmyelo.mirror.aliyuncs.com"]
-}
-</span><span class="no">EOF
-
-</span><span class="c">#重启</span>
-systemctl restart docker
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mv</span> /etc/yum.repos.d/<span class="k">*</span> /tmp/
-wget <span class="nt">-P</span> /etc/yum.repos.d/ ftp://ftp.rhce.cc/k8s/<span class="k">*</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> kubelet-1.20.1-0 kubeadm-1.20.1-0 kubectl-1.20.1-0 <span class="nt">--disableexcludes</span><span class="o">=</span>kubernetes
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl restart kubelet
-systemctl <span class="nb">enable </span>kubelet
-</code></pre></div></div>
-
-<h4 id="导出配置">导出配置</h4>
-
-<p>master上到传到umaster，修改版本</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl get cm <span class="nt">-o</span> yaml <span class="nt">-n</span> kube-system kubeadm-config
-apiVersion: v1
-data:
-  ClusterConfiguration: |
-    apiServer:
-      extraArgs:
-        authorization-mode: Node,RBAC
-      timeoutForControlPlane: 4m0s
-    apiVersion: kubeadm.k8s.io/v1beta2
-    certificatesDir: /etc/kubernetes/pki
-    clusterName: kubernetes
-    controllerManager: <span class="o">{}</span>
-    dns:
-      <span class="nb">type</span>: CoreDNS
-    etcd:
-      <span class="nb">local</span>:
-        dataDir: /var/lib/etcd
-    imageRepository: registry.aliyuncs.com/google_containers
-    kind: ClusterConfiguration
-    kubernetesVersion: v1.20.1
-    networking:
-      dnsDomain: cluster.local
-      podSubnet: 10.244.0.0/16
-      serviceSubnet: 10.96.0.0/12
-    scheduler: <span class="o">{}</span>
-  ClusterStatus: |
-    apiEndpoints:
-      master:
-        advertiseAddress: 192.168.122.200
-        bindPort: 6443
-    apiVersion: kubeadm.k8s.io/v1beta2
-    kind: ClusterStatus
-kind: ConfigMap
-metadata:
-  creationTimestamp: <span class="s2">"2022-07-10T12:08:39Z"</span>
-  name: kubeadm-config
-  namespace: kube-system
-  resourceVersion: <span class="s2">"206"</span>
-  uid: ccf5abbc-caed-4528-a572-9422a71112a1
-</code></pre></div></div>
-
-<p>创建集群</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm init <span class="nt">--config</span><span class="o">=</span>kubeadm-config.yaml
-</code></pre></div></div>
-
-<p>umaster执行</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$HOME</span>/.kube
-  <span class="nb">sudo cp</span> <span class="nt">-i</span> /etc/kubernetes/admin.conf <span class="nv">$HOME</span>/.kube/config
-  <span class="nb">sudo chown</span> <span class="si">$(</span><span class="nb">id</span> <span class="nt">-u</span><span class="si">)</span>:<span class="si">$(</span><span class="nb">id</span> <span class="nt">-g</span><span class="si">)</span> <span class="nv">$HOME</span>/.kube/config
-</code></pre></div></div>
-
-<p>unode1加入集群</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubeadm <span class="nb">join </span>192.168.122.240:6443 <span class="nt">--token</span> vy5ws2.p3e19ircj05jfoyo <span class="se">\</span>
-    <span class="nt">--discovery-token-ca-cert-hash</span> sha256:6441dd3e73c23c9cc85c62454f1786d820f891a8fd73263f500fdf2180c4efb8 
-</code></pre></div></div>
-
-<h4 id="安装calico">安装calico</h4>
-
-<p>master上执行</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
-wget https://docs.projectcalico.org/v3.19/manifests/calico.yaml <span class="nt">--no-check-certificate</span>
-</code></pre></div></div>
-
-<p>修改</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">CALICO_IPV4POOL_CIDR</span>
-              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">192.168.0.0/16"</span>
-</code></pre></div></div>
-
-<p>为</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">CALICO_IPV4POOL_CIDR</span>
-              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">10.244.0.0/16"</span>
-</code></pre></div></div>
-
-<p>下载镜像</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@master tmp]# grep image calico.yaml 
-          image: docker.io/calico/cni:v3.19.4
-          image: docker.io/calico/cni:v3.19.4
-          image: docker.io/calico/pod2daemon-flexvol:v3.19.4
-          image: docker.io/calico/node:v3.19.4
-          image: docker.io/calico/kube-controllers:v3.19.4
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>i <span class="k">in </span>calico/cni:v3.19.4 calico/pod2daemon-flexvol:v3.19.4  calico/node:v3.19.4 calico/kube-controllers:v3.19.4 <span class="p">;</span><span class="k">do </span>docker pull <span class="nv">$i</span><span class="p">;</span><span class="k">done</span>
-</code></pre></div></div>
-
-<p>安装calico</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl apply <span class="nt">-f</span> calico.yaml
-</code></pre></div></div>
-
-<p>查看</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubectl get nodes
-NAME      STATUS   ROLES                  AGE   VERSION
-umaster   Ready    control-plane,master   16m   v1.20.1
-unode1    Ready    &lt;none&gt;                 15m   v1.20.1
-
-<span class="o">[</span>root@umaster tmp]# kubectl version <span class="nt">--short</span>
-Client Version: v1.20.1
-Server Version: v1.20.1
-</code></pre></div></div>
-
-<h3 id="步骤">步骤</h3>
-
-<p>节点  先升级master  再升级worker  多台master，先升级master 在升级worker</p>
-
-<p>软件  先升级kubeadm 然后执行 kubeadm upgrade,再升级 kubelet和kubectl</p>
-
-<h2 id="升级master">升级master</h2>
-
-<p>确定源里的kubeadm的可用版本</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum list <span class="nt">--showduplicates</span> kubeadm
-</code></pre></div></div>
-
-<h4 id="升级kubeadm">升级kubeadm</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> <span class="nb">install </span>kubeadm-1.21.1-0 <span class="nt">--disableexcludes</span><span class="o">=</span>kubernetes
-</code></pre></div></div>
-
-<p>验证</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubeadm version
-kubeadm version: &amp;version.Info<span class="o">{</span>Major:<span class="s2">"1"</span>, Minor:<span class="s2">"21"</span>, GitVersion:<span class="s2">"v1.21.1"</span>, GitCommit:<span class="s2">"5e58841cce77d4bc13713ad2b91fa0d961e69192"</span>, GitTreeState:<span class="s2">"clean"</span>, BuildDate:<span class="s2">"2021-05-12T14:17:27Z"</span>, GoVersion:<span class="s2">"go1.16.4"</span>, Compiler:<span class="s2">"gc"</span>, Platform:<span class="s2">"linux/amd64"</span><span class="o">}</span>
-</code></pre></div></div>
-
-<h4 id="查看集群是否需要升级以及可以升级的版本">查看集群是否需要升级,以及可以升级的版本</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubeadm upgrade plan
-<span class="o">[</span>upgrade/config] Making sure the configuration is correct:
-<span class="o">[</span>upgrade/config] Reading configuration from the cluster...
-<span class="o">[</span>upgrade/config] FYI: You can look at this config file with <span class="s1">'kubectl -n kube-system get cm kubeadm-config -o yaml'</span>
-<span class="o">[</span>preflight] Running pre-flight checks.
-<span class="o">[</span>upgrade] Running cluster health checks
-<span class="o">[</span>upgrade] Fetching available versions to upgrade to
-<span class="o">[</span>upgrade/versions] Cluster version: v1.20.1
-<span class="o">[</span>upgrade/versions] kubeadm version: v1.21.1
-I0710 23:34:23.085584    1579 version.go:254] remote version is much newer: v1.24.2<span class="p">;</span> falling back to: stable-1.21
-<span class="o">[</span>upgrade/versions] Target version: v1.21.14
-<span class="o">[</span>upgrade/versions] Latest version <span class="k">in </span>the v1.20 series: v1.20.15
-
-Components that must be upgraded manually after you have upgraded the control plane with <span class="s1">'kubeadm upgrade apply'</span>:
-COMPONENT   CURRENT       TARGET
-kubelet     2 x v1.20.1   v1.20.15
-
-Upgrade to the latest version <span class="k">in </span>the v1.20 series:
-
-COMPONENT                 CURRENT    TARGET
-kube-apiserver            v1.20.1    v1.20.15
-kube-controller-manager   v1.20.1    v1.20.15
-kube-scheduler            v1.20.1    v1.20.15
-kube-proxy                v1.20.1    v1.20.15
-CoreDNS                   1.7.0      v1.8.0
-etcd                      3.4.13-0   3.4.13-0
-
-You can now apply the upgrade by executing the following <span class="nb">command</span>:
-
-        kubeadm upgrade apply v1.20.15
-
-_____________________________________________________________________
-
-Components that must be upgraded manually after you have upgraded the control plane with <span class="s1">'kubeadm upgrade apply'</span>:
-COMPONENT   CURRENT       TARGET
-kubelet     2 x v1.20.1   v1.21.14
-
-Upgrade to the latest stable version:
-
-COMPONENT                 CURRENT    TARGET
-kube-apiserver            v1.20.1    v1.21.14
-kube-controller-manager   v1.20.1    v1.21.14
-kube-scheduler            v1.20.1    v1.21.14
-kube-proxy                v1.20.1    v1.21.14
-CoreDNS                   1.7.0      v1.8.0
-etcd                      3.4.13-0   3.4.13-0
-
-You can now apply the upgrade by executing the following <span class="nb">command</span>:
-
-        kubeadm upgrade apply v1.21.14
-
-Note: Before you can perform this upgrade, you have to update kubeadm to v1.21.14.
-
-_____________________________________________________________________
-
-
-The table below shows the current state of component configs as understood by this version of kubeadm.
-Configs that have a <span class="s2">"yes"</span> mark <span class="k">in </span>the <span class="s2">"MANUAL UPGRADE REQUIRED"</span> column require manual config upgrade or
-resetting to kubeadm defaults before a successful upgrade can be performed. The version to manually
-upgrade to is denoted <span class="k">in </span>the <span class="s2">"PREFERRED VERSION"</span> column.
-
-API GROUP                 CURRENT VERSION   PREFERRED VERSION   MANUAL UPGRADE REQUIRED
-kubeproxy.config.k8s.io   v1alpha1          v1alpha1            no
-kubelet.config.k8s.io     v1beta1           v1beta1             no
-_____________________________________________________________________
-</code></pre></div></div>
-
-<h4 id="master置为维护模式">master置为维护模式</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubectl drain umaster <span class="nt">--ignore-daemonsets</span>
-node/umaster cordoned
-WARNING: ignoring DaemonSet-managed Pods: kube-system/calico-node-76vzp, kube-system/kube-proxy-ttm4n
-evicting pod kube-system/coredns-7f89b7bc75-qrns5
-evicting pod kube-system/calico-kube-controllers-848c5d445f-8v7t2
-evicting pod kube-system/coredns-7f89b7bc75-p54c4
-pod/coredns-7f89b7bc75-qrns5 evicted
-pod/coredns-7f89b7bc75-p54c4 evicted
-pod/calico-kube-controllers-848c5d445f-8v7t2 evicted
-</code></pre></div></div>
-
-<p>验证</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubectl get nodes
-NAME      STATUS                     ROLES                  AGE   VERSION
-umaster   Ready,SchedulingDisabled   control-plane,master   47m   v1.20.1
-unode1    Ready                      &lt;none&gt;                 46m   v1.20.1
-</code></pre></div></div>
-
-<p>处理coredns</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull coredns/coredns:1.8.0
-docker tag coredns/coredns:1.8.0 registry.aliyuncs.com/google_containers/coredns/coredns:v1.8.0
-docker rmi coredns/coredns:1.8.0
-</code></pre></div></div>
-
-<h4 id="升级组件">升级组件</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubeadm upgrade apply v1.21.1
-<span class="o">[</span>upgrade/config] Making sure the configuration is correct:
-<span class="o">[</span>upgrade/config] Reading configuration from the cluster...
-<span class="o">[</span>upgrade/config] FYI: You can look at this config file with <span class="s1">'kubectl -n kube-system get cm kubeadm-config -o yaml'</span>
-<span class="o">[</span>preflight] Running pre-flight checks.
-<span class="o">[</span>upgrade] Running cluster health checks
-<span class="o">[</span>upgrade/version] You have chosen to change the cluster version to <span class="s2">"v1.21.1"</span>
-<span class="o">[</span>upgrade/versions] Cluster version: v1.20.1
-<span class="o">[</span>upgrade/versions] kubeadm version: v1.21.1
-<span class="o">[</span>upgrade/confirm] Are you sure you want to proceed with the upgrade? <span class="o">[</span>y/N]: y
-<span class="o">[</span>upgrade/prepull] Pulling images required <span class="k">for </span>setting up a Kubernetes cluster
-<span class="o">[</span>upgrade/prepull] This might take a minute or two, depending on the speed of your internet connection
-<span class="o">[</span>upgrade/prepull] You can also perform this action <span class="k">in </span>beforehand using <span class="s1">'kubeadm config images pull'</span>
-<span class="o">[</span>upgrade/apply] Upgrading your Static Pod-hosted control plane to version <span class="s2">"v1.21.1"</span>...
-Static pod: kube-apiserver-umaster <span class="nb">hash</span>: 6df1b5224c3fc3fb71a622a2c30fcaea
-Static pod: kube-controller-manager-umaster <span class="nb">hash</span>: de64b953177047fd563a18150d6c6070
-Static pod: kube-scheduler-umaster <span class="nb">hash</span>: 78404d25f9e940515e51f92dc60988eb
-<span class="o">[</span>upgrade/etcd] Upgrading to TLS <span class="k">for </span>etcd
-Static pod: etcd-umaster <span class="nb">hash</span>: 8810d7e5e8825396038f6fef0fb4bd30
-<span class="o">[</span>upgrade/staticpods] Preparing <span class="k">for</span> <span class="s2">"etcd"</span> upgrade
-<span class="o">[</span>upgrade/staticpods] Current and new manifests of etcd are equal, skipping upgrade
-<span class="o">[</span>upgrade/etcd] Waiting <span class="k">for </span>etcd to become available
-<span class="o">[</span>upgrade/staticpods] Writing new Static Pod manifests to <span class="s2">"/etc/kubernetes/tmp/kubeadm-upgraded-manifests922784263"</span>
-<span class="o">[</span>upgrade/staticpods] Preparing <span class="k">for</span> <span class="s2">"kube-apiserver"</span> upgrade
-<span class="o">[</span>upgrade/staticpods] Renewing apiserver certificate
-<span class="o">[</span>upgrade/staticpods] Renewing apiserver-kubelet-client certificate
-<span class="o">[</span>upgrade/staticpods] Renewing front-proxy-client certificate
-<span class="o">[</span>upgrade/staticpods] Renewing apiserver-etcd-client certificate
-<span class="o">[</span>upgrade/staticpods] Moved new manifest to <span class="s2">"/etc/kubernetes/manifests/kube-apiserver.yaml"</span> and backed up old manifest to <span class="s2">"/etc/kubernetes/tmp/kubeadm-backup-manifests-2022-07-10-23-44-12/kube-apiserver.yaml"</span>
-<span class="o">[</span>upgrade/staticpods] Waiting <span class="k">for </span>the kubelet to restart the component
-<span class="o">[</span>upgrade/staticpods] This might take a minute or longer depending on the component/version gap <span class="o">(</span><span class="nb">timeout </span>5m0s<span class="o">)</span>
-Static pod: kube-apiserver-umaster <span class="nb">hash</span>: 6df1b5224c3fc3fb71a622a2c30fcaea
-Static pod: kube-apiserver-umaster <span class="nb">hash</span>: bec11aedb967e3dd4da819e28c3611dc
-<span class="o">[</span>apiclient] Found 1 Pods <span class="k">for </span>label selector <span class="nv">component</span><span class="o">=</span>kube-apiserver
-<span class="o">[</span>upgrade/staticpods] Component <span class="s2">"kube-apiserver"</span> upgraded successfully!
-<span class="o">[</span>upgrade/staticpods] Preparing <span class="k">for</span> <span class="s2">"kube-controller-manager"</span> upgrade
-<span class="o">[</span>upgrade/staticpods] Renewing controller-manager.conf certificate
-<span class="o">[</span>upgrade/staticpods] Moved new manifest to <span class="s2">"/etc/kubernetes/manifests/kube-controller-manager.yaml"</span> and backed up old manifest to <span class="s2">"/etc/kubernetes/tmp/kubeadm-backup-manifests-2022-07-10-23-44-12/kube-controller-manager.yaml"</span>
-<span class="o">[</span>upgrade/staticpods] Waiting <span class="k">for </span>the kubelet to restart the component
-<span class="o">[</span>upgrade/staticpods] This might take a minute or longer depending on the component/version gap <span class="o">(</span><span class="nb">timeout </span>5m0s<span class="o">)</span>
-Static pod: kube-controller-manager-umaster <span class="nb">hash</span>: de64b953177047fd563a18150d6c6070
-Static pod: kube-controller-manager-umaster <span class="nb">hash</span>: d69c9bc304051e2fcc0aba1a366e8511
-<span class="o">[</span>apiclient] Found 1 Pods <span class="k">for </span>label selector <span class="nv">component</span><span class="o">=</span>kube-controller-manager
-<span class="o">[</span>upgrade/staticpods] Component <span class="s2">"kube-controller-manager"</span> upgraded successfully!
-<span class="o">[</span>upgrade/staticpods] Preparing <span class="k">for</span> <span class="s2">"kube-scheduler"</span> upgrade
-<span class="o">[</span>upgrade/staticpods] Renewing scheduler.conf certificate
-<span class="o">[</span>upgrade/staticpods] Moved new manifest to <span class="s2">"/etc/kubernetes/manifests/kube-scheduler.yaml"</span> and backed up old manifest to <span class="s2">"/etc/kubernetes/tmp/kubeadm-backup-manifests-2022-07-10-23-44-12/kube-scheduler.yaml"</span>
-<span class="o">[</span>upgrade/staticpods] Waiting <span class="k">for </span>the kubelet to restart the component
-<span class="o">[</span>upgrade/staticpods] This might take a minute or longer depending on the component/version gap <span class="o">(</span><span class="nb">timeout </span>5m0s<span class="o">)</span>
-Static pod: kube-scheduler-umaster <span class="nb">hash</span>: 78404d25f9e940515e51f92dc60988eb
-Static pod: kube-scheduler-umaster <span class="nb">hash</span>: 57952607cc2b5d4a4ac242954121e925
-<span class="o">[</span>apiclient] Found 1 Pods <span class="k">for </span>label selector <span class="nv">component</span><span class="o">=</span>kube-scheduler
-<span class="o">[</span>upgrade/staticpods] Component <span class="s2">"kube-scheduler"</span> upgraded successfully!
-<span class="o">[</span>upgrade/postupgrade] Applying label node-role.kubernetes.io/control-plane<span class="o">=</span><span class="s1">''</span> to Nodes with label node-role.kubernetes.io/master<span class="o">=</span><span class="s1">''</span> <span class="o">(</span>deprecated<span class="o">)</span>
-<span class="o">[</span>upgrade/postupgrade] Applying label node.kubernetes.io/exclude-from-external-load-balancers<span class="o">=</span><span class="s1">''</span> to control plane Nodes
-<span class="o">[</span>upload-config] Storing the configuration used <span class="k">in </span>ConfigMap <span class="s2">"kubeadm-config"</span> <span class="k">in </span>the <span class="s2">"kube-system"</span> Namespace
-<span class="o">[</span>kubelet] Creating a ConfigMap <span class="s2">"kubelet-config-1.21"</span> <span class="k">in </span>namespace kube-system with the configuration <span class="k">for </span>the kubelets <span class="k">in </span>the cluster
-<span class="o">[</span>kubelet-start] Writing kubelet configuration to file <span class="s2">"/var/lib/kubelet/config.yaml"</span>
-<span class="o">[</span>bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to get nodes
-<span class="o">[</span>bootstrap-token] configured RBAC rules to allow Node Bootstrap tokens to post CSRs <span class="k">in </span>order <span class="k">for </span>nodes to get long term certificate credentials
-<span class="o">[</span>bootstrap-token] configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
-<span class="o">[</span>bootstrap-token] configured RBAC rules to allow certificate rotation <span class="k">for </span>all node client certificates <span class="k">in </span>the cluster
-<span class="o">[</span>addons] Applied essential addon: CoreDNS
-<span class="o">[</span>addons] Applied essential addon: kube-proxy
-
-<span class="o">[</span>upgrade/successful] SUCCESS! Your cluster was upgraded to <span class="s2">"v1.21.1"</span><span class="nb">.</span> Enjoy!
-
-<span class="o">[</span>upgrade/kubelet] Now that your control plane is upgraded, please proceed with upgrading your kubelets <span class="k">if </span>you haven<span class="s1">'t already done so.
-</span></code></pre></div></div>
-
-<p>如果不想升级某个组建,可以添加上 –etcd-upgrade=false</p>
-
-<h4 id="取消维护模式">取消维护模式</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubectl uncordon umaster
-node/umaster uncordoned
-
-<span class="o">[</span>root@umaster tmp]# kubectl get nodes
-NAME      STATUS   ROLES                  AGE   VERSION
-umaster   Ready    control-plane,master   53m   v1.20.1
-unode1    Ready    &lt;none&gt;                 52m   v1.20.1
-</code></pre></div></div>
-
-<h4 id="升级master上的kubelet和kubectl">升级master上的kubelet和kubectl</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> kubelet-1.21.1-0 kubectl-1.21.1-0 <span class="nt">--disableexcludes</span><span class="o">=</span>kubernetes
-</code></pre></div></div>
-
-<h4 id="重启服务">重启服务</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl daemon-reload
-systemctl restart kubelet
-</code></pre></div></div>
-
-<h4 id="查看版本">查看版本</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubectl version <span class="nt">--short</span>
-Client Version: v1.21.1
-Server Version: v1.21.1
-</code></pre></div></div>
-
-<h3 id="升级worker">升级worker</h3>
-
-<h4 id="升级kubeadm-1">升级kubeadm</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> <span class="nb">install </span>kubeadm-1.21.1-0 <span class="nt">--disableexcludes</span><span class="o">=</span>kubernetes
-</code></pre></div></div>
-
-<h4 id="置为维护模式-master操作">置为维护模式-master操作</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubectl drain unode1 <span class="nt">--ignore-daemonsets</span>
-node/unode1 cordoned
-WARNING: ignoring DaemonSet-managed Pods: kube-system/calico-node-wvf6l, kube-system/kube-proxy-2c88l
-evicting pod kube-system/coredns-7f89b7bc75-vqghq
-evicting pod kube-system/calico-kube-controllers-848c5d445f-vxmk6
-evicting pod kube-system/coredns-545d6fc579-rp2sv
-evicting pod kube-system/coredns-545d6fc579-v647b
-pod/coredns-7f89b7bc75-vqghq evicted
-pod/coredns-545d6fc579-v647b evicted
-pod/coredns-545d6fc579-rp2sv evicted
-pod/calico-kube-controllers-848c5d445f-vxmk6 evicted
-node/unode1 evicted
-</code></pre></div></div>
-
-<p>查看状态</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@umaster tmp]# kubectl get nodes
-NAME      STATUS                     ROLES                  AGE   VERSION
-umaster   Ready                      control-plane,master   72m   v1.21.1
-unode1    Ready,SchedulingDisabled   &lt;none&gt;                 71m   v1.20.1
-</code></pre></div></div>
-
-<h4 id="升级">升级</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@unode1 tmp]# kubeadm upgrade node
-<span class="o">[</span>upgrade] Reading configuration from the cluster...
-<span class="o">[</span>upgrade] FYI: You can look at this config file with <span class="s1">'kubectl -n kube-system get cm kubeadm-config -o yaml'</span>
-<span class="o">[</span>preflight] Running pre-flight checks
-<span class="o">[</span>preflight] Skipping prepull. Not a control plane node.
-<span class="o">[</span>upgrade] Skipping phase. Not a control plane node.
-<span class="o">[</span>kubelet-start] Writing kubelet configuration to file <span class="s2">"/var/lib/kubelet/config.yaml"</span>
-<span class="o">[</span>upgrade] The configuration <span class="k">for </span>this node was successfully updated!
-<span class="o">[</span>upgrade] Now you should go ahead and upgrade the kubelet package using your package manager.
-</code></pre></div></div>
-
-<h4 id="更新kubelet-和-kubectl">更新kubelet 和 kubectl</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> kubelet-1.21.1-0 kubectl-1.21.1-0 <span class="nt">--disableexcludes</span><span class="o">=</span>kubernetes
-</code></pre></div></div>
-
-<h4 id="取消维护">取消维护</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl uncordon unode1
-</code></pre></div></div>
-
-<p>查看</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get nodes
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[升级kubernetes版本]]></summary></entry></feed>
+<p>https://www.postgresql.org/download/linux/redhat/</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[测试pgsql监控]]></summary></entry></feed>
