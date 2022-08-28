@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-28T15:03:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">路由交换 - BGP案例 - 04</title><link href="/rs-bgp-04/" rel="alternate" type="text/html" title="路由交换 - BGP案例 - 04" /><published>2022-08-28T00:00:00+08:00</published><updated>2022-08-28T00:00:00+08:00</updated><id>/rs-bgp-04</id><content type="html" xml:base="/rs-bgp-04/"><![CDATA[<p>BGP案例04
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-28T15:07:35+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">路由交换 - BGP案例 - 04</title><link href="/rs-bgp-04/" rel="alternate" type="text/html" title="路由交换 - BGP案例 - 04" /><published>2022-08-28T00:00:00+08:00</published><updated>2022-08-28T00:00:00+08:00</updated><id>/rs-bgp-04</id><content type="html" xml:base="/rs-bgp-04/"><![CDATA[<p>BGP案例04
 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)</p>
 
 <h3 id="cidr-and-aggregate-addresses">CIDR and Aggregate Addresses</h3>
@@ -208,7 +208,7 @@ with no indication that 160.0.0.0 actually comes from two different ASs.
 
 <p>联邦的例子</p>
 
-<p><img src="/assets/images/bgp/b28.png" /></p>
+<p><img src="/assets/images/bgp/b29.png" /></p>
 
 <p>假设您有一个由9位BGP路由器组成的AS500。其他非BGP路由器也存在，但只对BGP路由器感兴趣，这些路由器具有到其他ASs的EBGP连接。您需要八个EBGP对等和一个到外部ASs的EBGP对等</p>
 
@@ -248,7 +248,7 @@ RTA#
 
 <p>另外一个解决IBGP对等体爆炸的方案是Route Reflectors(RRs),在IBGP 这章，一个BGP路由器并不像另外一个IBGP路由器宣告来自其它IBGP路由器的学习的路由，可以稍微放宽这一限制，并提供额外的控制，允许路由器向其他IBGP路由器宣告或反射IBGP学习的路由。这种路由反射减少了AS中的IBGP对等体的数量</p>
 
-<p><img src="/assets/images/bgp/b29.png" /></p>
+<p><img src="/assets/images/bgp/b30.png" /></p>
 
 <p>在正常的情况下，在AS100内维护着RTA、RTB和RTC互连的IBGP网络，如果使用RR，RTC可以被选为RR，RTC和RTA以及RTB是IBGP对等体，RTA和RTB没有太大的必要也设置为对等体，因为RTC可以反射来自RTA和RTB的更新</p>
 
@@ -257,7 +257,7 @@ RTA#
 
 <p>运行这个命令的路由器就是RR，RR周围的路由器就是客户端，在这个例子中，RTC 配置 neighbor route-reflector-client 命令指明RTA和RTB的IP地址。RR和客户端就组合成了一个集群。在这个例子中，RTA、RTB和RTC组成一个集群，S100内只有一个RR，其它RR的IBGP对等体就是”非客户端”</p>
 
-<p><img src="/assets/images/bgp/b30.png" /></p>
+<p><img src="/assets/images/bgp/b31.png" /></p>
 
 <p>一个AS内可以有多个RR，RR对待其它的RRs就像对待其它IBGP路由器一样，其它RRs可以属于相同的集群(客户端组)或其它集群，在一个配置中，可以将AS划分为多个集群，将每个RR与其它RRs配置为完全网状拓扑中的非客户端对等体，客户端不可以与客户端集群之外的IBGP路由器成为对等体</p>
 
@@ -312,7 +312,7 @@ neighbor 3.3.3.3 remote-as 100
 </ul>
 
 <h4 id="multiple-rrs-within-a-cluster">Multiple RRs within a Cluster</h4>
-<p><img src="/assets/images/bgp/b31.png" /></p>
+<p><img src="/assets/images/bgp/b32.png" /></p>
 
 <p>一般情况下，一个集群内的路由器只有一个RR，这种情况，这个RR的Router ID 标识了这个集群，为了增加冗余，减少单点，一个集群可以有多个RR。需要使用一个4字节的集群ID来配置同一集群中的所有RRs，以便RR能够识别来自同一集群中的RRs的更新</p>
 
@@ -389,7 +389,7 @@ neighbor 8.8.8.8 remote-as 200
 
 <p>AS里可能会有不支持RR协议的BGP路由器，本文中称为传统的路由器，RR解决方案中允许这类传统路由器的存在.这些路由器可以是客户端组的成员，也可以是非客户端组的成员.这些路由器的存在使得从当前IBGP模型到RR模型的迁移变得简单。如果将单个路由器配置为RR，并使其他RRs和RR客户端成为普通的IBGP对等端，则可以开始创建集群。然后可以逐步创建更多集群</p>
 
-<p><img src="/assets/images/bgp/b32.png" /></p>
+<p><img src="/assets/images/bgp/b33.png" /></p>
 
 <p>图中，RTD RTE和RTF支持路由反射，RTC RTA 和RTB是传统路由器.无法将这几台路由器配置为RRs，可以将这台路由器和RTD配置为IBGP，之后如果对路由器做了升级，可以将RTC配置为RTA和RTB的RR。客户端不需要支持路由放射，只需要RR需要升级</p>
 
@@ -450,7 +450,7 @@ bgp dampening half-life-time <span class="c">#改变半衰期</span>
   <li>max-suppress-time   这是抑制路由的最大持续时间。范围是1-255分钟，默认值是半衰期的4倍</li>
 </ul>
 
-<p><img src="/assets/images/bgp/b33.png" /></p>
+<p><img src="/assets/images/bgp/b34.png" /></p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB#
 <span class="nb">hostname </span>RTB
