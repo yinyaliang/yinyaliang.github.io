@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>路由交换 - BGP案例 - 04 - 尹亚亮</title>
+<meta name="description" content="BGP案例04 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="路由交换 - BGP案例 - 04">
+<meta property="og:url" content="/rs-bgp-04/">
+
+
+  <meta property="og:description" content="BGP案例04 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-08-28T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/rs-bgp-04/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="路由交换 - BGP案例 - 04">
+    <meta itemprop="description" content="BGP案例04(参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)">
+    <meta itemprop="datePublished" content="2022-08-28T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/rs-bgp-04/" class="u-url" itemprop="url">路由交换 - BGP案例 - 04
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-08-28T00:00:00+08:00">August 28, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#cidr-and-aggregate-addresses">CIDR and Aggregate Addresses</a></li><li><a href="#aggregate-commands">Aggregate Commands</a><ul><li><a href="#cidr-example-1">CIDR Example 1</a></li><li><a href="#cidr-example-2-as-set">CIDR Example 2 (as-set)</a></li></ul></li><li><a href="#bgp-confederation">BGP Confederation</a></li><li><a href="#route-reflectors">Route Reflectors</a><ul><li><a href="#multiple-rrs-within-a-cluster">Multiple RRs within a Cluster</a></li><li><a href="#rr-and-conventional-bgp-speakers">RR and Conventional BGP Speakers</a></li><li><a href="#如何避免环路">如何避免环路</a></li><li><a href="#route-flap-dampening">Route Flap Dampening</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>BGP案例04
+(参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)</p>
+
+<h3 id="cidr-and-aggregate-addresses">CIDR and Aggregate Addresses</h3>
+<p><img src="/assets/images/bgp/b26.png" /></p>
+
+<p>BGP4对BGP3的主要增强之一是无类域间路由(CIDR)。CIDR或supernet是一种查看IP地址的新方法。对于CIDR，没有类的概念，比如类A、B或C。例如，网络192.213.0.0曾经是一个非法的C类网络。现在，这个网络是一个合法的supernet，192.213.0 /16。“16”表示子网掩码中的比特数，当您从IP地址的最左边开始计数时。这个表示类似于192.213.0.0 255.255.0.0</p>
+
+<p>使用聚合是为了最小化路由表的大小。聚合是将多个不同路由的特性组合在一起的过程，从而使单个路由的宣告成为可能。在本例中，RTB生成网络160.10.0.0。将RTC配置为将该路由的超网络160.0.0.0传播到RTA</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
+router bgp 200 
+neighbor 3.3.3.1 remote-as 300 
+network 160.10.0.0 
+
+<span class="c">#RTC </span>
+router bgp 300 
+neighbor 3.3.3.3 remote-as 200 
+neighbor 2.2.2.2 remote-as 100 
+network 170.10.0.0 
+aggregate-address 160.0.0.0 255.0.0.0
+</code></pre></div></div>
+
+<p>RTC将聚合地址160.0.0.0传播到RTA</p>
+
+<h3 id="aggregate-commands">Aggregate Commands</h3>
+
+<p>聚合命令的范围很广。为了完成聚合的操作，必须了解每个组件是如何工作的</p>
+
+<p>第一个使本节示例中的命令 <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#cidragg">CIDR and Aggregate Addresses</a></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aggregate-address address-mask
+</code></pre></div></div>
+
+<p>这个命令通知前缀路由和所有更具体的路由。命令 aggregate-address 160.0.0.0传播一个网络160.0.0.0，但不阻止将160.10.0.0传播到RTA。结果是两个网络都将160.0.0.0和160.10.0.0传播到RTA</p>
+
+<blockquote>
+  <p>如果在BGP路由表中没有该地址的明细路由，聚合就会失效</p>
+</blockquote>
+
+<p>例如，如果RTB在BGP表中没有关于160.0.0.0的明细路由，则RTB不能生成160.0.0.0的聚合。将更具体的路由注入到BGP表是可能的。路由注入可以通过</p>
+
+<ul>
+  <li>来自其它AS的更新</li>
+  <li>从IGP或者静态路由重分布进入BGP</li>
+  <li>使用network命令，例如 network 160.10.0.0</li>
+</ul>
+
+<p>如果你想RTC不宣告明细路由只宣告网络160.0.0.0</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aggregate-address address mask summary-only
+</code></pre></div></div>
+
+<p>这个命令只对前缀做宣告。该命令抑制所有的明细路由</p>
+
+<p>命令 aggregate 160.0.0.0 255.0.0.0 summary-only 只传播网络160.0.0.0，并抑制160.10.0.0里的明细路由</p>
+
+<blockquote>
+  <p>如果通过network语句聚合一个网络到BGP中，这个网络会一直存在在BGP的更新中，甚至使用aggregate summary-only命令，路由也会存在， <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#cidrex1">CIDR Example 1</a>   讨论了这个情况</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aggregate-address address-mask as-set
+</code></pre></div></div>
+
+<p>这个命令宣告前缀和更精确的路由。但是该命令在路由更新的路径信息中包含 as-set的信息</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aggregate 129.0.0.0 255.0.0.0 as-set
+</code></pre></div></div>
+<p><a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#ex2"> CIDR Example 2 (as-set) </a> 讨论了这个命令</p>
+
+<p>如果希望在进行聚合时抑制特定的路由，请定义route map并将route map应用于聚合。该操作允许选择要抑制哪些更具体的路由</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aggregate-address address-mask suppress-map map-name
+</code></pre></div></div>
+
+<p>这个命令宣告前缀和更精确的路由。但命令以route map 为基础抑制宣告。假设，  <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#cidragg">CIDR and Aggregate Addresses</a>  的图中，希望聚合160.0.0.0，抑制路由160.20.0.0，并允许传播160.10.0.0。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>route-map CHECK permit 10 
+match ip address 1 
+
+access-list 1 permit 160.20.0.0 0.0.255.255 
+access-list 1 deny 0.0.0.0 255.255.255.255
+</code></pre></div></div>
+
+<p>suppress-map,对访问控制列表允许的任何包都会有抑制的效果</p>
+
+<p>应用route map到 aggregate部分</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+router bgp 300 
+neighbor 3.3.3.3 remote-as 200 
+neighbor 2.2.2.2 remote-as 100 
+neighbor 2.2.2.2 remote-as 100 
+network 170.10.0.0 
+aggregate-address 160.0.0.0 255.0.0.0 suppress-map CHECK
+</code></pre></div></div>
+
+<p>这是另外一种变化</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>aggregate-address address-mask attribute-map map-name
+</code></pre></div></div>
+
+<p>这个命令允许您在发送聚合时设置属性，例如metric，为了对聚合的源设置为IGP，使用route map 到  aggregate attribute-map  命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>route-map SETMETRIC 
+<span class="nb">set </span>origin igp 
+
+aggregate-address 160.0.0.0 255.0.0.0 attribute-map SETORIGIN
+</code></pre></div></div>
+
+<p>更多信息可以参考 <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094826.shtml">Understanding Route Aggregation in BGP</a>.</p>
+
+<h4 id="cidr-example-1">CIDR Example 1</h4>
+
+<p><img src="/assets/images/bgp/b27.png" /></p>
+
+<p>需求:允许RTB宣告前缀160.0.0.0并禁止所有的明细路由，这个需求的问题是网络160.10.0.0是AS200的本地网络，这意味着AS200是160.10.0.0的源,如果不为160.10.0.0生成条目，就不能让RTB为160.0.0.0生成前缀， aggregate summary-only也做不到，RTB生成两个网络，因为RTB是160.10.0.0的发起者。这个问题有两种解决办法</p>
+
+<p>第一个解决方案是使用静态路由并重新分发到BGP中。结果是RTB的宣告origin 会显示incomplete (?)</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
+router bgp 200 
+neighbor 3.3.3.1 remote-as 300 
+redistribute static 
+
+<span class="o">!</span><span class="nt">---</span> This generates an update <span class="k">for </span>160.0.0.0 <span class="o">!</span><span class="nt">---</span> with the origin path as <span class="s2">"incomplete"</span><span class="nb">.</span>
+
+ip route 160.0.0.0 255.0.0.0 null0
+</code></pre></div></div>
+
+<p>在第二个解决方案中，除了静态路由之外，还可以使用network命令。具有相同的效果，只是将更新的origin设置为IGP</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
+router bgp 200 
+network 160.0.0.0 mask 255.0.0.0
+
+<span class="o">!</span><span class="nt">---</span> This entry marks the update with origin IGP.
+ 
+neighbor 3.3.3.1 remote-as 300 
+redistribute static
+ip route 160.0.0.0 255.0.0.0 null0 
+</code></pre></div></div>
+
+<h4 id="cidr-example-2-as-set">CIDR Example 2 (as-set)</h4>
+<p>使用as-set在聚合中减少路径信息的大小，使用AS -set, AS编号只出现一次，而不管在聚合的多个路径中出现了多少次AS编号，在聚合导致path的属性丢失的时候可以使用 aggregate as-set 命令，在本例中，RTC从RTA获得关于160.20.0.0的更新，从RTB获得关于160.10.0.0的更新，假设RTC希望聚合网络160.0.0.0/8并将网络发送给RTD，RTD不知道这条路线的源,如果你添加aggregate as-set，强制RTC以集合{}的形式生成路径信息，该集合包含了所有的路径信息，无论哪条路径先出现</p>
+
+<p><img src="/assets/images/bgp/b28.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
+router bgp 200 
+network 160.10.0.0 
+neighbor 3.3.3.1 remote-as 300 
+
+RTA# 
+router bgp 100 
+network 160.20.0.0 
+neighbor 2.2.2.1 remote-as 300
+</code></pre></div></div>
+
+<p>Case 1</p>
+
+<p>RTC没有使用as-set。RTC向RTD发送一个包含路径信息(300)的更新160.0.0.0/8，就像路由起源于AS300一样</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+router bgp 300 
+neighbor 3.3.3.3 remote-as 200 
+neighbor 2.2.2.2 remote-as 100 
+neighbor 4.4.4.4 remote-as 400 
+aggregate 160.0.0.0 255.0.0.0 summary-only 
+
+<span class="o">!</span><span class="nt">---</span> This <span class="nb">command </span>causes RTC to send RTD updates about 160.0.0.0/8 <span class="o">!</span><span class="nt">---</span> 
+with no indication that 160.0.0.0 actually comes from two different ASs. 
+<span class="o">!</span><span class="nt">---</span> This may create loops <span class="k">if </span>RTD has an entry back into AS100 or AS200.
+
+</code></pre></div></div>
+
+<p>Case 2</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
+   router bgp 300 
+   neighbor 3.3.3.3 remote-as 200 
+   neighbor 2.2.2.2 remote-as 100 
+   neighbor 4.4.4.4 remote-as 400 
+   aggregate 160.0.0.0 255.0.0.0 summary-only 
+   aggregate 160.0.0.0 255.0.0.0 as-set 
+
+<span class="o">!</span><span class="nt">---</span> This <span class="nb">command </span>causes RTC to send RTD updates about 160.0.0.0/8 
+<span class="o">!</span><span class="nt">---</span> with an indication that 160.0.0.0 belongs to a <span class="nb">set</span> <span class="o">{</span>100 200<span class="o">}</span><span class="nb">.</span>
+ 
+</code></pre></div></div>
+
+<p>下面的两部分，  BGP Confederation 和 Route Reflectors，是为互联网服务提供商(isp)，希望进一步控制iBGP 对等体爆炸式的在他们的AS内部出现</p>
+
+<h3 id="bgp-confederation">BGP Confederation</h3>
+
+<p>BGP联邦减少了AS中的iBGP网格。将AS划分为多个AS，并将整个组分配给单个的联邦。每一个单独的iBGP都实现全互联。即使这些ASs在联邦中有eBGP对等体，但它们就像使用iBGP一样交换路由。通过这种方式，联邦保存了next hop、metric和local preference信息。在外界看来，联邦似乎是一个单一的AS</p>
+
+<p>使用下面的命令配置BGP联邦</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bgp confederation identifier autonomous-system 
+</code></pre></div></div>
+
+<p>联邦的标识符使用联邦组的AS号
+这个命令在联邦内执行让多个对等体互联</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bgp confederation peers autonomous-system <span class="o">[</span>autonomous-system]
+</code></pre></div></div>
+
+<p>联邦的例子</p>
+
+<p><img src="/assets/images/bgp/b28.png" /></p>
+
+<p>假设您有一个由9位BGP路由器组成的AS500。其他非BGP路由器也存在，但只对BGP路由器感兴趣，这些路由器具有到其他ASs的EBGP连接。您需要八个EBGP对等和一个到外部ASs的EBGP对等</p>
+
+<p>如果使用联邦，可以将AS500分成多个ASs: AS50、AS60和AS70。您将把500作为联邦标识。外面只看到一个，比如500。对于每个AS50、AS60和AS70，都定义了一个完整的IBGP对等网格，使用  bgp confederation peers 定义联邦对等体</p>
+
+<p>下面是路由器RTC、RTD和RTA的示例配置</p>
+
+<blockquote>
+  <p>RTA不知道AS50、AS60或AS70。RTA只知道AS500</p>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC#
+router bgp 50
+bgp confederation identifier 500
+bgp confederation peers 60 70
+neighbor 128.213.10.1 remote-as 50 <span class="o">(</span>IBGP connection within AS50<span class="o">)</span>
+neighbor 128.213.20.1 remote-as 50 <span class="o">(</span>IBGP connection within AS50<span class="o">)</span>
+neighbor 129.210.11.1 remote-as 60 <span class="o">(</span>BGP connection with confederation peer 60<span class="o">)</span>
+neighbor 135.212.14.1 remote-as 70 <span class="o">(</span>BGP connection with confederation peer 70<span class="o">)</span>
+neighbor 5.5.5.5 remote-as 100 <span class="o">(</span>EBGP connection to external AS100<span class="o">)</span>
+
+RTD# 
+router bgp 60 
+bgp confederation identifier 500 
+bgp confederation peers 50 70 
+neighbor 129.210.30.2 remote-as 60 <span class="o">(</span>IBGP connection within AS60<span class="o">)</span> 
+neighbor 128.213.30.1 remote-as 50<span class="o">(</span>BGP connection with confederation peer 50<span class="o">)</span> 
+neighbor 135.212.14.1 remote-as 70 <span class="o">(</span>BGP connection with confederation peer 70<span class="o">)</span> 
+neighbor 6.6.6.6 remote-as 600 <span class="o">(</span>EBGP connection to external AS600<span class="o">)</span> 
+
+RTA# 
+   router bgp 100 
+   neighbor 5.5.5.4 remote-as 500 <span class="o">(</span>EBGP connection to confederation 500<span class="o">)</span>
+</code></pre></div></div>
+
+<h3 id="route-reflectors">Route Reflectors</h3>
+
+<p>另外一个解决IBGP对等体爆炸的方案是Route Reflectors(RRs),在IBGP 这章，一个BGP路由器并不像另外一个IBGP路由器宣告来自其它IBGP路由器的学习的路由，可以稍微放宽这一限制，并提供额外的控制，允许路由器向其他IBGP路由器宣告或反射IBGP学习的路由。这种路由反射减少了AS中的IBGP对等体的数量</p>
+
+<p><img src="/assets/images/bgp/b29.png" /></p>
+
+<p>在正常的情况下，在AS100内维护着RTA、RTB和RTC互连的IBGP网络，如果使用RR，RTC可以被选为RR，RTC和RTA以及RTB是IBGP对等体，RTA和RTB没有太大的必要也设置为对等体，因为RTC可以反射来自RTA和RTB的更新</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor route-reflector-client
+</code></pre></div></div>
+
+<p>运行这个命令的路由器就是RR，RR周围的路由器就是客户端，在这个例子中，RTC 配置 neighbor route-reflector-client 命令指明RTA和RTB的IP地址。RR和客户端就组合成了一个集群。在这个例子中，RTA、RTB和RTC组成一个集群，S100内只有一个RR，其它RR的IBGP对等体就是”非客户端”</p>
+
+<p><img src="/assets/images/bgp/b30.png" /></p>
+
+<p>一个AS内可以有多个RR，RR对待其它的RRs就像对待其它IBGP路由器一样，其它RRs可以属于相同的集群(客户端组)或其它集群，在一个配置中，可以将AS划分为多个集群，将每个RR与其它RRs配置为完全网状拓扑中的非客户端对等体，客户端不可以与客户端集群之外的IBGP路由器成为对等体</p>
+
+<p>第二张图中，RTA、RTB和RTC组成一个集群，RTC是RR，对于RTC, RTA和RTB是客户端，其它都是非客户端。 neighbor route-reflector-client 要指向客户端，RTD也是RTE和RTF的RR。RTG是第三个集群中的RR</p>
+
+<blockquote>
+  <p>RTD、RTC和RTG是全互连的，但是其它集群的路由器不是，当RR接收到路由时，RR路由如下所示。但是，这取决于对等类型</p>
+  <ul>
+    <li>从非客户端对等体到集群中的所有客户端的路由</li>
+    <li>从客户端对等体到所有非客户端对等体以及到客户端对等体的路由</li>
+    <li>从EBGP对等体路由将更新发送到所有客户端和非客户端对等体。</li>
+  </ul>
+</blockquote>
+
+<p>路由器RTC、RTD、RTB的BGP配置如下</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC#
+
+router bgp 100
+neighbor 2.2.2.2 remote-as 100
+neighbor 2.2.2.2 route-reflector-client
+neighbor 1.1.1.1 remote-as 100
+neighbor 1.1.1.1 route-reflector-client
+neighbor 7.7.7.7 remote-as 100
+neighbor 4.4.4.4 remote-as 100
+neighbor 8.8.8.8 remote-as 200
+
+
+RTB#
+
+router bgp 100
+neighbor 3.3.3.3 remote-as 100
+neighbor 12.12.12.12 remote-as 300
+
+
+RTD#
+
+router bgp 100
+neighbor 6.6.6.6 remote-as 100
+neighbor 6.6.6.6 route-reflector-client
+neighbor 5.5.5.5 remote-as 100
+neighbor 5.5.5.5 route-reflector-client
+neighbor 7.7.7.7 remote-as 100
+neighbor 3.3.3.3 remote-as 100
+</code></pre></div></div>
+
+<p>因为有IBGP学习路由的反射，可能会产生路由环路。RR方案有几个方法可以避免环路</p>
+
+<ul>
+  <li>originator-id 这是一个可选的、非传递的BGP属性，长度为4字节。RR创建此属性。属性在本地AS中携带路由发起者的路由器ID (RID)。如果配置产生环路，路由信息返回到发起者，则会忽略该信息</li>
+  <li>cluster-list   Multiple RRs within a Cluster 请参考</li>
+</ul>
+
+<h4 id="multiple-rrs-within-a-cluster">Multiple RRs within a Cluster</h4>
+<p><img src="/assets/images/bgp/b31.png" /></p>
+
+<p>一般情况下，一个集群内的路由器只有一个RR，这种情况，这个RR的Router ID 标识了这个集群，为了增加冗余，减少单点，一个集群可以有多个RR。需要使用一个4字节的集群ID来配置同一集群中的所有RRs，以便RR能够识别来自同一集群中的RRs的更新</p>
+
+<p>集群列表是路由已通过的集群id序列。当RR反射从RR客户端到集群外部的非客户端的路由时，RR将本地集群ID附加到集群列表中。如果这个更新有一个空的集群列表，RR将创建一个。使用此属性，RR可以识别路由信息是否由于配置不当而回到到相同的集群。如果在集群列表中找到本地集群ID，则忽略该宣告</p>
+
+<p>在本节的图中，RTD、RTE、RTF和RTH属于一个集群。RTD和RTH都是同一个集群的RRs</p>
+
+<blockquote>
+  <p>存在冗余是因为RTH与所有RRs实现了全互连。如果RTD出现问题，RTH就会取代RTD</p>
+</blockquote>
+
+<p>RTH, RTD, RTF, and RTC的配置如下:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTH#
+
+router bgp 100
+neighbor 4.4.4.4 remote-as 100
+neighbor 5.5.5.5 remote-as 100
+neighbor 5.5.5.5 route-reflector-client
+neighbor 6.6.6.6 remote-as 100
+neighbor 6.6.6.6 route-reflector-client
+neighbor 7.7.7.7 remote-as 100
+neighbor 3.3.3.3 remote-as 100
+neighbor 9.9.9.9 remote-as 300
+bgp cluster-id 10
+
+
+RTD#
+
+router bgp 100
+neighbor 10.10.10.10 remote-as 100
+neighbor 5.5.5.5 remote-as 100
+neighbor 5.5.5.5 route-reflector-client
+neighbor 6.6.6.6 remote-as 100
+neighbor 6.6.6.6 route-reflector-client
+neighbor 7.7.7.7 remote-as 100
+neighbor 3.3.3.3 remote-as 100
+neighbor 11.11.11.11 remote-as 400
+bgp cluster-id 10
+
+
+RTF#
+
+router bgp 100
+neighbor 10.10.10.10 remote-as 100
+neighbor 4.4.4.4 remote-as 100
+neighbor 13.13.13.13 remote-as 500
+
+
+RTC#
+
+router bgp 100
+neighbor 1.1.1.1 remote-as 100
+neighbor 1.1.1.1 route-reflector-client
+neighbor 2.2.2.2 remote-as 100
+neighbor 2.2.2.2 route-reflector-client
+neighbor 4.4.4.4 remote-as 100
+neighbor 7.7.7.7 remote-as 100
+neighbor 10.10.10.10 remote-as 100
+neighbor 8.8.8.8 remote-as 200
+</code></pre></div></div>
+
+<blockquote>
+  <p>RTC不需要使用 bgp cluster-id命令，因为集群中只存在一个RR</p>
+</blockquote>
+
+<blockquote>
+  <p>此配置不能使用对等组(peer group)。如果集群中的客户端彼此之间没有直接的IBGP对等体，并且客户端通过RR交换更新，就不要使用对等组。如果配置对等组，a potential withdrawal to the source of a route on the RR transmits to all clients inside the cluster。这种传输可能会导致问题</p>
+</blockquote>
+
+<p>默认情况下RR上启用路由器子命令 bgp client-to-client reflection 。如果您关闭了这个命令，并在客户端之间实施了冗余的BGP对等体，可以安全地使用对等组。有关更多信息请参考 Limitations of Peer Groups</p>
+
+<h4 id="rr-and-conventional-bgp-speakers">RR and Conventional BGP Speakers</h4>
+
+<p>AS里可能会有不支持RR协议的BGP路由器，本文中称为传统的路由器，RR解决方案中允许这类传统路由器的存在.这些路由器可以是客户端组的成员，也可以是非客户端组的成员.这些路由器的存在使得从当前IBGP模型到RR模型的迁移变得简单。如果将单个路由器配置为RR，并使其他RRs和RR客户端成为普通的IBGP对等端，则可以开始创建集群。然后可以逐步创建更多集群</p>
+
+<p><img src="/assets/images/bgp/b32.png" /></p>
+
+<p>图中，RTD RTE和RTF支持路由反射，RTC RTA 和RTB是传统路由器.无法将这几台路由器配置为RRs，可以将这台路由器和RTD配置为IBGP，之后如果对路由器做了升级，可以将RTC配置为RTA和RTB的RR。客户端不需要支持路由放射，只需要RR需要升级</p>
+
+<p>配置:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTD#
+
+router bgp 100
+neighbor 6.6.6.6 remote-as 100
+neighbor 6.6.6.6 route-reflector-client
+neighbor 5.5.5.5 remote-as 100
+neighbor 5.5.5.5 route-reflector-client
+neighbor 3.3.3.3 remote-as 100
+neighbor 2.2.2.2 remote-as 100
+neighbor 1.1.1.1 remote-as 100
+neighbor 13.13.13.13 remote-as 300
+
+
+RTC#
+
+router bgp 100
+neighbor 4.4.4.4 remote-as 100
+neighbor 2.2.2.2 remote-as 100
+neighbor 1.1.1.1 remote-as 100
+neighbor 14.14.14.14 remote-as 400
+</code></pre></div></div>
+
+<p>当准备升级RTC并使RTC成为RR时，请删除IBGP全互连并让RTA和RTB成为RTC的客户</p>
+
+<h4 id="如何避免环路">如何避免环路</h4>
+<p>到目前为止，已经提到了两个可以用来防环的属性:original -id和cluster-list</p>
+
+<p>另一种控制环路的方法是对出方向的route map 做更多的set 条件。route map出方向的set 不会影响反射到IBGP对等体的路由</p>
+
+<p>还可以对 nexthop-self增加限制，当在RRs上使用netxthop-self，只会影响EBGP学习到的系一条路由，反射路由的下一跳不会更改</p>
+
+<h4 id="route-flap-dampening">Route Flap Dampening</h4>
+<p>Cisco IOS 11.0引入了路由翻滚惩罚.是一种最大程度减少不稳定路由造成的路由翻滚的机制，减少了网络的震荡.可以定义一些行为来识别不好的路由，每次的不稳定都会使值增大1000，累计到阈值就会被惩罚.对路由的宣告产生抑制.但同时会有一个惩罚值得衰减时间.惩罚值降低到预设置的重用值以下，就会恢复路由宣告.这种方法不适用于通过IBGP学习的外部AS的路由。通过这种方式，避免了对于IBGP路由器指向外部的路由进行的惩罚</p>
+
+<p>惩罚粒度为5秒时衰减。取消对路由的抑制的粒度为10秒。路由器会保留这些信息，直到惩罚值小于“重用限制”的一半。此时，路由器将清除信息</p>
+
+<p>路由翻滚默认关闭，下面的是相关的操作命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bgp dampening  <span class="c">#打开</span>
+no bgp dampening  <span class="c">#关闭</span>
+bgp dampening half-life-time <span class="c">#改变半衰期</span>
+</code></pre></div></div>
+
+<p>同时设置所有参数的命令是</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> bgp dampening half-life-time reuse suppress maximum-suppress-time
+</code></pre></div></div>
+
+<p>语法的详细信息</p>
+<ul>
+  <li>half-life-time  范围是1-45分钟，当前默认值是15分钟</li>
+  <li>reuse-value   范围是1-20,000，缺省值是750</li>
+  <li>suppress-value  范围是1-20,000，缺省值是2000</li>
+  <li>max-suppress-time   这是抑制路由的最大持续时间。范围是1-255分钟，默认值是半衰期的4倍</li>
+</ul>
+
+<p><img src="/assets/images/bgp/b33.png" /></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB#
+<span class="nb">hostname </span>RTB
+
+interface Serial0
+ ip address 203.250.15.2 255.255.255.252
+
+interface Serial1
+ ip address 192.208.10.6 255.255.255.252
+
+router bgp 100
+ bgp dampening
+ network 203.250.15.0
+ neighbor 192.208.10.5 remote-as 300
+
+
+RTD#
+<span class="nb">hostname </span>RTD
+
+interface Loopback0
+ip address 192.208.10.174 255.255.255.192
+
+interface Serial0/0
+ ip address 192.208.10.5 255.255.255.252
+
+router bgp 300
+ network 192.208.10.0
+ neighbor 192.208.10.6 remote-as 100
+</code></pre></div></div>
+
+<p>RTB的配置用于使用默认参数抑制路由。如果您假设到RTD的EBGP链接是稳定的，那么RTB BGP表看起来是这样的</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# show ip bgp
+BGP table version is 24, <span class="nb">local </span>router ID is 203.250.15.2 Status codes: s
+suppressed, d damped, h <span class="nb">history</span>, <span class="k">*</span> valid, <span class="o">&gt;</span> best, i - internal Origin
+codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop          Metric LocPrf Weight Path
+<span class="k">*</span><span class="o">&gt;</span> 192.208.10.0     192.208.10.5           0             0 300 i
+<span class="k">*</span><span class="o">&gt;</span> 203.250.15.0     0.0.0.0                0         32768 i
+</code></pre></div></div>
+
+<p>为了模拟问题，在RTD上执行ip bgp 192.208.10.6命令。RTB BGP表看起来是这样的</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# show ip bgp
+BGP table version is 24, <span class="nb">local </span>router ID is 203.250.15.2 Status codes: s
+suppressed, d damped, h <span class="nb">history</span>, <span class="k">*</span> valid, <span class="o">&gt;</span> best, i - internal Origin
+codes: i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop          Metric LocPrf Weight Path
+ h 192.208.10.0     192.208.10.5           0             0 300 i
+<span class="k">*</span><span class="o">&gt;</span> 203.250.15.0     0.0.0.0                0         32768 i
+
+</code></pre></div></div>
+
+<p>192.208.10.0的BGP条目处于历史状态。这个位置意味着您没有到路由的最佳路径，但是关于路由的flap这条线路因扑动而受到处罚，但处罚仍低于“限制限制”。默认值是2000。路由抑制尚未发生。如果这条路线再翻几次，你就明白了信息仍然存在</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# show ip bgp 192.208.10.0
+BGP routing table entry <span class="k">for </span>192.208.10.0 255.255.255.0, version 25
+Paths: <span class="o">(</span>1 available, no best path<span class="o">)</span>
+300 <span class="o">(</span><span class="nb">history </span>entry<span class="o">)</span>
+    192.208.10.5 from 192.208.10.5 <span class="o">(</span>192.208.10.174<span class="o">)</span>
+Origin IGP, metric 0, external
+Dampinfo: penalty 910, flapped 1 <span class="nb">times </span><span class="k">in </span>0:02:03
+</code></pre></div></div>
+
+<p>这条线路因为抖动而受到处罚，但处罚仍低于“限制限制”。默认值是2000。路由抑制尚未发生。如果这条路线再出几次问题</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# show ip bgp
+BGP table version is 32, <span class="nb">local </span>router ID is 203.250.15.2 Status codes:
+s suppressed, d damped, h <span class="nb">history</span>, <span class="k">*</span> valid, <span class="o">&gt;</span> best, i - internal Origin codes:
+i - IGP, e - EGP, ? - incomplete
+
+   Network          Next Hop          Metric LocPrf Weight Path
+<span class="k">*</span>d 192.208.10.0     192.208.10.5           0             0  300 i
+<span class="k">*</span><span class="o">&gt;</span> 203.250.15.0     0.0.0.0               0       32768  i
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# show ip bgp 192.208.10.0
+BGP routing table entry <span class="k">for </span>192.208.10.0 255.255.255.0, version 32
+Paths: <span class="o">(</span>1 available, no best path<span class="o">)</span>
+300, <span class="o">(</span>suppressed due to dampening<span class="o">)</span>
+192.208.10.5 from 192.208.10.5 <span class="o">(</span>192.208.10.174<span class="o">)</span>
+      Origin IGP, metric 0, valid, external
+Dampinfo: penalty 2615, flapped 3 <span class="nb">times </span><span class="k">in </span>0:05:18 , reuse <span class="k">in </span>0:27:00
+</code></pre></div></div>
+
+<p>这条路线已经被抑制了，当代价达到“重用值”时，路由将被重用.重用值是默认值750，当惩罚值小于重用限制的一半时，就会清除惩罚的信息.当惩罚变为375(750/2=375)时进行清除。</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>show ip bgp flap-statistics    
+<span class="c"># 显示所有路径的flap统计信息</span>
+
+show ip bgp flap-statistics regexp regular-expression  
+<span class="c"># 显示与正则表达式匹配的所有路径的flap统计信息。</span>
+
+show ip bgp flap-statistics filter-list list  
+<span class="c"># 显示通过过滤器的所有路径的flap统计信息</span>
+
+show ip bgp flap-statistics A.B.C.D m.m.m.m   
+<span class="c"># 显示单个条目的flap统计信息</span>
+
+show ip bgp flap-statistics A.B.C.D m.m.m.m longer-prefix   
+<span class="c">#  显示更多特定条目的flap统计信息</span>
+
+show ip bgp neighbor <span class="o">[</span>dampened-routes] | <span class="o">[</span>flap-statistics]   
+<span class="c"># 显示来自邻居的所有路径的flap统计信息</span>
+
+clear ip bgp flap-statistics  
+<span class="c">#  清除所有路径的flap统计信息</span>
+
+clear ip bgp flap-statistics regexp regular-expression  
+<span class="c">#  清除与正则表达式匹配的所有路径的flap统计信息</span>
+
+clear ip bgp flap-statistics filter-list list  
+<span class="c">#  清除所有通过过滤器的路径的flap统计信息</span>
+
+clear ip bgp flap-statistics A.B.C.D m.m.m.m  
+<span class="c"># 清除单个条目的flap统计信息。</span>
+
+clear ip bgp A.B.C.D flap-statistics  
+<span class="c"># 清除来自邻居的所有路径的flap统计信息</span>
+</code></pre></div></div>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#rs" class="page__taxonomy-item p-category" rel="tag">RS</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-08-28T00:00:00+08:00">August 28, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%E8%B7%AF%E7%94%B1%E4%BA%A4%E6%8D%A2+-+BGP%E6%A1%88%E4%BE%8B+-+04%20%2Frs-bgp-04%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Frs-bgp-04%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Frs-bgp-04%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/monitor-php/" class="pagination--pager" title="php 配置fcgi 获取监控数据
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

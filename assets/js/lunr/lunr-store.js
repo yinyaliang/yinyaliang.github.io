@@ -142,4 +142,10 @@ var store = [{
         "tags": ["Monitor"],
         "url": "/monitor-php/",
         "teaser": null
+      },{
+        "title": "路由交换 - BGP案例 - 04",
+        "excerpt":"BGP案例04 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps) CIDR and Aggregate Addresses BGP4对BGP3的主要增强之一是无类域间路由(CIDR)。CIDR或supernet是一种查看IP地址的新方法。对于CIDR，没有类的概念，比如类A、B或C。例如，网络192.213.0.0曾经是一个非法的C类网络。现在，这个网络是一个合法的supernet，192.213.0 /16。“16”表示子网掩码中的比特数，当您从IP地址的最左边开始计数时。这个表示类似于192.213.0.0 255.255.0.0 使用聚合是为了最小化路由表的大小。聚合是将多个不同路由的特性组合在一起的过程，从而使单个路由的宣告成为可能。在本例中，RTB生成网络160.10.0.0。将RTC配置为将该路由的超网络160.0.0.0传播到RTA RTB# router bgp 200 neighbor 3.3.3.1 remote-as 300 network 160.10.0.0 #RTC router bgp 300 neighbor 3.3.3.3 remote-as 200 neighbor 2.2.2.2 remote-as 100 network 170.10.0.0 aggregate-address 160.0.0.0 255.0.0.0 RTC将聚合地址160.0.0.0传播到RTA Aggregate Commands 聚合命令的范围很广。为了完成聚合的操作，必须了解每个组件是如何工作的 第一个使本节示例中的命令 CIDR and Aggregate Addresses aggregate-address address-mask 这个命令通知前缀路由和所有更具体的路由。命令 aggregate-address...","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-bgp-04/",
+        "teaser": null
       }]
