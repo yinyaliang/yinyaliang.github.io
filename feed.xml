@@ -1,4 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-28T15:07:35+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">路由交换 - BGP案例 - 04</title><link href="/rs-bgp-04/" rel="alternate" type="text/html" title="路由交换 - BGP案例 - 04" /><published>2022-08-28T00:00:00+08:00</published><updated>2022-08-28T00:00:00+08:00</updated><id>/rs-bgp-04</id><content type="html" xml:base="/rs-bgp-04/"><![CDATA[<p>BGP案例04
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-08-29T16:42:30+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">bcc c 环境部署</title><link href="/bcc-01/" rel="alternate" type="text/html" title="bcc c 环境部署" /><published>2022-08-29T00:00:00+08:00</published><updated>2022-08-29T00:00:00+08:00</updated><id>/bcc-01</id><content type="html" xml:base="/bcc-01/"><![CDATA[<h4 id="下载kernel">下载kernel</h4>
+
+<p>查看系统版本</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+root@yinyaliang-virtual-machine:/usr/src# uname -r
+
+5.8.0-43-generic
+
+</code></pre></div></div>
+
+<p>下载对应版本</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://ftp.sjtu.edu.cn/sites/ftp.kernel.org/pub/linux/kernel/v5.x/
+
+</code></pre></div></div>
+
+<p>解压放在/usr/src目录下</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@yinyaliang-virtual-machine:/usr/src# ll
+
+total 176612
+
+drwxr-xr-x  5 root       root            4096 7月   8 20:06 ./
+
+drwxr-xr-x 14 root       root            4096 2月  10 02:48 ../
+
+drwxrwxr-x 24 root       root            4096 8月   3  2020 linux-5.8/
+
+-rwxrw-rw-  1 yinyaliang yinyaliang 180827693 7月   1 20:07 linux-5.8.tar.gz*
+
+drwxr-xr-x  7 root       root            4096 2月  10 02:50 linux-headers-5.8.0-43-generic/
+
+drwxr-xr-x 24 root       root            4096 2月  10 02:50 linux-hwe-5.8-headers-5.8.0-43/
+</code></pre></div></div>
+
+<h4 id="安装依赖">安装依赖</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt install libncurses5-dev flex bison libelf-dev binutils-dev libssl-dev 
+
+</code></pre></div></div>
+
+<h4 id="安装clang和llvm">安装clang和llvm</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt install clang llvm
+
+</code></pre></div></div>
+
+<h4 id="配置内核">配置内核</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /usr/src/linux-5.8 &amp;&amp; make defconfig
+
+</code></pre></div></div>
+
+<h4 id="解决modpost-not-found-错误">解决modpost: not found 错误</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make modules_prepare 或者  make scripts
+
+</code></pre></div></div>
+
+<h4 id="关联内核头文件">关联内核头文件</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make headers_install
+
+</code></pre></div></div>
+
+<h4 id="编译内核bpf程序样例">编译内核BPF程序样例</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make M=samples/bpf/
+
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="BCC" /><summary type="html"><![CDATA[下载kernel]]></summary></entry><entry><title type="html">路由交换 - BGP案例 - 04</title><link href="/rs-bgp-04/" rel="alternate" type="text/html" title="路由交换 - BGP案例 - 04" /><published>2022-08-28T00:00:00+08:00</published><updated>2022-08-28T00:00:00+08:00</updated><id>/rs-bgp-04</id><content type="html" xml:base="/rs-bgp-04/"><![CDATA[<p>BGP案例04
 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)</p>
 
 <h3 id="cidr-and-aggregate-addresses">CIDR and Aggregate Addresses</h3>
@@ -3560,606 +3629,4 @@ ValueError: Radius must be positive
   <li>配置触发扩展特性消除周期性的RIP更新</li>
 </ul>
 
-<p>链路上的两台路由器都必须配置ip rip triggered命令，仅仅发送路由表最初的交换信息和路由表发生变化使得更新信息，只在串行链路上生效</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[RIP 笔记]]></summary></entry><entry><title type="html">路由交换 - OSPF - 01</title><link href="/rs-ospf-01/" rel="alternate" type="text/html" title="路由交换 - OSPF - 01" /><published>2022-08-20T00:00:00+08:00</published><updated>2022-08-20T00:00:00+08:00</updated><id>/rs-ospf-01</id><content type="html" xml:base="/rs-ospf-01/"><![CDATA[<p>OSPF备忘信息</p>
-
-<h2 id="基础术语">基础术语</h2>
-
-<h3 id="链路状态协议的特点">链路状态协议的特点</h3>
-<ul>
-  <li>快速适应网络变化</li>
-  <li>在网络发生变化时发送触发更新</li>
-  <li>以较低的频率（如每隔30分钟）发送定期更新，这被称为链路状态刷新</li>
-</ul>
-
-<h3 id="每台路由器都必须记录下述信息">每台路由器都必须记录下述信息</h3>
-<ul>
-  <li>直接相连的邻接路由器</li>
-  <li>网络或区域内的其他路由器及其连接的网络</li>
-  <li>前往每个目的地的最佳路径</li>
-</ul>
-
-<h3 id="ospf使用的各种表">OSPF使用的各种表</h3>
-<ul>
-  <li>OSPF邻居表=邻接关系数据库</li>
-  <li>OSPF拓扑表=OSPF拓扑数据库=LSDB</li>
-  <li>路由表=转发数据库</li>
-</ul>
-
-<h3 id="区域结构">区域结构</h3>
-<ul>
-  <li>内部路由器：所有接口都位于同一个区域中的路由器，同一区域中所有内部路由器的LSDB都相同</li>
-  <li>骨干路由器：位于骨干区域0边缘的路由器，至少有一个接口与区域0相连。骨干路由器在维护OSPF路由信息时采用的步骤和算法与内部路由器相同</li>
-  <li>区域边界路由器（ABR）：连接多个区域的路由器，为其连接的每个区域维护一个LSDB，并路由前往/来自其他区域的数据流</li>
-  <li>自治系统边界路由器（ASBR）：至少有一个接口与其他域（如另一个OSPF自治系统或使用增强内部网关协议[EIGRP]的域）相连</li>
-</ul>
-
-<p><img src="/assets/images/ospf/01.png" /></p>
-
-<p>在多路访问广播环境中，每个网段都有独立的DR和BDR
-在路由器链路通告中，以链路开销的方式通告它。默认的OSPF开销如下</p>
-<ul>
-  <li>56kbit/s 的串行链路：默认开销为1785</li>
-  <li>64kbit/s 的串行链路：默认开销为1562</li>
-  <li>T1（1.544Mbit/s 的串行链路）：默认开销为64</li>
-  <li>E1（2.048Mbit/s 的串行链路）：默认开销为48</li>
-  <li>以太网：默认开销为10</li>
-  <li>快速以太网：默认开销为1</li>
-  <li>FDDI：默认开销为1</li>
-  <li>ATM：默认开销为1</li>
-</ul>
-
-<p><img src="/assets/images/ospf/02.png" /></p>
-
-<p><img src="/assets/images/ospf/03.png" /></p>
-
-<p><img src="/assets/images/ospf/04.png" /></p>
-
-<p><img src="/assets/images/ospf/05.png" /></p>
-
-<p>这5种OSPF分组都被直接封装到IP分组的有效负载中，OSPF分组不使用传输控制协议（TCP）和用户数据报协议（UDP）</p>
-
-<h3 id="邻接路由器要建立邻接关系hello分组的如下字段必须匹配">邻接路由器要建立邻接关系，Hello分组的如下字段必须匹配</h3>
-<ul>
-  <li>Hello 间隔</li>
-  <li>失效间隔</li>
-  <li>区域ID</li>
-  <li>身份验证密码</li>
-  <li>末节区域标记</li>
-</ul>
-
-<p><strong>要让路由器通过接口建立邻接关系，接口的主IP地址必须位于同一个子网且子网掩码相同，接口的最大传输单元（MTU）也必须匹配</strong></p>
-
-<h3 id="ospf-邻接关系状态">OSPF 邻接关系状态</h3>
-<ul>
-  <li>Down：没有检测到活动邻居</li>
-  <li>Init：收到Hello分组</li>
-  <li>双向：路由器在其收到的Hello分组中看到了自己的路由器ID</li>
-  <li>预启动：确定了主/从角色</li>
-  <li>交换：发送DBD（LSDB摘要）</li>
-  <li>加载：交换LSR和LSU以填充LSDB</li>
-  <li>完全邻接：邻居处于完全邻接状态</li>
-</ul>
-
-<p><strong>如果邻居是通过 NBMA 接口（如帧中继）相连的，OSPF 还可能在 Init 状态前进入Atempt状态</strong></p>
-
-<h3 id="满足如下条件时lsa将被视为更新的">满足如下条件时，LSA将被视为更新的</h3>
-<ul>
-  <li>序列号更大</li>
-  <li>校验和更大（如果序列号相同）</li>
-  <li>年龄等于maxage（这表明LSA被抑制）</li>
-  <li>LS 年龄小得多</li>
-</ul>
-
-<p><img src="/assets/images/ospf/06.png" /></p>
-
-<p><img src="/assets/images/ospf/07.png" /></p>
-
-<p><img src="/assets/images/ospf/08.png" /></p>
-
-<h2 id="常规配置">常规配置</h2>
-
-<h3 id="配置ospf进程的步骤">配置OSPF进程的步骤</h3>
-
-<ul>
-  <li>router ospf process-id [vrf vpn-name]在路由器上启用OSPF 进程</li>
-  <li>network ip address wildcard-mask area area-id 指定路由器的哪些接口将参与OSPF进程以及网络所属的OSPF区域</li>
-</ul>
-
-<p><img src="/assets/images/ospf/9.png" /></p>
-
-<p><img src="/assets/images/ospf/10.png" /></p>
-
-<p><strong>接口配置命令 ip ospf process-id area area-id [secondaries none],优先于命令network area</strong></p>
-
-<p><img src="/assets/images/ospf/11.png" /></p>
-
-<p><img src="/assets/images/ospf/12.png" /></p>
-
-<p>区域OSPF配置示例</p>
-
-<p><img src="/assets/images/ospf/13.png" /></p>
-
-<h3 id="路由器id">路由器ID</h3>
-<ul>
-  <li>router-id ip-address</li>
-  <li>路由器ID设置为最大的活动环回接口地址</li>
-  <li>最大的活动物理接口IP地址</li>
-</ul>
-
-<p><strong>OSPF数据库使用路由器ID来唯一地标识网络中的每台路由器,因此在整个OSPF自治系统中，路由器ID都不能重复</strong></p>
-
-<p><img src="/assets/images/ospf/14.png" /></p>
-
-<h3 id="查看ospf的运行">查看OSPF的运行</h3>
-<ul>
-  <li>show ip ospf显示OSPF路由器ID（RID）、OSPF定时器、执行了 SPF 算法多少次以及LSA信息。</li>
-  <li>show ip ospf interface [type number] [ brief]：查看接口是否被加入到正确的区域中；该命令还显示各种定时器（包括Hello间隔）和邻接关系</li>
-  <li>show ip ospf neighbor detail [type number] [neighbor-id] [detail]：显示一个邻居列表，包括它们的OSPF路由器ID、OSPF优先级、邻接关系状态（如init、预启动或完全邻接）及失效定时器</li>
-  <li>show ip route ospf：显示路由器知道的 OSPF 路由，它是判断本地路由器和互连网络其他部分之间的连接性的最佳方法之一。该命令还有可选参数，让您能够进一步指定要显示的信息，如OSPF进程ID</li>
-  <li>show ip protocols：显示 IP 路由协议参数，包括定时器、过滤器、度量值、网络及路由器的其他信息</li>
-  <li>debug ip ospf events显示与OSPF相关的事件，如建立邻接关系、扩散信息、DR选举和SPF计算</li>
-</ul>
-
-<p><img src="/assets/images/ospf/15.png" /></p>
-
-<p><img src="/assets/images/ospf/16.png" /></p>
-
-<p><img src="/assets/images/ospf/17.png" /></p>
-
-<p><img src="/assets/images/ospf/18.png" /></p>
-
-<p><img src="/assets/images/ospf/19.png" /></p>
-
-<h2 id="网络类型">网络类型</h2>
-
-<h3 id="dr和bdr">DR和BDR</h3>
-
-<p><img src="/assets/images/ospf/20.png" /></p>
-
-<ul>
-  <li>优先级最高的路由器成为DR</li>
-  <li>优先级次高的路由器成为BDR</li>
-  <li>接口的OSPF优先级默认为1</li>
-  <li>优先级为0的路由器不能成为DR或BDR</li>
-  <li>优先级更高的路由器加入网络时，并不会抢占DR或BDR</li>
-</ul>
-
-<p><strong>DR 概念是链路级的，牢记这一点很重要。在多路访问广播环境中，每个网段都有自己的DR和BDR</strong></p>
-
-<p>要指定将多路访问链路上的哪个路由器接口用做DR或BDR，可使用接口配置命令ip ospf priority number。默认的优先级为 0，其取值范围为0～255
-DR和BDR的价值体现在以下方面</p>
-
-<ul>
-  <li>减少路由更新数据流</li>
-  <li>管理链路状态同步</li>
-</ul>
-
-<p><img src="/assets/images/ospf/21.png" /></p>
-
-<p><img src="/assets/images/ospf/22.png" /></p>
-
-<h2 id="lsa">LSA</h2>
-
-<p><img src="/assets/images/ospf/30.png" />
-<img src="/assets/images/ospf/31.png" /></p>
-
-<ul>
-  <li>1类（路由器LSA）：每台路由器都生成有关其所属区域的路由器链路通告。路由器链路通告描述了路由器连接到区域的链路的状态，只在区域内扩散。每种LSA的报头都是20字节，其中一个字段是链路状态ID。对于1类LSA，该字段的值为最初发送LSA的路由器的ID。</li>
-  <li>2类（网络LSA）：DR为多路访问网络生成的网络链路通告，描述了特定多路访问网络上的一组路由器。网络链路通告在网络所在的区域内扩散。2类LSA的链路状态ID为DR的IP接口地址。</li>
-  <li>3类和4类（汇总LSA）：汇总链路通告是由ABR生成的，描述了下述区域间路由
-    3类 LSA描述了前往网络的路由（还可能包含汇总路由）
-    4类 LSA描述了前往ASBR的路由</li>
-  <li>5类（自治系统外部LSA）：自治系统外部链路状态通告是由ASBR生成的，描述了前往自治系统外部的目标网络的路由，被扩散到除各种末节区域外的其他所有地方。5类LSA的链路状态ID为外部网络的地址。</li>
-  <li>6 类（多播 OSPF LSA）：这些 LSA 用于 OSPF 多播应用中</li>
-  <li>7类（用于NSSA的LSA）：这些LSA用于NSSA中，将在本章后面的“配置NSSA”一节介绍</li>
-  <li>8类（BGP的外部属性LSA）：这些LSA用于互联OSPF和BGP</li>
-  <li>9、10和11类（不透明LSA）：这些LSA用于升级到OSPF，旨在在OSPF域中分发应用程序特定的信息。例如，Cisco使用9类不透明LSA在OSPF中实现MPLS流量工程。分发不透明LSA时，使用的是标准的LSDB扩散机制。这3种LSA的扩散范围各不相同，9类LSA只在本地网络或子网内扩散，10类LSA只在当前区域内扩散，而11类LSA扩散到整个自治系统（与5类LSA相同）。不透明LSA是在 RFC 5250（The OSPF Opaque LSA Option）中定义的。</li>
-</ul>
-
-<p><strong>在Cisco路由器中，OSPFv2不支持6类和8类LSA</strong></p>
-
-<h3 id="1类lsa">1类LSA</h3>
-<p>路由器通告1类LSA，这种LSA被扩散到当前区域内的所有路由器，1类LSA指出了每条链路的OSPF开销以及路由器是不是ABR或ASBR</p>
-
-<p><img src="/assets/images/ospf/32.png" /></p>
-
-<p><img src="/assets/images/ospf/33.png" /></p>
-
-<h3 id="2类lsa">2类LSA</h3>
-<p>2 类 LSA 是为区域中每个中转的广播或 NBMA 网络生成的，中转网络至少与两台OSPF 路由器直接相连</p>
-
-<p><img src="/assets/images/ospf/34.png" /></p>
-
-<h3 id="3类lsa">3类LSA</h3>
-<p>3类（汇总）LSA由ABR生成，它将一个区域内的网络通告给OSPF自治系统中的其他区域</p>
-
-<p><img src="/assets/images/ospf/35.png" /></p>
-
-<h3 id="4类lsa">4类LSA</h3>
-<p>仅当区域中有ASBR时，ABR才会生成4类（汇总）LSA。4类LSA标识ASBR，并提供一条前往该ASBR的路由</p>
-
-<p><img src="/assets/images/ospf/36.png" /></p>
-
-<h3 id="5类lsa">5类LSA</h3>
-<p>5类LSA描述了前往OSPF自治系统外的网络的路由，它由ASBR发送并被扩散到整个AS</p>
-
-<p><img src="/assets/images/ospf/37.png" /></p>
-
-<p><img src="/assets/images/ospf/38.png" /></p>
-
-<h3 id="ospf的路由表和路由类型">OSPF的路由表和路由类型</h3>
-
-<p><img src="/assets/images/ospf/39.png" /></p>
-
-<p><img src="/assets/images/ospf/40.png" /></p>
-
-<h3 id="计算o-e1-和-o-e2的开销">计算O E1 和 O E2的开销</h3>
-
-<p><img src="/assets/images/ospf/41.png" /></p>
-
-<ul>
-  <li>对于O E1 外部路由，开销为外部开销加上分组经过的每条链路的内部开销。多个ASBR将同一条外部路由通告到同一个自治系统中时，应使用这种类型，以避免次优路由</li>
-  <li>O E2路由的开销总是只包含外部开销。只有一台 ASBR将外部路由通告到自治系统中时，使用这种类型</li>
-</ul>
-
-<h3 id="lsdb的过载保护">LSDB的过载保护</h3>
-
-<p><img src="/assets/images/ospf/42.png" /></p>
-
-<h2 id="特殊区域">特殊区域</h2>
-
-<h3 id="标准区域">标准区域</h3>
-<p>这是默认的区域类型，它接受链路更新、汇总路由和外部路由。</p>
-
-<h3 id="骨干区域">骨干区域</h3>
-<p>骨干区域为区域0，其他区域都与之相连以交换和路由信息。OSPF骨干区域具有标准OSPF区域的所有特征</p>
-
-<h3 id="末节区域">末节区域</h3>
-<p>这种区域不接受关于自治系统外部的路由的信息，如来自非 OSPF 路由器的路由。需要路由到自治系统外部的网络时，路由器使用默认路由（用0.0.0.0表示）。末节区域不能包含ASBR（除非ABR也是ASBR）</p>
-
-<h3 id="绝对末节区域">绝对末节区域</h3>
-<p>这种 Cisco 专用的区域不接受来自自治系统外部的路由以及来自自治系统中其他区域的汇总路由。需要将分组发送到区域外的网络时，路由器使用默认路由。绝对末节区域中不能有ASBR（除非ABR也是ASBR）</p>
-
-<h3 id="nssa">NSSA</h3>
-<p>NSSA 是对OSPF RFC的补充。这种区域定义了一种特殊的 LSA——7类LSA。NSSA具有末节区域的优点，它们不接受有关自治系统外部的路由的信息，而使用默认路由前往外部网络。然而，NSSA可以包含ASBR，这违反了关于末节区域的规则。</p>
-
-<h3 id="绝对末节nssa">绝对末节NSSA</h3>
-<p>Cisco路由器也允许将区域配置为绝对末节NSSA，这种区域可包含 ASBR，但不接受外部路由和来自其他区域的汇总路由。它使用默认路由前往区域外的网络。</p>
-
-<p><img src="/assets/images/ospf/70.png" /></p>
-
-<p><img src="/assets/images/ospf/71.png" /></p>
-
-<h3 id="配置末节区域">配置末节区域</h3>
-
-<p><img src="/assets/images/ospf/72.png" /></p>
-
-<p>步骤</p>
-<ul>
-  <li>在区域内的所有路由器上配置OSPF</li>
-  <li>在区域中所有的路由器上配置路由器配置命令area area-id stub</li>
-  <li>（可选）在ABR中配置默认路由的开销</li>
-</ul>
-
-<p><img src="/assets/images/ospf/73.png" /></p>
-
-<p><img src="/assets/images/ospf/74.png" /></p>
-
-<h3 id="配置绝对末节区域cisco专有">配置绝对末节区域(CISCO专有)</h3>
-<p>5类外部LSA以及3类和4类汇总LSA（区域间路由）不能传播到绝对末节区域中</p>
-
-<p><img src="/assets/images/ospf/75.png" /></p>
-
-<p>步骤</p>
-<ul>
-  <li>在区域内的所有路由器上配置OSPF</li>
-  <li>在区域中所有的路由器上配置路由器配置命令area area-id stub</li>
-  <li>在ABR上，在命令area area-id stub中指定关键字no-summary，这让区域变成绝对末节的</li>
-  <li>(可选)在ABR上，配置默认路由的开销</li>
-</ul>
-
-<p><img src="/assets/images/ospf/76.png" /></p>
-
-<p><img src="/assets/images/ospf/77.png" /></p>
-
-<p><img src="/assets/images/ospf/78.png" /></p>
-
-<h3 id="ospf的路由表">OSPF的路由表</h3>
-
-<p><img src="/assets/images/ospf/79.png" /></p>
-
-<p>（没有任何末节配置的）标准区域中OSPF路由器的路由表，其中包括区域内路由（O）、区域间路由（O IA）和外部路由（O E1和 O E2）</p>
-
-<p><img src="/assets/images/ospf/80.png" /></p>
-
-<p>配置为末节区域后的路由表，其中包含区域内路由（O）和区域间路由（O IA），但不包含外部路由（O E1和 O E2），因为这些路由被区域间默认路由（O*IA）取代</p>
-
-<p><img src="/assets/images/ospf/81.png" /></p>
-
-<p><img src="/assets/images/ospf/82.png" /></p>
-
-<p>ABR上执行汇总（区域仍被配置为末节的）后的路由表，其中包含区域内路由（O）和区域间汇总路由（O IA，这里将路由 172.31.11.1 和 172.31.11.2 汇总成了172.31.11.0/24），但不包含外部路由，（O E1 和 O E2），因为这些路由被区域间默认路由（O*IA）取代</p>
-
-<p><img src="/assets/images/ospf/83.png" /></p>
-
-<p>绝对末节区域后的路由表。注意到在绝对末节区域中，路由器的路由表最小，其中只包含区域内路由（O），而不包含区域间路由（O IA）和外部路由（O E1和 O E2），因为用区域间默认路由（O*IA）取代了这些路由</p>
-
-<h3 id="配置nssa">配置NSSA</h3>
-<p>将路由重分发到NSSA中时，将创建一种特殊的LSA——7类LSA，这种LSA只能出现在NSSA中，它是由NSSA ASBR生成的，而NSSA ABR将其转换为5类LSA并在OSPF域中传播。7类LSA的LSA报头中有一个传播（P）位，用于避免在NSSA和骨干区域之间循环传播它。7类LSA的格式与5类LSA相同。</p>
-
-<p><img src="/assets/images/ospf/84.png" /></p>
-
-<p>步骤</p>
-<ul>
-  <li>在区域内的所有路由器上配置OSPF</li>
-  <li>在区域内的所有路由器上配置路由器配置命令 area area-id nssa [no-redistr-ibution] [default-information-originate] [metric metric-value] [metric-type type-value]而不是 area area-id stub</li>
-  <li>(可选)ABR上配置默认路由的开销。</li>
-</ul>
-
-<p><img src="/assets/images/ospf/85.png" /></p>
-
-<p><img src="/assets/images/ospf/86.png" /></p>
-
-<p><img src="/assets/images/ospf/87.png" /></p>
-
-<h3 id="ospf-nssa-的-lsdb">OSPF NSSA 的 LSDB</h3>
-
-<p><img src="/assets/images/ospf/88.png" /></p>
-
-<p><img src="/assets/images/ospf/89.png" /></p>
-
-<p><img src="/assets/images/ospf/90.png" /></p>
-
-<p>注意到这里没有使用ASBR汇总（4类）LSA，因为5类外部LSA来自ABR而不是ASBR，而ABR在区域0内。如果区域为标准区域，ASBR将生成5类LSA，而ABR将创建4类LSA，以告诉其他路由器如何前往ASBR。</p>
-
-<h3 id="配置绝对末节nssacisco专有">配置绝对末节NSSA(CISCO专有)</h3>
-<p>步骤</p>
-<ul>
-  <li>在区域内的所有路由器上配置OSPF</li>
-  <li>在区域内的所有路由器上配置路由器配置命令 area area-id nssa [no-redistr-ibution] [default-information-originate] [metric metric-value] [metric-type type-value]而不是area area-id stub</li>
-  <li>在ABR上，在命令area area-id nssa中添加关键字no-summary</li>
-  <li>(可选)在ABR上配置默认路由的开销</li>
-</ul>
-
-<p><img src="/assets/images/ospf/91.png" /></p>
-
-<p><img src="/assets/images/ospf/92.png" /></p>
-
-<p><img src="/assets/images/ospf/93.png" /></p>
-
-<p>#各种OSPF区域示例</p>
-
-<p><img src="/assets/images/ospf/94.png" /></p>
-
-<p>区域11为标准区域，它接受链路更新、汇总和外部路由。
-区域14为末节区域，它不接受4类汇总LSA和5类外部LSA，但接受3类汇总LSA。
-区域12为绝对末节区域，它不接受汇总LSA和外部LSA。
-区域10为NSSA，它不接受4类汇总LSA和5类外部LSA，但接受3类汇总LSA且可以有ASBR。
-区域13为绝对末节NSSA，它不接受汇总LSA和外部LSA，但可以有ASBR</p>
-
-<p><img src="/assets/images/ospf/95.png" /></p>
-
-<h3 id="默认路由">默认路由</h3>
-<p>在标准区域中，路由器不生成默认路由 ，可使用命令default-information originate [always] [metric metric-value]  [metric-typetype-value] [route-map map-name]。默认情况下，该命令生成一条E2 路由，其链路状态ID为0.0.0.0，网络掩码为0.0.0.0，导致路由器成为ASBR。
-末节区域和绝对末节区域，与末节区域相连的ABR将生成一个链路状态ID为0.0.0.0的汇总LSA，即使该ABR没有默认路由
-对于NSSA，默认路由是由与之相连的ABR生成的，但默认情况下不会生成。要让ABR生成默认路由，可使用命令area area-idnssa default-information-originate。ABR将生成一个链路状态ID为0.0.0.0的7类LSA。如果只想将路由导入到标准区域中，而不想将其导入到NSSA中，可在NSSA ABR上使用选项no-redistribution。绝对末节NSSA的ABR自动生成一条默认路由</p>
-
-<h2 id="身份认证">身份认证</h2>
-
-<h3 id="配置简单密码身份验证">配置简单密码身份验证</h3>
-
-<p>步骤</p>
-<ul>
-  <li>使用接口配置命令 ip ospf authentication-key password指定一个密码</li>
-  <li>
-    <table>
-      <tbody>
-        <tr>
-          <td>使用接口配置命令 ip ospf authentication [message-digest</td>
-          <td>null] md5指定身份验证类型</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-</ul>
-
-<p>如果要使用简单身份验证，可在配置命令 area authentication 时不指定任何参数。</p>
-
-<p><img src="/assets/images/ospf/100.png" /></p>
-
-<p>示例</p>
-
-<p><img src="/assets/images/ospf/101.png" /></p>
-
-<p><img src="/assets/images/ospf/102.png" /></p>
-
-<p><img src="/assets/images/ospf/103.png" /></p>
-
-<p>验证</p>
-
-<p><img src="/assets/images/ospf/104.png" /></p>
-
-<p><img src="/assets/images/ospf/105.png" /></p>
-
-<p>排障</p>
-<ul>
-  <li>没有在两台路由器上都配置身份验证</li>
-  <li>两台路由器配置的身份验证类型不同</li>
-  <li>两台路由器配置的密码不同</li>
-</ul>
-
-<p>在虚链路上配置OSPF简单密码身份验证</p>
-
-<p><img src="/assets/images/ospf/106.png" /></p>
-
-<h3 id="md5身份验证的配置-验证-和故障排除">MD5身份验证的配置 验证 和故障排除</h3>
-
-<p><img src="/assets/images/ospf/107.png" /></p>
-
-<p><img src="/assets/images/ospf/108.png" /></p>
-
-<p>验证</p>
-
-<p><img src="/assets/images/ospf/109.png" /></p>
-
-<p>排障
-简单密码身份验证一样，命令 debug ip ospf obj 显示与 OSPF 邻接关系相关的事件，对于排除MD5身份验证故障很有帮助</p>
-
-<p><img src="/assets/images/ospf/110.png" /></p>
-
-<p><img src="/assets/images/ospf/111.png" /></p>
-
-<h2 id="总结">总结</h2>
-
-<h3 id="ospf-使用的表">OSPF 使用的表</h3>
-<p>邻居表（也叫邻接关系数据库）、拓扑表（也叫拓扑数据库[LSDB]）和路由表（也叫转发数据库）</p>
-
-<h3 id="由两层组成ospf分层区域结构">由两层组成OSPF分层区域结构</h3>
-<p>骨干区域0和常规区域。</p>
-
-<h3 id="各类型的ospf路由器">各类型的OSPF路由器</h3>
-<ul>
-  <li>内部路由器</li>
-  <li>骨干路由器</li>
-  <li>ABR</li>
-  <li>ASBR。</li>
-</ul>
-
-<h3 id="ospf-路由器如何使用-hello-协议建立邻接关系">OSPF 路由器如何使用 Hello 协议建立邻接关系</h3>
-<p>两台路由器使用 Hello 分组建立邻接关系后，它们交换LSA并确认收到了邻接路由器的LSA，以同步LSDB。在点到点链路上，路由器彼此建立完全邻接关系，而在 LAN 链路上，路由器只与DR和BDR建立完全邻接关系。</p>
-
-<h3 id="cisco-路由器如何计算-ospf-度量值">Cisco 路由器如何计算 OSPF 度量值</h3>
-<p>默认情况下，根据链路带宽计算度量值；如果有速度超过 100Mbit/s 的接口，应在所有路由器上都配置路由器配置命令<strong>auto-cost reference-bandwidth ref-bw</strong>。要覆盖默认开销，可使用接口配置命令 <strong>ip ospf cost interface-cost</strong>手工指定开销。</p>
-
-<h3 id="5-种类型的-ospf分组">5 种类型的 OSPF分组</h3>
-<p>Hello、DBD、LSR、LSU 和LSAck</p>
-<ul>
-  <li>Hello 分组用于发现邻居和建立邻接关系</li>
-  <li>DBD用于同步LSDB</li>
-  <li>LSR用于请求特定的链路状态记录</li>
-  <li>LSU 用于发送请求的记录</li>
-  <li>LSAck 用于确认收到了其他类型的分组
-    <blockquote>
-      <p>OSPF 分组是在IP分组中发送的，使用的协议号为89。</p>
-    </blockquote>
-  </li>
-</ul>
-
-<h3 id="可能经历的ospf-邻接关系状态">可能经历的OSPF 邻接关系状态</h3>
-<p>Down、Atempt、Init、双向、预启动、交换、加载和完全邻接。</p>
-
-<h3 id="在邻接路由器上必须匹配的5个hello分组字段">在邻接路由器上，必须匹配的5个Hello分组字段</h3>
-<ul>
-  <li>Hello间隔</li>
-  <li>失效间隔</li>
-  <li>区域ID</li>
-  <li>身份验证密码</li>
-  <li>末节区域标记。</li>
-</ul>
-
-<h3 id="规划ospf实施">规划OSPF实施</h3>
-<p>包括IP编址方案、网络拓扑和OSPF区域。对于网络中的每台路由器，需要完成的任务包括启用路由协议 OSPF 并指定进程号（可在接口上直接启用，也可使用合适的network命令）、给接口指定正确的区域ID以及给合适的接口配置度量值（这是可选的）。</p>
-
-<h3 id="基本的ospf配置命令">基本的OSPF配置命令</h3>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 全局配置命令 </span>
-router ospf process-id。
-<span class="c">#接口配置命令 </span>
-network ip-address wildcard-mask area area-id 和 ip ospf process-idareaarea-id <span class="o">[</span>secondaries none]。
-<span class="c">#接口配置命令</span>
-bandwidth kilobits。
-<span class="c">#路由器配置命令</span>
-router-id ip-address。
-<span class="c">#用于查看OSPF运行情况的命令。</span>
-show ip ospf。
-show ip route。
-show ip ospf interface。
-show ip ospf neighbor。
-show ip route ospf。
-show ip protocols。
-debug ip ospf events。
-debug ip ospf adj。
-debug ip ospf packet。
-</code></pre></div></div>
-<h3 id="如何选择ospf路由器id">如何选择OSPF路由器ID</h3>
-<p>路由器配置命令router-id ip-address指定的、最大的活动环回接口IP地址或最大的活动物理接口IP地址。</p>
-
-<h3 id="ospf-定义的三类网络">OSPF 定义的三类网络</h3>
-<p>点到点、广播和 NBMA。</p>
-
-<h3 id="如何选举dr和bdr">如何选举DR和BDR</h3>
-<p>优先级最高的路由器为DR，优先级次高的路由器为BDR。如果优先级相同，则根据路由器ID来选举。优先级为0的路由器不能成为DR或BDR。优先级是使用接口配置命令 ip ospf prioritynumber 设置的。</p>
-
-<h3 id="可用于nbma网络的5种ospf运行模式">可用于NBMA网络的5种OSPF运行模式</h3>
-<p>RFC模式非广播和点到多点以及Cisco模式广播、点到多点非广播和点到点。</p>
-
-<h3 id="lsa类型">LSA类型</h3>
-<p>11种 OSPF LSA类型,前5 种是最常用的，它们分别是由每台路由器生成的1类（路由器）、DR生成的2类（网络）、ABR生成的描述区域路由的3类（汇总）、ABR生成的描述前往ASBR的路由的4类（汇总）以及ASBR生成的描述前往外部的路由的5类（外部）。</p>
-
-<h3 id="三种ospf-路由">三种OSPF 路由</h3>
-<p>区域内路由（O）、区域间路由（O IA）和外部路由（O E1或OE2）。</p>
-
-<h3 id="使用路由器配置命令">使用路由器配置命令</h3>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>max-lsa maximum-number <span class="o">[</span>threshold-percentage] <span class="o">[</span>warning-only] <span class="o">[</span>ignore-time minutes] <span class="o">[</span>ignore-count countnumber] <span class="o">[</span>reset-time minutes]配置OSPF LSDB过载保护。
-</code></pre></div></div>
-
-<h3 id="使用路由器配置命令-1">使用路由器配置命令</h3>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>passive-interface <span class="nb">type </span>number <span class="o">[</span>default]禁止从指定路由器接口向外发送路由协议的路由更新
-<span class="c"># 从OSPF 而言，指定接口看起来像末节网络，不通过该接口发送和接收OSPF路由信息。</span>
-</code></pre></div></div>
-
-<h3 id="ospf的默认路由">OSPF的默认路由</h3>
-<p>在 OSPF 中可使用默认路由，这样就无需知道前往所有目标网络的具体路由。这样做的好处是，路由表和LSDB将小得多，同时又能够到达所有网络。要传播OSPF默认路由，可使用路由器配置命令</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>default-information originate <span class="o">[</span>always] <span class="o">[</span>metric metric-value] <span class="o">[</span>metric-typetype-value] <span class="o">[</span>route-map map-name]。
-</code></pre></div></div>
-
-<h3 id="配置路由汇总">配置路由汇总</h3>
-<p>可减少占用的CPU周期和LSA扩散，还可缩小LSDB和路由表的规模。OSPF不自动汇总</p>
-
-<p>要在ABR上配置OSPF汇总，可使用路由器配置命令</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>area area-id range address mask <span class="o">[</span>advertise | not-advertise] <span class="o">[</span>cost cost]；
-</code></pre></div></div>
-<p>要在ASBR 上配置 OSPF 汇总，可使用路由器配置命令</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>summary-address ip-address mask <span class="o">[</span>not-advertise] <span class="o">[</span>tag tag]。
-</code></pre></div></div>
-
-<h3 id="ospf-虚链路">OSPF 虚链路</h3>
-<p>这是一种用于临时修复骨干故障或将区域连接到骨干的功能。要配置虚链路，可使用路由器配置命令</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>area area-id virtual-link router-id <span class="o">[</span>authentic- ation <span class="o">[</span>message-digest | null]] <span class="o">[</span>hello-interval seconds] <span class="o">[</span>retransmit-interval seconds] <span class="o">[</span>transmit-delay seconds] <span class="o">[</span>dead-interval seconds] <span class="o">[[</span>authentication-key key] | <span class="o">[</span>message-digest-keykey-idmd5key]]；要查看其运行情况，可使用命令 show ip ospf virtual-links。
-</code></pre></div></div>
-
-<h3 id="ospf-中定义的多种区域类型">OSPF 中定义的多种区域类型</h3>
-<p>标准区域、骨干区域、末节区域、绝对末节区域、NSSA和绝对末节NSSA。要配置末节区域，可使用路由器配置命令</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>area area-id stub；
-</code></pre></div></div>
-<p>在ABR上配置该命令时，如果指定了关键字<strong>no-summary</strong>，区域将被配置为绝对末节区域。要配置NSSA，应使用路由器配置命令</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>area area-id nssa <span class="o">[</span>no-redistribution] <span class="o">[</span>default-information-originate] <span class="o">[</span>met-ric metric-value] <span class="o">[</span>metric-type type-value] <span class="o">[</span>no-summary]
-</code></pre></div></div>
-<p>而不要使用命令</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>area area-id stub
-</code></pre></div></div>
-<p>要将区域配置成绝对末节NSSA，只需在ABR上配置该命令时指定关键字<strong>no-summary</strong>。</p>
-
-<h3 id="ospf-身份验证类型">OSPF 身份验证类型</h3>
-<ul>
-  <li>null</li>
-  <li>简单密码身份验证（也叫明文身份验证）</li>
-  <li>MD5 身份验证</li>
-  <li>要排除身份验证故障，可使用命令
-    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>debug ip ospf adj。
-</code></pre></div>    </div>
-  </li>
-</ul>
-
-<h3 id="配置ospf简单密码身份验证的命令">配置OSPF简单密码身份验证的命令</h3>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 接口配置命令 </span>
-ip ospf authentication-keypassword。
-<span class="c"># 接口配置命令 </span>
-ip ospf authentication 和路由器配置命令 area area-id authentication。
-<span class="c"># 配置OSPF MD5 身份验证的命令</span>
-<span class="c"># 接口配置命令 </span>
-ip ospf message-digest-key key-id md5key。
-<span class="c">#接口配置命令 </span>
-ip ospf authentication message-digest 
-<span class="c"># 路由器配置命令 </span>
-area area-id authentication message-digest。
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[OSPF备忘信息]]></summary></entry></feed>
+<p>链路上的两台路由器都必须配置ip rip triggered命令，仅仅发送路由表最初的交换信息和路由表发生变化使得更新信息，只在串行链路上生效</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[RIP 笔记]]></summary></entry></feed>

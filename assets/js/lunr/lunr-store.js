@@ -148,4 +148,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-bgp-04/",
         "teaser": null
+      },{
+        "title": "bcc c 环境部署",
+        "excerpt":"下载kernel 查看系统版本 root@yinyaliang-virtual-machine:/usr/src# uname -r 5.8.0-43-generic 下载对应版本 http://ftp.sjtu.edu.cn/sites/ftp.kernel.org/pub/linux/kernel/v5.x/ 解压放在/usr/src目录下 root@yinyaliang-virtual-machine:/usr/src# ll total 176612 drwxr-xr-x 5 root root 4096 7月 8 20:06 ./ drwxr-xr-x 14 root root 4096 2月 10 02:48 ../ drwxrwxr-x 24 root root 4096 8月 3 2020 linux-5.8/ -rwxrw-rw- 1 yinyaliang yinyaliang 180827693 7月 1 20:07 linux-5.8.tar.gz* drwxr-xr-x...","categories": [],
+        "tags": ["BCC"],
+        "url": "/bcc-01/",
+        "teaser": null
       }]
