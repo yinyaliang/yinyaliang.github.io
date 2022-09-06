@@ -154,4 +154,10 @@ var store = [{
         "tags": ["BCC"],
         "url": "/bcc-01/",
         "teaser": null
+      },{
+        "title": "CISCO VPN配置备忘",
+        "excerpt":"IPSEC, GRE OVER IPSEC, IP SEC REMOTEACCESS, DMVPN 配置 IPSEC # R2 # IKE第一阶段 # 配置策略 第一个和第二个报文 crypto isakmp policy 10 #策略优先级 encr aes 256 #加密算法 hash sha #hash算法默认SHA authentication pre-share #认证方式 预共享密钥 group 5 #迪菲.赫尔曼算法的g和P的大小 建议1 2 5 lifetime 3600 # 第三和第四报文会自动计算 # 指定第五和第六个报文 进行身份认证 crypto isakmp key 6...","categories": [],
+        "tags": ["RS"],
+        "url": "/rs-cisco-config-vpn-01/",
+        "teaser": null
       }]
