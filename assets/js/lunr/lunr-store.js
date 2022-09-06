@@ -155,6 +155,12 @@ var store = [{
         "url": "/bcc-01/",
         "teaser": null
       },{
+        "title": "zabbix 源码分析 another/first network error wait for 15s seconds ",
+        "excerpt":"在监控设备的时候，在server端的日志中有时候会见到类似another network error, wait for 15s seconds的异常，今天我们从zabbix的源码看下出现的逻辑 poller.c get_values for (i = 0; i &lt; num; i++) { switch (errcodes[i]) { case SUCCEED: case NOTSUPPORTED: case AGENT_ERROR: if (HOST_AVAILABLE_TRUE != last_available) { zbx_activate_item_host(&amp;items[i], &amp;timespec); last_available = HOST_AVAILABLE_TRUE; } break; case NETWORK_ERROR: case GATEWAY_ERROR: case TIMEOUT_ERROR: if (HOST_AVAILABLE_FALSE != last_available) {...","categories": [],
+        "tags": ["Monitor"],
+        "url": "/monitor-sourcecod-01/",
+        "teaser": null
+      },{
         "title": "CISCO VPN配置备忘",
         "excerpt":"IPSEC, GRE OVER IPSEC, IP SEC REMOTEACCESS, DMVPN 配置 IPSEC # R2 # IKE第一阶段 # 配置策略 第一个和第二个报文 crypto isakmp policy 10 #策略优先级 encr aes 256 #加密算法 hash sha #hash算法默认SHA authentication pre-share #认证方式 预共享密钥 group 5 #迪菲.赫尔曼算法的g和P的大小 建议1 2 5 lifetime 3600 # 第三和第四报文会自动计算 # 指定第五和第六个报文 进行身份认证 crypto isakmp key 6...","categories": [],
         "tags": ["RS"],
