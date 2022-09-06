@@ -156,7 +156,7 @@ var store = [{
         "teaser": null
       },{
         "title": "zabbix 源码分析 another/first network error wait for 15s seconds ",
-        "excerpt":"在监控设备的时候，在server端的日志中有时候会见到类似another network error, wait for 15s seconds的异常，今天我们从zabbix的源码看下出现的逻辑 poller.c get_values for (i = 0; i &lt; num; i++) { switch (errcodes[i]) { case SUCCEED: case NOTSUPPORTED: case AGENT_ERROR: if (HOST_AVAILABLE_TRUE != last_available) { zbx_activate_item_host(&amp;items[i], &amp;timespec); last_available = HOST_AVAILABLE_TRUE; } break; case NETWORK_ERROR: case GATEWAY_ERROR: case TIMEOUT_ERROR: if (HOST_AVAILABLE_FALSE != last_available) {...","categories": [],
+        "excerpt":"从zabbix的源码看another network error, wait for 15s seconds的异常 poller.c get_values for (i = 0; i &lt; num; i++) { switch (errcodes[i]) { case SUCCEED: case NOTSUPPORTED: case AGENT_ERROR: if (HOST_AVAILABLE_TRUE != last_available) { zbx_activate_item_host(&amp;items[i], &amp;timespec); last_available = HOST_AVAILABLE_TRUE; } break; case NETWORK_ERROR: case GATEWAY_ERROR: case TIMEOUT_ERROR: if (HOST_AVAILABLE_FALSE != last_available) {...","categories": [],
         "tags": ["Monitor"],
         "url": "/monitor-sourcecod-01/",
         "teaser": null
