@@ -766,21 +766,21 @@
 
 <p>从正常取值到出现异常的处理过程是这样的:</p>
 
-<p>正常取值   UnreachableDelay  UnreachableDelay   UnreachableDelay      UnnavailableDelay        恢复
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>正常取值   UnreachableDelay  UnreachableDelay   UnreachableDelay      UnnavailableDelay        恢复
                   |                                       |                              |
                   |                                       |                              |
-                  ———————–UnreachablePeriod————
-    1             2                3                   4                      5</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   过程                                        日志                                                               
-
-1 获取正常监控数据
-2 发生错误                    ------------&gt;first network
-3 再次发生错误                ------------&gt;another network
-4 置为不可用                  ------------&gt;temporarily disabling
-5 恢复                        ------------&gt;resuming
+                  <span class="nt">-----------------------UnreachablePeriod------------</span>
+    1             2                3                   4                      5
 </code></pre></div></div>
 
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       过程                                        日志                                                               
+
+    1 获取正常监控数据
+    2 发生错误                    <span class="nt">------------</span><span class="o">&gt;</span>first network
+    3 再次发生错误                <span class="nt">------------</span><span class="o">&gt;</span>another network
+    4 置为不可用                  <span class="nt">------------</span><span class="o">&gt;</span>temporarily disabling
+    5 恢复                        <span class="nt">------------</span><span class="o">&gt;</span>resuming
+</code></pre></div></div>
 <p>日志中的15s在配置文件中对应的配置UnreachableDelay,默认为15s，在源码中的位置是server.c中的CONFIG_UNREACHABLE_DELAY，
 但注意这个配置不会解决任何network error的问题，只是为计算下一个检查时间提供时间依据。还有大家应该注意到了UnreachableDelay参数和UnreachablePeriod是倍数关系</p>
 
