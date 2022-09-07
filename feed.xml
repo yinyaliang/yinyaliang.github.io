@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-07T18:56:28+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Switch STP</title><link href="/rs-cisco-config-stp-01/" rel="alternate" type="text/html" title="Switch STP" /><published>2022-09-07T00:00:00+08:00</published><updated>2022-09-07T00:00:00+08:00</updated><id>/rs-cisco-config-stp-01</id><content type="html" xml:base="/rs-cisco-config-stp-01/"><![CDATA[<p>STP介绍</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-07T18:58:53+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Switch STP</title><link href="/rs-cisco-config-stp-01/" rel="alternate" type="text/html" title="Switch STP" /><published>2022-09-07T00:00:00+08:00</published><updated>2022-09-07T00:00:00+08:00</updated><id>/rs-cisco-config-stp-01</id><content type="html" xml:base="/rs-cisco-config-stp-01/"><![CDATA[<p>STP介绍</p>
 
 <h3 id="生成树协议功能">生成树协议功能:</h3>
 
@@ -166,7 +166,7 @@
 配置mst的primary和secondary roots
 </code></pre></div></div>
 
-<p><img src="/assets/images/stp/stp01.png" /></p>
+<p><img src="/assets/images/stp/stp1.png" /></p>
 
 <h3 id="stp的端口状态">STP的端口状态</h3>
 
@@ -262,7 +262,7 @@ spanning-tree portfast bpdufilter default
 
 <p>LOOP guard，单向链路下当非指定端口收不到BPDU时，阻止它成为指定端口，防止环路</p>
 
-<p><img src="/assets/images/stp/stp02.png" /></p>
+<p><img src="/assets/images/stp/stp2.png" /></p>
 
 <ul>
   <li>Loop Guard不能再启用了Root Guard的交换机上使用</li>
@@ -289,7 +289,7 @@ spanning-tree portfast bpdufilter default
 udld reset <span class="c"># 重置udld关闭的端口</span>
 </code></pre></div></div>
 
-<p><img src="/assets/images/stp/stp03.png" /></p>
+<p><img src="/assets/images/stp/stp3.png" /></p>
 
 <ul>
   <li>通常在所有的光纤互联端口开启</li>
