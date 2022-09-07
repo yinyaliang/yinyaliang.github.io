@@ -166,4 +166,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-cisco-config-vpn-01/",
         "teaser": null
+      },{
+        "title": "CISCO VPN配置备忘",
+        "excerpt":"STP介绍 生成树协议功能: 以太网构建无环逻辑拓扑的网络协议 防止环路及其产生的广播风暴、多帧复用、MAC表不稳定 允许网络设计包含备份链接，保持冗余链路 三个步骤 选举一个根桥 在非根桥交换机选举根端口 在每条链路上选举指定端口 生成树术语 Bridge Priority Data Unit(BPDU): 包含桥ID,发送发的桥ID,到根桥的COST值,计时器等，所有的交换机会交换BPDU来选举根桥。桥ID最小的会变为根桥 Bridge ID(桥ID) 字节的字段，包含2个字节的桥优先级和6个字节的设备MAC 地址，在优先级一致的情况下会参考MAC地址 Bridge Priority(桥优先级) 默认值32768，范围:0-65535 spanning-tree vlan 1 priority priority Root Bridge(根桥) 具有最低的Bridge id的交换机会成为根桥.网络中的流量都会基于根桥选路 Path Cost(路径开销) 到根桥可能会有多条路径，会依据cost选择最低的一条 Speed Code 10Mbps 100 100Mbps 19 1Gbps 4 10Gbps 2 Designated port(指定端口) 环路中的每条链路选择一个端口作为指定端口，根桥的所有端口都是指定端口 最小的BID(发送者的) 到达根桥最低的路径开销 最低的发送者BID...","categories": [],
+        "tags": ["Switch"],
+        "url": "/rs-cisco-config-stp-01/",
+        "teaser": null
       }]

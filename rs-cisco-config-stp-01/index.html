@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>CISCO VPN配置备忘 - 尹亚亮</title>
+<meta name="description" content="STP介绍">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="CISCO VPN配置备忘">
+<meta property="og:url" content="/rs-cisco-config-stp-01/">
+
+
+  <meta property="og:description" content="STP介绍">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-07T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/rs-cisco-config-stp-01/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="CISCO VPN配置备忘">
+    <meta itemprop="description" content="STP介绍">
+    <meta itemprop="datePublished" content="2022-09-07T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/rs-cisco-config-stp-01/" class="u-url" itemprop="url">CISCO VPN配置备忘
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-09-07T00:00:00+08:00">September 7, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#生成树协议功能">生成树协议功能:</a></li><li><a href="#三个步骤">三个步骤</a></li><li><a href="#生成树术语">生成树术语</a><ul><li><a href="#bridge-priority-data-unitbpdu">Bridge Priority Data Unit(BPDU):</a></li><li><a href="#bridge-id桥id">Bridge ID(桥ID)</a></li><li><a href="#bridge-priority桥优先级">Bridge Priority(桥优先级)</a></li><li><a href="#root-bridge根桥">Root Bridge(根桥)</a></li><li><a href="#path-cost路径开销">Path Cost(路径开销)</a></li><li><a href="#designated-port指定端口">Designated port(指定端口)</a></li><li><a href="#root-port根端口">Root port(根端口)</a></li></ul></li><li><a href="#根桥的选举过程">根桥的选举过程</a></li><li><a href="#生成树的类型">生成树的类型</a><ul><li><a href="#8021d">802.1D</a></li><li><a href="#cst">CST</a></li><li><a href="#per-vlan-spanning-treepvst">Per VLAN Spanning Tree+(PVST+)</a></li><li><a href="#8021w-rapid-spanning-tree-protocolrstp">802.1w Rapid Spanning Tree Protocol(RSTP)</a></li><li><a href="#rapid-per-vlan-spanning-tree-rpvst">Rapid Per VLAN Spanning Tree +(RPVST+)</a></li><li><a href="#8021smultiple-spanning-tree">802.1s(Multiple Spanning Tree)</a></li></ul></li><li><a href="#stp的端口状态">STP的端口状态</a></li><li><a href="#stp稳定机制">STP稳定机制</a><ul><li><a href="#udld单向链路检测">UDLD(单向链路检测)</a></li><li><a href="#stp稳定推荐用法">STP稳定推荐用法</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>STP介绍</p>
+
+<h3 id="生成树协议功能">生成树协议功能:</h3>
+
+<blockquote>
+  <p>以太网构建无环逻辑拓扑的网络协议
+防止环路及其产生的广播风暴、多帧复用、MAC表不稳定
+允许网络设计包含备份链接，保持冗余链路</p>
+</blockquote>
+
+<h3 id="三个步骤">三个步骤</h3>
+
+<blockquote>
+  <p>选举一个根桥
+在非根桥交换机选举根端口
+在每条链路上选举指定端口</p>
+</blockquote>
+
+<h3 id="生成树术语">生成树术语</h3>
+
+<h4 id="bridge-priority-data-unitbpdu">Bridge Priority Data Unit(BPDU):</h4>
+<p>包含桥ID,发送发的桥ID,到根桥的COST值,计时器等，所有的交换机会交换BPDU来选举根桥。桥ID最小的会变为根桥</p>
+
+<h4 id="bridge-id桥id">Bridge ID(桥ID)</h4>
+<p>字节的字段，包含2个字节的桥优先级和6个字节的设备MAC 地址，在优先级一致的情况下会参考MAC地址</p>
+
+<h4 id="bridge-priority桥优先级">Bridge Priority(桥优先级)</h4>
+<p>默认值32768，范围:0-65535</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree vlan 1 priority priority
+</code></pre></div></div>
+
+<h4 id="root-bridge根桥">Root Bridge(根桥)</h4>
+<p>具有最低的Bridge id的交换机会成为根桥.网络中的流量都会基于根桥选路</p>
+
+<h4 id="path-cost路径开销">Path Cost(路径开销)</h4>
+<p>到根桥可能会有多条路径，会依据cost选择最低的一条</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Speed</th>
+      <th>Code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>10Mbps</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <td>100Mbps</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <td>1Gbps</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <td>10Gbps</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="designated-port指定端口">Designated port(指定端口)</h4>
+<p>环路中的每条链路选择一个端口作为指定端口，根桥的所有端口都是指定端口</p>
+<blockquote>
+  <p>最小的BID(发送者的)
+到达根桥最低的路径开销
+最低的发送者BID
+最低的发送者端口ID</p>
+</blockquote>
+
+<h4 id="root-port根端口">Root port(根端口)</h4>
+<p>非根桥上选一个端口作为根端口。是到达根桥开销最小的端口，每台设备有一个</p>
+
+<h3 id="根桥的选举过程">根桥的选举过程</h3>
+<p>每台交换机假定自己是根桥，并向邻居发送BPDU，包含自身的BID，同时也会接收其它邻居的BPDU。每收到一个BPDU，交换机就会将其与自身的BID比较。 如果优于自身，交换机就会意识到自己不是根桥，否则仍会认为自身是根桥并持续发送BPDU，如果有新的更优的BID交换机加入到网络中，就会被选举为 新的根桥</p>
+
+<h3 id="生成树的类型">生成树的类型</h3>
+
+<h4 id="8021d">802.1D</h4>
+<p>它是IEEE开发的一种生成树标准，每个拓扑只选择一个根桥接器。所有流量都在同一路径上流动(到根桥接器的最佳路径)，只支持单个Vlan或lan，它非常慢，因为它需要30s-50s秒来收敛。</p>
+
+<blockquote>
+  <p>优点</p>
+  <ul>
+    <li>对CPU和内存要求低
+缺点</li>
+    <li>不支持负载均衡</li>
+    <li>到达根桥的最佳成本计算的路径可能不是到达网络的最佳路径</li>
+  </ul>
+</blockquote>
+
+<h4 id="cst">CST</h4>
+<p>整个网络只有一个生成树实例，支持多Vlan</p>
+
+<h4 id="per-vlan-spanning-treepvst">Per VLAN Spanning Tree+(PVST+)</h4>
+<p>思科专有 ，兼容802.1D和CST,每个VLAN一个生成树</p>
+<blockquote>
+  <p>优点</p>
+  <ul>
+    <li>PVST+在为每个VLAN选择根桥接时，对网络性能提供了更多的优化</li>
+    <li>带宽消耗小于CST</li>
+    <li>最佳的负载均衡
+缺点</li>
+    <li>50s收敛</li>
+    <li>消耗更多的CPU和内存资源</li>
+  </ul>
+</blockquote>
+
+<h4 id="8021w-rapid-spanning-tree-protocolrstp">802.1w Rapid Spanning Tree Protocol(RSTP)</h4>
+<p>IEEE开发的一种标准，具有比CST更快的收敛速度，在拓扑结构中寻找单一根桥。RSTP所需的桥接资源高于CST，但小于PVST+，收敛时间在5s-10s</p>
+<blockquote>
+  <p>端口状态</p>
+  <ul>
+    <li>discarding</li>
+    <li>learning</li>
+    <li>forwarding</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <p>端口角色</p>
+  <ul>
+    <li>替代端口(AP) 根端口的备份,5s内切换</li>
+    <li>备份端口(BP) 指定端口的备份，1s内切换</li>
+  </ul>
+</blockquote>
+
+<h4 id="rapid-per-vlan-spanning-tree-rpvst">Rapid Per VLAN Spanning Tree +(RPVST+)</h4>
+<p>Cisco开发，提供了比PVST+更快的收敛速度，每个VLAN 基于802.1w的单独实例。比其它STP标准需要更多的CPU和内存。
+和802.1d对比，
+报文格式:
+4bit的网桥优先级   12bit的扩展系统ID     48bit的MAC地址</p>
+
+<h4 id="8021smultiple-spanning-tree">802.1s(Multiple Spanning Tree)</h4>
+
+<p>IEEE开发，可以对vlan进行分组，并对每个单独的组运行RSTP</p>
+<blockquote>
+  <p>优点</p>
+  <ul>
+    <li>可以实现冗余</li>
+    <li>负载均衡</li>
+    <li>较少的CPU和内存负载</li>
+  </ul>
+</blockquote>
+
+<blockquote>
+  <p>缺点</p>
+  <ul>
+    <li>配置复杂</li>
+  </ul>
+</blockquote>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>指定模式
+<span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree mode mst          </span>
+配置参数
+<span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree mst configuration  </span>
+<span class="o">(</span>config-mst<span class="o">)</span><span class="c">#name name         非必需</span>
+<span class="o">(</span>config-mst<span class="o">)</span><span class="c">#revision rev_num  非必需</span>
+<span class="o">(</span>config-mst<span class="o">)</span><span class="c">#instance instance_number vlan range</span>
+
+<span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree mst instance_number root primary|secondary   </span>
+配置mst的primary和secondary roots
+</code></pre></div></div>
+
+<p><img src="/assets/images/stp/stp01.png" /></p>
+
+<h3 id="stp的端口状态">STP的端口状态</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>STP端口状态</th>
+      <th>接收BPDU</th>
+      <th>发送BPDU</th>
+      <th>学习MAC地址</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bloking</td>
+      <td>√</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Listening</td>
+      <td>√</td>
+      <td>√</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>Learning</td>
+      <td>√</td>
+      <td>√</td>
+      <td>√</td>
+    </tr>
+    <tr>
+      <td>Forwarding</td>
+      <td>√</td>
+      <td>√</td>
+      <td>√</td>
+    </tr>
+    <tr>
+      <td>Disabled</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="stp稳定机制">STP稳定机制</h3>
+
+<p>UplinkFast 接入层上行链路启用，加快收敛，上行链路收敛速度30-50s变为1s</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree uplinkfast</span>
+</code></pre></div></div>
+
+<p>BackboneFast 分布层或者核心层交换机启用(根桥和备份根桥)，交换机要有冗余链路，加快收敛 30s左右</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree backbonefast
+</code></pre></div></div>
+
+<p>PortFast access端口启用加速收敛，1s收敛, 思科私有</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config-if<span class="o">)</span>spanning-tree portfast
+<span class="c"># 端口</span>
+<span class="o">(</span>config<span class="o">)</span>spanning-tree portfast default 
+<span class="c"># 全局的access接口</span>
+<span class="o">(</span>config-if<span class="o">)</span>spnaning-tree portfast trunk
+<span class="c"># 链接多个VLAN通信的服务器环境</span>
+<span class="o">(</span>config-if<span class="o">)</span><span class="c">#switchport host</span>
+<span class="c"># 启用postfast并置为access模式</span>
+</code></pre></div></div>
+
+<p>BPDU guard 收到BPDU，端口将处于err-disable状态(access状态的状态收到BPDU)</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config-if<span class="o">)</span> spanning-tree bpduguard <span class="nb">enable</span>
+<span class="c"># 端口</span>
+<span class="o">(</span>config<span class="o">)</span> spanning-tree portfast bpduguard default
+<span class="c"># 全局</span>
+<span class="c"># err-disable自动恢复</span>
+<span class="o">(</span>config<span class="o">)</span><span class="c">#errdisable recovery cause all</span>
+<span class="o">(</span>config<span class="o">)</span><span class="c">#errdisable recovery interval 30-86400</span>
+</code></pre></div></div>
+
+<p>BPDU filter 抑制端口上的BPDU，阻止向外发送BPDU并忽略收到的BPDU，配合Postfast</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree bpdufilter <span class="nb">enable</span>
+<span class="c"># 接口</span>
+spanning-tree portfast bpdufilter default
+</code></pre></div></div>
+
+<p>ROOT guard  阻止外部交换机成为根桥,启用的端口强制变为指定端口，如果收到更优的BPDU，端口会进入root-inconsistent状态，不会转发流量 ,Root Guard应该配置在所有接入端口中，即接入终端的端口,异常状态会自动恢复</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree guard root
+</code></pre></div></div>
+
+<p>LOOP guard，单向链路下当非指定端口收不到BPDU时，阻止它成为指定端口，防止环路</p>
+
+<p><img src="/assets/images/stp/stp02.png" /></p>
+
+<ul>
+  <li>Loop Guard不能再启用了Root Guard的交换机上使用</li>
+  <li>Loop GUard不能再启用了Port Fast或者Dynamic Vlan port上使用</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree guard loop
+</code></pre></div></div>
+
+<blockquote>
+  <p>UplinkFast 和 BackboneFast已经集成到RSTP中</p>
+</blockquote>
+
+<h4 id="udld单向链路检测">UDLD(单向链路检测)</h4>
+
+<p>检查设备自身的单向链路，思科私有， UDLD一般和Loop Guard配合使用</p>
+<ul>
+  <li>普通模式 仅仅将端口标记为不确定</li>
+  <li>激进模式 将端口置于err-disable状态</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config<span class="o">)</span><span class="c">#udld(enable | aggressive)  # 所有光口启用</span>
+<span class="o">(</span>config-if<span class="o">)</span><span class="c">#udld port [aggressive]  # 特定光口启用</span>
+udld reset <span class="c"># 重置udld关闭的端口</span>
+</code></pre></div></div>
+
+<p><img src="/assets/images/stp/stp03.png" /></p>
+
+<ul>
+  <li>通常在所有的光纤互联端口开启</li>
+  <li>使用激进模式</li>
+  <li>全局开启UDLD</li>
+</ul>
+
+<h4 id="stp稳定推荐用法">STP稳定推荐用法</h4>
+<p>PostFast 终端用户，配合BPDU Guard使用
+根保护 所有指定端口和不链接根桥的端口
+环路保护 所有根端口和非指定端口
+UDLD所有交换机互联的链路上</p>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#switch" class="page__taxonomy-item p-category" rel="tag">Switch</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-09-07T00:00:00+08:00">September 7, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=CISCO+VPN%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98%20%2Frs-cisco-config-stp-01%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Frs-cisco-config-stp-01%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Frs-cisco-config-stp-01%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/rs-cisco-config-vpn-01/" class="pagination--pager" title="CISCO VPN配置备忘
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>
