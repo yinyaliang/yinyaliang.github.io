@@ -173,9 +173,9 @@ var store = [{
         "url": "/rs-cisco-config-stp-01/",
         "teaser": null
       },{
-        "title": "使用kubeadm 升级集群",
-        "excerpt":"升级集群 安装一套v1.20.1集群 创建两台主机 主机名 IP地址 内存需求 操作系统 角色 umaster 192.168.122.240 4GB centos 7 master unode1 192.168.122.241 4GB centos 7 node 初始化配置 virt-install --name umaster --ram 4096 --vcpus=4 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso --disk path=/home/kvm/umaster.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60021 --vnclisten=0.0.0.0 virt-install --name unode1 --ram 4096 --vcpus=2 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso --disk path=/home/kvm/unode1.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60022...","categories": [],
+        "title": "Pod 管理",
+        "excerpt":"创建和删除pod pod是k8s里最小调度单元 下载镜像 docker pull hub.c.163.com/library/centos:7 docker pull nginx docker pull nginx:1.7.9 docker pull nginx:1.9 docker pull busybox docker pull alpine docker pull perl 查看 默认命名空间 [root@master tmp]# kubectl get pods No resources found in default namespace. 指定命名空间 [root@master tmp]# kubectl get pods -n kube-system NAME READY STATUS RESTARTS AGE...","categories": [],
         "tags": ["Kubernetes"],
-        "url": "/kubernetes-kubeadm-upgrade/",
+        "url": "/kubernetes-kubeadm-pod/",
         "teaser": null
       }]
