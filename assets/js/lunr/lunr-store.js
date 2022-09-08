@@ -172,4 +172,10 @@ var store = [{
         "tags": ["RS"],
         "url": "/rs-cisco-config-stp-01/",
         "teaser": null
+      },{
+        "title": "使用kubeadm 升级集群",
+        "excerpt":"升级集群步骤 安装一套v1.20.1集群 创建两台主机 主机名 IP地址 内存需求 操作系统 角色 umaster 192.168.122.240 4GB centos 7 master unode1 192.168.122.241 4GB centos 7 node 初始化配置 virt-install --name umaster --ram 4096 --vcpus=4 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso --disk path=/home/kvm/umaster.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60021 --vnclisten=0.0.0.0 virt-install --name unode1 --ram 4096 --vcpus=2 --os-type=linux --accelerate --cdrom=/home/kvm/CentOS-7.5-x86_64-Minimal-1804.iso --disk path=/home/kvm/unode1.qcow2,size=30,format=qcow2,bus=ide --bridge=virbr0 --vnc --vncport=60022...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-upgrade/",
+        "teaser": null
       }]
