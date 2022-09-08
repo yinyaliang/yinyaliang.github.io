@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-08T18:46:00+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">使用kubeadm 升级集群</title><link href="/kubernetes-kubeadm-upgrade/" rel="alternate" type="text/html" title="使用kubeadm 升级集群" /><published>2022-09-08T00:00:00+08:00</published><updated>2022-09-08T00:00:00+08:00</updated><id>/kubernetes-kubeadm-upgrade</id><content type="html" xml:base="/kubernetes-kubeadm-upgrade/"><![CDATA[<p>升级集群步骤</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-08T18:46:48+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">使用kubeadm 升级集群</title><link href="/kubernetes-kubeadm-upgrade/" rel="alternate" type="text/html" title="使用kubeadm 升级集群" /><published>2022-09-08T00:00:00+08:00</published><updated>2022-09-08T00:00:00+08:00</updated><id>/kubernetes-kubeadm-upgrade</id><content type="html" xml:base="/kubernetes-kubeadm-upgrade/"><![CDATA[<p>升级集群</p>
 
 <h3 id="安装一套v1201集群">安装一套v1.20.1集群</h3>
 
@@ -507,7 +507,7 @@ unode1    Ready,SchedulingDisabled   &lt;none&gt;                 71m   v1.20.1
 <p>查看</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl get nodes
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[升级集群步骤]]></summary></entry><entry><title type="html">Switch STP</title><link href="/rs-cisco-config-stp-01/" rel="alternate" type="text/html" title="Switch STP" /><published>2022-09-07T00:00:00+08:00</published><updated>2022-09-07T00:00:00+08:00</updated><id>/rs-cisco-config-stp-01</id><content type="html" xml:base="/rs-cisco-config-stp-01/"><![CDATA[<p>STP介绍</p>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[升级集群]]></summary></entry><entry><title type="html">Switch STP</title><link href="/rs-cisco-config-stp-01/" rel="alternate" type="text/html" title="Switch STP" /><published>2022-09-07T00:00:00+08:00</published><updated>2022-09-07T00:00:00+08:00</updated><id>/rs-cisco-config-stp-01</id><content type="html" xml:base="/rs-cisco-config-stp-01/"><![CDATA[<p>STP介绍</p>
 
 <h3 id="生成树协议功能">生成树协议功能:</h3>
 
