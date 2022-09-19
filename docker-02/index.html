@@ -6,7 +6,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>docker 入门 – 02 - 尹亚亮</title>
-<meta name="description" content="自定义镜像 数据卷  仓库">
+<meta name="description" content="自定义镜像 数据卷 仓库">
 
 
   <meta name="author" content="Your Name">
@@ -22,7 +22,7 @@
 <meta property="og:url" content="/docker-02/">
 
 
-  <meta property="og:description" content="自定义镜像 数据卷  仓库">
+  <meta property="og:description" content="自定义镜像 数据卷 仓库">
 
 
 
@@ -150,7 +150,7 @@
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="docker 入门 – 02">
-    <meta itemprop="description" content="自定义镜像 数据卷  仓库">
+    <meta itemprop="description" content="自定义镜像 数据卷 仓库">
     <meta itemprop="datePublished" content="2022-08-17T00:00:00+08:00">
     
 
@@ -187,12 +187,14 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#自定义镜像">自定义镜像</a></li><li><a href="#创建一个可以执行ipconfig的centos镜像">创建一个可以执行ipconfig的centos镜像</a></li><li><a href="#自定义nginx镜像">自定义nginx镜像</a></li><li><a href="#add和copy的区别">ADD和COPY的区别</a></li><li><a href="#user命令的使用">USER命令的使用</a></li><li><a href="#使用env指定变量">使用ENV指定变量</a></li><li><a href="#数据卷">数据卷</a></li></ul>
+              <ul class="toc__menu"><li><a href="#构建docker镜像">构建docker镜像</a><ul><li><a href="#自定义镜像">自定义镜像</a></li><li><a href="#创建一个可以执行ipconfig的centos镜像">创建一个可以执行ipconfig的centos镜像</a></li><li><a href="#自定义nginx镜像">自定义nginx镜像</a></li><li><a href="#add和copy的区别">ADD和COPY的区别</a></li><li><a href="#user命令的使用">USER命令的使用</a></li><li><a href="#使用env指定变量">使用ENV指定变量</a></li><li><a href="#数据卷">数据卷</a></li></ul></li><li><a href="#使用registry-搭建私有仓库">使用registry 搭建私有仓库</a></li><li><a href="#使用harbor搭建私有仓库">使用harbor搭建私有仓库</a></li></ul>
 
             </nav>
           </aside>
         
-        <p>自定义镜像 数据卷  仓库</p>
+        <p>自定义镜像 数据卷 仓库</p>
+
+<h3 id="构建docker镜像">构建docker镜像</h3>
 
 <h4 id="自定义镜像">自定义镜像</h4>
 
@@ -432,11 +434,11 @@ d3
                 <span class="s2">"Destination"</span>: <span class="s2">"/data1"</span>,
 </code></pre></div></div>
 
-<h2 id="使用registry-搭建私有仓库">使用registry 搭建私有仓库</h2>
+<h3 id="使用registry-搭建私有仓库">使用registry 搭建私有仓库</h3>
 
 <p>不做介绍</p>
 
-<h2 id="使用harbor搭建私有仓库">使用harbor搭建私有仓库</h2>
+<h3 id="使用harbor搭建私有仓库">使用harbor搭建私有仓库</h3>
 
 <p>安装harbor需要docker-compose</p>
 
