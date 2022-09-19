@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-19T20:05:13+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 部署redis sentinel</title><link href="/docker-03/" rel="alternate" type="text/html" title="docker 部署redis sentinel" /><published>2022-09-19T00:00:00+08:00</published><updated>2022-09-19T00:00:00+08:00</updated><id>/docker-03</id><content type="html" xml:base="/docker-03/"><![CDATA[<p>Redis Docker Sentinel</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-19T20:52:13+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 部署redis sentinel</title><link href="/docker-03/" rel="alternate" type="text/html" title="docker 部署redis sentinel" /><published>2022-09-19T00:00:00+08:00</published><updated>2022-09-19T00:00:00+08:00</updated><id>/docker-03</id><content type="html" xml:base="/docker-03/"><![CDATA[<p>Redis Docker Sentinel</p>
 
 <h4 id="docker-安装">Docker 安装</h4>
 
@@ -282,7 +282,53 @@ repl_backlog_active:1
 repl_backlog_size:1048576
 repl_backlog_first_byte_offset:1
 repl_backlog_histlen:102075
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Redis Docker Sentinel]]></summary></entry><entry><title type="html">Pod 管理</title><link href="/kubernetes-kubeadm-pod/" rel="alternate" type="text/html" title="Pod 管理" /><published>2022-09-08T00:00:00+08:00</published><updated>2022-09-08T00:00:00+08:00</updated><id>/kubernetes-kubeadm-pod</id><content type="html" xml:base="/kubernetes-kubeadm-pod/"><![CDATA[<h3 id="创建和删除pod">创建和删除pod</h3>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Redis Docker Sentinel]]></summary></entry><entry><title type="html">docker 部署 mysql</title><link href="/docker-04/" rel="alternate" type="text/html" title="docker 部署 mysql" /><published>2022-09-19T00:00:00+08:00</published><updated>2022-09-19T00:00:00+08:00</updated><id>/docker-04</id><content type="html" xml:base="/docker-04/"><![CDATA[<p>Mysql Docker</p>
+
+<h4 id="dockerfile">Dockerfile</h4>
+
+<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> mysql:8.0.20</span>
+
+<span class="k">ADD</span><span class="s"> devops.sql /docker-entrypoint-initdb.d</span>
+</code></pre></div></div>
+
+<h4 id="build">Build</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> osp/mysql-init <span class="nb">.</span> 
+</code></pre></div></div>
+
+<h4 id="docker-login">Docker Login</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker login
+<span class="c">#账户</span>
+<span class="c">#密码</span>
+</code></pre></div></div>
+
+<h4 id="docker-push">Docker Push</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag osp/mysql-init registry.eeo-inc.com/omdev/osp-mysql-init:v01
+docker push registry.eeo-inc.com/omdev/osp-mysql-init:v01
+</code></pre></div></div>
+
+<h4 id="docker-pull">Docker Pull</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull registry.eeo-inc.com/omdev/osp-mysql-init:v01
+</code></pre></div></div>
+
+<h4 id="docker-run">Docker Run</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run  <span class="se">\</span>
+    <span class="nt">--name</span> osp-dev-8.0.20  <span class="se">\</span>
+    <span class="nt">-t</span> <span class="nt">--net</span> host  <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>osp  <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">MYSQL_USER</span><span class="o">=</span>osp-test  <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="nb">test</span> <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">MYSQL_TCP_PORT</span><span class="o">=</span>61106 <span class="se">\</span>
+    <span class="nt">-e</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>zabbix <span class="se">\</span>
+    <span class="nt">-d</span> registry.eeo-inc.com/omdev/osp-mysql-init:v01     <span class="se">\</span>
+    <span class="nt">--character-set-server</span><span class="o">=</span>utf8     <span class="se">\</span>
+    <span class="nt">--collation-server</span><span class="o">=</span>utf8_bin  <span class="se">\</span>
+    <span class="nt">--default-authentication-plugin</span><span class="o">=</span>mysql_native_password
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Mysql Docker]]></summary></entry><entry><title type="html">Pod 管理</title><link href="/kubernetes-kubeadm-pod/" rel="alternate" type="text/html" title="Pod 管理" /><published>2022-09-08T00:00:00+08:00</published><updated>2022-09-08T00:00:00+08:00</updated><id>/kubernetes-kubeadm-pod</id><content type="html" xml:base="/kubernetes-kubeadm-pod/"><![CDATA[<h3 id="创建和删除pod">创建和删除pod</h3>
 
 <p>pod是k8s里最小调度单元</p>
 
@@ -3560,335 +3606,4 @@ Content-Type: text/xml
       <span class="na">insecure_skip_verify</span><span class="pi">:</span> <span class="no">true</span>
       <span class="na">cert_file</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/data/config/oss/prometheus/etcd_ca/server.pem"</span>
       <span class="na">key_file</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/data/config/oss/prometheus/etcd_ca/server-key.pem"</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[etcd集群监控]]></summary></entry><entry><title type="html">路由交换 - BGP案例 - 03</title><link href="/rs-bgp-03/" rel="alternate" type="text/html" title="路由交换 - BGP案例 - 03" /><published>2022-08-26T00:00:00+08:00</published><updated>2022-08-26T00:00:00+08:00</updated><id>/rs-bgp-03</id><content type="html" xml:base="/rs-bgp-03/"><![CDATA[<p>BGP案例03
-(参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)</p>
-
-<h3 id="bgp-filtering">BGP Filtering</h3>
-
-<p>有很多方法可以控制发送和接收的BGP更新，可以使用路由信息作为基础过滤BGP更新，或者使用路径信息或社区作为基础过滤BGP更新，这些方法都可以得到一样的结果。使用哪种方法却决于特定的网络情况</p>
-
-<h4 id="route-filtering">Route Filtering</h4>
-
-<p><img src="/assets/images/bgp/b21.png" /></p>
-
-<p>为了可以限制路由学习到的更新或者宣告的更新，你可以从一个特定的邻居使用路由更新过滤BGP，可以定义一个控制访问列表，然后应用到一个邻居的更新中，配置命令:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor <span class="o">{</span>ip-address | peer-group-name<span class="o">}</span> distribute-list access-list-number <span class="o">{</span><span class="k">in</span> | out<span class="o">}</span> 
-</code></pre></div></div>
-
-<p>在这个例子中，RTB作为160.10.0.0的源网络发送 更新到RTC.如果RTC不想发布更新到AS100，需要定义一个访问控制列表，并把这个访问控制列表应用到路由进程配置中</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-network 170.10.0.0 
-neighbor 3.3.3.3 remote-as 200 
-neighbor 2.2.2.2 remote-as 100 
-neighbor 2.2.2.2 distribute-list 1 out 
-
-access-list 1 deny 160.10.0.0 0.0.255.255 
-
-access-list 1 permit 0.0.0.0 255.255.255.255
-</code></pre></div></div>
-
-<blockquote>
-  <p>过滤掉所有到160.10.0.0的路由更新</p>
-</blockquote>
-
-<p>在处理一些超网的时候访问控制列表可能会有一些棘手</p>
-
-<p>假定，在本节的例子中，RTB有160.10.x.x的不同子网，您的目标是过滤更新并只发布160.0.0.0/8</p>
-
-<p>命令 access-list 1 permit 160.0.0.0 0.255.255.255允许60.0.0.0/8, 160.0.0.0/9，为了将更新限制为仅160.0.0.0/8，必须使用这种格式的扩展访问列表</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>access-list 101 permit ip 160.0.0.0 0.255.255.255 255.0.0.0 0.0.0.0.
-</code></pre></div></div>
-
-<p>这个列表只允许160.0.0.0/8</p>
-
-<p>参考 <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a00801310cb.shtml">How to Block One or More Networks From a BGP Peer</a> 里面有关如何过滤来自BGP对等的网络的示例配置，该方法使用具有标准和扩展访问控制列表(acl)的distribution -list命令，以及前缀列表过滤</p>
-
-<h4 id="path-filtering">Path Filtering</h4>
-
-<p>另外一种筛选的方法 path filtering</p>
-
-<p><img src="/assets/images/bgp/b22.png" /></p>
-
-<p>可以使用BGP AS 路径信息 在访问控制列表中应用到出方向和入方向的更新.本节的图中，你可以阻止160.10.0.0的更新去往AS100，若要阻止更新，在RTC上定义一个访问列表，防止将源自AS200的任何更新传输到AS100</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip as-path access-list access-list-number <span class="o">{</span>permit | deny<span class="o">}</span> as-regular-expression
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor <span class="o">{</span>ip-address | peer-group-name<span class="o">}</span> filter-list access-list-number <span class="o">{</span><span class="k">in</span> | out<span class="o">}</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-neighbor 3.3.3.3 remote-as 200 
-neighbor 2.2.2.2 remote-as 100 
-neighbor 2.2.2.2 filter-list 1 out
-
-<span class="o">!</span><span class="nt">---</span> The 1 is the access list number below.
-
-ip as-path access-list 1 deny ^200<span class="nv">$ </span>
-ip as-path access-list 1 permit .<span class="k">*</span>
-</code></pre></div></div>
-
-<p>本例中的access-list 1命令强制拒绝包含以200开头和以200结尾的路径信息的任何更新，命令中的^200$是一个“正则表达式”，其中^表示匹配开头，$表示匹配结尾，因为RTB发送关于160.10.0.0的更新，其中包含以200开头和以200结尾的路径信息，更新与访问列表匹配。访问列表拒绝这些更新。</p>
-
-<p>：*是另一个正则表达式，.表示“任何字符”，<em>表示“该字符的重复”。所以.</em>表示任何路径信息，这是允许传输所有其他更新所必需的。</p>
-
-<p>如果不是使用^200$，而是使用^200，这本章的图中显示，AS400源的更新具有的路径信息(200,400)。200在前，400在后，这些更新与访问列表^200匹配，因为路径信息以200开头，访问列表阻止将这些更新传输到RTA</p>
-
-<p><a href="https://www.cisco.com/en/US/docs/ios/iproute_bgp/command/reference/irg_bgp5.html#wp1161831">show ip bgp regexp regular-expression</a>命令显示与正则表达式配置匹配的所有路径</p>
-
-<h3 id="as-regular-expression">AS Regular Expression</h3>
-
-<p>正则表达式是与输入字符串匹配的模式。当构建正则表达式时，指定输入必须匹配的字符串。对于BGP，指定一个字符串，该字符串包含输入必须匹配的路径信息</p>
-
-<p>在 <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#pathfilter">Path Filtering</a>的示例中，指定了字符串^200$。需要更新内部的路径信息来匹配字符串，以便做出决策</p>
-
-<p>正则表达式包括</p>
-
-<p>Range</p>
-
-<p>范围是左方括号和右方括号中的字符序列。例如[abcd]</p>
-
-<p>Atom</p>
-
-<p>Piece</p>
-
-<p>Branch</p>
-
-<p><a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094a92.shtml">Using Regular Expressions in BGP</a>   参考提供的样例</p>
-
-<h4 id="bgp-community-filtering">BGP Community Filtering</h4>
-
-<p>本文档介绍路由过滤和AS-path过滤的内容，还有一个方法是community过滤.  <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#communityattribute">Community Attribute</a>  讨论community，本章提供一些使用community的例子</p>
-
-<p><img src="/assets/images/bgp/b23.png" /></p>
-
-<p>在例子中，你希望RTB为BGP路由设置community属性，使RTC不能传递路由到外部对等体，使用no-export 的community 属性</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
-router bgp 200 
-network 160.10.0.0 
-neighbor 3.3.3.1 remote-as 300 
-neighbor 3.3.3.1 send-community 
-neighbor 3.3.3.1 route-map setcommunity out 
-
-route-map setcommunity 
-match ip address 1 
-<span class="nb">set </span>community no-export  
-
-access-list 1 permit 0.0.0.0 255.255.255.255 
-</code></pre></div></div>
-
-<blockquote>
-  <p>本例使用route-map setcommunity命令将community设置为no-export</p>
-</blockquote>
-
-<blockquote>
-  <p>要将此属性发送到RTC，必须使用 neighbor send-community 命令</p>
-</blockquote>
-
-<p>当RTC使用NO_EXPORT属性获取更新时，RTC不会将更新传播给外部对等方RTA</p>
-
-<p>在本例中，RTB将community属性设置为 100 200 additive。在向RTC传输之前会在已经存在的community 的值添加100 200</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
-   router bgp 200 
-   network 160.10.0.0 
-   neighbor 3.3.3.1 remote-as 300 
-   neighbor 3.3.3.1 send-community 
-   neighbor 3.3.3.1 route-map setcommunity out 
-
-route-map setcommunity 
-match ip address 2 
-<span class="nb">set </span>community 100 200 additive 
-
-access-list 2 permit 0.0.0.0 255.255.255.255
-</code></pre></div></div>
-
-<p>community list是route map的match子句中使用的一组communities。community list 允许根据不同的community 号码 列表 筛选或设置属性</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip community-list community-list-number <span class="o">{</span>permit | deny<span class="o">}</span> community-number
-</code></pre></div></div>
-
-<p>例如，你可以定义route map，match-on-community:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>route-map match-on-community 
-match community 10
-
-<span class="o">!</span><span class="nt">---</span> The community list number is 10.
-
-<span class="nb">set </span>weight 20
-ip community-list 10 permit 200 300
-
-<span class="o">!</span><span class="nt">---</span> The community number is 200 300.
-</code></pre></div></div>
-
-<p>可以使用community列表来过滤或设置某些参数，比如权重和度量，以community值作为基础进行某些更新,在本节的第二个示例中，RTB向RTC发送了一个community为100 200的更新。如果RTC希望以这些值为基础设置权重,可以做如下操作</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-neighbor 3.3.3.3 remote-as 200 
-neighbor 3.3.3.3 route-map check-community <span class="k">in 
-
-</span>route-map check-community permit 10 
-match community 1 
-<span class="nb">set </span>weight 20 
-
-route-map check-community permit 20 
-match community 2 exact 
-<span class="nb">set </span>weight 10 
-
-route-map check-community permit 30 
-match community 3 
-
-ip community-list 1 permit 100 
-ip community-list 2 permit 200 
-ip community-list 3 permit internet 
-</code></pre></div></div>
-
-<p>任何在community属性中包含100的路由都匹配列表1，这条路由的权重设为20。任何只有200的路由匹配community的列表2，并且权重为20。关键字 exact 说明社区只由200个成员组成，没有其他内容。这里是最后一个社区列表，以确保不会删除其他更新，在默认情况下，任何不匹配的内容都会自动删除，关键字internet表示所有路由，因为所有路由都是internet社区的成员</p>
-
-<p>参考   <a href="https://www.cisco.com/en/US/tech/tk365/technologies_configuration_example09186a00801475b2.shtml">Using BGP Community Values to Control Routing Policy in an Upstream Provider Network</a> 获取更多信息</p>
-
-<h3 id="bgp-neighbors-and-route-maps">BGP Neighbors and Route Maps</h3>
-
-<p><img src="/assets/images/bgp/b24.png" /></p>
-
-<p>可以使用neighbor命令和route map结合在一起对进入或者出去的更新进行过滤或者设置参数</p>
-
-<p>当基于IP做匹配的时候，route maps 和 neighbor对进入的更新不起作用</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor ip-address route-map route-map-name
-</code></pre></div></div>
-
-<p>假定图中你想RTC只学习到AS200的网络，并且设置权重为20，可以联合使用neighbor和as-path 访问控制列表</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-   router bgp 300 
-   network 170.10.0.0 
-   neighbor 3.3.3.3 remote-as 200 
-   neighbor 3.3.3.3 route-map stamp <span class="k">in 
-
-</span>route-map stamp 
-match as-path 1 
-<span class="nb">set </span>weight 20 
-
-ip as-path access-list 1 permit ^200<span class="err">$</span>
-</code></pre></div></div>
-
-<p>任何源自AS200的更新都具有以200开头、以200结尾的路径信息。这些更新是允许的。任何其他更新都会丢弃。</p>
-
-<p>假定你希望实现下面的功能:</p>
-<ul>
-  <li>接受来自AS200的、权重为20的更新</li>
-  <li>删除源自AS400的更新</li>
-  <li>其他更新的权重为10</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-network 170.10.0.0 
-neighbor 3.3.3.3 remote-as 200 
-neighbor 3.3.3.3 route-map stamp <span class="k">in 
-
-</span>route-map stamp permit 10 
-match as-path 1 
-<span class="nb">set </span>weight 20 
-
-route-map stamp permit 20 
-match as-path 2 
-<span class="nb">set </span>weight 10 
-
-ip as-path access-list 1 permit ^200<span class="nv">$ </span>
-ip as-path access-list 2 permit ^200 600 .<span class="k">*</span>
-</code></pre></div></div>
-
-<p>该语句将本地更新的权重设置为20。该语句还为AS400后面的更新设置了10的权重，并丢弃了来自AS400的更新。</p>
-
-<h4 id="use-of-set-as-path-prepend-command">Use of set as-path prepend Command</h4>
-
-<p>在某些情况下，为了操作BGP决策过程，必须要操作路径信息。可以在route map中使用下面的命令:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set </span>as-path prepend as-path# as-path#
-</code></pre></div></div>
-
-<p>假设，在  <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps">BGP Neighbors and Route Maps</a>  这章中，RTC向两个不同的ASs (AS100和AS200)宣告自己的网络170.10.0.0。当信息传播到AS600时，AS600到170.10.0.0网络在的路由器可以通过两条不同的路由到达。第一个路由是通过AS100(100,300)，第二个路由是通过AS400(400,200,300)。如果所有其它属性都相同，AS600选择最短路径并通过AS100选择路由</p>
-
-<p>AS300通过AS100获得所有的流量。如果您想从AS300改变路由，可以使通过AS100的路径看起来比通过AS400的路径长。如果将宣告中的现有路径信息作为数字添加到AS100中，则可以这样做。一个常见的做法是这样重复你自己的AS号码</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-network 170.10.0.0 
-neighbor 2.2.2.2 remote-as 100 
-neighbor 2.2.2.2 route-map SETPATH out 
-
-route-map SETPATH 
-<span class="nb">set </span>as-path prepend 300 300
-</code></pre></div></div>
-
-<p>由于这个配置，AS600通过AS100接收关于170.10.0.0的更新，路径信息为:(100,300,300,300)。这个路径信息比AS600从AS400接收到的(400、200、300)长</p>
-
-<h4 id="bgp-peer-groups">BGP Peer Groups</h4>
-
-<p><img src="/assets/images/bgp/b25.png" /></p>
-
-<p>BGP对等组是一组具有相同更新策略的BGP邻居。roupte maps、distribute lists和filter lists通常设置更新策略。不能为每个单独的邻居定义相同的策略;但可以定义一个对等组名称并将这些策略分配给对等组</p>
-
-<p>对等组的成员继承对等组的所有配置选项。如果这些选项不影响出站更新，还可以配置成员覆盖这些选项。但只能覆盖入站设置的选项</p>
-
-<p>要定义对等组的命令:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor peer-group-name peer-group
-</code></pre></div></div>
-
-<p>此示例将对等组应用于内部和外部BGP邻居</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-   router bgp 300 
-   neighbor internalmap peer-group 
-   neighbor internalmap remote-as 300 
-   neighbor internalmap route-map SETMETRIC out 
-   neighbor internalmap filter-list 1 out 
-   neighbor internalmap filter-list 2 <span class="k">in 
-   </span>neighbor 5.5.5.2 peer-group internalmap 
-   neighbor 5.6.6.2 peer-group internalmap 
-   neighbor 3.3.3.2 peer-group internalmap 
-   neighbor 3.3.3.2 filter-list 3 <span class="k">in</span>
-</code></pre></div></div>
-
-<p>这个配置定义了一个名为internalmap的对等组。该配置为组定义了一些策略，例如将度量设置为5的route map SETMETRIC和两个不同的filter-list 1和2。该配置将对等组应用于所有内部邻居RTE、RTF和RTG。此外，该配置还为邻居RTE定义了一个单独的列表3。此列表覆盖对等组中的列表2</p>
-
-<blockquote>
-  <p>只能覆盖影响入站更新的选项</p>
-</blockquote>
-
-<p>现在，看看如何使用外部邻居的对等组。可以使用对等组externalmap配置RTC，并将对等组应用于外部邻居</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-   router bgp 300 
-   neighbor externalmap peer-group 
-   neighbor externalmap route-map SETMETRIC 
-   neighbor externalmap filter-list 1 out 
-   neighbor externalmap filter-list 2 <span class="k">in 
-   </span>neighbor 2.2.2.2 remote-as 100 
-   neighbor 2.2.2.2 peer-group externalmap 
-   neighbor 4.4.4.2 remote-as 600 
-   neighbor 4.4.4.2 peer-group externalmap 
-   neighbor 1.1.1.2 remote-as 200 
-   neighbor 1.1.1.2 peer-group externalmap 
-   neighbor 1.1.1.2 filter-list 3 <span class="k">in</span>
-</code></pre></div></div>
-
-<blockquote>
-  <p>在这些配置中，将remote定义为对等组之外的语句，因为必须定义不同的外部ASs</p>
-</blockquote>
-
-<p>更多关于对等体组的信息请参考 <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080093fb7.shtml">BGP Peer Groups</a>.</p>
-
-<blockquote>
-  <p>在Cisco IOS软件发布12.0(24)S中，Cisco引入了BGP动态更新对等组特性。该功能也可以在以后的Cisco IOS软件版本中使用。该特性引入了一种新的算法，详细信息参考  <a href="https://www.cisco.com/univercd/cc/td/doc/product/software/ios120/120newft/120limit/120s/120s24/s_bgpdpg.htm">BGP Dynamic Update Peer-Groups</a></p>
-</blockquote>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[BGP案例03 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[etcd集群监控]]></summary></entry></feed>

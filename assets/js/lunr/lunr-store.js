@@ -184,4 +184,10 @@ var store = [{
         "tags": ["Docker"],
         "url": "/docker-03/",
         "teaser": null
+      },{
+        "title": "docker 部署 mysql",
+        "excerpt":"Mysql Docker Dockerfile FROM mysql:8.0.20 ADD devops.sql /docker-entrypoint-initdb.d Build docker build -t osp/mysql-init . Docker Login docker login #账户 #密码 Docker Push docker tag osp/mysql-init registry.eeo-inc.com/omdev/osp-mysql-init:v01 docker push registry.eeo-inc.com/omdev/osp-mysql-init:v01 Docker Pull docker pull registry.eeo-inc.com/omdev/osp-mysql-init:v01 Docker Run docker run \\ --name osp-dev-8.0.20 \\ -t --net host \\ -e MYSQL_DATABASE=osp \\ -e...","categories": [],
+        "tags": ["Docker"],
+        "url": "/docker-04/",
+        "teaser": null
       }]
