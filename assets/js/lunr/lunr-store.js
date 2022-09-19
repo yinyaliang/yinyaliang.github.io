@@ -179,7 +179,7 @@ var store = [{
         "url": "/kubernetes-kubeadm-pod/",
         "teaser": null
       },{
-        "title": "docker 入门 -- 02",
+        "title": "docker 部署redis sentinel",
         "excerpt":"Redis Docker Sentinel Docker 安装 bash &lt;(wget -O- get.docker.com) Docker Compose 安装 #https://docs.docker.com/compose/install/linux/ curl -SL https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose sudo chmod +x /usr/local/bin/docker-compose docker-compose --version 修改内核参数 cat &gt; /etc/sysctl.d/docker-compose.conf &lt;&lt; EOF net.core.somaxconn = 1024 net.ipv4.tcp_syncookies = 0 vm.overcommit_memory = 1 EOF sysctl --system 关闭防火墙 systemctl stop firewalld systemctl disable firewalld 目录结构...","categories": [],
         "tags": ["Docker"],
         "url": "/docker-03/",
