@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>docker 入门 – 02 - 尹亚亮</title>
+<meta name="description" content="Redis Docker Sentinel">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="docker 入门 – 02">
+<meta property="og:url" content="/docker-03/">
+
+
+  <meta property="og:description" content="Redis Docker Sentinel">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-09-19T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/docker-03/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="docker 入门 – 02">
+    <meta itemprop="description" content="Redis Docker Sentinel">
+    <meta itemprop="datePublished" content="2022-09-19T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/docker-03/" class="u-url" itemprop="url">docker 入门 – 02
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-09-19T00:00:00+08:00">September 19, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#docker-安装">Docker 安装</a></li><li><a href="#docker-compose-安装">Docker Compose 安装</a></li><li><a href="#修改内核参数">修改内核参数</a></li><li><a href="#关闭防火墙">关闭防火墙</a></li><li><a href="#目录结构">目录结构</a></li><li><a href="#sentinel配置">sentinel配置</a><ul><li><a href="#redis-sentinel-1conf">redis-sentinel-1.conf</a></li><li><a href="#redis-sentinel-2conf">redis-sentinel-2.conf</a></li><li><a href="#redis-sentinel-3conf">redis-sentinel-3.conf</a></li></ul></li><li><a href="#server配置">server配置</a><ul><li><a href="#redis-masterconf">redis-master.conf</a></li><li><a href="#redis-slave1conf">redis-slave1.conf</a></li><li><a href="#redis-slave2conf">redis-slave2.conf</a></li></ul></li><li><a href="#docker-compose配置">Docker Compose配置</a><ul><li><a href="#sentinel">sentinel</a></li><li><a href="#server">server</a></li></ul></li><li><a href="#运行">运行</a></li><li><a href="#测试脚本">测试脚本</a></li><li><a href="#redis-cli">redis-cli</a></li><li><a href="#info">Info</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>Redis Docker Sentinel</p>
+
+<h4 id="docker-安装">Docker 安装</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash &lt;<span class="o">(</span>wget <span class="nt">-O-</span> get.docker.com<span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="docker-compose-安装">Docker Compose 安装</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#https://docs.docker.com/compose/install/linux/</span>
+curl <span class="nt">-SL</span> https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-linux-x86_64 <span class="nt">-o</span> /usr/local/bin/docker-compose
+
+<span class="nb">sudo chmod</span> +x /usr/local/bin/docker-compose
+docker-compose <span class="nt">--version</span>
+</code></pre></div></div>
+
+<h4 id="修改内核参数">修改内核参数</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/sysctl.d/docker-compose.conf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> 
+net.core.somaxconn = 1024
+net.ipv4.tcp_syncookies = 0 
+vm.overcommit_memory = 1
+</span><span class="no">EOF 
+
+</span>sysctl <span class="nt">--system</span> 
+</code></pre></div></div>
+
+<h4 id="关闭防火墙">关闭防火墙</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl stop firewalld
+systemctl disable firewalld
+</code></pre></div></div>
+
+<h4 id="目录结构">目录结构</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /data/redis
+tree
+
+├── sentinel
+│   ├── docker-compose.yaml
+│   ├── redis-sentinel-1.conf
+│   ├── redis-sentinel-2.conf
+│   └── redis-sentinel-3.conf
+└── server
+    ├── data
+    │   ├── redis-master
+    │   │   └── dump.rdb
+    │   ├── redis-slave-1
+    │   │   └── dump.rdb
+    │   └── redis-slave-2
+    │       └── dump.rdb
+    ├── docker-compose.yaml
+    ├── redis-master.conf
+    ├── redis-slave1.conf
+    └── redis-slave2.conf
+</code></pre></div></div>
+
+<h4 id="sentinel配置">sentinel配置</h4>
+
+<h5 id="redis-sentinel-1conf">redis-sentinel-1.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bind 0.0.0.0</span>
+
+port 26379
+
+requirepass 123456
+
+sentinel monitor mymaster 192.168.122.203 6379 1
+
+sentinel auth-pass mymaster 123456
+
+sentinel down-after-milliseconds mymaster 30000
+</code></pre></div></div>
+
+<h5 id="redis-sentinel-2conf">redis-sentinel-2.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bind 0.0.0.0</span>
+port 26380
+
+requirepass 123456
+
+sentinel monitor mymaster 192.168.122.203 6379 1
+
+sentinel auth-pass mymaster 123456
+
+sentinel down-after-milliseconds mymaster 30000
+</code></pre></div></div>
+
+<h5 id="redis-sentinel-3conf">redis-sentinel-3.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bind 0.0.0.0</span>
+
+port 26381
+
+requirepass 123456
+
+sentinel monitor mymaster 127.0.0.1 6379 1
+
+sentinel auth-pass mymaster 123456
+
+sentinel down-after-milliseconds mymaster 30000
+</code></pre></div></div>
+
+<h4 id="server配置">server配置</h4>
+
+<h5 id="redis-masterconf">redis-master.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">bind </span>192.168.122.203
+
+port 6379
+
+always-show-logo no
+
+requirepass 123456
+
+rename-command KEYS <span class="s2">""</span>
+</code></pre></div></div>
+
+<h5 id="redis-slave1conf">redis-slave1.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">bind </span>192.168.122.203
+
+port 6380
+
+always-show-logo no
+
+requirepass 123456
+
+rename-command KEYS <span class="s2">""</span>
+
+slaveof 192.168.122.203 6379
+
+masterauth <span class="s2">"123456"</span>
+</code></pre></div></div>
+
+<h5 id="redis-slave2conf">redis-slave2.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">bind </span>192.168.122.203
+
+port 6381
+
+always-show-logo no
+
+requirepass 123456
+
+rename-command KEYS <span class="s2">""</span>
+
+slaveof 192.168.122.203 6379
+
+masterauth <span class="s2">"123456"</span>
+</code></pre></div></div>
+
+<h4 id="docker-compose配置">Docker Compose配置</h4>
+
+<h5 id="sentinel">sentinel</h5>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">redis-sentinel-1</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-sentinel-1</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-sentinel-1.conf:/usr/local/etc/redis/redis-sentinel.conf</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-sentinel"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis-sentinel.conf"</span><span class="pi">]</span>
+  <span class="na">redis-sentinel-2</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-sentinel-2</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-sentinel-2.conf:/usr/local/etc/redis/redis-sentinel.conf</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-sentinel"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis-sentinel.conf"</span><span class="pi">]</span>
+  <span class="na">redis-sentinel-3</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-sentinel-3</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-sentinel-3.conf:/usr/local/etc/redis/redis-sentinel.conf</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-sentinel"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis-sentinel.conf"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<h5 id="server">server</h5>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">redis-server-master</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.0.16</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-server-master</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-master.conf:/usr/local/etc/redis/redis.conf</span>
+      <span class="pi">-</span> <span class="s">./data/redis-master:/data</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-server"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis.conf"</span><span class="pi">]</span>
+  <span class="na">redis-server-slave-1</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.0.16</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-server-slave-1</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis-server-master</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-slave1.conf:/usr/local/etc/redis/redis.conf</span>
+      <span class="pi">-</span> <span class="s">./data/redis-slave-1:/data</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-server"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis.conf"</span><span class="pi">]</span>
+  <span class="na">redis-server-slave-2</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.0.16</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-server-slave-2</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis-server-master</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-slave2.conf:/usr/local/etc/redis/redis.conf</span>
+      <span class="pi">-</span> <span class="s">./data/redis-slave-2:/data</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-server"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis.conf"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<h4 id="运行">运行</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /data/redis/server/
+docker-compose up <span class="nt">-d</span>
+<span class="nb">cd</span> /data/redis/sentinel
+docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h4 id="测试脚本">测试脚本</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">redis</span>
+
+<span class="kn">from</span> <span class="nn">redis.sentinel</span> <span class="kn">import</span> <span class="n">Sentinel</span>
+
+<span class="n">sentinel</span> <span class="o">=</span> <span class="n">Sentinel</span><span class="p">([(</span><span class="s">'192.168.122.203'</span><span class="p">,</span> <span class="mi">26379</span><span class="p">),(</span><span class="s">'192.168.122.203'</span><span class="p">,</span> <span class="mi">26380</span><span class="p">),(</span><span class="s">'192.168.122.203'</span><span class="p">,</span> <span class="mi">26381</span><span class="p">)],</span> <span class="n">socket_timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">sentinel_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">'password'</span><span class="p">:</span> <span class="s">'123456'</span><span class="p">})</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">sentinel</span><span class="p">.</span><span class="n">discover_master</span><span class="p">(</span><span class="s">'local-master'</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">sentinel</span><span class="p">.</span><span class="n">discover_slaves</span><span class="p">(</span><span class="s">'local-master'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="redis-cli">redis-cli</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>redis-cli <span class="nt">-h</span> 192.168.122.203 <span class="nt">-p</span> 6379
+192.168.122.203:6379&gt; AUTH 123456
+OK
+192.168.122.203:6379&gt; ping
+PONG
+192.168.122.203:6379&gt;
+</code></pre></div></div>
+
+<h4 id="info">Info</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Replication</span>
+role:master
+connected_slaves:2
+slave0:ip<span class="o">=</span>192.168.122.203,port<span class="o">=</span>6381,state<span class="o">=</span>online,offset<span class="o">=</span>101925,lag<span class="o">=</span>1
+slave1:ip<span class="o">=</span>192.168.122.203,port<span class="o">=</span>6380,state<span class="o">=</span>online,offset<span class="o">=</span>101925,lag<span class="o">=</span>1
+master_replid:efc50a97c93df3faa5764eb66f046bc211067d3b
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:102075
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:102075
+</code></pre></div></div>
+
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#docker" class="page__taxonomy-item p-category" rel="tag">Docker</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-09-19T00:00:00+08:00">September 19, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=docker+%E5%85%A5%E9%97%A8+--+02%20%2Fdocker-03%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fdocker-03%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fdocker-03%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/kubernetes-kubeadm-pod/" class="pagination--pager" title="Pod 管理
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

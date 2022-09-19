@@ -1,4 +1,288 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-08T18:55:57+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Pod 管理</title><link href="/kubernetes-kubeadm-pod/" rel="alternate" type="text/html" title="Pod 管理" /><published>2022-09-08T00:00:00+08:00</published><updated>2022-09-08T00:00:00+08:00</updated><id>/kubernetes-kubeadm-pod</id><content type="html" xml:base="/kubernetes-kubeadm-pod/"><![CDATA[<h3 id="创建和删除pod">创建和删除pod</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-19T17:54:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 入门 – 02</title><link href="/docker-03/" rel="alternate" type="text/html" title="docker 入门 – 02" /><published>2022-09-19T00:00:00+08:00</published><updated>2022-09-19T00:00:00+08:00</updated><id>/docker-03</id><content type="html" xml:base="/docker-03/"><![CDATA[<p>Redis Docker Sentinel</p>
+
+<h4 id="docker-安装">Docker 安装</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bash &lt;<span class="o">(</span>wget <span class="nt">-O-</span> get.docker.com<span class="o">)</span>
+</code></pre></div></div>
+
+<h4 id="docker-compose-安装">Docker Compose 安装</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#https://docs.docker.com/compose/install/linux/</span>
+curl <span class="nt">-SL</span> https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-linux-x86_64 <span class="nt">-o</span> /usr/local/bin/docker-compose
+
+<span class="nb">sudo chmod</span> +x /usr/local/bin/docker-compose
+docker-compose <span class="nt">--version</span>
+</code></pre></div></div>
+
+<h4 id="修改内核参数">修改内核参数</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> /etc/sysctl.d/docker-compose.conf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> 
+net.core.somaxconn = 1024
+net.ipv4.tcp_syncookies = 0 
+vm.overcommit_memory = 1
+</span><span class="no">EOF 
+
+</span>sysctl <span class="nt">--system</span> 
+</code></pre></div></div>
+
+<h4 id="关闭防火墙">关闭防火墙</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl stop firewalld
+systemctl disable firewalld
+</code></pre></div></div>
+
+<h4 id="目录结构">目录结构</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /data/redis
+tree
+
+├── sentinel
+│   ├── docker-compose.yaml
+│   ├── redis-sentinel-1.conf
+│   ├── redis-sentinel-2.conf
+│   └── redis-sentinel-3.conf
+└── server
+    ├── data
+    │   ├── redis-master
+    │   │   └── dump.rdb
+    │   ├── redis-slave-1
+    │   │   └── dump.rdb
+    │   └── redis-slave-2
+    │       └── dump.rdb
+    ├── docker-compose.yaml
+    ├── redis-master.conf
+    ├── redis-slave1.conf
+    └── redis-slave2.conf
+</code></pre></div></div>
+
+<h4 id="sentinel配置">sentinel配置</h4>
+
+<h5 id="redis-sentinel-1conf">redis-sentinel-1.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bind 0.0.0.0</span>
+
+port 26379
+
+requirepass 123456
+
+sentinel monitor mymaster 192.168.122.203 6379 1
+
+sentinel auth-pass mymaster 123456
+
+sentinel down-after-milliseconds mymaster 30000
+</code></pre></div></div>
+
+<h5 id="redis-sentinel-2conf">redis-sentinel-2.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bind 0.0.0.0</span>
+port 26380
+
+requirepass 123456
+
+sentinel monitor mymaster 192.168.122.203 6379 1
+
+sentinel auth-pass mymaster 123456
+
+sentinel down-after-milliseconds mymaster 30000
+</code></pre></div></div>
+
+<h5 id="redis-sentinel-3conf">redis-sentinel-3.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#bind 0.0.0.0</span>
+
+port 26381
+
+requirepass 123456
+
+sentinel monitor mymaster 127.0.0.1 6379 1
+
+sentinel auth-pass mymaster 123456
+
+sentinel down-after-milliseconds mymaster 30000
+</code></pre></div></div>
+
+<h4 id="server配置">server配置</h4>
+
+<h5 id="redis-masterconf">redis-master.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">bind </span>192.168.122.203
+
+port 6379
+
+always-show-logo no
+
+requirepass 123456
+
+rename-command KEYS <span class="s2">""</span>
+</code></pre></div></div>
+
+<h5 id="redis-slave1conf">redis-slave1.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">bind </span>192.168.122.203
+
+port 6380
+
+always-show-logo no
+
+requirepass 123456
+
+rename-command KEYS <span class="s2">""</span>
+
+slaveof 192.168.122.203 6379
+
+masterauth <span class="s2">"123456"</span>
+</code></pre></div></div>
+
+<h5 id="redis-slave2conf">redis-slave2.conf</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">bind </span>192.168.122.203
+
+port 6381
+
+always-show-logo no
+
+requirepass 123456
+
+rename-command KEYS <span class="s2">""</span>
+
+slaveof 192.168.122.203 6379
+
+masterauth <span class="s2">"123456"</span>
+</code></pre></div></div>
+
+<h4 id="docker-compose配置">Docker Compose配置</h4>
+
+<h5 id="sentinel">sentinel</h5>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">redis-sentinel-1</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-sentinel-1</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-sentinel-1.conf:/usr/local/etc/redis/redis-sentinel.conf</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-sentinel"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis-sentinel.conf"</span><span class="pi">]</span>
+  <span class="na">redis-sentinel-2</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-sentinel-2</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-sentinel-2.conf:/usr/local/etc/redis/redis-sentinel.conf</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-sentinel"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis-sentinel.conf"</span><span class="pi">]</span>
+  <span class="na">redis-sentinel-3</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-sentinel-3</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-sentinel-3.conf:/usr/local/etc/redis/redis-sentinel.conf</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-sentinel"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis-sentinel.conf"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<h5 id="server">server</h5>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nn">---</span>
+
+<span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">3'</span>
+
+<span class="na">services</span><span class="pi">:</span>
+  <span class="na">redis-server-master</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.0.16</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-server-master</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-master.conf:/usr/local/etc/redis/redis.conf</span>
+      <span class="pi">-</span> <span class="s">./data/redis-master:/data</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-server"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis.conf"</span><span class="pi">]</span>
+  <span class="na">redis-server-slave-1</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.0.16</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-server-slave-1</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis-server-master</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-slave1.conf:/usr/local/etc/redis/redis.conf</span>
+      <span class="pi">-</span> <span class="s">./data/redis-slave-1:/data</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-server"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis.conf"</span><span class="pi">]</span>
+  <span class="na">redis-server-slave-2</span><span class="pi">:</span>
+    <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.0.16</span>
+    <span class="na">container_name</span><span class="pi">:</span> <span class="s">redis-server-slave-2</span>
+    <span class="na">restart</span><span class="pi">:</span> <span class="s">always</span>
+    <span class="na">network_mode</span><span class="pi">:</span> <span class="s">host</span>
+    <span class="na">depends_on</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">redis-server-master</span>
+    <span class="na">environment</span><span class="pi">:</span>
+      <span class="na">TZ</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Asia/Shanghai"</span>
+    <span class="na">volumes</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">./redis-slave2.conf:/usr/local/etc/redis/redis.conf</span>
+      <span class="pi">-</span> <span class="s">./data/redis-slave-2:/data</span>
+    <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">redis-server"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">/usr/local/etc/redis/redis.conf"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<h4 id="运行">运行</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /data/redis/server/
+docker-compose up <span class="nt">-d</span>
+<span class="nb">cd</span> /data/redis/sentinel
+docker-compose up <span class="nt">-d</span>
+</code></pre></div></div>
+
+<h4 id="测试脚本">测试脚本</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">redis</span>
+
+<span class="kn">from</span> <span class="nn">redis.sentinel</span> <span class="kn">import</span> <span class="n">Sentinel</span>
+
+<span class="n">sentinel</span> <span class="o">=</span> <span class="n">Sentinel</span><span class="p">([(</span><span class="s">'192.168.122.203'</span><span class="p">,</span> <span class="mi">26379</span><span class="p">),(</span><span class="s">'192.168.122.203'</span><span class="p">,</span> <span class="mi">26380</span><span class="p">),(</span><span class="s">'192.168.122.203'</span><span class="p">,</span> <span class="mi">26381</span><span class="p">)],</span> <span class="n">socket_timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span><span class="n">sentinel_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s">'password'</span><span class="p">:</span> <span class="s">'123456'</span><span class="p">})</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">sentinel</span><span class="p">.</span><span class="n">discover_master</span><span class="p">(</span><span class="s">'local-master'</span><span class="p">))</span>
+<span class="k">print</span> <span class="p">(</span><span class="n">sentinel</span><span class="p">.</span><span class="n">discover_slaves</span><span class="p">(</span><span class="s">'local-master'</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h4 id="redis-cli">redis-cli</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>redis-cli <span class="nt">-h</span> 192.168.122.203 <span class="nt">-p</span> 6379
+192.168.122.203:6379&gt; AUTH 123456
+OK
+192.168.122.203:6379&gt; ping
+PONG
+192.168.122.203:6379&gt;
+</code></pre></div></div>
+
+<h4 id="info">Info</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Replication</span>
+role:master
+connected_slaves:2
+slave0:ip<span class="o">=</span>192.168.122.203,port<span class="o">=</span>6381,state<span class="o">=</span>online,offset<span class="o">=</span>101925,lag<span class="o">=</span>1
+slave1:ip<span class="o">=</span>192.168.122.203,port<span class="o">=</span>6380,state<span class="o">=</span>online,offset<span class="o">=</span>101925,lag<span class="o">=</span>1
+master_replid:efc50a97c93df3faa5764eb66f046bc211067d3b
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:102075
+second_repl_offset:-1
+repl_backlog_active:1
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:1
+repl_backlog_histlen:102075
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Redis Docker Sentinel]]></summary></entry><entry><title type="html">Pod 管理</title><link href="/kubernetes-kubeadm-pod/" rel="alternate" type="text/html" title="Pod 管理" /><published>2022-09-08T00:00:00+08:00</published><updated>2022-09-08T00:00:00+08:00</updated><id>/kubernetes-kubeadm-pod</id><content type="html" xml:base="/kubernetes-kubeadm-pod/"><![CDATA[<h3 id="创建和删除pod">创建和删除pod</h3>
 
 <p>pod是k8s里最小调度单元</p>
 
@@ -3607,546 +3891,4 @@ route-map SETPATH
 
 <blockquote>
   <p>在Cisco IOS软件发布12.0(24)S中，Cisco引入了BGP动态更新对等组特性。该功能也可以在以后的Cisco IOS软件版本中使用。该特性引入了一种新的算法，详细信息参考  <a href="https://www.cisco.com/univercd/cc/td/doc/product/software/ios120/120newft/120limit/120s/120s24/s_bgpdpg.htm">BGP Dynamic Update Peer-Groups</a></p>
-</blockquote>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[BGP案例03 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)]]></summary></entry><entry><title type="html">路由交换 - BGP案例 - 02</title><link href="/rs-bgp-02/" rel="alternate" type="text/html" title="路由交换 - BGP案例 - 02" /><published>2022-08-24T00:00:00+08:00</published><updated>2022-08-24T00:00:00+08:00</updated><id>/rs-bgp-02</id><content type="html" xml:base="/rs-bgp-02/"><![CDATA[<p>BGP案例02
-(参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)</p>
-
-<h3 id="as_path-attribute">AS_PATH Attribute</h3>
-
-<p><img src="/assets/images/bgp/b10.png" /></p>
-
-<p>当路由更新通过一个AS的时候，AS的编号会成为这个更新的前缀，AS_PATH属性实际上是一个路由为到达目的地而穿过的AS编号列表.AS_SET是已穿过的所有AS的有序数学集合{}。AS_SET示例: <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#ex2">CIDR Example 2 (as-set)</a></p>
-
-<p>在本小节的例子中，RTB在AS200中宣告网络190.10.0.0，当路由穿过AS300，RTC添加它自己的AS号码到network，所以当190.10.0.0到达RTA，这个network会被添加两个AS号码，第一个是200，然后是300，RTA上到达190.10.0.0是(300,200)</p>
-
-<p>同样的过程也适用于170.10.0.0和180.10.0.0。RTB必须选择path (300,100)，为了达到170.10.0.0,RTB穿过AS300和AS100。RTC必须穿过路径(200)才能达到190.10.0.0，路径(100)才能达到170.10.0.0</p>
-
-<h3 id="origin-attribute">Origin Attribute</h3>
-
-<p>origin是一个强制性属性，定义路径信息的起源，origion属性能够假定三个值</p>
-
-<ul>
-  <li>IGP     网络层可达性信息(NLRI)是网络产生之初的内部信息。这通常发生在发出 bgp network 命令时。BGP表中的i表示IGP。</li>
-  <li>EBGP      NLRI是通过外部网关协议(EGP)学习的。BGP表中的e表示EGP</li>
-  <li>INCOMPLETE      NLRI是未知的，或者是通过其他方式习得的。当您将路由从其他路由协议重新分发到BGP并且路由的起源不完整时，通常会产生不完整的情况。一个?在BGP表中表示INCOMPLETE</li>
-</ul>
-
-<p><img src="/assets/images/bgp/b11.png" /></p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
-router bgp 100 
-neighbor 190.10.50.1 remote-as 100 
-neighbor 170.10.20.2 remote-as 300 
-network 150.10.0.0 
-redistribute static 
- 
-ip route 190.10.0.0 255.255.0.0 null0 
- 
-RTB# 
-router bgp 100 
-neighbor 150.10.30.1 remote-as 100 
-network 190.10.50.0 
-RTE# 
-router bgp 300 
-neighbor 170.10.20.1 remote-as 100 
-network 170.10.0.0
-</code></pre></div></div>
-
-<p>RTA通过300i到达170.10.0.0，“300i”表示下一个AS路径为300，路由为IGP。RTA通过i也达到190.10.50，这个“i”表示这个路由条目在同一个AS内，源也是IGP。RTE通过100i达到150.10.0.0，“100i”表示下一个AS为100，源为IGP，通过100 ? RTE达到190.10.0.0。“100”表示下一个AS是100，源是不完整的，来自静态路由。</p>
-
-<h3 id="bgp-next-hop-attribute">BGP Next Hop Attribute</h3>
-
-<p><img src="/assets/images/bgp/b12.png" /></p>
-
-<p>BGP下一跳属性是为了到达某个目的地而使用的下一跳IP地址</p>
-
-<p>对于EBGP，下一跳总是neighbor 命令指定的邻居的IP地址，在这个例子中，RTC宣告170.10.0.0到RTA，下一跳为170.10.20.2。RTA向RTC宣告150.10.0.0，下一跳是170.10.20.1.对于IBGP，协议规定EBGP宣告的下一跳应该被带到IBGP中。由于这个规则，RTA向它的IBGP对等RTB宣告170.10.0.0，下一跳为170.10.20.2。因此，根据RTB，下一跳到达170.10.0.0的路由是170.10.20.2，而不是150.10.30.1</p>
-
-<p>通过IGP来保证RTB可以到达170.10.20.2，否则，RTB会因为无法访问下一跳地址而将目的地为170.10.0.0的数据包丢弃，例如，如果RTB运行iGRP，在RTA网络170.10.0.0上运行iGRP。可以在和RTC互联的链路上使用被动模式，所以只会有BGP的信息和RTC进行交换</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
-router bgp 100 
-neighbor 170.10.20.2 remote-as 300 
-neighbor 150.10.50.1 remote-as 100 
-network 150.10.0.0 
-RTB# 
-router bgp 100 
-neighbor 150.10.30.1 remote-as 100 
-RTC# 
-router bgp 300 
-neighbor 170.10.20.1 remote-as 100 
-network 170.10.0.0 
-</code></pre></div></div>
-
-<blockquote>
-  <p>RTC宣告170.10.0.0到RTA，下一跳170.10.20.2</p>
-</blockquote>
-
-<blockquote>
-  <p>RTA宣告170.10.0.0到RTB，下一条170.10.20.2，EBGP的下一跳携带进了IBGP</p>
-</blockquote>
-
-<p>在处理多路(multiaccess)和非广播多路(NBMA)网络时要特别小心， <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#bgpmultiaccess">BGP Next Hop (Multiaccess Networks)</a> 和 <a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#bgpnbma">BGP Next Hop (NBMA)</a> 提供了更详细的信息</p>
-
-<h4 id="bgp-next-hop-multiaccess-networks">BGP Next Hop (Multiaccess Networks)</h4>
-
-<p><img src="/assets/images/bgp/b13.png" /></p>
-
-<p>这个示例显示了下一跳在多路访问(如以太网)上的行为</p>
-
-<p>假定RTC和RTD在AS300中运行OSPF，RTC和RTA运行BGP，RTC可以通过网络170.10.20.3到达180.20.0.0，当RTC向RTA发送关于180.20.0.0的BGP更新时,RTC使用170.10.20.3作为下一跳,RTC没有使用它自己的IP地址，170.10.20.2。RTC使用这个地址是因为RTA、RTC和RTD之间的网络是一个多路网络，RTA使用RTD作为下一跳达到180.20.0.0比通过RTC更合理。</p>
-
-<blockquote>
-  <p>RTC向RTA宣告180.20.0.0的下一跳是170.10.20.3</p>
-</blockquote>
-
-<p>如果RTA、RTC和RTD的共同介质不是多路访问的，而是NBMA，则会发生进一步的问题</p>
-
-<h4 id="bgp-next-hop-nbma">BGP Next Hop (NBMA)</h4>
-
-<p><img src="/assets/images/bgp/b14.png" /></p>
-
-<p>公共的介质在图中以云的方式出现，如果是帧中继或者其它的NBMA云，RTC向RTA宣告了180.20.0.0，下一跳为170.10.20.3。</p>
-
-<p>问题是RTA没有直接的永久性虚拟电路(PVC)到RTD，并且不能到达下一跳。在这种情况下，路由失败</p>
-
-<p>next-hop-self 命令可以解决这个问题</p>
-
-<p>对于下一跳的情况，例如在BGP下一跳(NBMA)示例中，您可以使用next-hop-self命令。的语法是:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor <span class="o">{</span>ip-address | peer-group-name<span class="o">}</span> next-hop-self 
-</code></pre></div></div>
-
-<p>next-hop-self命令允许强制BGP使用特定的IP地址作为下一跳</p>
-
-<p>对于<a href="https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#bgpnbma">BGP Next Hop (NBMA)</a>示例，这种配置解决了这个问题</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-neighbor 170.10.20.1 remote-as 100 
-neighbor 170.10.20.1 next-hop-self 
-</code></pre></div></div>
-
-<p>RTC宣告180.20.0.0，下一跳170.10.20.2</p>
-
-<h4 id="bgp-backdoor">BGP Backdoor</h4>
-
-<p><img src="/assets/images/bgp/b15.png" /></p>
-
-<p>在图中，RTA和RTC运行EBGP，RTB和RTC运行EBGP，RTA和RTB运行一种IGP，可以是RIP,IGRP或者其它协议，根据定义，EBGP的更新的AS值是20，小于IGP的AD值，AD值如下：</p>
-
-<ul>
-  <li>120 for RIP</li>
-  <li>100 for IGRP</li>
-  <li>90 for EIGRP</li>
-  <li>110 for OSPF</li>
-</ul>
-
-<p>RTA接到160.10.0.0的更新来自两个路由协议</p>
-
-<ul>
-  <li>eBGP with a distance of 20</li>
-  <li>IGP with a distance that is greater than 20</li>
-</ul>
-
-<p>默认情况下的BGP AD值</p>
-
-<ul>
-  <li>External distance—20</li>
-  <li>Internal distance—200</li>
-  <li>Local distance—200</li>
-</ul>
-
-<p>但你可以使用distance命令来改变默认距离:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>distance bgp external-distance internal-distance local-distance
-</code></pre></div></div>
-
-<p>RTA选择了EBGP通过RTC，因为AD值更短</p>
-
-<p>如果你需要RTA通过RTB的IGP学习到160.10.0.0，你有两个选择</p>
-
-<ul>
-  <li>改变eBGP的外部AD或IGP AD</li>
-  <li>使用BGP backdoor</li>
-</ul>
-
-<blockquote>
-  <p>不推荐改变eBGP的外部AD或IGP AD</p>
-</blockquote>
-
-<p>BGP backdoor使IGP路由优选</p>
-
-<p>使用 <a href="https://www.cisco.com/en/US/docs/ios/iproute_bgp/command/reference/irg_bgp4.html#wp1145478">network address backdoor</a> 命令</p>
-
-<p>配置的网络是你希望通过IDP到达的网络，在BGP中，这个配置的网络会与本地分配的网络同样，除非BGP不宣告这个网络</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
-router eigrp 10 
-
-network 150.10.0.0 
-
-router bgp 100 
-neighbor 2.2.2.1 remote-as 300 
-network 160.10.0.0 backdoor 
-</code></pre></div></div>
-
-<p>Network 160.10.0.0被视为一个本地条目，但不作为一个普通的网络条目进行宣传</p>
-
-<p>RTA通过AD为90的EIGRP向RTB学习到160.10.0.0，RTA还通过AD为20的eBGP向RTC学习到这个地址，正常情况下,EBGP会更优，但是使用了 network backdoor命令，EIGRP会更优</p>
-
-<h3 id="synchronization">Synchronization</h3>
-
-<p><img src="/assets/images/bgp/b16.png" /></p>
-
-<p>在讨论同步前，看下这个情景，RTC在AS300内发出170.10.0.0的更新，RTA和RTB运行IBGP，RTB会得到可以通过2.2.2.1的下一跳到达170.10.0.0的更新，记住这个下一跳是通过IBGP携带的，为了到达下一跳，RTB必须发送流量到RTE</p>
-
-<p>假定没有重分布网络170.10.0.0到IGP，RTE不会知道170.10.0.0是否存在</p>
-
-<p>如果RTB开始向AS400宣告RTB可以到达170.10.0.0，从RTD到RTB 目的为170.10.0.0的流量会被RTE丢弃</p>
-
-<p>如果你的AS传递流量从一个AS到另外一个AS，BGP不能再AS内部的路由器通过IBGP学习到路由之前宣告这条路由，BGP要等待IGP在AS内传播这条路由，然后BGP宣告这条路由到外部对等</p>
-
-<p>在这个例子中，RTB等待IGP的170.10.0.0，然后RTB发送更新到RTD，如果你添加了一条静态路由在RTB中到170.10.0.0，可以使RTB认为IGP已经传播了这条路由，要确保其它路由器可以到达170.10.0.0</p>
-
-<h3 id="disable-synchronization">Disable Synchronization</h3>
-
-<p>在一些情况中，你不需要同步信息，如果你不允许一个其它AS的流量通过你的AS，你可以关闭同步，如果所有的路由器都在你的AS中运行BGP，你可以关闭同步，这样IGP中可以减少路由条目，并且BGP可以更快的收敛</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>router bgp 100 
-no synchronization
-</code></pre></div></div>
-
-<blockquote>
-  <p>设置完成后一定要运行clear ip bgp命令</p>
-</blockquote>
-
-<p><img src="/assets/images/bgp/b17.png" /></p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
-router bgp 100 
-network 150.10.0.0 
-neighbor 1.1.1.2 remote-as 400 
-neighbor 3.3.3.3 remote-as 100 
-no synchronization 
-
-<span class="o">!</span><span class="nt">---</span> RTB puts 170.10.0.0 <span class="k">in </span>its IP routing table and advertises the network 
-<span class="o">!</span><span class="nt">---</span> to RTD, even <span class="k">if </span>RTB does not have an IGP path to 170.10.0.0.
-
-RTD# 
-router bgp 400 
-neighbor 1.1.1.1 remote-as 100 
-network 175.10.0.0 
-
-RTA# 
-   router bgp 100 
-   network 150.10.0.0 
-   neighbor 3.3.3.4 remote-as 100
-</code></pre></div></div>
-
-<h3 id="weight-attribute">Weight Attribute</h3>
-
-<p><img src="/assets/images/bgp/b18.png" /></p>
-
-<p>weight属性是思科的私有属性，这个属性使用weigth值选择最佳路径，weight在本地分配给路由器，只会对特定的路由器有意义，不会通过任何路由更新传播，weight可以是0到65,535之间的数字，初始值为32768，其它的路径为0</p>
-
-<p>同一个目的地由多条路由的时候，权重越高优先级越高，请看下这节的例子，RTA从AS4中学习到175.10.0.0，RTA通告更新到RTC，RTB也从AS4中学习到175.10.0.0，RTB也通告更新到RTC，RTC现在由两条路径到175.10.0.0，需要在两条路中选择一条，如果你在RTC上设置来自RTA的更新权重，强制RTC使用RTA作为到达175.10.0.0的下一跳，有几种方法可以实现</p>
-
-<ul>
-  <li>使用 neighbor 命令
-    <blockquote>
-      <table>
-        <tbody>
-          <tr>
-            <td>neighbor {ip-address</td>
-            <td>peer-group} weight weight</td>
-          </tr>
-        </tbody>
-      </table>
-    </blockquote>
-  </li>
-  <li>AS_PATH
-    <blockquote>
-      <table>
-        <tbody>
-          <tr>
-            <td>ip as-path access-list access-list-number {permit</td>
-            <td>deny} as-regular-expression neighbor ip-address filter-list access-list-number weight weight</td>
-          </tr>
-        </tbody>
-      </table>
-    </blockquote>
-  </li>
-  <li>route maps</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-neighbor 1.1.1.1 remote-as 100 
-neighbor 1.1.1.1 weight 200 
-
-<span class="o">!</span><span class="nt">---</span> The route to 175.10.0.0 from RTA has a 200 weight.
-
-neighbor 2.2.2.2 remote-as 200 
-neighbor 2.2.2.2 weight 100 
-
-<span class="o">!</span><span class="nt">---</span> The route to 175.10.0.0 from RTB has a 100 weight.
-</code></pre></div></div>
-
-<p>RTA，具有更高的weight值，是优选的下一跳，同样也可以使用AS_PATH</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-neighbor 1.1.1.1 remote-as 100 
-neighbor 1.1.1.1 filter-list 5 weight 200 
-neighbor 2.2.2.2 remote-as 200 
-neighbor 2.2.2.2 filter-list 6 weight 100 
-... 
-ip as-path access-list 5 permit ^100<span class="nv">$ </span>
-
-<span class="o">!</span><span class="nt">---</span> This only permits path 100.
-
-ip as-path access-list 6 permit ^200<span class="nv">$ </span>
-... 
-</code></pre></div></div>
-
-<p>使用route maps</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 300 
-neighbor 1.1.1.1 remote-as 100 
-neighbor 1.1.1.1 route-map setweightin <span class="k">in 
-</span>neighbor 2.2.2.2 remote-as 200 
-neighbor 2.2.2.2 route-map setweightin <span class="k">in</span> 
-... 
-ip as-path access-list 5 permit ^100<span class="nv">$ </span>
-... 
-
-route-map setweightin permit 10 
-match as-path 5 
-<span class="nb">set </span>weight 200 
-
-<span class="o">!</span><span class="nt">---</span> Anything that applies to access list 5, such as packets from AS100, has weight 200.
-
-
-route-map setweightin permit 20 
-   <span class="nb">set </span>weight 100 
-
-<span class="o">!</span><span class="nt">---</span> Anything <span class="k">else </span>has weight 100.
-</code></pre></div></div>
-
-<blockquote>
-  <p>可以修改权重，以选择MPLS VPN BGP路径  将IGP路径作为备份</p>
-</blockquote>
-
-<h4 id="local-preference-attribute">Local Preference Attribute</h4>
-
-<p><img src="/assets/images/bgp/b19.png" /></p>
-
-<p>Local preference 是向AS指明哪条路径对于到达目的网络优先选择，具有高优先级的路径会优先选择，默认的Local preference 是100</p>
-
-<p>不像weight属性，只在本地路由器起作用，Local preference 会在同一个AS内部交换传递</p>
-
-<p>使用 <a href="https://www.cisco.com/en/US/docs/ios/12_3t/ip_route/command/reference/ip2_b1gt.html#wp1078941">bgp default local-preference value</a>设置local preference，也可以使用local preference配合route map使用，就像本节中的实例:</p>
-
-<blockquote>
-  <p>如果有变化，必要情况下需要执行软重置(就是清除路由器上的bgp进程),使用clear ip bgp [soft][in/out]清除bgp进程，soft不会重置bgp邻居， [in/out]代表接口方向，如果没有指明in或者out，默认都会重置</p>
-</blockquote>
-
-<blockquote>
-  <p>bgp default local-preference 命令再路由器更新上设置本地优先级去往同AS内的对等，本节的图中显示，AS256从两个不同的组织接受170.10.0.0更新，Local preference帮助你决定使用哪条路径离开AS256到达目的网络，假如RTD是优先离开地点，这个配置对来自AS300的更新设置local preference为200，对来自AS100 的更新设置为150</p>
-</blockquote>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTC# 
-router bgp 256 
-neighbor 1.1.1.1 remote-as 100 
-neighbor 128.213.11.2 remote-as 256 
-bgp default local-preference 150 
-
-RTD# 
-router bgp 256 
-neighbor 3.3.3.4 remote-as 300 
-neighbor 128.213.11.1 remote-as 256 
-bgp default local-preference 200
-</code></pre></div></div>
-
-<p>在这个配置中RTC设置所有更新的local preference 为150，设置RTD所有更新的local preference为200，local preference 会在AS256中交换，因此，RTC和RTD认为来自AS300的170.10.0.0的更新比来自AS100的更新具有更高的优先级，所有去往AS256的流量或通过ETD出去</p>
-
-<p>使用route map可以提供更加灵活的方法，在本章的例子中，当更新到达RTD的时候，所有RTD收到的更新都将Local preference 标记为200，来自AS34更新的local preference也被标记为200，tag不是必须的，你可以使用tag标记为特定的路由设置特定的local preference。下面是示例:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTD# 
-router bgp 256 
-neighbor 3.3.3.4 remote-as 300 
-neighbor 3.3.3.4 route-map setlocalin <span class="k">in 
-</span>neighbor 128.213.11.1 remote-as 256 
-.... 
-ip as-path access-list 7 permit ^300<span class="nv">$ </span>
-... 
-
-route-map setlocalin permit 10 
-match as-path 7 
-<span class="nb">set </span>local-preference 200 
-
-route-map setlocalin permit 20 
-<span class="nb">set </span>local-preference 150 
-</code></pre></div></div>
-
-<p>在这个配置中，任何来自AS300的更新会将local preference设置为200，其它的更新，比如来自AS34的，会将值设置为150</p>
-
-<h4 id="metric-attribute">Metric Attribute</h4>
-
-<p><img src="/assets/images/bgp/b20.png" /></p>
-
-<p>metric属性也被称作MULTI_EXIT_DISCRIMINATOR，MED (BGP4), 或者 INTER_AS (BGP3),这个属性是向外部的邻居指明哪条路径进入AS更优，metric可以在另一个AS中有多个入口点时到达某个路由时提供了一种动态的方法来改变另一个AS的选路，较低的metric会更优</p>
-
-<p>不像local preference，metric在AS间交换，metric会携带进入一个AS内部，但不会在这个AS中再向其它AS发送，当一个更新携带一个给定的metric进入到一个AS，这个metric会在这个AS中用于选路决策，当同样的更新通过第三个AS的时候，metric会归为0,图中显示了一组度量，metric默认为0</p>
-
-<p>除非路由器接收到其它的信息，路由器会根据来自同一个AS内邻居metric对比来产生路径，为了方便对比来自不同邻居的metrics，你需要在路由器上指明 <a href="https://www.cisco.com/en/US/docs/ios/iproute_bgp/command/reference/irg_bgp1.html#wp1112034">bgp always-compare-med</a> 命令</p>
-
-<blockquote>
-  <p>有两个BGP配置命令可以影响基于多出口(MED)的路径选择，<a href="https://www.cisco.com/en/US/docs/ios/iproute_bgp/command/reference/irg_bgp1.html#wp1113816">bgp deterministic-med</a>命令和 bgp always-compare-med命令， bgp deterministic-med 命令确保当不同的对等在相同的AS中发布宣告时，在路由选择时比较MED。 bgp always-compare-med确保不同ASs中邻居路径的MED比较， bgp always-compare-med一般使用在 有多个服务提供者或者是企业要统一设置MED的策略。参考  <a href="https://www.cisco.com/en/US/tech/tk365/technologies_tech_note09186a0080094925.shtml">How the bgp deterministic-med Command Differs from the bgp always-compare-med Command</a>了解这些命令如何影响BGP路径选择</p>
-</blockquote>
-
-<p>在本节的图表中，AS100通过三个不同的路由器:RTC、RTD和RTB获取关于网络180.10.0.0的信息。RTC和RTD在AS300中，RTB在AS400中</p>
-
-<p>在本例中，将因为命令  <a href="https://www.cisco.com/en/US/docs/ios/iproute_bgp/command/reference/irg_bgp1.html#wp1112361">bgp bestpath as-path ignore</a> 忽略对RTA的AS-Path比较，它被配置为强制BGP使用下一个属性进行路由比较(在本例中为metric或MED)，如果省略掉该命令，BGP将从路由器RTC路由到180.10.0.0，因为它具有最短的as - path。</p>
-
-<p>假定你将来自RTC的metric设置为120，RTD的metric设置为200，RTB的metric设置为50，默认下，路由器会比较来自同一个AS内邻居的metrics，因此，RTA只能比较来自RTC的metric和来自RTD的metric,RTA选择RTC作为最佳下一跳，因为120小于200.当RTA从RTB获得度量为50的更新时,RTA无法将该指标与120进行比较，因为RTC和RTB在不同的ASs中,RTA必须根据其他一些属性进行选择。</p>
-
-<p>为了强制RTA比较指标，您必须在RTA上发出bgp always-compare-med命令。这些配置说明了这个过程</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
-   router bgp 100 
-   neighbor 2.2.2.1 remote-as 300 
-   neighbor 3.3.3.3 remote-as 300 
-   neighbor 4.4.4.3 remote-as 400 
-   bgp bestpath as-path ignore
-   .... 
-
-RTC# 
-   router bgp 300 
-   neighbor 2.2.2.2 remote-as 100 
-   neighbor 2.2.2.2 route-map setmetricout out 
-   neighbor 1.1.1.2 remote-as 300 
-
-route-map setmetricout permit 10 
-   <span class="nb">set </span>metric 120 
-
-RTD# 
-   router bgp 300 
-   neighbor 3.3.3.2 remote-as 100 
-   neighbor 3.3.3.2 route-map setmetricout out 
-   neighbor 1.1.1.1 remote-as 300 
-
-route-map setmetricout permit 10 
-   <span class="nb">set </span>metric 200 
-
-RTB# 
-   router bgp 400 
-   neighbor 4.4.4.4 remote-as 100 
-   neighbor 4.4.4.4 route-map setmetricout out 
-
-route-map setmetricout permit 10 
-   <span class="nb">set </span>metric 50
-</code></pre></div></div>
-
-<p>上面的配置,RTA会选择RTC作为下一跳，考虑到所有其他属性都是相同的，为了在度量比较中包含RTB，必须以这种方式配置RTA</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
-router bgp 100 
-neighbor 2.2.21 remote-as 300 
-neighbor 3.3.3.3 remote-as 300 
-neighbor 4.4.4.3 remote-as 400 
-bgp always-compare-med
-</code></pre></div></div>
-
-<p>在本例中，RTA选择RTB作为下一跳到达网络180.10.0.0</p>
-
-<p>可以使用default-metric命令设置重分布路由的metric</p>
-
-<p>假设在本节的示例中，RTB通过静态将网络引入AS100</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTB# 
-router bgp 400 
-redistribute static 
-default-metric 50 
- 
-ip route 180.10.0.0 255.255.0.0 null 0 
-</code></pre></div></div>
-
-<h4 id="community-attribute">Community Attribute</h4>
-
-<p>community属性是一个可传递的可选属性，范围在0到4,294,967,200之间。community属性是一种在特定community中对目标进行分组并根据这些community应用路由决策的方法。路由决策包括accept, prefer, and redistribute以及其它</p>
-
-<p>您可以使用route map来设置community属性。route map set命令具有以下语法</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">set </span>community community-number <span class="o">[</span>additive] <span class="o">[</span>well-known-community] 
-</code></pre></div></div>
-
-<p>一些预定义的</p>
-<ul>
-  <li>no-export   不向EBGP对等做宣告。将此路由保存在一个AS内</li>
-  <li>no-advertise  不要向任何对等(内部或外部)宣传此路由</li>
-  <li>internet   在因特网community宣告这条路线。任何路由器都属于这个社区</li>
-  <li>local-as  在联合场景中使用，以防止在本地AS之外传输数据包。</li>
-</ul>
-
-<p>两个通过route map 设置community的场景</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>route-map communitymap 
-match ip address 1 
-<span class="nb">set </span>community no-advertise
-or
-
-route-map setcommunity 
-match as-path 1 
-<span class="nb">set </span>community 200 additive 
-</code></pre></div></div>
-
-<p>如果你没有使用 additive 关键字,200替换任何已存在的旧的community，如果你设置了additive，community会追加200，即使设置了community属性，默认情况下该属性也不会传输给邻居，要将属性发送给邻居，必须使用此命令</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>neighbor <span class="o">{</span>ip-address | peer-group-name<span class="o">}</span> send-community 
-</code></pre></div></div>
-
-<p>例子:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>RTA# 
-router bgp 100 
-neighbor 3.3.3.3 remote-as 300 
-neighbor 3.3.3.3 send-community 
-neighbor 3.3.3.3 route-map setcommunity out
-</code></pre></div></div>
-
-<p>在Cisco IOS软件发行版12.0及更高版本中，您可以使用三种不同的格式配置community,decimal, hexadecimal, and AA:NN,默认情况下，思科IOS软件使用的是较老的decimal格式，如果想使用AA:NN的显示和配置，使用  ip bgp-community new-format全局配置命令，AA:NN的第一部分表示AS，第二部分表示2字节数</p>
-
-<p>例子:</p>
-
-<p>如果全局配置中没有ip bgp-community new-format命令，则show ip bgp 6.0.0.0命令将以decimal格式显示community属性值。在本例中，community属性值显示为6553620。</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Router# show ip bgp 6.0.0.0
-BGP routing table entry <span class="k">for </span>6.0.0.0/8, version 7
-Paths: <span class="o">(</span>1 available, best <span class="c">#1, table Default-IP-Routing-Table)</span>
-  Not advertised to any peer
-  1
-    10.10.10.1 from 10.10.10.1 <span class="o">(</span>200.200.200.1<span class="o">)</span>
-      Origin IGP, metric 0, localpref 100, valid, external, best
-      Community: 6553620
-</code></pre></div></div>
-
-<p>配置全局的 ip bgp-community new-format 命令</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Router# configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
-Router<span class="o">(</span>config<span class="o">)</span><span class="c"># ip bgp-community new-format </span>
-Router<span class="o">(</span>config<span class="o">)</span><span class="c"># exit</span>
-</code></pre></div></div>
-
-<p>使用ip bgp-community new-format 全局配置命令，community值以AA:NN格式显示。该值在本例中的show ip bgp 6.0.0.0命令的输出中显示为100:20</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Router# show ip bgp 6.0.0.0
-BGP routing table entry <span class="k">for </span>6.0.0.0/8, version 9
-Paths: <span class="o">(</span>1 available, best <span class="c">#1, table Default-IP-Routing-Table)</span>
-  Not advertised to any peer
-  1
-    10.10.10.1 from 10.10.10.1 <span class="o">(</span>200.200.200.1<span class="o">)</span>
-      Origin IGP, metric 0, localpref 100, valid, external, best
-      Community: 100:20
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[BGP案例02 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)]]></summary></entry></feed>
+</blockquote>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[BGP案例03 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)]]></summary></entry></feed>

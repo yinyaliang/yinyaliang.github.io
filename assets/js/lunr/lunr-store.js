@@ -62,7 +62,7 @@ var store = [{
         "title": "docker 入门 -- 02",
         "excerpt":"自定义镜像 数据卷 仓库 自定义镜像 需要写Dockerfile文件 ,如果名字不叫Dockerfile,则需要使用-f来指定文件 常用命令: FROM: 指定基镜像 MAINTAINER: 维护者信息 RUN: 在临时容器里执行的操作系统命令 ADD file /path/ : 把物理机里file拷贝到镜像的制定目录 /path COPY file /path/ : 把物理机里file拷贝到镜像的制定目录 /path ENV: 指定变量 USER: 指定容器内部以哪个用户运行进程 VOLUME: 指定数据卷 EXPOSE: 指定镜像容器所使用的端口，只是一个标记 CMD: 指定镜像创建出来的容器运行在什么进程 创建一个可以执行ipconfig的centos镜像 FROM centos:7 MAINTAINER yaliang.yin@eeoa.com RUN yun -y install net-tools -y CMD [\"/bin/bash\"] 构建命令 docker...","categories": [],
         "tags": ["Docker"],
-        "url": "/docker-02/",
+        "url": "/docker-03/",
         "teaser": null
       },{
         "title": "使用kubeadm 安装Kubernetes",
@@ -177,5 +177,11 @@ var store = [{
         "excerpt":"创建和删除pod pod是k8s里最小调度单元 下载镜像 docker pull hub.c.163.com/library/centos:7 docker pull nginx docker pull nginx:1.7.9 docker pull nginx:1.9 docker pull busybox docker pull alpine docker pull perl 查看 默认命名空间 [root@master tmp]# kubectl get pods No resources found in default namespace. 指定命名空间 [root@master tmp]# kubectl get pods -n kube-system NAME READY STATUS RESTARTS AGE...","categories": [],
         "tags": ["Kubernetes"],
         "url": "/kubernetes-kubeadm-pod/",
+        "teaser": null
+      },{
+        "title": "docker 入门 -- 02",
+        "excerpt":"Redis Docker Sentinel Docker 安装 bash &lt;(wget -O- get.docker.com) Docker Compose 安装 #https://docs.docker.com/compose/install/linux/ curl -SL https://github.com/docker/compose/releases/download/v2.10.2/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose sudo chmod +x /usr/local/bin/docker-compose docker-compose --version 修改内核参数 cat &gt; /etc/sysctl.d/docker-compose.conf &lt;&lt; EOF net.core.somaxconn = 1024 net.ipv4.tcp_syncookies = 0 vm.overcommit_memory = 1 EOF sysctl --system 关闭防火墙 systemctl stop firewalld systemctl disable firewalld 目录结构...","categories": [],
+        "tags": ["Docker"],
+        "url": "/docker-03/",
         "teaser": null
       }]
