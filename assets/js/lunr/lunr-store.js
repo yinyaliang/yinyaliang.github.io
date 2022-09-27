@@ -190,4 +190,10 @@ var store = [{
         "tags": ["Docker"],
         "url": "/docker-04/",
         "teaser": null
+      },{
+        "title": "密码管理",
+        "excerpt":"密码管理的几种方式 创建及删除secret 避免mysql类型的容器变量保存在yaml里不安全,可以使用secret,保存方式为 键=值 或者是 key=value 创建secret [root@master ~]# mkdir secret [root@master ~]# cd secret/ 创建一个新的命名空间 [root@master secret]# kubectl create ns nssec namespace/nssec created [root@master secret]# kubens nssec Context \"kubernetes-admin@kubernetes\" modified. Active namespace is \"nssec\". 命令行 kubectl create secret generic 名字 –from-literal=k1=v1 –from-literal=k2=v2 # 创建一个名字为 mysecret1 的 secret [root@master secret]#...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-password/",
+        "teaser": null
       }]

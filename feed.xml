@@ -1,4 +1,641 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-19T20:52:13+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 部署redis sentinel</title><link href="/docker-03/" rel="alternate" type="text/html" title="docker 部署redis sentinel" /><published>2022-09-19T00:00:00+08:00</published><updated>2022-09-19T00:00:00+08:00</updated><id>/docker-03</id><content type="html" xml:base="/docker-03/"><![CDATA[<p>Redis Docker Sentinel</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-27T16:44:41+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">密码管理</title><link href="/kubernetes-kubeadm-password/" rel="alternate" type="text/html" title="密码管理" /><published>2022-09-27T00:00:00+08:00</published><updated>2022-09-27T00:00:00+08:00</updated><id>/kubernetes-kubeadm-password</id><content type="html" xml:base="/kubernetes-kubeadm-password/"><![CDATA[<p>密码管理的几种方式</p>
+
+<h2 id="创建及删除secret">创建及删除secret</h2>
+
+<p>避免mysql类型的容器变量保存在yaml里不安全,可以使用secret,保存方式为</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>键=值 或者是 key=value
+</code></pre></div></div>
+
+<h4 id="创建secret">创建secret</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# <span class="nb">mkdir </span>secret
+<span class="o">[</span>root@master ~]# <span class="nb">cd </span>secret/
+</code></pre></div></div>
+
+<p>创建一个新的命名空间</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl create ns nssec
+namespace/nssec created
+<span class="o">[</span>root@master secret]# kubens nssec
+Context <span class="s2">"kubernetes-admin@kubernetes"</span> modified.
+Active namespace is <span class="s2">"nssec"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<h4 id="命令行">命令行</h4>
+
+<p>kubectl create secret generic 名字 –from-literal=k1=v1 –from-literal=k2=v2</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 创建一个名字为 mysecret1 的 secret</span>
+<span class="o">[</span>root@master secret]# kubectl create secret generic mysecret1 <span class="nt">--from-literal</span><span class="o">=</span><span class="nv">xx</span><span class="o">=</span>tom <span class="nt">--from-literal</span><span class="o">=</span><span class="nv">yy</span><span class="o">=</span>redhat
+secret/mysecret1 created
+</code></pre></div></div>
+
+<p>查看</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl get secrets
+NAME                  TYPE                                  DATA   AGE
+default-token-twgk8   kubernetes.io/service-account-token   3      2m56s
+mysecret1             Opaque                                2      20s
+</code></pre></div></div>
+
+<p>secret有三种类型</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1、 Opaque: base64编码格式的secret，用来存储密码、密钥,数据可以通过base64解码
+2、 kubernetes.io/dockerconfigjson: 用来存储私有docker registry的认证信息
+3、 kubernetes.io/sevice-account-token: 用来被serviceaccount引用
+</code></pre></div></div>
+
+<p>创建serviceaccount时, kubernets会默认创建对应的secret.pod如果使用了serviceaccout,对应的secret会自动挂在到Pod目录/run/secrets/kubernets.io/serviceaccount</p>
+
+<p>查看mysecret1的具体属性</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl describe secrets mysecret1
+Name:         mysecret1
+Namespace:    nssec
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Type:  Opaque
+
+Data
+<span class="o">====</span>
+xx:  3 bytes
+yy:  6 bytes
+</code></pre></div></div>
+
+<p>这里可以看到两个变量,分别是xx和yy,但具体是什么这里看不出来</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl describe secrets mysecret1
+Name:         mysecret1
+Namespace:    nssec
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Type:  Opaque
+
+Data
+<span class="o">====</span>
+xx:  3 bytes
+yy:  6 bytes
+<span class="o">[</span>root@master secret]# kubectl get secret mysecret1 <span class="nt">-o</span> yaml
+apiVersion: v1
+data:
+  xx: dG9t
+  yy: cmVkaGF0
+kind: Secret
+metadata:
+  creationTimestamp: <span class="s2">"2022-07-19T15:38:45Z"</span>
+  name: mysecret1
+  namespace: nssec
+  resourceVersion: <span class="s2">"98855"</span>
+  uid: 388779de-d3aa-4a9e-bfbf-7f7d63b1af9a
+<span class="nb">type</span>: Opaque
+</code></pre></div></div>
+
+<p>上面data字段里就是mysecret1的键值对,需要base64解码才可以看到具体值</p>
+
+<p>解码</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# <span class="nb">echo</span> <span class="s2">"dG9t"</span> | <span class="nb">base64</span> <span class="nt">--decode</span>
+tom[root@master secret]#  <span class="nb">echo</span> <span class="s2">"cmVkaGF0"</span> | <span class="nb">base64</span> <span class="nt">--decode</span>
+redhat[root@master secret]# 
+</code></pre></div></div>
+
+<h4 id="把文件创建为secret">把文件创建为secret</h4>
+
+<p>文件名作为key，内容作为value.</p>
+
+<p>kubectl create secret generic mysecret2 –from-file=file1 –from-file=file2</p>
+
+<p>作用是把一个文件的内容写入secret里,通过卷的方式来引用这个secret,就可以把此文件写入pod里了</p>
+
+<p>查看hosts</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# <span class="nb">cat</span> /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+</code></pre></div></div>
+
+<p>创建secret</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl create secret generic mysecret2 <span class="nt">--from-file</span><span class="o">=</span>/etc/hosts
+secret/mysecret2 created
+</code></pre></div></div>
+
+<p>查看</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl get secrets mysecret2 <span class="nt">-o</span> yaml
+apiVersion: v1
+data:
+  hosts: <span class="nv">MTI3LjAuMC4xICAgbG9jYWxob3N0IGxvY2FsaG9zdC5sb2NhbGRvbWFpbiBsb2NhbGhvc3Q0IGxvY2FsaG9zdDQubG9jYWxkb21haW40Cjo6MSAgICAgICAgIGxvY2FsaG9zdCBsb2NhbGhvc3QubG9jYWxkb21haW4gbG9jYWxob3N0NiBsb2NhbGhvc3Q2LmxvY2FsZG9tYWluNgoxOTIuMTY4LjEyMi4yMDAgbWFzdGVyCjE5Mi4xNjguMTIyLjIwMiBub2RlMSAKMTkyLjE2OC4xMjIuMjAzIG5vZGUyIAo</span><span class="o">=</span>
+kind: Secret
+metadata:
+  creationTimestamp: <span class="s2">"2022-07-19T15:49:12Z"</span>
+  name: mysecret2
+  namespace: nssec
+  resourceVersion: <span class="s2">"99732"</span>
+  uid: 1e095123-849f-4cde-b092-ac574252075c
+<span class="nb">type</span>: Opaque
+</code></pre></div></div>
+
+<p>hosts代表文件，下面是内容</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl get secrets mysecret2 <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.hosts}'</span>
+<span class="nv">MTI3LjAuMC4xICAgbG9jYWxob3N0IGxvY2FsaG9zdC5sb2NhbGRvbWFpbiBsb2NhbGhvc3Q0IGxvY2FsaG9zdDQubG9jYWxkb21haW40Cjo6MSAgICAgICAgIGxvY2FsaG9zdCBsb2NhbGhvc3QubG9jYWxkb21haW4gbG9jYWxob3N0NiBsb2NhbGhvc3Q2LmxvY2FsZG9tYWluNgoxOTIuMTY4LjEyMi4yMDAgbWFzdGVyCjE5Mi4xNjguMTIyLjIwMiBub2RlMSAKMTkyLjE2OC4xMjIuMjAzIG5vZGUyIAo</span><span class="o">=</span>
+</code></pre></div></div>
+
+<p>解码</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl get secrets mysecret2 <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.hosts}'</span> | <span class="nb">base64</span> <span class="nt">-d</span>
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+</code></pre></div></div>
+
+<p>创建一个包含两个文件的secret mysecret3</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl create secret generic mysecret3 <span class="nt">--from-file</span><span class="o">=</span>/etc/hosts <span class="nt">--from-file</span><span class="o">=</span>/etc/issue
+secret/mysecret3 created
+</code></pre></div></div>
+
+<p>获取mysecret3的键值对</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl get secrets mysecret3 <span class="nt">-o</span> yaml
+apiVersion: v1
+data:
+  hosts: <span class="nv">MTI3LjAuMC4xICAgbG9jYWxob3N0IGxvY2FsaG9zdC5sb2NhbGRvbWFpbiBsb2NhbGhvc3Q0IGxvY2FsaG9zdDQubG9jYWxkb21haW40Cjo6MSAgICAgICAgIGxvY2FsaG9zdCBsb2NhbGhvc3QubG9jYWxkb21haW4gbG9jYWxob3N0NiBsb2NhbGhvc3Q2LmxvY2FsZG9tYWluNgoxOTIuMTY4LjEyMi4yMDAgbWFzdGVyCjE5Mi4xNjguMTIyLjIwMiBub2RlMSAKMTkyLjE2OC4xMjIuMjAzIG5vZGUyIAo</span><span class="o">=</span>
+  issue: <span class="nv">XFMKS2VybmVsIFxyIG9uIGFuIFxtCgo</span><span class="o">=</span>
+kind: Secret
+metadata:
+  creationTimestamp: <span class="s2">"2022-07-19T15:51:57Z"</span>
+  name: mysecret3
+  namespace: nssec
+  resourceVersion: <span class="s2">"99966"</span>
+  uid: f68c6996-7f6a-476f-b81c-85770498cda2
+<span class="nb">type</span>: Opaque
+</code></pre></div></div>
+
+<p>这种方法一般用于给pod传递文件</p>
+
+<h4 id="变量文件的方法">变量文件的方法</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>变量 1 = 值 1
+变量 2 = 值 2
+</code></pre></div></div>
+
+<p>创建变量文件env.txt</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# <span class="nb">cat </span>env.txt 
+<span class="nv">xx</span><span class="o">=</span>tom
+<span class="nv">yy</span><span class="o">=</span>redhat
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl create secret generic mysecret4 <span class="nt">--from-env-file</span><span class="o">=</span>env.txt
+secret/mysecret4 created
+</code></pre></div></div>
+
+<h4 id="通过yaml文件的方式">通过yaml文件的方式</h4>
+
+<p>先求出base64的值</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# <span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"tom"</span> | <span class="nb">base64
+</span>dG9t
+<span class="o">[</span>root@master secret]# <span class="nb">echo</span> <span class="nt">-n</span> <span class="s2">"redhat"</span> | <span class="nb">base64
+</span>cmVkaGF0
+</code></pre></div></div>
+
+<p>创建yaml文件</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">mysecret5</span>
+<span class="na">type</span><span class="pi">:</span>  <span class="s">Opaque</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">xx</span><span class="pi">:</span>  <span class="s">dG9t</span>
+  <span class="na">redhat</span><span class="pi">:</span>  <span class="s">cmVkaGF0</span>
+</code></pre></div></div>
+
+<p>创建secret</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl apply <span class="nt">-f</span> secret5.yaml 
+secret/mysecret5 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl get secrets
+NAME                  TYPE                                  DATA   AGE
+default-token-twgk8   kubernetes.io/service-account-token   3      24m
+mysecret1             Opaque                                2      21m
+mysecret2             Opaque                                1      11m
+mysecret3             Opaque                                2      8m19s
+mysecret4             Opaque                                2      3m26s
+mysecret5             Opaque                                2      20s
+</code></pre></div></div>
+
+<h4 id="删除secret">删除secret</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl delete secrets mysecret5
+secret <span class="s2">"mysecret5"</span> deleted
+</code></pre></div></div>
+
+<h2 id="在pod里以变量和卷的方式引用secret">在pod里以变量和卷的方式引用secret</h2>
+
+<h4 id="以卷的方式">以卷的方式</h4>
+
+<p>在pod的yaml文件里,创建一个类型为secret的卷，然后挂在到容器里某个制定的目录里。容器创建好后,会在容器的挂在目录里创建一个文件，此文件的文件名为secret里的key.文件内容对应key的value.以卷的方式引用secret的主要作用是往pod里传递文件</p>
+
+<p>创建pod的yaml文件</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span>  <span class="no">null</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span>  <span class="s">pod1</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">pod1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">xx</span>
+    <span class="na">secret</span><span class="pi">:</span>
+      <span class="na">secretName</span><span class="pi">:</span>  <span class="s">mysecret2</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">name</span><span class="pi">:</span>  <span class="s">pod1</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">xx</span>
+      <span class="na">mountPath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/etc/test"</span>
+<span class="na">status</span><span class="pi">:</span>  <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p>在pod1里吧xx这个卷挂在到/etc/test/目录里.容器里会有hosts文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl apply <span class="nt">-f</span> pod1.yaml 
+pod/pod1 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl <span class="nb">exec </span>pod1 <span class="nt">--</span> <span class="nb">cat</span> /etc/test/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+</code></pre></div></div>
+
+<p>删除pod</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete <span class="nt">-f</span> pod1.yaml
+</code></pre></div></div>
+
+<p>修改pod1.yaml</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span>  <span class="no">null</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span>  <span class="s">pod1</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">pod1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">xx</span>
+    <span class="na">secret</span><span class="pi">:</span>
+      <span class="na">secretName</span><span class="pi">:</span>  <span class="s">mysecret3</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">name</span><span class="pi">:</span>  <span class="s">pod1</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">xx</span>
+      <span class="na">mountPath</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/etc/test/issue"</span>
+      <span class="na">subPath</span><span class="pi">:</span>  <span class="s">issue</span>
+<span class="na">status</span><span class="pi">:</span>  <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p>mysecret3里有两个文件，如果只想使用一个,可以使用subPath来解决</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl apply <span class="nt">-f</span> pod1.yaml 
+pod/pod1 created
+<span class="o">[</span>root@master secret]# kubectl <span class="nb">exec </span>pod1 <span class="nt">--</span> <span class="nb">ls</span> /etc/test/
+issue
+</code></pre></div></div>
+
+<p>如果修改服务的配置文件,比如nginx的配置文件,可以不需要重新编译镜像</p>
+
+<h4 id="以变量的方式">以变量的方式</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">env</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">变量名</span>
+  <span class="na">value</span><span class="pi">:</span>  <span class="s">值</span>
+</code></pre></div></div>
+
+<p>如果是从secret引用值,这里写valueFrom</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">env</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">变量名</span>
+  <span class="na">valueFrom</span><span class="pi">:</span>
+    <span class="na">secretKeyRef</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span>  <span class="s">secretX</span>
+      <span class="na">key</span><span class="pi">:</span>  <span class="s">keyX</span>
+</code></pre></div></div>
+
+<p>变量的值会使用secretX里的keyX这个键对应的值</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span>  <span class="no">null</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span>  <span class="s">pod2</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">pod2</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span>  <span class="s">mysql</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">name</span><span class="pi">:</span>  <span class="s">pod2</span>
+    <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">MYSQL_ROOT_PASSWORD</span>
+      <span class="na">valueFrom</span><span class="pi">:</span> 
+        <span class="na">secretKeyRef</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span>  <span class="s">mysecret1</span>
+          <span class="na">key</span><span class="pi">:</span>  <span class="s">yy</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl apply <span class="nt">-f</span> pod2.yaml
+pod/pod2 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master secret]# kubectl get pods <span class="nt">-o</span> wide
+NAME   READY   STATUS    RESTARTS   AGE   IP              NODE    NOMINATED NODE   READINESS GATES
+pod1   1/1     Running   0          11m   10.244.104.22   node2   &lt;none&gt;           &lt;none&gt;
+pod2   1/1     Running   0          16s   10.244.104.23   node2   &lt;none&gt;           &lt;none&gt;
+</code></pre></div></div>
+
+<h2 id="创建及删除configmap">创建及删除configmap</h2>
+
+<p>主要作用:</p>
+
+<ul>
+  <li>存储密码</li>
+  <li>往pod里传递文件</li>
+  <li>格式: 键=值</li>
+</ul>
+
+<p>和secret的区别:</p>
+
+<ul>
+  <li>不使用base64编码</li>
+</ul>
+
+<p>查看命令</p>
+
+<p>kubectl get configmaps</p>
+
+<p>创建方法</p>
+
+<ul>
+  <li>直接指定key和value</li>
+  <li>把一个文件内容作为value</li>
+  <li>直接写yaml</li>
+</ul>
+
+<h4 id="命令行的方式">命令行的方式</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create cm 名字 <span class="nt">--from-literal</span><span class="o">=</span><span class="nv">key</span><span class="o">=</span>v1 <span class="nt">--from-literal</span><span class="o">=</span><span class="nv">k2</span><span class="o">=</span>v2 ...
+</code></pre></div></div>
+
+<p>创建一个my1的configmap</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl create configmap my1 <span class="nt">--from-literal</span><span class="o">=</span><span class="nv">xx</span><span class="o">=</span>tom <span class="nt">--from-literal</span><span class="o">=</span><span class="nv">yy</span><span class="o">=</span>redhat
+configmap/my1 created
+</code></pre></div></div>
+
+<p>查看</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl get configmaps
+NAME               DATA   AGE
+kube-root-ca.crt   1      47h
+my1                2      26s
+<span class="o">[</span>root@master ~]# kubectl describe configmaps my1
+Name:         my1
+Namespace:    nssec
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Data
+<span class="o">====</span>
+xx:
+<span class="nt">----</span>
+tom
+yy:
+<span class="nt">----</span>
+redhat
+Events:  &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="文件方式">文件方式</h4>
+
+<p>kubectl create configmap my2 –from-file=file1</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create configmap my2 <span class="nt">--from-file</span><span class="o">=</span>/etc/hosts <span class="nt">--from-file</span><span class="o">=</span>/etc/issue
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl create configmap my2 <span class="nt">--from-file</span><span class="o">=</span>/etc/hosts <span class="nt">--from-file</span><span class="o">=</span>/etc/issue
+configmap/my2 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl create configmap my2 <span class="nt">--from-file</span><span class="o">=</span>/etc/hosts <span class="nt">--from-file</span><span class="o">=</span>/etc/issue
+configmap/my2 created
+<span class="o">[</span>root@master ~]# 
+<span class="o">[</span>root@master ~]# kubectl get cm
+NAME               DATA   AGE
+kube-root-ca.crt   1      47h
+my1                2      2m37s
+my2                2      16s
+<span class="o">[</span>root@master ~]# kubectl describe cm my2
+Name:         my2
+Namespace:    nssec
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Data
+<span class="o">====</span>
+hosts:
+<span class="nt">----</span>
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+
+issue:
+<span class="nt">----</span>
+<span class="se">\S</span>
+Kernel <span class="se">\r</span> on an <span class="se">\m</span>
+
+
+Events:  &lt;none&gt;
+</code></pre></div></div>
+
+<p>或者</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl describe cm my2
+Name:         my2
+Namespace:    nssec
+Labels:       &lt;none&gt;
+Annotations:  &lt;none&gt;
+
+Data
+<span class="o">====</span>
+hosts:
+<span class="nt">----</span>
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+
+issue:
+<span class="nt">----</span>
+<span class="se">\S</span>
+Kernel <span class="se">\r</span> on an <span class="se">\m</span>
+
+
+Events:  &lt;none&gt;
+<span class="o">[</span>root@master ~]# kubectl get cm my2 <span class="nt">-o</span> yaml
+apiVersion: v1
+data:
+  hosts: <span class="s2">"127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4</span><span class="se">\n</span><span class="s2">::1
+    </span><span class="se">\ </span><span class="s2">       localhost localhost.localdomain localhost6 localhost6.localdomain6</span><span class="se">\n</span><span class="s2">192.168.122.200
+    master</span><span class="se">\n</span><span class="s2">192.168.122.202 node1 </span><span class="se">\n</span><span class="s2">192.168.122.203 node2 </span><span class="se">\n</span><span class="s2">"</span>
+  issue: |+
+    <span class="se">\S</span>
+    Kernel <span class="se">\r</span> on an <span class="se">\m</span>
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: <span class="s2">"2022-07-21T15:06:23Z"</span>
+  name: my2
+  namespace: nssec
+  resourceVersion: <span class="s2">"106264"</span>
+  uid: 68f8f1b3-f44e-4303-91c9-628e55904fb9
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl get cm my2 <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'.{.data.hosts}'</span>
+.127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+</code></pre></div></div>
+
+<h4 id="使用configmap">使用configmap</h4>
+
+<p>以卷的方式</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span> 
+  <span class="na">creationTimestamp</span><span class="pi">:</span>  <span class="no">null</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span>  <span class="s">pod3</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">pod3</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">xx</span>
+    <span class="na">configMap</span><span class="pi">:</span>
+      <span class="na">name</span><span class="pi">:</span>  <span class="s">my2</span>   <span class="c1"># 关联my2的 configmap</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">name</span><span class="pi">:</span>  <span class="s">pod3</span>
+    <span class="na">resources</span><span class="pi">:</span>  <span class="pi">{}</span>
+    <span class="na">volumeMounts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">xx</span>
+      <span class="na">mountPath</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">/etc/test"</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl apply <span class="nt">-f</span> pod.yaml 
+pod/pod3 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl <span class="nb">exec </span>pod3 <span class="nt">--</span> <span class="nb">ls</span> /etc/test
+hosts
+issue
+</code></pre></div></div>
+
+<p>查看文件</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl <span class="nb">exec </span>pod3 <span class="nt">--</span> <span class="nb">ls</span> /etc/test
+hosts
+issue
+<span class="o">[</span>root@master tmp]# kubectl <span class="nb">exec </span>pod3 <span class="nt">--</span> <span class="nb">cat</span> /etc/test/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+192.168.122.200 master
+192.168.122.202 node1 
+192.168.122.203 node2 
+</code></pre></div></div>
+
+<p>如果只想挂载一个文件则使用subPath</p>
+
+<h4 id="以变量的方式-1">以变量的方式</h4>
+
+<p>创建pod的yaml文件</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span>  <span class="no">null</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span>  <span class="s">pod4</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">pod4</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span>  <span class="s">hub.c.163.com/library/mysql:latest</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">name</span><span class="pi">:</span>  <span class="s">pod4</span>
+    <span class="na">env</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">MYSQL_ROOT_PASSWORD</span>
+      <span class="na">valueFrom</span><span class="pi">:</span>
+        <span class="na">configMapKeyRef</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span>  <span class="s">my1</span>
+          <span class="na">key</span><span class="pi">:</span>  <span class="s">yy</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl apply <span class="nt">-f</span> pod4.yaml 
+pod/pod4 created
+</code></pre></div></div>
+
+<p>获取IP</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master tmp]# kubectl get pods <span class="nt">-o</span> wide
+NAME   READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+pod1   1/1     Running   1          46h   10.244.104.25    node2   &lt;none&gt;           &lt;none&gt;
+pod2   1/1     Running   1          46h   10.244.104.24    node2   &lt;none&gt;           &lt;none&gt;
+pod3   1/1     Running   0          11m   10.244.166.152   node1   &lt;none&gt;           &lt;none&gt;
+pod4   1/1     Running   0          23s   10.244.166.153   node1   &lt;none&gt;           &lt;none&gt;
+</code></pre></div></div>
+
+<p>检查</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@node2 ~]# mysql <span class="nt">-uroot</span> <span class="nt">-h10</span>.244.166.153 <span class="nt">-predhat</span>
+Welcome to the MariaDB monitor.  Commands end with <span class="p">;</span> or <span class="se">\g</span><span class="nb">.</span>
+Your MySQL connection <span class="nb">id </span>is 4
+Server version: 5.7.18 MySQL Community Server <span class="o">(</span>GPL<span class="o">)</span>
+
+Copyright <span class="o">(</span>c<span class="o">)</span> 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type <span class="s1">'help;'</span> or <span class="s1">'\h'</span> <span class="k">for </span>help. Type <span class="s1">'\c'</span> to clear the current input statement.
+
+MySQL <span class="o">[(</span>none<span class="o">)]&gt;</span> 
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[密码管理的几种方式]]></summary></entry><entry><title type="html">docker 部署redis sentinel</title><link href="/docker-03/" rel="alternate" type="text/html" title="docker 部署redis sentinel" /><published>2022-09-19T00:00:00+08:00</published><updated>2022-09-19T00:00:00+08:00</updated><id>/docker-03</id><content type="html" xml:base="/docker-03/"><![CDATA[<p>Redis Docker Sentinel</p>
 
 <h4 id="docker-安装">Docker 安装</h4>
 
@@ -3585,25 +4222,4 @@ Content-Type: text/xml
 
 <h3 id="排错">排错</h3>
 
-<p>如果上面的命令返回空,将listen.allowed_clients的127.0.0.1放在第一位</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[规避Nginx,通过fcgi接口取值]]></summary></entry><entry><title type="html">etcd集群监控</title><link href="/monitor-etcd/" rel="alternate" type="text/html" title="etcd集群监控" /><published>2022-08-26T00:00:00+08:00</published><updated>2022-08-26T00:00:00+08:00</updated><id>/monitor-etcd</id><content type="html" xml:base="/monitor-etcd/"><![CDATA[<p>etcd集群监控</p>
-
-<h3 id="系统">系统</h3>
-<p>Centos 7</p>
-
-<h3 id="测试接口">测试接口</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl <span class="nt">--cert</span> /opt/etcd/ssl/server.pem <span class="nt">--key</span> /opt/etcd/ssl/server-key.pem https://10.0.2.45:2379/metrics <span class="nt">--insecure</span>
-</code></pre></div></div>
-
-<h3 id="prometheus-配置">prometheus 配置</h3>
-
-<p>添加 etcd主机组 prometheus.yml</p>
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="pi">-</span> <span class="na">job_name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">etcd</span><span class="nv"> </span><span class="s">cluster"</span>
-    <span class="na">scheme</span><span class="pi">:</span> <span class="s">https</span>
-    <span class="na">static_configs</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">targets</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">10.0.2.44:2379"</span><span class="pi">,</span><span class="s2">"</span><span class="s">10.0.2.45:2379"</span><span class="pi">,</span><span class="s2">"</span><span class="s">10.0.2.46:2379"</span><span class="pi">]</span>
-    <span class="na">tls_config</span><span class="pi">:</span>
-      <span class="na">insecure_skip_verify</span><span class="pi">:</span> <span class="no">true</span>
-      <span class="na">cert_file</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/data/config/oss/prometheus/etcd_ca/server.pem"</span>
-      <span class="na">key_file</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/data/config/oss/prometheus/etcd_ca/server-key.pem"</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[etcd集群监控]]></summary></entry></feed>
+<p>如果上面的命令返回空,将listen.allowed_clients的127.0.0.1放在第一位</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[规避Nginx,通过fcgi接口取值]]></summary></entry></feed>
