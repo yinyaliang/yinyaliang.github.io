@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#创建及删除secret">创建及删除secret</a><ul><li><a href="#创建secret">创建secret</a></li><li><a href="#命令行">命令行</a></li><li><a href="#把文件创建为secret">把文件创建为secret</a></li><li><a href="#变量文件的方法">变量文件的方法</a></li><li><a href="#通过yaml文件的方式">通过yaml文件的方式</a></li><li><a href="#删除secret">删除secret</a></li></ul></li></ul></li><li><a href="#在pod里以变量和卷的方式引用secret">在pod里以变量和卷的方式引用secret</a><ul><li><a href="#以卷的方式">以卷的方式</a></li><li><a href="#以变量的方式">以变量的方式</a></li></ul></li></ul></li><li><a href="#创建及删除configmap">创建及删除configmap</a><ul><li><a href="#命令行的方式">命令行的方式</a></li><li><a href="#文件方式">文件方式</a></li><li><a href="#使用configmap">使用configmap</a></li><li><a href="#以变量的方式-1">以变量的方式</a></li></ul></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#创建及删除secret">创建及删除secret</a><ul><li><a href="#创建secret">创建secret</a></li><li><a href="#命令行">命令行</a></li><li><a href="#把文件创建为secret">把文件创建为secret</a></li><li><a href="#变量文件的方法">变量文件的方法</a></li><li><a href="#通过yaml文件的方式">通过yaml文件的方式</a></li><li><a href="#删除secret">删除secret</a></li></ul></li><li><a href="#在pod里以变量和卷的方式引用secret">在pod里以变量和卷的方式引用secret</a><ul><li><a href="#以卷的方式">以卷的方式</a></li><li><a href="#以变量的方式">以变量的方式</a></li></ul></li><li><a href="#创建及删除configmap">创建及删除configmap</a><ul><li><a href="#命令行的方式">命令行的方式</a></li><li><a href="#文件方式">文件方式</a></li><li><a href="#使用configmap">使用configmap</a></li><li><a href="#以变量的方式-1">以变量的方式</a></li></ul></li></ul></li></ul>
 
             </nav>
           </aside>
@@ -438,7 +438,7 @@ mysecret5             Opaque                                2      20s
 secret <span class="s2">"mysecret5"</span> deleted
 </code></pre></div></div>
 
-<h2 id="在pod里以变量和卷的方式引用secret">在pod里以变量和卷的方式引用secret</h2>
+<h3 id="在pod里以变量和卷的方式引用secret">在pod里以变量和卷的方式引用secret</h3>
 
 <h4 id="以卷的方式">以卷的方式</h4>
 
@@ -571,7 +571,7 @@ pod1   1/1     Running   0          11m   10.244.104.22   node2   &lt;none&gt;  
 pod2   1/1     Running   0          16s   10.244.104.23   node2   &lt;none&gt;           &lt;none&gt;
 </code></pre></div></div>
 
-<h2 id="创建及删除configmap">创建及删除configmap</h2>
+<h3 id="创建及删除configmap">创建及删除configmap</h3>
 
 <p>主要作用:</p>
 
