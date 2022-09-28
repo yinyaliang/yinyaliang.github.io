@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-27T16:47:10+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">密码管理</title><link href="/kubernetes-kubeadm-password/" rel="alternate" type="text/html" title="密码管理" /><published>2022-09-27T00:00:00+08:00</published><updated>2022-09-27T00:00:00+08:00</updated><id>/kubernetes-kubeadm-password</id><content type="html" xml:base="/kubernetes-kubeadm-password/"><![CDATA[<p>密码管理的几种方式</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-28T10:34:01+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">密码管理</title><link href="/kubernetes-kubeadm-password/" rel="alternate" type="text/html" title="密码管理" /><published>2022-09-27T00:00:00+08:00</published><updated>2022-09-27T00:00:00+08:00</updated><id>/kubernetes-kubeadm-password</id><content type="html" xml:base="/kubernetes-kubeadm-password/"><![CDATA[<p>密码管理的几种方式</p>
 
 <h2 id="创建及删除secret">创建及删除secret</h2>
 
@@ -961,6 +961,7 @@ docker push registry.eeo-inc.com/omdev/osp-mysql-init:v01
     <span class="nt">-e</span> <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="nb">test</span> <span class="se">\</span>
     <span class="nt">-e</span> <span class="nv">MYSQL_TCP_PORT</span><span class="o">=</span>61106 <span class="se">\</span>
     <span class="nt">-e</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>zabbix <span class="se">\</span>
+    <span class="nt">-v</span> /var/lib/mysql:/var/lib/mysql <span class="se">\</span>
     <span class="nt">-d</span> registry.eeo-inc.com/omdev/osp-mysql-init:v01     <span class="se">\</span>
     <span class="nt">--character-set-server</span><span class="o">=</span>utf8     <span class="se">\</span>
     <span class="nt">--collation-server</span><span class="o">=</span>utf8_bin  <span class="se">\</span>

@@ -234,6 +234,7 @@ docker push registry.eeo-inc.com/omdev/osp-mysql-init:v01
     <span class="nt">-e</span> <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="nb">test</span> <span class="se">\</span>
     <span class="nt">-e</span> <span class="nv">MYSQL_TCP_PORT</span><span class="o">=</span>61106 <span class="se">\</span>
     <span class="nt">-e</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>zabbix <span class="se">\</span>
+    <span class="nt">-v</span> /var/lib/mysql:/var/lib/mysql <span class="se">\</span>
     <span class="nt">-d</span> registry.eeo-inc.com/omdev/osp-mysql-init:v01     <span class="se">\</span>
     <span class="nt">--character-set-server</span><span class="o">=</span>utf8     <span class="se">\</span>
     <span class="nt">--collation-server</span><span class="o">=</span>utf8_bin  <span class="se">\</span>
