@@ -196,4 +196,10 @@ var store = [{
         "tags": ["Kubernetes"],
         "url": "/kubernetes-kubeadm-password/",
         "teaser": null
+      },{
+        "title": "Deployment",
+        "excerpt":"deployment 创建及删除deployment 利用deployment提高pod的健壮性,deployment是一个控制器,保证环境中有一定数量的pod 通过yaml方式创建 不建议使用命令行创建,从1.8之后不了–image之外,不再支持其他选项 kubectl create deplyment 名字 –image=镜像 –dry-run=client -o yaml &gt; d1.yaml 创建目录 mkdir deploy cd deploy 创建命名空间 kubectl create ns nsdeploy kubens nsdeploy 生成文件 kubectl create deployment test1 --image=nginx --dry-run=client -o yaml &gt; d1.yaml apiVersion: apps/v1 kind: Deployment metadata: creationTimestamp: null labels: # deploy 标签,可以和后面的pod的标签不一直 app:...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-deployment/",
+        "teaser": null
       }]

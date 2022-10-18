@@ -1,4 +1,352 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-09-28T10:34:01+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">密码管理</title><link href="/kubernetes-kubeadm-password/" rel="alternate" type="text/html" title="密码管理" /><published>2022-09-27T00:00:00+08:00</published><updated>2022-09-27T00:00:00+08:00</updated><id>/kubernetes-kubeadm-password</id><content type="html" xml:base="/kubernetes-kubeadm-password/"><![CDATA[<p>密码管理的几种方式</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-18T10:16:41+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Deployment</title><link href="/kubernetes-kubeadm-deployment/" rel="alternate" type="text/html" title="Deployment" /><published>2022-10-18T00:00:00+08:00</published><updated>2022-10-18T00:00:00+08:00</updated><id>/kubernetes-kubeadm-deployment</id><content type="html" xml:base="/kubernetes-kubeadm-deployment/"><![CDATA[<p>deployment</p>
+
+<h2 id="创建及删除deployment">创建及删除deployment</h2>
+
+<p>利用deployment提高pod的健壮性,deployment是一个控制器,保证环境中有一定数量的pod</p>
+
+<h4 id="通过yaml方式创建">通过yaml方式创建</h4>
+
+<p>不建议使用命令行创建,从1.8之后不了–image之外,不再支持其他选项</p>
+
+<p>kubectl create deplyment 名字 –image=镜像 –dry-run=client -o yaml &gt; d1.yaml</p>
+
+<h4 id="创建目录">创建目录</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>deploy
+<span class="nb">cd </span>deploy
+</code></pre></div></div>
+
+<h4 id="创建命名空间">创建命名空间</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create ns nsdeploy
+kubens nsdeploy
+</code></pre></div></div>
+
+<h4 id="生成文件">生成文件</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create deployment test1 <span class="nt">--image</span><span class="o">=</span>nginx <span class="nt">--dry-run</span><span class="o">=</span>client <span class="nt">-o</span> yaml <span class="o">&gt;</span> d1.yaml
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+  <span class="na">labels</span><span class="pi">:</span>                             <span class="c1"># deploy 标签,可以和后面的pod的标签不一直</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">test1</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">test1</span>                         <span class="c1"># deployment 名字</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>                         <span class="c1"># 副本数量</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">test1</span>                      <span class="c1"># 两个APP的名字必须一致</span>
+  <span class="na">strategy</span><span class="pi">:</span> <span class="pi">{}</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>                         <span class="c1"># 至 resources 都是pod的设置</span>
+      <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">test1</span>                    <span class="c1"># 两个APP的名字必须一致</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">resources</span><span class="pi">:</span> <span class="pi">{}</span>
+<span class="na">status</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<h4 id="创建">创建</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl apply <span class="nt">-f</span> d1.yaml
+deployment.apps/test1 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get pods <span class="nt">-o</span> wide <span class="nt">--no-headers</span>
+test1-78747d7d6c-gpgwc   1/1   Running   0     2s    10.244.166.156   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-j4ttk   1/1   Running   0     2s    10.244.104.30    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-k7tcx   1/1   Running   0     2s    10.244.104.31    node2   &lt;none&gt;   &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="验证">验证</h4>
+
+<p>删除一个pod</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl delete pods test1-78747d7d6c-gpgwc
+pod <span class="s2">"test1-78747d7d6c-gpgwc"</span> deleted
+<span class="o">[</span>root@master deploy]# kubectl get pods <span class="nt">-o</span> wide <span class="nt">--no-headers</span>
+test1-78747d7d6c-htwnb   1/1   Running   0     14s   10.244.104.32   node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-j4ttk   1/1   Running   0     34s   10.244.104.30   node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-k7tcx   1/1   Running   0     34s   10.244.104.31   node2   &lt;none&gt;   &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="健壮测试">健壮测试</h4>
+
+<p>关闭一个pod</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@node2 ~]# poweroff 
+</code></pre></div></div>
+
+<p>故障的几分钟内master仍会等待pod恢复.若等几分钟还没恢复，会执行删除，删除完毕后.master会重新调度新的pod替代</p>
+
+<p>node2开机后被标记的pod会被删除</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get pods <span class="nt">-o</span> wide <span class="nt">--no-headers</span>
+test1-78747d7d6c-8fmxt   1/1   Running       0     60s     10.244.166.157   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-hnq47   1/1   Running       0     60s     10.244.166.158   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-htwnb   1/1   Terminating   0     8m11s   10.244.104.32    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-j4ttk   1/1   Terminating   0     8m31s   10.244.104.30    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-k7tcx   1/1   Terminating   0     8m31s   10.244.104.31    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-kqh9x   1/1   Running       0     60s     10.244.166.159   node1   &lt;none&gt;   &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="删除deployment的方法">删除deployment的方法</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete -f d1.yaml
+kubectl delete deploy 名字
+</code></pre></div></div>
+
+<h2 id="伸缩pod副本数">伸缩pod副本数</h2>
+
+<h4 id="通过命令行修改">通过命令行修改</h4>
+
+<p>kubectl scale deplyment 名称 –replicas=新的副本数量</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl scale deployment test1 <span class="nt">--replicas</span><span class="o">=</span>5
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl scale deployment test1 <span class="nt">--replicas</span><span class="o">=</span>5
+deployment.apps/test1 scaled
+<span class="o">[</span>root@master deploy]# kubectl get pods <span class="nt">-o</span> wide <span class="nt">--no-headers</span>
+test1-78747d7d6c-8fmxt   1/1   Running   0     4m28s   10.244.166.157   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-8lvwv   1/1   Running   0     3s      10.244.104.34    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-hnq47   1/1   Running   0     4m28s   10.244.166.158   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-kqh9x   1/1   Running   0     4m28s   10.244.166.159   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-z7ww4   1/1   Running   0     3s      10.244.104.33    node2   &lt;none&gt;   &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="编辑deployment的方式">编辑deployment的方式</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl edit deployments test1
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get pods <span class="nt">-o</span> wide <span class="nt">--no-headers</span>
+test1-78747d7d6c-8lvwv   1/1   Running   0     98s    10.244.104.34    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-kqh9x   1/1   Running   0     6m3s   10.244.166.159   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-z7ww4   1/1   Running   0     98s    10.244.104.33    node2   &lt;none&gt;   &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="修改yaml">修改yaml</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl apply <span class="nt">-f</span> d1.yaml
+deployment.apps/test1 configured
+<span class="o">[</span>root@master deploy]# kubectl get pods <span class="nt">-o</span> wide <span class="nt">--no-headers</span>
+test1-78747d7d6c-8lvwv   1/1   Running   0     2m3s    10.244.104.34    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-fdd4c   1/1   Running   0     3s      10.244.104.36    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-kqh9x   1/1   Running   0     6m28s   10.244.166.159   node1   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-wxk76   1/1   Running   0     3s      10.244.104.35    node2   &lt;none&gt;   &lt;none&gt;
+test1-78747d7d6c-z7ww4   1/1   Running   0     2m3s    10.244.104.33    node2   &lt;none&gt;   &lt;none&gt;
+</code></pre></div></div>
+
+<h2 id="更新及回滚容器所使用的镜像">更新及回滚容器所使用的镜像</h2>
+
+<p>水平自动更新HPA,可以根据CPU负载通知deployment,让其更新pod数目以减轻pod的负载</p>
+
+<p>kubectl autoscale deployment 名字 –min=M –max=N –cpu-percent=X</p>
+
+<p>最少运行M个Pod，确保CPU不超过X%, 否则就扩展pod的副本数量,最大扩展到N，cou默认是80</p>
+
+<h4 id="查看当前是否有hpa配置">查看当前是否有HPA配置</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get hpa
+No resources found <span class="k">in </span>nsdeploy namespace.
+</code></pre></div></div>
+
+<h4 id="创建hpa这是最多运行5个最少运行2个pod">创建hpa,这是最多运行5个,最少运行2个pod</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl autoscale deployment test1 <span class="nt">--min</span><span class="o">=</span>2 <span class="nt">--max</span><span class="o">=</span>5
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get hpa
+NAME    REFERENCE          TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+test1   Deployment/test1   &lt;unknown&gt;/80%   2         5         0          11s
+</code></pre></div></div>
+
+<h4 id="把副本数量设置为1">把副本数量设置为1</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl scale deployment test1 <span class="nt">--replicas</span><span class="o">=</span>1
+deployment.apps/test1 scaled
+</code></pre></div></div>
+
+<p>最用运行数量为2个</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get pods
+NAME                     READY   STATUS    RESTARTS   AGE
+test1-78747d7d6c-kqh9x   1/1     Running   0          13m
+test1-78747d7d6c-vm2kf   1/1     Running   0          10s
+</code></pre></div></div>
+
+<h4 id="删除-hpa">删除 hpa</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl scale deployment test1 <span class="nt">--replicas</span><span class="o">=</span>0
+deployment.apps/test1 scaled
+</code></pre></div></div>
+
+<h4 id="创建hpacpu不可以超过80">创建HPA，cpu不可以超过80</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl edit deployment test1
+deployment.apps/test1 edited
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+        <span class="na">resources</span><span class="pi">:</span> 
+          <span class="na">requests</span><span class="pi">:</span>
+            <span class="na">cpu</span><span class="pi">:</span>  <span class="s">400m</span>
+</code></pre></div></div>
+
+<h4 id="把deplyment的副本数量设置1">把deplyment的副本数量设置1</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl scale deployment test1 <span class="nt">--replicas</span><span class="o">=</span>1
+deployment.apps/test1 scaled
+</code></pre></div></div>
+
+<h2 id="回滚和升级">回滚和升级</h2>
+
+<h4 id="升级">升级</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get deployments <span class="nt">-o</span> wide
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES   SELECTOR
+test1   2/2     2            2           31m   nginx        nginx    <span class="nv">app</span><span class="o">=</span>test1
+</code></pre></div></div>
+
+<p>三种方法</p>
+
+<p>1、kubectl edit deploy</p>
+
+<p>2、修改deployment的yaml文件</p>
+
+<p>3、命令行修改</p>
+
+<h4 id="命令行语法">命令行语法</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl <span class="nb">set </span>image deploy 名字 容器名<span class="o">=</span>镜像 &lt; <span class="nt">--record</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p>record可选</p>
+
+<h4 id="把-test1的镜像更换为nginxlatest">把 test1的镜像更换为nginx:latest</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:latest
+deployment.apps/test1 image updated
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get deployment <span class="nt">-o</span> wide
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES         SELECTOR
+test1   2/2     2            2           35m   nginx        nginx:latest   <span class="nv">app</span><span class="o">=</span>test1
+</code></pre></div></div>
+
+<h4 id="换成179">换成1.7.9</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.7.9
+deployment.apps/test1 image updated
+<span class="o">[</span>root@master deploy]# kubectl get deployment <span class="nt">-o</span> wide
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES        SELECTOR
+test1   2/2     2            2           35m   nginx        nginx:1.7.9   <span class="nv">app</span><span class="o">=</span>test1
+</code></pre></div></div>
+
+<h4 id="查看变化过程">查看变化过程</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl rollout <span class="nb">history </span>deployment test1
+deployment.apps/test1 
+REVISION  CHANGE-CAUSE
+1         &lt;none&gt;
+2         &lt;none&gt;
+3         &lt;none&gt;
+4         &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="切换增加record">切换增加record</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.9 <span class="nt">--record</span>
+deployment.apps/test1 image updated
+<span class="o">[</span>root@master deploy]# kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.7.9 <span class="nt">--record</span>
+deployment.apps/test1 image updated
+<span class="o">[</span>root@master deploy]# kubectl rollout <span class="nb">history </span>deployment test1
+deployment.apps/test1 
+REVISION  CHANGE-CAUSE
+1         &lt;none&gt;
+2         &lt;none&gt;
+3         &lt;none&gt;
+5         kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.9 <span class="nt">--record</span><span class="o">=</span><span class="nb">true
+</span>6         kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.7.9 <span class="nt">--record</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+
+<h2 id="回滚">回滚</h2>
+
+<p>kubectl rollout undo deployment 名字</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl rollout undo deployment 名字 <span class="nt">--to-revision</span><span class="o">=</span>版本
+</code></pre></div></div>
+
+<p>版本指的是编号为5的变更记录</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl rollout undo deployment/test1 <span class="nt">--to-revision</span><span class="o">=</span>5
+deployment.apps/test1 rolled back
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl get deployments. <span class="nt">-o</span> wide
+NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES      SELECTOR
+test1   2/2     2            2           41m   nginx        nginx:1.9   <span class="nv">app</span><span class="o">=</span>test1
+</code></pre></div></div>
+
+<h2 id="滚动升级">滚动升级</h2>
+
+<p>两个参数:</p>
+
+<p>maxSurge:   用来指定最多一次创建几个pod,可以是百分比,也可以是具体数目</p>
+
+<p>maxUnavailable: 用来指定最多删除几个pid,可以是数字或者百分比</p>
+
+<h4 id="设置deployment">设置deployment</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl edit deployment test1
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="na">strategy</span><span class="pi">:</span>
+    <span class="na">rollingUpdate</span><span class="pi">:</span>
+      <span class="na">maxSurge</span><span class="pi">:</span> <span class="s">25%</span>
+      <span class="na">maxUnavailable</span><span class="pi">:</span> <span class="s">25%</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">RollingUpdate</span>
+</code></pre></div></div>
+
+<p>修改为1</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+</code></pre></div></div>
+
+<p>删一个，建一个</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master deploy]# kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.7.9 <span class="nt">--record</span>
+deployment.apps/test1 image updated
+<span class="o">[</span>root@master deploy]# kubectl get pods
+NAME                     READY   STATUS              RESTARTS   AGE
+test1-5545c6d5df-c4bbz   0/1     ContainerCreating   0          1s
+test1-5545c6d5df-mhs78   0/1     ContainerCreating   0          1s
+test1-5f75995b7b-drr4f   0/1     Terminating         0          11m
+test1-5f75995b7b-lt5xs   1/1     Running             0          11m
+<span class="o">[</span>root@master deploy]# kubectl get pods
+NAME                     READY   STATUS        RESTARTS   AGE
+test1-5545c6d5df-c4bbz   1/1     Running       0          5s
+test1-5545c6d5df-mhs78   1/1     Running       0          5s
+test1-5f75995b7b-drr4f   0/1     Terminating   0          11m
+test1-5f75995b7b-lt5xs   0/1     Terminating   0          11m
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[deployment]]></summary></entry><entry><title type="html">密码管理</title><link href="/kubernetes-kubeadm-password/" rel="alternate" type="text/html" title="密码管理" /><published>2022-09-27T00:00:00+08:00</published><updated>2022-09-27T00:00:00+08:00</updated><id>/kubernetes-kubeadm-password</id><content type="html" xml:base="/kubernetes-kubeadm-password/"><![CDATA[<p>密码管理的几种方式</p>
 
 <h2 id="创建及删除secret">创建及删除secret</h2>
 
@@ -4152,75 +4500,4 @@ clear ip bgp flap-statistics A.B.C.D m.m.m.m
 
 clear ip bgp A.B.C.D flap-statistics  
 <span class="c"># 清除来自邻居的所有路径的flap统计信息</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[BGP案例04 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)]]></summary></entry><entry><title type="html">php 配置fcgi 获取监控数据</title><link href="/monitor-php/" rel="alternate" type="text/html" title="php 配置fcgi 获取监控数据" /><published>2022-08-27T00:00:00+08:00</published><updated>2022-08-27T00:00:00+08:00</updated><id>/monitor-php</id><content type="html" xml:base="/monitor-php/"><![CDATA[<p>规避Nginx,通过fcgi接口取值</p>
-
-<h3 id="安装">安装</h3>
-
-<p>在 centos上可以通过下面的方式安装</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">--enablerepo</span><span class="o">=</span>epel <span class="nb">install </span>fcgi
-</code></pre></div></div>
-
-<p>FasdCGI在命令行访问需要通过配置环境变量,连接到一个FastCGI接口,需要有–bind和–conect参数:</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cgi-fcgi -bind -connect 127.0.0.1:端口
-</code></pre></div></div>
-
-<h3 id="配置">配置</h3>
-
-<p>php-fpm的conf 需要配置</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pm.status_path <span class="o">=</span> /status
-listen <span class="o">=</span> 61185
-listen.allowed_clients <span class="o">=</span> 127.0.0.1
-</code></pre></div></div>
-
-<h3 id="测试">测试</h3>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">SCRIPT_NAME</span><span class="o">=</span>/status <span class="nv">SCRIPT_FILENAME</span><span class="o">=</span>/status <span class="nv">REQUEST_METHOD</span><span class="o">=</span>GET <span class="nv">QUERY_STRING</span><span class="o">=</span>xml cgi-fcgi <span class="nt">-bind</span> <span class="nt">-connect</span> 127.0.0.1:61185
-Expires: Thu, 01 Jan 1970 00:00:00 GMT
-Cache-Control: no-cache, no-store, must-revalidate, max-age<span class="o">=</span>0
-Content-Type: text/xml
-
-&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> ?&gt;
-&lt;status&gt;
-&lt;pool&gt;www&lt;/pool&gt;
-&lt;process-manager&gt;dynamic&lt;/process-manager&gt;
-&lt;start-time&gt;1661607804&lt;/start-time&gt;
-&lt;start-since&gt;135&lt;/start-since&gt;
-&lt;accepted-conn&gt;21&lt;/accepted-conn&gt;
-&lt;listen-queue&gt;0&lt;/listen-queue&gt;
-&lt;max-listen-queue&gt;0&lt;/max-listen-queue&gt;
-&lt;listen-queue-len&gt;128&lt;/listen-queue-len&gt;
-&lt;idle-processes&gt;5&lt;/idle-processes&gt;
-&lt;active-processes&gt;1&lt;/active-processes&gt;
-&lt;total-processes&gt;6&lt;/total-processes&gt;
-&lt;max-active-processes&gt;1&lt;/max-active-processes&gt;
-&lt;max-children-reached&gt;0&lt;/max-children-reached&gt;
-&lt;slow-requests&gt;0&lt;/slow-requests&gt;
-&lt;/status&gt;
-</code></pre></div></div>
-
-<p>以上返回值表示正常获取到值,参数还可以支持 json,xml,html</p>
-
-<h3 id="参数说明">参数说明</h3>
-
-<ul>
-  <li>pool – 套接字的池的名称，在php-fpm 配置中定义</li>
-  <li>process manager: 进程管理器用来控制子进程数量的方法,可以通过pm来配置,有static, dynamic,ondemand</li>
-  <li>start time: 服务启动时间相对应的日期,reload后会更新</li>
-  <li>start since: 服务运行时长</li>
-  <li>accepted conn: 连接池已接受的传入请求数,当一个连接被接受时，它会从监听队列中移除(实时显示)</li>
-  <li>listen queue: 当前已启动但尚未接受的连接数。如果此值非零，则通常意味着所有可用的服务器进程当前都处于忙碌状态，并且没有可用于服务下一个请求的进程.通过pm.max_children调整</li>
-  <li>max listen queue: 服务启动后listen queue 的最大值</li>
-  <li>listen queue len: 排队的连接数的上限,通过listen.backlog 配置,这个值也会受到 net.core.somaxconn 的限制</li>
-  <li>idle processes: 处于“等待处理”状态的进程数量。当pm的值为dynamic的时候,这个值会在 pm.min_spare_servers 和 pm.max_spare_servers 值之间</li>
-  <li>active processes: 活跃进程数量,最小值为1</li>
-  <li>total processes: 空闲进程+活动进程的和。如果pm的值为static 的，这个数字显示 pm.max_children 的值</li>
-  <li>max active processes: php-fpm 服务启动后，<em>active processes</em> 的历史最高值。不会超过 pm.max_children</li>
-  <li>max children reached: php-fpm 服务器启动后, 到达pm.max_children 的次数,只有pm为 dynamic才有效</li>
-</ul>
-
-<h3 id="排错">排错</h3>
-
-<p>如果上面的命令返回空,将listen.allowed_clients的127.0.0.1放在第一位</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[规避Nginx,通过fcgi接口取值]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[BGP案例04 (参考https://www.cisco.com/c/en/us/support/docs/ip/border-gateway-protocol-bgp/26634-bgp-toc.html#neighborsroutemaps)]]></summary></entry></feed>
