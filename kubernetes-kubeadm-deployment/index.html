@@ -187,14 +187,14 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#创建及删除deployment">创建及删除deployment</a><ul><li><a href="#通过yaml方式创建">通过yaml方式创建</a></li><li><a href="#创建目录">创建目录</a></li><li><a href="#创建命名空间">创建命名空间</a></li><li><a href="#生成文件">生成文件</a></li><li><a href="#创建">创建</a></li><li><a href="#验证">验证</a></li><li><a href="#健壮测试">健壮测试</a></li><li><a href="#删除deployment的方法">删除deployment的方法</a></li></ul></li></ul></li><li><a href="#伸缩pod副本数">伸缩pod副本数</a><ul><li><a href="#通过命令行修改">通过命令行修改</a></li><li><a href="#编辑deployment的方式">编辑deployment的方式</a></li><li><a href="#修改yaml">修改yaml</a></li></ul></li></ul></li><li><a href="#更新及回滚容器所使用的镜像">更新及回滚容器所使用的镜像</a><ul><li><a href="#查看当前是否有hpa配置">查看当前是否有HPA配置</a></li><li><a href="#创建hpa这是最多运行5个最少运行2个pod">创建hpa,这是最多运行5个,最少运行2个pod</a></li><li><a href="#把副本数量设置为1">把副本数量设置为1</a></li><li><a href="#删除-hpa">删除 hpa</a></li><li><a href="#创建hpacpu不可以超过80">创建HPA，cpu不可以超过80</a></li><li><a href="#把deplyment的副本数量设置1">把deplyment的副本数量设置1</a></li></ul></li></ul></li><li><a href="#回滚和升级">回滚和升级</a><ul><li><a href="#升级">升级</a></li><li><a href="#命令行语法">命令行语法</a></li><li><a href="#把-test1的镜像更换为nginxlatest">把 test1的镜像更换为nginx:latest</a></li><li><a href="#换成179">换成1.7.9</a></li><li><a href="#查看变化过程">查看变化过程</a></li><li><a href="#切换增加record">切换增加record</a></li></ul></li></ul></li><li><a href="#回滚">回滚</a></li><li><a href="#滚动升级">滚动升级</a><ul><li><a href="#设置deployment">设置deployment</a></li></ul></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#创建及删除deployment">创建及删除deployment</a><ul><li><a href="#通过yaml方式创建">通过yaml方式创建</a></li><li><a href="#创建目录">创建目录</a></li><li><a href="#创建命名空间">创建命名空间</a></li><li><a href="#生成文件">生成文件</a></li><li><a href="#创建">创建</a></li><li><a href="#验证">验证</a></li><li><a href="#健壮测试">健壮测试</a></li><li><a href="#删除deployment的方法">删除deployment的方法</a></li></ul></li><li><a href="#伸缩pod副本数">伸缩pod副本数</a><ul><li><a href="#通过命令行修改">通过命令行修改</a></li><li><a href="#编辑deployment的方式">编辑deployment的方式</a></li><li><a href="#修改yaml">修改yaml</a></li></ul></li><li><a href="#更新及回滚容器所使用的镜像">更新及回滚容器所使用的镜像</a><ul><li><a href="#查看当前是否有hpa配置">查看当前是否有HPA配置</a></li><li><a href="#创建hpa这是最多运行5个最少运行2个pod">创建hpa,这是最多运行5个,最少运行2个pod</a></li><li><a href="#把副本数量设置为1">把副本数量设置为1</a></li><li><a href="#删除-hpa">删除 hpa</a></li><li><a href="#创建hpacpu不可以超过80">创建HPA，cpu不可以超过80</a></li><li><a href="#把deplyment的副本数量设置1">把deplyment的副本数量设置1</a></li></ul></li><li><a href="#回滚和升级">回滚和升级</a><ul><li><a href="#升级">升级</a></li><li><a href="#命令行语法">命令行语法</a></li><li><a href="#把-test1的镜像更换为nginxlatest">把 test1的镜像更换为nginx:latest</a></li><li><a href="#换成179">换成1.7.9</a></li><li><a href="#查看变化过程">查看变化过程</a></li><li><a href="#切换增加record">切换增加record</a></li></ul></li><li><a href="#回滚">回滚</a></li><li><a href="#滚动升级">滚动升级</a><ul><li><a href="#设置deployment">设置deployment</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
         <p>deployment</p>
 
-<h2 id="创建及删除deployment">创建及删除deployment</h2>
+<h3 id="创建及删除deployment">创建及删除deployment</h3>
 
 <p>利用deployment提高pod的健壮性,deployment是一个控制器,保证环境中有一定数量的pod</p>
 
@@ -298,7 +298,7 @@ test1-78747d7d6c-kqh9x   1/1   Running       0     60s     10.244.166.159   node
 kubectl delete deploy 名字
 </code></pre></div></div>
 
-<h2 id="伸缩pod副本数">伸缩pod副本数</h2>
+<h3 id="伸缩pod副本数">伸缩pod副本数</h3>
 
 <h4 id="通过命令行修改">通过命令行修改</h4>
 
@@ -340,7 +340,7 @@ test1-78747d7d6c-wxk76   1/1   Running   0     3s      10.244.104.35    node2   
 test1-78747d7d6c-z7ww4   1/1   Running   0     2m3s    10.244.104.33    node2   &lt;none&gt;   &lt;none&gt;
 </code></pre></div></div>
 
-<h2 id="更新及回滚容器所使用的镜像">更新及回滚容器所使用的镜像</h2>
+<h3 id="更新及回滚容器所使用的镜像">更新及回滚容器所使用的镜像</h3>
 
 <p>水平自动更新HPA,可以根据CPU负载通知deployment,让其更新pod数目以减轻pod的负载</p>
 
@@ -406,7 +406,7 @@ deployment.apps/test1 edited
 deployment.apps/test1 scaled
 </code></pre></div></div>
 
-<h2 id="回滚和升级">回滚和升级</h2>
+<h3 id="回滚和升级">回滚和升级</h3>
 
 <h4 id="升级">升级</h4>
 
@@ -477,7 +477,7 @@ REVISION  CHANGE-CAUSE
 </span>6         kubectl <span class="nb">set </span>image deploy test1 <span class="nv">nginx</span><span class="o">=</span>nginx:1.7.9 <span class="nt">--record</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div></div>
 
-<h2 id="回滚">回滚</h2>
+<h3 id="回滚">回滚</h3>
 
 <p>kubectl rollout undo deployment 名字</p>
 
@@ -495,7 +495,7 @@ NAME    READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS   IMAGES      SELECTOR
 test1   2/2     2            2           41m   nginx        nginx:1.9   <span class="nv">app</span><span class="o">=</span>test1
 </code></pre></div></div>
 
-<h2 id="滚动升级">滚动升级</h2>
+<h3 id="滚动升级">滚动升级</h3>
 
 <p>两个参数:</p>
 
