@@ -202,4 +202,10 @@ var store = [{
         "tags": ["Kubernetes"],
         "url": "/kubernetes-kubeadm-deployment/",
         "teaser": null
+      },{
+        "title": "TCP状态采集",
+        "excerpt":"获取TCP状态值 代码 package eeoss import ( \"encoding/json\" \"fmt\" \"syscall\" \"zabbix.com/pkg/plugin\" \"github.com/vishvananda/netlink/nl\" ) // Plugin - type Plugin struct { plugin.Base } var impl Plugin func (p *Plugin) Export(key string, params []string, ctx plugin.ContextProvider) (result interface{}, err error) { switch key { case \"tcp.count\": return tcpmMain() default: return nil, plugin.UnsupportedMetricError }...","categories": [],
+        "tags": ["Monitor"],
+        "url": "/monitor-tcp-state/",
+        "teaser": null
       }]
