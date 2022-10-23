@@ -204,7 +204,7 @@ var store = [{
         "teaser": null
       },{
         "title": " 解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案",
-        "excerpt":"获取TCP状态值 故障现象 分析 perf stat -d ./zabbix_agent2 -t net.tcp.socket.count[,,,,established] net.tcp.socket.count[,,,,established] [s|3208] Performance counter stats for './zabbix_agent2 -t net.tcp.socket.count[,,,,established]': 1,389.13 msec task-clock # 0.598 CPUs utilized 2,602 context-switches # 0.002 M/sec 5 cpu-migrations # 0.004 K/sec 2,576 page-faults # 0.002 M/sec &lt;not supported&gt; cycles &lt;not supported&gt; instructions &lt;not supported&gt; branches &lt;not...","categories": [],
+        "excerpt":"修复zabbix CPU占用高的bug 故障现象 分析 perf stat -d ./zabbix_agent2 -t net.tcp.socket.count[,,,,established] net.tcp.socket.count[,,,,established] [s|3208] Performance counter stats for './zabbix_agent2 -t net.tcp.socket.count[,,,,established]': 1,389.13 msec task-clock # 0.598 CPUs utilized 2,602 context-switches # 0.002 M/sec 5 cpu-migrations # 0.004 K/sec 2,576 page-faults # 0.002 M/sec &lt;not supported&gt; cycles &lt;not supported&gt; instructions &lt;not supported&gt; branches...","categories": [],
         "tags": ["Monitor"],
         "url": "/monitor-tcp-state/",
         "teaser": null
