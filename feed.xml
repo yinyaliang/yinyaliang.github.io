@@ -1,4 +1,297 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-23T19:25:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案</title><link href="/monitor-tcp-state/" rel="alternate" type="text/html" title="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案" /><published>2022-10-21T00:00:00+08:00</published><updated>2022-10-21T00:00:00+08:00</updated><id>/monitor-tcp-state</id><content type="html" xml:base="/monitor-tcp-state/"><![CDATA[<p>修复zabbix CPU占用高的bug</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-23T19:28:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Daemonset</title><link href="/kubernetes-kubeadm-daemonset/" rel="alternate" type="text/html" title="Daemonset" /><published>2022-10-23T00:00:00+08:00</published><updated>2022-10-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-daemonset</id><content type="html" xml:base="/kubernetes-kubeadm-daemonset/"><![CDATA[<p>daemonset</p>
+
+<h2 id="创建及删除daemonset">创建及删除daemonset</h2>
+
+<ul>
+  <li>daemonset会在所有的节点上创建一个pod,有几个节点就创建几个pod,每个节点只有一个</li>
+  <li>一般用于监控、日志等，每个节点上运行一个pod</li>
+  <li>master上不会产生Pod,因为master上有污点</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl describe nodes master | <span class="nb">grep</span> ^Taints
+Taints:             node-role.kubernetes.io/master:NoSchedule
+</code></pre></div></div>
+
+<h4 id="查看">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl get ds
+No resources found <span class="k">in </span>nsdeploy namespace.
+</code></pre></div></div>
+
+<h4 id="创建及删除ds">创建及删除ds</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>ds
+<span class="nb">cd </span>ds/
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl create ns nsds
+namespace/nsds created
+<span class="o">[</span>root@master ds]# kubens nsds
+Context <span class="s2">"kubernetes-admin@kubernetes"</span> modified.
+Active namespace is <span class="s2">"nsds"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<p>daemonset和deployment的yaml只有四点不同,</p>
+
+<ul>
+  <li>把kind改成Daemonset</li>
+  <li>deployment有副本数,daemonset没有副本数</li>
+  <li>删除.spec下的strategy:{}</li>
+  <li>删除最后一行的status:{}</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">DaemonSet</span>
+<span class="na">metadata</span><span class="pi">:</span>  
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">ds1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span>  <span class="s">busybox</span>
+        <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">sh"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">sleep</span><span class="nv"> </span><span class="s">36000"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> ds1.yaml 
+daemonset.apps/ds1 created
+</code></pre></div></div>
+
+<h4 id="查看pod的运行">查看pod的运行</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods <span class="nt">-o</span> wide
+NAME        READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+ds1-2b2cq   1/1     Running   0          27s   10.244.104.48    node2   &lt;none&gt;           &lt;none&gt;
+ds1-b2rgv   1/1     Running   0          27s   10.244.166.169   node1   &lt;none&gt;           &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="删除daemonset">删除daemonset</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl delete ds ds1
+daemonset.apps <span class="s2">"ds1"</span> deleted
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get ds
+No resources found <span class="k">in </span>nsds namespace.
+</code></pre></div></div>
+
+<h2 id="指定pod运行在特定的节点">指定pod运行在特定的节点</h2>
+
+<p>可以通过标签的方式制定daemonset的pod在指定的节点上运行</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">DaemonSet</span>
+<span class="na">metadata</span><span class="pi">:</span>  
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">ds1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">nodeSelector</span><span class="pi">:</span>
+        <span class="na">diskxx</span><span class="pi">:</span>  <span class="s">ssdxx</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span>  <span class="s">busybox</span>
+        <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">sh"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">sleep</span><span class="nv"> </span><span class="s">36000"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<p>这里通过nodeSelector来指定pod运行在含有标签diskxx==ssdxx的节点上</p>
+
+<h2 id="其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</h2>
+
+<p>rc和deployment的作用一样，使用方法也一样</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc
+No resources found <span class="k">in </span>nsds namespace.
+</code></pre></div></div>
+
+<h4 id="创建rc所需要的yaml文件">创建rc所需要的yaml文件</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">ReplicationController</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">myrc</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span>  <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span>  <span class="s">nginx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span>  <span class="m">80</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> rc1.yaml 
+replicationcontroller/myrc created
+</code></pre></div></div>
+
+<h4 id="查看-1">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc
+NAME   DESIRED   CURRENT   READY   AGE
+myrc   3         3         3       30s
+<span class="o">[</span>root@master ds]# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+myrc-cqj4m   1/1     Running   0          38s
+myrc-hdjz8   1/1     Running   0          38s
+myrc-s77mw   1/1     Running   0          38s
+</code></pre></div></div>
+
+<h4 id="扩展">扩展</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl scale rc myrc <span class="nt">--replicas</span><span class="o">=</span>5
+replicationcontroller/myrc scaled
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+myrc-bzphd   1/1     Running   0          11s
+myrc-cqj4m   1/1     Running   0          94s
+myrc-hdjz8   1/1     Running   0          94s
+myrc-kn5zc   1/1     Running   0          11s
+myrc-s77mw   1/1     Running   0          94s
+</code></pre></div></div>
+
+<h4 id="更新">更新</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc <span class="nt">-o</span> wide
+NAME   DESIRED   CURRENT   READY   AGE    CONTAINERS   IMAGES   SELECTOR
+myrc   5         5         5       2m6s   nginx        nginx    <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl <span class="nb">set </span>image rc myrc <span class="nv">nginx</span><span class="o">=</span>nginx:1.9
+replicationcontroller/myrc image updated
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc <span class="nt">-o</span> wide
+NAME   DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES      SELECTOR
+myrc   5         5         5       2m42s   nginx        nginx:1.9   <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<h4 id="删除">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete rc myrc
+</code></pre></div></div>
+
+<h2 id="其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</h2>
+
+<p>和deployment作用一样</p>
+
+<h4 id="查看-2">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rs
+No resources found <span class="k">in </span>nsds namespace.
+</code></pre></div></div>
+
+<h4 id="创建">创建</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">ReplicaSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">myrs</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span>  <span class="s">rs1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span>  <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span>  <span class="s">rsx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">rsx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">web</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> rs1.yaml 
+replicaset.apps/myrs created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+myrs-mc2j6   1/1     Running   0          23s
+myrs-rbg92   1/1     Running   0          23s
+myrs-zx9db   1/1     Running   0          23s
+</code></pre></div></div>
+
+<h4 id="扩展-1">扩展</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl scale rs myrs <span class="nt">--replicas</span><span class="o">=</span>5
+replicaset.apps/myrs scaled
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods <span class="nt">-o</span> wide
+NAME         READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+myrs-htmgf   1/1     Running   0          14s   10.244.166.178   node1   &lt;none&gt;           &lt;none&gt;
+myrs-mc2j6   1/1     Running   0          84s   10.244.166.176   node1   &lt;none&gt;           &lt;none&gt;
+myrs-rbg92   1/1     Running   0          84s   10.244.166.177   node1   &lt;none&gt;           &lt;none&gt;
+myrs-skxft   1/1     Running   0          14s   10.244.166.179   node1   &lt;none&gt;           &lt;none&gt;
+myrs-zx9db   1/1     Running   0          84s   10.244.166.175   node1   &lt;none&gt;           &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="删除-1">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl delete rs myrs
+replicaset.apps <span class="s2">"myrs"</span> deleted
+</code></pre></div></div>
+
+<h4 id="对比">对比</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>api</th>
+      <th>select</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>deploment</td>
+      <td>apps/v1</td>
+      <td>selector<br />matchLabels</td>
+    </tr>
+    <tr>
+      <td>daemonset</td>
+      <td>apps/v1</td>
+      <td>selector<br />matchLaels</td>
+    </tr>
+    <tr>
+      <td>ReplicationController</td>
+      <td>v1</td>
+      <td>selector</td>
+    </tr>
+    <tr>
+      <td>ReplicaSet</td>
+      <td>apps/v1</td>
+      <td>selector<br />matchLabels</td>
+    </tr>
+  </tbody>
+</table>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[daemonset]]></summary></entry><entry><title type="html">解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案</title><link href="/monitor-tcp-state/" rel="alternate" type="text/html" title="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案" /><published>2022-10-21T00:00:00+08:00</published><updated>2022-10-21T00:00:00+08:00</updated><id>/monitor-tcp-state</id><content type="html" xml:base="/monitor-tcp-state/"><![CDATA[<p>修复zabbix CPU占用高的bug</p>
 
 <h4 id="故障现象">故障现象</h4>
 
@@ -4082,73 +4375,4 @@ crypto ipsec profile MYPROFILE
 <span class="nb">set </span>transform-set MYSET
 int tunnel 0
 tunnel protection ipsec profile MYPROFILE
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[IPSEC, GRE OVER IPSEC, IP SEC REMOTEACCESS, DMVPN 配置]]></summary></entry><entry><title type="html">bcc c 环境部署</title><link href="/bcc-01/" rel="alternate" type="text/html" title="bcc c 环境部署" /><published>2022-08-29T00:00:00+08:00</published><updated>2022-08-29T00:00:00+08:00</updated><id>/bcc-01</id><content type="html" xml:base="/bcc-01/"><![CDATA[<h4 id="下载kernel">下载kernel</h4>
-
-<p>查看系统版本</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-root@yinyaliang-virtual-machine:/usr/src# uname -r
-
-5.8.0-43-generic
-
-</code></pre></div></div>
-
-<p>下载对应版本</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>http://ftp.sjtu.edu.cn/sites/ftp.kernel.org/pub/linux/kernel/v5.x/
-
-</code></pre></div></div>
-
-<p>解压放在/usr/src目录下</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@yinyaliang-virtual-machine:/usr/src# ll
-
-total 176612
-
-drwxr-xr-x  5 root       root            4096 7月   8 20:06 ./
-
-drwxr-xr-x 14 root       root            4096 2月  10 02:48 ../
-
-drwxrwxr-x 24 root       root            4096 8月   3  2020 linux-5.8/
-
--rwxrw-rw-  1 yinyaliang yinyaliang 180827693 7月   1 20:07 linux-5.8.tar.gz*
-
-drwxr-xr-x  7 root       root            4096 2月  10 02:50 linux-headers-5.8.0-43-generic/
-
-drwxr-xr-x 24 root       root            4096 2月  10 02:50 linux-hwe-5.8-headers-5.8.0-43/
-</code></pre></div></div>
-
-<h4 id="安装依赖">安装依赖</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt install libncurses5-dev flex bison libelf-dev binutils-dev libssl-dev 
-
-</code></pre></div></div>
-
-<h4 id="安装clang和llvm">安装clang和llvm</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt install clang llvm
-
-</code></pre></div></div>
-
-<h4 id="配置内核">配置内核</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /usr/src/linux-5.8 &amp;&amp; make defconfig
-
-</code></pre></div></div>
-
-<h4 id="解决modpost-not-found-错误">解决modpost: not found 错误</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make modules_prepare 或者  make scripts
-
-</code></pre></div></div>
-
-<h4 id="关联内核头文件">关联内核头文件</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make headers_install
-
-</code></pre></div></div>
-
-<h4 id="编译内核bpf程序样例">编译内核BPF程序样例</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make M=samples/bpf/
-
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="BCC" /><summary type="html"><![CDATA[下载kernel]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[IPSEC, GRE OVER IPSEC, IP SEC REMOTEACCESS, DMVPN 配置]]></summary></entry></feed>

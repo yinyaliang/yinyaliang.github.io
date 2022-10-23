@@ -208,4 +208,10 @@ var store = [{
         "tags": ["Monitor"],
         "url": "/monitor-tcp-state/",
         "teaser": null
+      },{
+        "title": "Daemonset",
+        "excerpt":"daemonset 创建及删除daemonset daemonset会在所有的节点上创建一个pod,有几个节点就创建几个pod,每个节点只有一个 一般用于监控、日志等，每个节点上运行一个pod master上不会产生Pod,因为master上有污点 [root@master ~]# kubectl describe nodes master | grep ^Taints Taints: node-role.kubernetes.io/master:NoSchedule 查看 [root@master ~]# kubectl get ds No resources found in nsdeploy namespace. 创建及删除ds mkdir ds cd ds/ [root@master ds]# kubectl create ns nsds namespace/nsds created [root@master ds]# kubens nsds Context \"kubernetes-admin@kubernetes\" modified. Active namespace...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-daemonset/",
+        "teaser": null
       }]

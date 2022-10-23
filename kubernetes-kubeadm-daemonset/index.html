@@ -1,0 +1,609 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Daemonset - 尹亚亮</title>
+<meta name="description" content="daemonset">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="Daemonset">
+<meta property="og:url" content="/kubernetes-kubeadm-daemonset/">
+
+
+  <meta property="og:description" content="daemonset">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-10-23T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/kubernetes-kubeadm-daemonset/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Daemonset">
+    <meta itemprop="description" content="daemonset">
+    <meta itemprop="datePublished" content="2022-10-23T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/kubernetes-kubeadm-daemonset/" class="u-url" itemprop="url">Daemonset
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-10-23T00:00:00+08:00">October 23, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#创建及删除daemonset">创建及删除daemonset</a><ul><li><a href="#查看">查看</a></li><li><a href="#创建及删除ds">创建及删除ds</a></li><li><a href="#查看pod的运行">查看pod的运行</a></li><li><a href="#删除daemonset">删除daemonset</a></li></ul></li></ul></li><li><a href="#指定pod运行在特定的节点">指定pod运行在特定的节点</a></li><li><a href="#其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</a><ul><li><a href="#创建rc所需要的yaml文件">创建rc所需要的yaml文件</a></li><li><a href="#查看-1">查看</a></li><li><a href="#扩展">扩展</a></li><li><a href="#更新">更新</a></li><li><a href="#删除">删除</a></li></ul></li></ul></li><li><a href="#其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</a><ul><li><a href="#查看-2">查看</a></li><li><a href="#创建">创建</a></li><li><a href="#扩展-1">扩展</a></li><li><a href="#删除-1">删除</a></li><li><a href="#对比">对比</a></li></ul></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>daemonset</p>
+
+<h2 id="创建及删除daemonset">创建及删除daemonset</h2>
+
+<ul>
+  <li>daemonset会在所有的节点上创建一个pod,有几个节点就创建几个pod,每个节点只有一个</li>
+  <li>一般用于监控、日志等，每个节点上运行一个pod</li>
+  <li>master上不会产生Pod,因为master上有污点</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl describe nodes master | <span class="nb">grep</span> ^Taints
+Taints:             node-role.kubernetes.io/master:NoSchedule
+</code></pre></div></div>
+
+<h4 id="查看">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl get ds
+No resources found <span class="k">in </span>nsdeploy namespace.
+</code></pre></div></div>
+
+<h4 id="创建及删除ds">创建及删除ds</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>ds
+<span class="nb">cd </span>ds/
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl create ns nsds
+namespace/nsds created
+<span class="o">[</span>root@master ds]# kubens nsds
+Context <span class="s2">"kubernetes-admin@kubernetes"</span> modified.
+Active namespace is <span class="s2">"nsds"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<p>daemonset和deployment的yaml只有四点不同,</p>
+
+<ul>
+  <li>把kind改成Daemonset</li>
+  <li>deployment有副本数,daemonset没有副本数</li>
+  <li>删除.spec下的strategy:{}</li>
+  <li>删除最后一行的status:{}</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">DaemonSet</span>
+<span class="na">metadata</span><span class="pi">:</span>  
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">ds1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span>  <span class="s">busybox</span>
+        <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">sh"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">sleep</span><span class="nv"> </span><span class="s">36000"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> ds1.yaml 
+daemonset.apps/ds1 created
+</code></pre></div></div>
+
+<h4 id="查看pod的运行">查看pod的运行</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods <span class="nt">-o</span> wide
+NAME        READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+ds1-2b2cq   1/1     Running   0          27s   10.244.104.48    node2   &lt;none&gt;           &lt;none&gt;
+ds1-b2rgv   1/1     Running   0          27s   10.244.166.169   node1   &lt;none&gt;           &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="删除daemonset">删除daemonset</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl delete ds ds1
+daemonset.apps <span class="s2">"ds1"</span> deleted
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get ds
+No resources found <span class="k">in </span>nsds namespace.
+</code></pre></div></div>
+
+<h2 id="指定pod运行在特定的节点">指定pod运行在特定的节点</h2>
+
+<p>可以通过标签的方式制定daemonset的pod在指定的节点上运行</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">DaemonSet</span>
+<span class="na">metadata</span><span class="pi">:</span>  
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">ds1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">nodeSelector</span><span class="pi">:</span>
+        <span class="na">diskxx</span><span class="pi">:</span>  <span class="s">ssdxx</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span>  <span class="s">busybox</span>
+        <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">sh"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">sleep</span><span class="nv"> </span><span class="s">36000"</span><span class="pi">]</span>
+</code></pre></div></div>
+
+<p>这里通过nodeSelector来指定pod运行在含有标签diskxx==ssdxx的节点上</p>
+
+<h2 id="其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</h2>
+
+<p>rc和deployment的作用一样，使用方法也一样</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc
+No resources found <span class="k">in </span>nsds namespace.
+</code></pre></div></div>
+
+<h4 id="创建rc所需要的yaml文件">创建rc所需要的yaml文件</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">ReplicationController</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">myrc</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span>  <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span>  <span class="s">nginx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">nginx</span>
+        <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">ports</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span>  <span class="m">80</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> rc1.yaml 
+replicationcontroller/myrc created
+</code></pre></div></div>
+
+<h4 id="查看-1">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc
+NAME   DESIRED   CURRENT   READY   AGE
+myrc   3         3         3       30s
+<span class="o">[</span>root@master ds]# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+myrc-cqj4m   1/1     Running   0          38s
+myrc-hdjz8   1/1     Running   0          38s
+myrc-s77mw   1/1     Running   0          38s
+</code></pre></div></div>
+
+<h4 id="扩展">扩展</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl scale rc myrc <span class="nt">--replicas</span><span class="o">=</span>5
+replicationcontroller/myrc scaled
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+myrc-bzphd   1/1     Running   0          11s
+myrc-cqj4m   1/1     Running   0          94s
+myrc-hdjz8   1/1     Running   0          94s
+myrc-kn5zc   1/1     Running   0          11s
+myrc-s77mw   1/1     Running   0          94s
+</code></pre></div></div>
+
+<h4 id="更新">更新</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc <span class="nt">-o</span> wide
+NAME   DESIRED   CURRENT   READY   AGE    CONTAINERS   IMAGES   SELECTOR
+myrc   5         5         5       2m6s   nginx        nginx    <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl <span class="nb">set </span>image rc myrc <span class="nv">nginx</span><span class="o">=</span>nginx:1.9
+replicationcontroller/myrc image updated
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc <span class="nt">-o</span> wide
+NAME   DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES      SELECTOR
+myrc   5         5         5       2m42s   nginx        nginx:1.9   <span class="nv">app</span><span class="o">=</span>nginx
+</code></pre></div></div>
+
+<h4 id="删除">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete rc myrc
+</code></pre></div></div>
+
+<h2 id="其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</h2>
+
+<p>和deployment作用一样</p>
+
+<h4 id="查看-2">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rs
+No resources found <span class="k">in </span>nsds namespace.
+</code></pre></div></div>
+
+<h4 id="创建">创建</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">ReplicaSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">myrs</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span>  <span class="s">rs1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span>  <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span>  <span class="s">rsx</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span>  <span class="s">rsx</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">web</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+        <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> rs1.yaml 
+replicaset.apps/myrs created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods
+NAME         READY   STATUS    RESTARTS   AGE
+myrs-mc2j6   1/1     Running   0          23s
+myrs-rbg92   1/1     Running   0          23s
+myrs-zx9db   1/1     Running   0          23s
+</code></pre></div></div>
+
+<h4 id="扩展-1">扩展</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl scale rs myrs <span class="nt">--replicas</span><span class="o">=</span>5
+replicaset.apps/myrs scaled
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods <span class="nt">-o</span> wide
+NAME         READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
+myrs-htmgf   1/1     Running   0          14s   10.244.166.178   node1   &lt;none&gt;           &lt;none&gt;
+myrs-mc2j6   1/1     Running   0          84s   10.244.166.176   node1   &lt;none&gt;           &lt;none&gt;
+myrs-rbg92   1/1     Running   0          84s   10.244.166.177   node1   &lt;none&gt;           &lt;none&gt;
+myrs-skxft   1/1     Running   0          14s   10.244.166.179   node1   &lt;none&gt;           &lt;none&gt;
+myrs-zx9db   1/1     Running   0          84s   10.244.166.175   node1   &lt;none&gt;           &lt;none&gt;
+</code></pre></div></div>
+
+<h4 id="删除-1">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl delete rs myrs
+replicaset.apps <span class="s2">"myrs"</span> deleted
+</code></pre></div></div>
+
+<h4 id="对比">对比</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>api</th>
+      <th>select</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>deploment</td>
+      <td>apps/v1</td>
+      <td>selector<br />matchLabels</td>
+    </tr>
+    <tr>
+      <td>daemonset</td>
+      <td>apps/v1</td>
+      <td>selector<br />matchLaels</td>
+    </tr>
+    <tr>
+      <td>ReplicationController</td>
+      <td>v1</td>
+      <td>selector</td>
+    </tr>
+    <tr>
+      <td>ReplicaSet</td>
+      <td>apps/v1</td>
+      <td>selector<br />matchLabels</td>
+    </tr>
+  </tbody>
+</table>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#kubernetes" class="page__taxonomy-item p-category" rel="tag">Kubernetes</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-10-23T00:00:00+08:00">October 23, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Daemonset%20%2Fkubernetes-kubeadm-daemonset%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fkubernetes-kubeadm-daemonset%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fkubernetes-kubeadm-daemonset%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/monitor-tcp-state/" class="pagination--pager" title="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>
