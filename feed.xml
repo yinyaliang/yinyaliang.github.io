@@ -1,6 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-21T17:57:46+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">TCP状态采集</title><link href="/monitor-tcp-state/" rel="alternate" type="text/html" title="TCP状态采集" /><published>2022-10-21T00:00:00+08:00</published><updated>2022-10-21T00:00:00+08:00</updated><id>/monitor-tcp-state</id><content type="html" xml:base="/monitor-tcp-state/"><![CDATA[<p>获取TCP状态值</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-23T19:22:04+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案</title><link href="/monitor-tcp-state/" rel="alternate" type="text/html" title="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案" /><published>2022-10-21T00:00:00+08:00</published><updated>2022-10-21T00:00:00+08:00</updated><id>/monitor-tcp-state</id><content type="html" xml:base="/monitor-tcp-state/"><![CDATA[<p>获取TCP状态值</p>
 
-<h4 id="代码">代码</h4>
+<h4 id="故障现象">故障现象</h4>
+
+<p><img src="/assets/images/zabbix/01.png" /></p>
+
+<h4 id="分析">分析</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>perf <span class="nb">stat</span> <span class="nt">-d</span> ./zabbix_agent2 <span class="nt">-t</span> net.tcp.socket.count[,,,,established]
+net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Performance counter stats <span class="k">for</span> <span class="s1">'./zabbix_agent2 -t net.tcp.socket.count[,,,,established]'</span>:          1,389.13 msec task-clock                <span class="c">#    0.598 CPUs utilized          </span>
+             2,602      context-switches          <span class="c">#    0.002 M/sec                  </span>
+                 5      cpu-migrations            <span class="c">#    0.004 K/sec                  </span>
+             2,576      page-faults               <span class="c">#    0.002 M/sec                  </span>
+   &lt;not supported&gt;      cycles                                                      
+   &lt;not supported&gt;      instructions                                                
+   &lt;not supported&gt;      branches                                                    
+   &lt;not supported&gt;      branch-misses                                               
+   &lt;not supported&gt;      L1-dcache-loads                                             
+   &lt;not supported&gt;      L1-dcache-load-misses                                       
+   &lt;not supported&gt;      LLC-loads                                                   
+   &lt;not supported&gt;      LLC-load-misses                                                    2.323596300 seconds <span class="nb">time </span>elapsed       1.171183000 seconds user
+       0.217171000 seconds sys
+</code></pre></div></div>
+
+<p><img src="/assets/images/zabbix/01.png" /></p>
+
+<h4 id="替换官方代码">替换官方代码</h4>
 <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">eeoss</span>
 <span class="k">import</span> <span class="p">(</span>
     <span class="s">"encoding/json"</span>

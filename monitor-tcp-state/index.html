@@ -5,7 +5,7 @@
      crossorigin="anonymous"></script>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>TCP状态采集 - 尹亚亮</title>
+<!-- begin _includes/seo.html --><title>解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案 - 尹亚亮</title>
 <meta name="description" content="获取TCP状态值">
 
 
@@ -18,7 +18,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="尹亚亮">
-<meta property="og:title" content="TCP状态采集">
+<meta property="og:title" content="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案">
 <meta property="og:url" content="/monitor-tcp-state/">
 
 
@@ -149,7 +149,7 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="TCP状态采集">
+    <meta itemprop="headline" content="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案">
     <meta itemprop="description" content="获取TCP状态值">
     <meta itemprop="datePublished" content="2022-10-21T00:00:00+08:00">
     
@@ -158,7 +158,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="/monitor-tcp-state/" class="u-url" itemprop="url">TCP状态采集
+            <a href="/monitor-tcp-state/" class="u-url" itemprop="url">解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案
 </a>
           </h1>
           
@@ -187,14 +187,38 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#代码">代码</a></li><li><a href="#测试">测试</a></li></ul>
+              <ul class="toc__menu"><li><a href="#故障现象">故障现象</a></li><li><a href="#分析">分析</a></li><li><a href="#替换官方代码">替换官方代码</a></li><li><a href="#测试">测试</a></li></ul>
 
             </nav>
           </aside>
         
         <p>获取TCP状态值</p>
 
-<h4 id="代码">代码</h4>
+<h4 id="故障现象">故障现象</h4>
+
+<p><img src="/assets/images/zabbix/01.png" /></p>
+
+<h4 id="分析">分析</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>perf <span class="nb">stat</span> <span class="nt">-d</span> ./zabbix_agent2 <span class="nt">-t</span> net.tcp.socket.count[,,,,established]
+net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Performance counter stats <span class="k">for</span> <span class="s1">'./zabbix_agent2 -t net.tcp.socket.count[,,,,established]'</span>:          1,389.13 msec task-clock                <span class="c">#    0.598 CPUs utilized          </span>
+             2,602      context-switches          <span class="c">#    0.002 M/sec                  </span>
+                 5      cpu-migrations            <span class="c">#    0.004 K/sec                  </span>
+             2,576      page-faults               <span class="c">#    0.002 M/sec                  </span>
+   &lt;not supported&gt;      cycles                                                      
+   &lt;not supported&gt;      instructions                                                
+   &lt;not supported&gt;      branches                                                    
+   &lt;not supported&gt;      branch-misses                                               
+   &lt;not supported&gt;      L1-dcache-loads                                             
+   &lt;not supported&gt;      L1-dcache-load-misses                                       
+   &lt;not supported&gt;      LLC-loads                                                   
+   &lt;not supported&gt;      LLC-load-misses                                                    2.323596300 seconds <span class="nb">time </span>elapsed       1.171183000 seconds user
+       0.217171000 seconds sys
+</code></pre></div></div>
+
+<p><img src="/assets/images/zabbix/01.png" /></p>
+
+<h4 id="替换官方代码">替换官方代码</h4>
 <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">eeoss</span>
 <span class="k">import</span> <span class="p">(</span>
     <span class="s">"encoding/json"</span>
@@ -429,7 +453,7 @@ tcp.count                                     <span class="o">[</span>s|<span cl
     <h4 class="page__share-title">分享</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=TCP%E7%8A%B6%E6%80%81%E9%87%87%E9%9B%86%20%2Fmonitor-tcp-state%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=+%E8%A7%A3%E5%86%B3Zabbix+%E5%85%B3%E4%BA%8E+TCP%E7%8A%B6%E6%80%81%E7%9B%91%E6%8E%A7%E5%8F%96%E5%80%BC%E5%8D%A0%E7%94%A8CPU%E9%AB%98BUG%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%20%2Fmonitor-tcp-state%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fmonitor-tcp-state%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
