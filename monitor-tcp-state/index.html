@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#故障现象">故障现象</a></li><li><a href="#分析">分析</a></li><li><a href="#替换官方代码">替换官方代码</a></li><li><a href="#测试">测试</a></li></ul>
+              <ul class="toc__menu"><li><a href="#故障现象">故障现象</a></li><li><a href="#现象分析">现象分析</a></li><li><a href="#解决代码">解决代码</a></li><li><a href="#测试结果">测试结果</a></li></ul>
 
             </nav>
           </aside>
@@ -198,7 +198,7 @@
 
 <p><img src="/assets/images/zabbix/01.png" /></p>
 
-<h4 id="分析">分析</h4>
+<h4 id="现象分析">现象分析</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>perf <span class="nb">stat</span> <span class="nt">-d</span> ./zabbix_agent2 <span class="nt">-t</span> net.tcp.socket.count[,,,,established]
 net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Performance counter stats <span class="k">for</span> <span class="s1">'./zabbix_agent2 -t net.tcp.socket.count[,,,,established]'</span>:          1,389.13 msec task-clock                <span class="c">#    0.598 CPUs utilized          </span>
@@ -218,7 +218,7 @@ net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Pe
 
 <p><img src="/assets/images/zabbix/02.png" /></p>
 
-<h4 id="替换官方代码">替换官方代码</h4>
+<h4 id="解决代码">解决代码</h4>
 <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">eeoss</span>
 <span class="k">import</span> <span class="p">(</span>
     <span class="s">"encoding/json"</span>
@@ -407,7 +407,7 @@ net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Pe
 <span class="p">}</span>
 </code></pre></div></div>
 
-<h4 id="测试">测试</h4>
+<h4 id="测试结果">测试结果</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># time ./zabbix_agent2 -t net.tcp.socket.count[,,,,established]</span>
 net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3783]
 real    0m2.814s

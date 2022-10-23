@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-23T19:24:10+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案</title><link href="/monitor-tcp-state/" rel="alternate" type="text/html" title="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案" /><published>2022-10-21T00:00:00+08:00</published><updated>2022-10-21T00:00:00+08:00</updated><id>/monitor-tcp-state</id><content type="html" xml:base="/monitor-tcp-state/"><![CDATA[<p>修复zabbix CPU占用高的bug</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-23T19:25:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案</title><link href="/monitor-tcp-state/" rel="alternate" type="text/html" title="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案" /><published>2022-10-21T00:00:00+08:00</published><updated>2022-10-21T00:00:00+08:00</updated><id>/monitor-tcp-state</id><content type="html" xml:base="/monitor-tcp-state/"><![CDATA[<p>修复zabbix CPU占用高的bug</p>
 
 <h4 id="故障现象">故障现象</h4>
 
 <p><img src="/assets/images/zabbix/01.png" /></p>
 
-<h4 id="分析">分析</h4>
+<h4 id="现象分析">现象分析</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>perf <span class="nb">stat</span> <span class="nt">-d</span> ./zabbix_agent2 <span class="nt">-t</span> net.tcp.socket.count[,,,,established]
 net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Performance counter stats <span class="k">for</span> <span class="s1">'./zabbix_agent2 -t net.tcp.socket.count[,,,,established]'</span>:          1,389.13 msec task-clock                <span class="c">#    0.598 CPUs utilized          </span>
@@ -24,7 +24,7 @@ net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Pe
 
 <p><img src="/assets/images/zabbix/02.png" /></p>
 
-<h4 id="替换官方代码">替换官方代码</h4>
+<h4 id="解决代码">解决代码</h4>
 <div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">eeoss</span>
 <span class="k">import</span> <span class="p">(</span>
     <span class="s">"encoding/json"</span>
@@ -213,7 +213,7 @@ net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Pe
 <span class="p">}</span>
 </code></pre></div></div>
 
-<h4 id="测试">测试</h4>
+<h4 id="测试结果">测试结果</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># time ./zabbix_agent2 -t net.tcp.socket.count[,,,,established]</span>
 net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3783]
 real    0m2.814s
