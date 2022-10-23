@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-23T19:28:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Daemonset</title><link href="/kubernetes-kubeadm-daemonset/" rel="alternate" type="text/html" title="Daemonset" /><published>2022-10-23T00:00:00+08:00</published><updated>2022-10-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-daemonset</id><content type="html" xml:base="/kubernetes-kubeadm-daemonset/"><![CDATA[<p>daemonset</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-23T19:29:50+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Daemonset</title><link href="/kubernetes-kubeadm-daemonset/" rel="alternate" type="text/html" title="Daemonset" /><published>2022-10-23T00:00:00+08:00</published><updated>2022-10-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-daemonset</id><content type="html" xml:base="/kubernetes-kubeadm-daemonset/"><![CDATA[<p>daemonset</p>
 
-<h2 id="创建及删除daemonset">创建及删除daemonset</h2>
+<h3 id="创建及删除daemonset">创建及删除daemonset</h3>
 
 <ul>
   <li>daemonset会在所有的节点上创建一个pod,有几个节点就创建几个pod,每个节点只有一个</li>
@@ -82,7 +82,7 @@ daemonset.apps <span class="s2">"ds1"</span> deleted
 No resources found <span class="k">in </span>nsds namespace.
 </code></pre></div></div>
 
-<h2 id="指定pod运行在特定的节点">指定pod运行在特定的节点</h2>
+<h3 id="指定pod运行在特定的节点">指定pod运行在特定的节点</h3>
 
 <p>可以通过标签的方式制定daemonset的pod在指定的节点上运行</p>
 
@@ -110,7 +110,7 @@ No resources found <span class="k">in </span>nsds namespace.
 
 <p>这里通过nodeSelector来指定pod运行在含有标签diskxx==ssdxx的节点上</p>
 
-<h2 id="其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</h2>
+<h3 id="其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</h3>
 
 <p>rc和deployment的作用一样，使用方法也一样</p>
 
@@ -193,7 +193,7 @@ myrc   5         5         5       2m42s   nginx        nginx:1.9   <span class=
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete rc myrc
 </code></pre></div></div>
 
-<h2 id="其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</h2>
+<h3 id="其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</h3>
 
 <p>和deployment作用一样</p>
 

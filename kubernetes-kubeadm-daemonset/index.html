@@ -187,14 +187,14 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#创建及删除daemonset">创建及删除daemonset</a><ul><li><a href="#查看">查看</a></li><li><a href="#创建及删除ds">创建及删除ds</a></li><li><a href="#查看pod的运行">查看pod的运行</a></li><li><a href="#删除daemonset">删除daemonset</a></li></ul></li></ul></li><li><a href="#指定pod运行在特定的节点">指定pod运行在特定的节点</a></li><li><a href="#其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</a><ul><li><a href="#创建rc所需要的yaml文件">创建rc所需要的yaml文件</a></li><li><a href="#查看-1">查看</a></li><li><a href="#扩展">扩展</a></li><li><a href="#更新">更新</a></li><li><a href="#删除">删除</a></li></ul></li></ul></li><li><a href="#其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</a><ul><li><a href="#查看-2">查看</a></li><li><a href="#创建">创建</a></li><li><a href="#扩展-1">扩展</a></li><li><a href="#删除-1">删除</a></li><li><a href="#对比">对比</a></li></ul></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#创建及删除daemonset">创建及删除daemonset</a><ul><li><a href="#查看">查看</a></li><li><a href="#创建及删除ds">创建及删除ds</a></li><li><a href="#查看pod的运行">查看pod的运行</a></li><li><a href="#删除daemonset">删除daemonset</a></li></ul></li><li><a href="#指定pod运行在特定的节点">指定pod运行在特定的节点</a></li><li><a href="#其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</a><ul><li><a href="#创建rc所需要的yaml文件">创建rc所需要的yaml文件</a></li><li><a href="#查看-1">查看</a></li><li><a href="#扩展">扩展</a></li><li><a href="#更新">更新</a></li><li><a href="#删除">删除</a></li></ul></li><li><a href="#其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</a><ul><li><a href="#查看-2">查看</a></li><li><a href="#创建">创建</a></li><li><a href="#扩展-1">扩展</a></li><li><a href="#删除-1">删除</a></li><li><a href="#对比">对比</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
         <p>daemonset</p>
 
-<h2 id="创建及删除daemonset">创建及删除daemonset</h2>
+<h3 id="创建及删除daemonset">创建及删除daemonset</h3>
 
 <ul>
   <li>daemonset会在所有的节点上创建一个pod,有几个节点就创建几个pod,每个节点只有一个</li>
@@ -276,7 +276,7 @@ daemonset.apps <span class="s2">"ds1"</span> deleted
 No resources found <span class="k">in </span>nsds namespace.
 </code></pre></div></div>
 
-<h2 id="指定pod运行在特定的节点">指定pod运行在特定的节点</h2>
+<h3 id="指定pod运行在特定的节点">指定pod运行在特定的节点</h3>
 
 <p>可以通过标签的方式制定daemonset的pod在指定的节点上运行</p>
 
@@ -304,7 +304,7 @@ No resources found <span class="k">in </span>nsds namespace.
 
 <p>这里通过nodeSelector来指定pod运行在含有标签diskxx==ssdxx的节点上</p>
 
-<h2 id="其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</h2>
+<h3 id="其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</h3>
 
 <p>rc和deployment的作用一样，使用方法也一样</p>
 
@@ -387,7 +387,7 @@ myrc   5         5         5       2m42s   nginx        nginx:1.9   <span class=
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete rc myrc
 </code></pre></div></div>
 
-<h2 id="其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</h2>
+<h3 id="其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</h3>
 
 <p>和deployment作用一样</p>
 
