@@ -214,4 +214,10 @@ var store = [{
         "tags": ["Kubernetes"],
         "url": "/kubernetes-kubeadm-daemonset/",
         "teaser": null
+      },{
+        "title": "Terraform 安装使用",
+        "excerpt":"Terraform创建腾讯CVM 什么是terraform HashiCorp Terraform 是一种基础架构即代码工具，可让在可读的配置文件中定义云和本地资源，可以对其进行版本控制、重用和共享。可以使用一致的工作流程在整个生命周期内配置和管理所有基础架构。Terraform 可以管理计算、存储和网络资源等低级组件，以及DNS 条目和 SaaS 功能等高级组件。 使用 以_configurations_的形式获取凭证和输入，在目标云上创建一个资源, 配置以Terraform的语法进行资源的描述。基本上是声明式的语法。 Terraform使用云服务商提供的API来创建资源，社区提供了1700多个provider来提供管理（https://registry.terraform.io/）,支持扩展 优势 可以管理多个云平台上的基础架构 时间优化，可以在短时间内编写配置，几分钟就可以创建云资源 变更更容易了和改代码一样了 Terraform 的状态允许在整个部署过程中跟踪资源更改 支持版本控制 工作流程 安装 安装 sudo yum install -y yum-utils sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo sudo yum -y install terraform 验证 # terraform -help Usage: terraform [global options] &lt;subcommand&gt; [args] The available commands...","categories": [],
+        "tags": ["Application"],
+        "url": "/terraform/",
+        "teaser": null
       }]
