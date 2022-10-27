@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#安装">安装</a><ul><li><a href="#centos">centos</a></li><li><a href="#ubuntu">ubuntu</a></li></ul></li><li><a href="#代码">代码</a></li><li><a href="#效果">效果</a></li></ul>
+              <ul class="toc__menu"><li><a href="#安装">安装</a><ul><li><a href="#centos">centos</a></li><li><a href="#ubuntu">ubuntu</a></li></ul></li><li><a href="#代码">代码</a></li><li><a href="#效果">效果</a></li><li><a href="#参考">参考</a></li></ul>
 
             </nav>
           </aside>
@@ -213,7 +213,53 @@
 
 <h4 id="代码">代码</h4>
 
-<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">kvm</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/json"</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"time"</span>
+
+	<span class="s">"libvirt.org/go/libvirt"</span>
+	<span class="s">"zabbix.com/pkg/plugin"</span>
+	<span class="s">"zabbix.com/pkg/zbxerr"</span>
+<span class="p">)</span>
+
+<span class="k">type</span> <span class="n">Plugin</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">plugin</span><span class="o">.</span><span class="n">Base</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="n">impl</span> <span class="n">Plugin</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">Export</span><span class="p">(</span><span class="n">key</span> <span class="kt">string</span><span class="p">,</span> <span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="n">ctx</span> <span class="n">plugin</span><span class="o">.</span><span class="n">ContextProvider</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="k">interface</span><span class="p">{},</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">switch</span> <span class="n">key</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="s">"kvm.avtive.domain.discovery"</span><span class="o">:</span>
+		<span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">virtual_host_discovery</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="no">nil</span>
+	<span class="k">case</span> <span class="s">"domain.info"</span><span class="o">:</span>
+		<span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="no">nil</span>
+	<span class="k">default</span><span class="o">:</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">plugin</span><span class="o">.</span><span class="n">UnsupportedMetricError</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">kvmkDiscovery</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">Kvm</span> <span class="kt">string</span> <span class="s">`json:"{#KVM}"`</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">domainInfo</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">MemUnUsed</span> <span class="kt">uint64</span> <span class="s">`json:"MEMUNUSED"`</span>
+	<span class="n">CPUUsage</span>  <span class="kt">uint64</span> <span class="s">`json:"CPUUsage"`</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">1</span> <span class="p">{</span>
 		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Too many parameters."</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -252,7 +298,7 @@
 			<span class="n">meminfo</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">MemoryStats</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
 
 			<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tag</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">meminfo</span> <span class="p">{</span>
-				<span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">Tag</span> <span class="o">==</span> <span class="m">4</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">Tag</span> <span class="o">==</span> <span class="m">5</span> <span class="p">{</span>
 					<span class="n">memory_unused</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">Val</span>
 				<span class="p">}</span>
 			<span class="p">}</span>
@@ -278,11 +324,54 @@
 	<span class="k">return</span>
 <span class="p">}</span>
 
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_host_discovery</span><span class="p">()</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">conn</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">libvirt</span><span class="o">.</span><span class="n">NewConnect</span><span class="p">(</span><span class="s">"qemu:///system"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="k">defer</span> <span class="n">conn</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+	<span class="n">kvm</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="n">kvmkDiscovery</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+	<span class="c">// 获取所有开启的虚拟机名称</span>
+
+	<span class="n">doms</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">conn</span><span class="o">.</span><span class="n">ListAllDomains</span><span class="p">(</span><span class="n">libvirt</span><span class="o">.</span><span class="n">CONNECT_LIST_DOMAINS_ACTIVE</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+
+	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dom</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">doms</span> <span class="p">{</span>
+
+		<span class="n">name</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+
+		<span class="n">kvm</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">kvm</span><span class="p">,</span> <span class="n">kvmkDiscovery</span><span class="p">{</span><span class="n">Kvm</span><span class="o">:</span> <span class="n">name</span><span class="p">})</span>
+		<span class="n">dom</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">kvm</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">zbxerr</span><span class="o">.</span><span class="n">ErrorCannotMarshalJSON</span><span class="o">.</span><span class="n">Wrap</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">plugin</span><span class="o">.</span><span class="n">RegisterMetrics</span><span class="p">(</span><span class="o">&amp;</span><span class="n">impl</span><span class="p">,</span> <span class="s">"Kvm"</span><span class="p">,</span>
+		<span class="s">"kvm.avtive.domain.discovery"</span><span class="p">,</span> <span class="s">"Returns availabe domain."</span><span class="p">,</span>
+		<span class="s">"domain.info"</span><span class="p">,</span> <span class="s">"Extract information about a domain."</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre></div></div>
 
 <h4 id="效果">效果</h4>
 
 <p><img src="/assets/images/zabbix/03.png" /></p>
+
+<h4 id="参考">参考</h4>
+
+<p>https://people.redhat.com/rjones/virt-top/faq.html
+https://gitlab.com/libvirt/libvirt-go/blob/v7.4.0/domain.go#L369
+https://pkg.go.dev/libvirt.org/libvirt-go</p>
 
         
       </section>
