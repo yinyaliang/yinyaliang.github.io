@@ -221,7 +221,7 @@ var store = [{
         "url": "/terraform/",
         "teaser": null
       },{
-        "title": "KVM 虚拟机资源采集",
+        "title": "Zabbix 对于 KVM 虚拟机资源监控",
         "excerpt":"采集KVM虚拟主机CPU以及内存使用资源情况 安装 centos yum -y install libvirt-devel ubuntu apt install libvirt-dev package go get libvirt/libvirt-go 代码 import ( \"encoding/json\" \"fmt\" \"time\" \"libvirt.org/go/libvirt\" \"zabbix.com/pkg/plugin\" \"zabbix.com/pkg/zbxerr\" ) type Plugin struct { plugin.Base } var impl Plugin func (p *Plugin) Export(key string, params []string, ctx plugin.ContextProvider) (result interface{}, err error) { switch key...","categories": [],
         "tags": ["Monitor"],
         "url": "/monitor-kvm-cpumem/",
