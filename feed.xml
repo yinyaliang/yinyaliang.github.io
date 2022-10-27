@@ -1,4 +1,133 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-25T18:28:09+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Terraform 安装使用</title><link href="/terraform/" rel="alternate" type="text/html" title="Terraform 安装使用" /><published>2022-10-25T00:00:00+08:00</published><updated>2022-10-25T00:00:00+08:00</updated><id>/terraform</id><content type="html" xml:base="/terraform/"><![CDATA[<p>Terraform创建腾讯CVM</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-27T15:23:39+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">KVM 虚拟机资源采集</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="KVM 虚拟机资源采集" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
+
+<h4 id="安装">安装</h4>
+
+<h5 id="centos">centos</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> yum <span class="nt">-y</span> <span class="nb">install </span>libvirt-devel
+</code></pre></div></div>
+
+<h5 id="ubuntu">ubuntu</h5>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt <span class="nb">install </span>libvirt-dev
+</code></pre></div></div>
+
+<p>package</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> go get libvirt/libvirt-go
+</code></pre></div></div>
+
+<h4 id="代码">代码</h4>
+
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">(</span>
+	<span class="s">"encoding/json"</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"time"</span>
+
+	<span class="s">"libvirt.org/go/libvirt"</span>
+	<span class="s">"zabbix.com/pkg/plugin"</span>
+	<span class="s">"zabbix.com/pkg/zbxerr"</span>
+<span class="p">)</span>
+
+<span class="k">type</span> <span class="n">Plugin</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">plugin</span><span class="o">.</span><span class="n">Base</span>
+<span class="p">}</span>
+
+<span class="k">var</span> <span class="n">impl</span> <span class="n">Plugin</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">Export</span><span class="p">(</span><span class="n">key</span> <span class="kt">string</span><span class="p">,</span> <span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="n">ctx</span> <span class="n">plugin</span><span class="o">.</span><span class="n">ContextProvider</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="k">interface</span><span class="p">{},</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">switch</span> <span class="n">key</span> <span class="p">{</span>
+	<span class="k">case</span> <span class="s">"domain.info"</span><span class="o">:</span>
+		<span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+		<span class="p">}</span>
+		<span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="no">nil</span>
+	<span class="k">default</span><span class="o">:</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">plugin</span><span class="o">.</span><span class="n">UnsupportedMetricError</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">type</span> <span class="n">domainInfo</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">MemUnUsed</span> <span class="kt">uint64</span> <span class="s">`json:"MEMUNUSED"`</span>
+	<span class="n">CPUUsage</span>  <span class="kt">uint64</span> <span class="s">`json:"CPUUsage"`</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">1</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Too many parameters."</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span> <span class="o">||</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="m">0</span><span class="p">])</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Invalid first parameter."</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="n">domainName</span> <span class="o">:=</span> <span class="n">params</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
+
+	<span class="n">conn</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">libvirt</span><span class="o">.</span><span class="n">NewConnect</span><span class="p">(</span><span class="s">"qemu:///system"</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+	<span class="p">}</span>
+	<span class="k">defer</span> <span class="n">conn</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+	<span class="k">var</span> <span class="n">domainifo</span> <span class="n">domainInfo</span>
+
+	<span class="k">var</span> <span class="n">cpu_time_last</span> <span class="kt">uint64</span>
+	<span class="k">var</span> <span class="n">cpu_time_pre</span> <span class="kt">uint64</span>
+	<span class="k">var</span> <span class="n">memory_unused</span> <span class="kt">uint64</span>
+	<span class="k">var</span> <span class="n">cpuUsage</span> <span class="kt">uint64</span>
+	<span class="k">for</span> <span class="n">count</span> <span class="o">:=</span> <span class="m">1</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="m">2</span><span class="p">;</span> <span class="n">count</span><span class="o">++</span> <span class="p">{</span>
+
+		<span class="n">doms</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">conn</span><span class="o">.</span><span class="n">ListAllDomains</span><span class="p">(</span><span class="n">libvirt</span><span class="o">.</span><span class="n">CONNECT_LIST_DOMAINS_ACTIVE</span><span class="p">)</span>
+		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+			<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err"</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+		<span class="p">}</span>
+		<span class="c">//fmt.Printf("%d running domains:\n", len(doms))</span>
+		<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dom</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">doms</span> <span class="p">{</span>
+			<span class="n">name</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
+			<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">domainName</span> <span class="p">{</span>
+				<span class="k">continue</span>
+			<span class="p">}</span>
+			<span class="c">// memory</span>
+			<span class="n">meminfo</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">MemoryStats</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+
+			<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tag</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">meminfo</span> <span class="p">{</span>
+				<span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">Tag</span> <span class="o">==</span> <span class="m">4</span> <span class="p">{</span>
+					<span class="n">memory_unused</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">Val</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="c">// Query cpu total stats</span>
+			<span class="n">cpuStats</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetCPUStats</span><span class="p">(</span><span class="o">-</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+			<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+				<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+			<span class="p">}</span>
+			<span class="n">cpu_time_pre</span> <span class="o">=</span> <span class="n">cpu_time_last</span>
+			<span class="n">cpu_time_last</span> <span class="o">=</span> <span class="n">cpuStats</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">CpuTime</span>
+			<span class="n">cpuUsage</span> <span class="o">=</span> <span class="m">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">cpu_time_last</span> <span class="o">-</span> <span class="n">cpu_time_pre</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="m">1</span> <span class="o">*</span> <span class="m">1000000000</span><span class="p">)</span>
+
+			<span class="n">dom</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
+		<span class="p">}</span>
+		<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">1</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
+	<span class="p">}</span>
+
+	<span class="n">domainifo</span><span class="o">.</span><span class="n">CPUUsage</span> <span class="o">=</span> <span class="n">cpuUsage</span>
+	<span class="n">domainifo</span><span class="o">.</span><span class="n">MemUnUsed</span> <span class="o">=</span> <span class="n">memory_unused</span>
+	<span class="k">if</span> <span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">domainifo</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">zbxerr</span><span class="o">.</span><span class="n">ErrorCannotMarshalJSON</span><span class="o">.</span><span class="n">Wrap</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="k">return</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">plugin</span><span class="o">.</span><span class="n">RegisterMetrics</span><span class="p">(</span><span class="o">&amp;</span><span class="n">impl</span><span class="p">,</span> <span class="s">"Kvm"</span><span class="p">,</span>
+		<span class="s">"domain.info"</span><span class="p">,</span> <span class="s">"Extract information about a domain."</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="效果">效果</h4>
+
+<p><img src="/assets/images/zabbix/03.png" /></p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[采集KVM虚拟主机CPU以及内存使用资源情况]]></summary></entry><entry><title type="html">Terraform 安装使用</title><link href="/terraform/" rel="alternate" type="text/html" title="Terraform 安装使用" /><published>2022-10-25T00:00:00+08:00</published><updated>2022-10-25T00:00:00+08:00</updated><id>/terraform</id><content type="html" xml:base="/terraform/"><![CDATA[<p>Terraform创建腾讯CVM</p>
 
 <h4 id="什么是terraform">什么是terraform</h4>
 
@@ -4114,594 +4243,4 @@ udld reset <span class="c"># 重置udld关闭的端口</span>
 <p>PostFast 终端用户，配合BPDU Guard使用
 根保护 所有指定端口和不链接根桥的端口
 环路保护 所有根端口和非指定端口
-UDLD所有交换机互联的链路上</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[STP介绍]]></summary></entry><entry><title type="html">zabbix 源码分析 another/first network error wait for 15s seconds</title><link href="/monitor-sourcecod-01/" rel="alternate" type="text/html" title="zabbix 源码分析 another/first network error wait for 15s seconds" /><published>2022-09-06T00:00:00+08:00</published><updated>2022-09-06T00:00:00+08:00</updated><id>/monitor-sourcecod-01</id><content type="html" xml:base="/monitor-sourcecod-01/"><![CDATA[<p>从zabbix的源码看another network error, wait for 15s seconds的异常</p>
-
-<h3 id="pollerc">poller.c</h3>
-
-<h4 id="get_values">get_values</h4>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">switch</span> <span class="p">(</span><span class="n">errcodes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="p">{</span>
-            <span class="k">case</span> <span class="n">SUCCEED</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">NOTSUPPORTED</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">AGENT_ERROR</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">HOST_AVAILABLE_TRUE</span> <span class="o">!=</span> <span class="n">last_available</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="n">zbx_activate_item_host</span><span class="p">(</span><span class="o">&amp;</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">timespec</span><span class="p">);</span>
-                    <span class="n">last_available</span> <span class="o">=</span> <span class="n">HOST_AVAILABLE_TRUE</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">NETWORK_ERROR</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">GATEWAY_ERROR</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">TIMEOUT_ERROR</span><span class="p">:</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">HOST_AVAILABLE_FALSE</span> <span class="o">!=</span> <span class="n">last_available</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="n">zbx_deactivate_item_host</span><span class="p">(</span><span class="o">&amp;</span><span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">&amp;</span><span class="n">timespec</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">msg</span><span class="p">);</span>
-                    <span class="n">last_available</span> <span class="o">=</span> <span class="n">HOST_AVAILABLE_FALSE</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">CONFIG_ERROR</span><span class="p">:</span>
-                <span class="cm">/* nothing to do */</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="nl">default:</span>
-                <span class="n">zbx_error</span><span class="p">(</span><span class="s">"unknown response code returned: %d"</span><span class="p">,</span> <span class="n">errcodes</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-                <span class="n">THIS_SHOULD_NEVER_HAPPEN</span><span class="p">;</span>
-        <span class="p">}</span>
-</code></pre></div></div>
-
-<h4 id="zbx_deactivate_item_host">zbx_deactivate_item_host</h4>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">void</span>    <span class="nf">zbx_deactivate_item_host</span><span class="p">(</span><span class="n">DC_ITEM</span> <span class="o">*</span><span class="n">item</span><span class="p">,</span> <span class="n">zbx_timespec_t</span> <span class="o">*</span><span class="n">ts</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span>                       <span class="c1">//   #0</span>
-<span class="p">{</span>
-    <span class="k">const</span> <span class="kt">char</span>        <span class="o">*</span><span class="n">__function_name</span> <span class="o">=</span> <span class="s">"zbx_deactivate_item_host"</span><span class="p">;</span>
-    <span class="n">zbx_host_availability_t</span>    <span class="n">in</span><span class="p">,</span> <span class="n">out</span><span class="p">;</span>                                                                         <span class="c1">//   #1</span>
-    <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">agent_type</span><span class="p">;</span>                                                                          <span class="c1">//   #2</span>
-
-    <span class="n">zabbix_log</span><span class="p">(</span><span class="n">LOG_LEVEL_DEBUG</span><span class="p">,</span> <span class="s">"In %s() hostid:"</span> <span class="n">ZBX_FS_UI64</span> <span class="s">" itemid:"</span> <span class="n">ZBX_FS_UI64</span> <span class="s">" type:%d"</span><span class="p">,</span>             <span class="c1">//   #3</span>
-            <span class="n">__function_name</span><span class="p">,</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">.</span><span class="n">hostid</span><span class="p">,</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">itemid</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">);</span>
-
-    <span class="n">zbx_host_availability_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">in</span><span class="p">,</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">.</span><span class="n">hostid</span><span class="p">);</span>                                                      <span class="c1">//   #4</span>
-    <span class="n">zbx_host_availability_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">out</span><span class="p">,</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">.</span><span class="n">hostid</span><span class="p">);</span>                                                      <span class="c1">//   #5</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">ZBX_AGENT_UNKNOWN</span> <span class="o">==</span> <span class="p">(</span><span class="n">agent_type</span> <span class="o">=</span> <span class="n">host_availability_agent_by_item_type</span><span class="p">(</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">)))</span>                <span class="c1">//   #6</span>
-        <span class="k">goto</span> <span class="n">out</span><span class="p">;</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">FAIL</span> <span class="o">==</span> <span class="n">host_get_availability</span><span class="p">(</span><span class="o">&amp;</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in</span><span class="p">))</span>                                         <span class="c1">//   #7</span>
-        <span class="k">goto</span> <span class="n">out</span><span class="p">;</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">FAIL</span> <span class="o">==</span> <span class="n">DChost_deactivate</span><span class="p">(</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">.</span><span class="n">hostid</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">ts</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">in</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">],</span>                 <span class="c1">//   #8</span>
-            <span class="o">&amp;</span><span class="n">out</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">],</span> <span class="n">error</span><span class="p">))</span>
-    <span class="p">{</span>
-        <span class="k">goto</span> <span class="n">out</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">FAIL</span> <span class="o">==</span> <span class="n">db_host_update_availability</span><span class="p">(</span><span class="o">&amp;</span><span class="n">out</span><span class="p">))</span>                                                           <span class="c1">//   #9</span>
-        <span class="k">goto</span> <span class="n">out</span><span class="p">;</span>
-
-    <span class="n">host_set_availability</span><span class="p">(</span><span class="o">&amp;</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>                                                    <span class="c1">//   #10</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="n">in</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">].</span><span class="n">errors_from</span><span class="p">)</span>                                                              <span class="c1">//   #11</span>
-    <span class="p">{</span>
-        <span class="n">zabbix_log</span><span class="p">(</span><span class="n">LOG_LEVEL_WARNING</span><span class="p">,</span> <span class="s">"%s item </span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s"> on host </span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s"> failed:"</span>                                <span class="c1">//   #12</span>
-                <span class="s">" first network error, wait for %d seconds"</span><span class="p">,</span>
-                <span class="n">zbx_agent_type_string</span><span class="p">(</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">),</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">key_orig</span><span class="p">,</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">.</span><span class="n">host</span><span class="p">,</span>
-                <span class="n">out</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">].</span><span class="n">disable_until</span> <span class="o">-</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="k">else</span>
-    <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">HOST_AVAILABLE_FALSE</span> <span class="o">!=</span> <span class="n">in</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">].</span><span class="n">available</span><span class="p">)</span>                                         <span class="c1">//   #13</span>
-        <span class="p">{</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">HOST_AVAILABLE_FALSE</span> <span class="o">!=</span> <span class="n">out</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">].</span><span class="n">available</span><span class="p">)</span>                                    <span class="c1">//   #14</span>
-            <span class="p">{</span>
-                <span class="n">zabbix_log</span><span class="p">(</span><span class="n">LOG_LEVEL_WARNING</span><span class="p">,</span> <span class="s">"%s item </span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s"> on host </span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s"> failed:"</span>                        <span class="c1">//   #15</span>
-                        <span class="s">" another network error, wait for %d seconds"</span><span class="p">,</span>
-                        <span class="n">zbx_agent_type_string</span><span class="p">(</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">),</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">key_orig</span><span class="p">,</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">.</span><span class="n">host</span><span class="p">,</span>
-                        <span class="n">out</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">].</span><span class="n">disable_until</span> <span class="o">-</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span><span class="p">);</span>
-            <span class="p">}</span>
-            <span class="k">else</span>
-            <span class="p">{</span>
-                <span class="n">zabbix_log</span><span class="p">(</span><span class="n">LOG_LEVEL_WARNING</span><span class="p">,</span> <span class="s">"temporarily disabling %s checks on host </span><span class="se">\"</span><span class="s">%s</span><span class="se">\"</span><span class="s">:"</span>              <span class="c1">//   #16</span>
-                        <span class="s">" host unavailable"</span><span class="p">,</span>
-                        <span class="n">zbx_agent_type_string</span><span class="p">(</span><span class="n">item</span><span class="o">-&gt;</span><span class="n">type</span><span class="p">),</span> <span class="n">item</span><span class="o">-&gt;</span><span class="n">host</span><span class="p">.</span><span class="n">host</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="n">zabbix_log</span><span class="p">(</span><span class="n">LOG_LEVEL_DEBUG</span><span class="p">,</span> <span class="s">"%s() errors_from:%d available:%d"</span><span class="p">,</span> <span class="n">__function_name</span><span class="p">,</span>
-            <span class="n">out</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">].</span><span class="n">errors_from</span><span class="p">,</span> <span class="n">out</span><span class="p">.</span><span class="n">agents</span><span class="p">[</span><span class="n">agent_type</span><span class="p">].</span><span class="n">available</span><span class="p">);</span>
-<span class="nl">out:</span>
-    <span class="n">zbx_host_availability_clean</span><span class="p">(</span><span class="o">&amp;</span><span class="n">out</span><span class="p">);</span>
-    <span class="n">zbx_host_availability_clean</span><span class="p">(</span><span class="o">&amp;</span><span class="n">in</span><span class="p">);</span>
-
-    <span class="n">zabbix_log</span><span class="p">(</span><span class="n">LOG_LEVEL_DEBUG</span><span class="p">,</span> <span class="s">"End of %s()"</span><span class="p">,</span> <span class="n">__function_name</span><span class="p">);</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h5 id="zbx_deactivate_item_host-代码的逻辑">zbx_deactivate_item_host 代码的逻辑</h5>
-
-<p>#0  zbx_deactivate_item_host</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">1</span> <span class="err">主机的一些综合参数</span>
-            <span class="c1">//dbcache.h </span>
-            <span class="k">typedef</span> <span class="k">struct</span>
-            <span class="p">{</span>
-                <span class="n">DC_HOST</span>            <span class="n">host</span><span class="p">;</span>
-                <span class="n">DC_INTERFACE</span>        <span class="n">interface</span><span class="p">;</span>
-                <span class="n">zbx_uint64_t</span>        <span class="n">itemid</span><span class="p">;</span>
-                <span class="n">zbx_uint64_t</span>        <span class="n">lastlogsize</span><span class="p">;</span>
-                <span class="n">zbx_uint64_t</span>        <span class="n">valuemapid</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">type</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">value_type</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">state</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">snmpv3_securitylevel</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">authtype</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">flags</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">snmpv3_authprotocol</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">snmpv3_privprotocol</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">inventory_link</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">status</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">history</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">trends</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">follow_redirects</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">post_type</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">retrieve_mode</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">request_method</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">output_format</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">verify_peer</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">verify_host</span><span class="p">;</span>
-                <span class="kt">unsigned</span> <span class="kt">char</span>        <span class="n">allow_traps</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">key_orig</span><span class="p">[</span><span class="n">ITEM_KEY_LEN</span> <span class="o">*</span> <span class="n">ZBX_MAX_BYTES_IN_UTF8_CHAR</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="o">*</span><span class="n">key</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="o">*</span><span class="n">units</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="o">*</span><span class="n">delay</span><span class="p">;</span>
-                <span class="kt">int</span>            <span class="n">history_sec</span><span class="p">;</span>
-                <span class="kt">int</span>            <span class="n">nextcheck</span><span class="p">;</span>
-                <span class="kt">int</span>            <span class="n">lastclock</span><span class="p">;</span>
-                <span class="kt">int</span>            <span class="n">mtime</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">trapper_hosts</span><span class="p">[</span><span class="n">ITEM_TRAPPER_HOSTS_LEN_MAX</span><span class="p">];</span>
-                <span class="kt">char</span>            <span class="n">logtimefmt</span><span class="p">[</span><span class="n">ITEM_LOGTIMEFMT_LEN_MAX</span><span class="p">];</span>
-                <span class="kt">char</span>            <span class="n">snmp_community_orig</span><span class="p">[</span><span class="n">ITEM_SNMP_COMMUNITY_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">snmp_community</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">snmp_oid_orig</span><span class="p">[</span><span class="n">ITEM_SNMP_OID_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">snmp_oid</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">snmpv3_securityname_orig</span><span class="p">[</span><span class="n">ITEM_SNMPV3_SECURITYNAME_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">snmpv3_securityname</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">snmpv3_authpassphrase_orig</span><span class="p">[</span><span class="n">ITEM_SNMPV3_AUTHPASSPHRASE_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">snmpv3_authpassphrase</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">snmpv3_privpassphrase_orig</span><span class="p">[</span><span class="n">ITEM_SNMPV3_PRIVPASSPHRASE_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">snmpv3_privpassphrase</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">ipmi_sensor</span><span class="p">[</span><span class="n">ITEM_IPMI_SENSOR_LEN_MAX</span><span class="p">];</span>
-                <span class="kt">char</span>            <span class="o">*</span><span class="n">params</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">username_orig</span><span class="p">[</span><span class="n">ITEM_USERNAME_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">username</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">publickey_orig</span><span class="p">[</span><span class="n">ITEM_PUBLICKEY_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">publickey</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">privatekey_orig</span><span class="p">[</span><span class="n">ITEM_PRIVATEKEY_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">privatekey</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">password_orig</span><span class="p">[</span><span class="n">ITEM_PASSWORD_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">password</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">snmpv3_contextname_orig</span><span class="p">[</span><span class="n">ITEM_SNMPV3_CONTEXTNAME_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">snmpv3_contextname</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">jmx_endpoint_orig</span><span class="p">[</span><span class="n">ITEM_JMX_ENDPOINT_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">jmx_endpoint</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">timeout_orig</span><span class="p">[</span><span class="n">ITEM_TIMEOUT_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">timeout</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">url_orig</span><span class="p">[</span><span class="n">ITEM_URL_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">url</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">query_fields_orig</span><span class="p">[</span><span class="n">ITEM_QUERY_FIELDS_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">query_fields</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="o">*</span><span class="n">posts</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">status_codes_orig</span><span class="p">[</span><span class="n">ITEM_STATUS_CODES_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">status_codes</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">http_proxy_orig</span><span class="p">[</span><span class="n">ITEM_HTTP_PROXY_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">http_proxy</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="o">*</span><span class="n">headers</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">ssl_cert_file_orig</span><span class="p">[</span><span class="n">ITEM_SSL_CERT_FILE_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">ssl_cert_file</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">ssl_key_file_orig</span><span class="p">[</span><span class="n">ITEM_SSL_KEY_FILE_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">ssl_key_file</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="n">ssl_key_password_orig</span><span class="p">[</span><span class="n">ITEM_SSL_KEY_PASSWORD_LEN_MAX</span><span class="p">],</span> <span class="o">*</span><span class="n">ssl_key_password</span><span class="p">;</span>
-                <span class="kt">char</span>            <span class="o">*</span><span class="n">error</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="n">DC_ITEM</span><span class="p">;</span>
-            <span class="c1">//common.h</span>
-            <span class="k">typedef</span> <span class="k">struct</span>
-            <span class="p">{</span>
-                <span class="kt">int</span>    <span class="n">sec</span><span class="p">;</span>    <span class="cm">/* seconds */</span>
-                <span class="kt">int</span>    <span class="n">ns</span><span class="p">;</span>    <span class="cm">/* nanoseconds */</span>
-            <span class="p">}</span>
-            <span class="n">zbx_timespec_t</span><span class="p">;</span>
-            
-</code></pre></div></div>
-
-<p>#1 定义了两个结构体数组 in 和 out</p>
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        <span class="c1">//db.h</span>
-        <span class="k">typedef</span> <span class="k">struct</span>
-        <span class="p">{</span>
-            <span class="cm">/* flags specifying which fields are set, see ZBX_FLAGS_AGENT_STATUS_* defines */</span>
-            <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">flags</span><span class="p">;</span>
-
-            <span class="cm">/* agent availability fields */</span>
-            <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">available</span><span class="p">;</span>
-            <span class="kt">char</span>        <span class="o">*</span><span class="n">error</span><span class="p">;</span>
-            <span class="kt">int</span>        <span class="n">errors_from</span><span class="p">;</span>
-            <span class="kt">int</span>        <span class="n">disable_until</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="n">zbx_agent_availability_t</span><span class="p">;</span>
-
-        <span class="k">typedef</span> <span class="k">struct</span>
-        <span class="p">{</span>
-            <span class="n">zbx_uint64_t</span>            <span class="n">hostid</span><span class="p">;</span>
-
-            <span class="n">zbx_agent_availability_t</span>    <span class="n">agents</span><span class="p">[</span><span class="n">ZBX_AGENT_MAX</span><span class="p">];</span>         <span class="c1">//这里的ZBX_AGENT_MAX 为4 ，分别代表ZABBIX, SNMP, IPMI, JMX4种类型</span>
-        <span class="p">}</span>
-        <span class="n">zbx_host_availability_t</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>#2 声明unsigned char agent_type，unsigned char和char的区别是char表示-128-127，unsigned char 表示0-255，这里的255会在后面遇到，所以需要255的这个表示范围</p>
-
-<p>#3 记录DEBUG 的log，如果需要显示这份日志，需要将server端的配置文件debug等级更改为5</p>
-
-<p>#4 初始化主机IN可用性数据</p>
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//dbconfig.c</span>
-    <span class="kt">void</span>    <span class="nf">zbx_host_availability_init</span><span class="p">(</span><span class="n">zbx_host_availability_t</span> <span class="o">*</span><span class="n">availability</span><span class="p">,</span> <span class="n">zbx_uint64_t</span> <span class="n">hostid</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">memset</span><span class="p">(</span><span class="n">availability</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">zbx_host_availability_t</span><span class="p">));</span>
-        <span class="n">availability</span><span class="o">-&gt;</span><span class="n">hostid</span> <span class="o">=</span> <span class="n">hostid</span><span class="p">;</span>
-    <span class="p">}</span>
-</code></pre></div></div>
-
-<p>#5 同#4一样，只不过是OUT</p>
-
-<p>#6 为agent_type赋值，如果agent_type不属于#1中的四种，跳至out处</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="mi">1</span><span class="err">、</span><span class="n">host_availability_agent_by_item_type</span> <span class="err">位于</span><span class="n">poller</span><span class="p">.</span><span class="n">c</span><span class="err">，接收</span><span class="n">item</span><span class="err">的</span><span class="n">type</span><span class="err">字段，用来判断监控类型</span>
-    <span class="c1">//poller.c</span>
-        <span class="k">static</span> <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="nf">host_availability_agent_by_item_type</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">type</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">switch</span> <span class="p">(</span><span class="n">type</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="k">case</span> <span class="n">ITEM_TYPE_ZABBIX</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">ZBX_AGENT_ZABBIX</span><span class="p">;</span>
-                    <span class="k">break</span><span class="p">;</span>
-                <span class="k">case</span> <span class="n">ITEM_TYPE_SNMPv1</span><span class="p">:</span>
-                <span class="k">case</span> <span class="n">ITEM_TYPE_SNMPv2c</span><span class="p">:</span>
-                <span class="k">case</span> <span class="n">ITEM_TYPE_SNMPv3</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">ZBX_AGENT_SNMP</span><span class="p">;</span>
-                    <span class="k">break</span><span class="p">;</span>
-                <span class="k">case</span> <span class="n">ITEM_TYPE_IPMI</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">ZBX_AGENT_IPMI</span><span class="p">;</span>
-                    <span class="k">break</span><span class="p">;</span>
-                <span class="k">case</span> <span class="n">ITEM_TYPE_JMX</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">ZBX_AGENT_JMX</span><span class="p">;</span>
-                    <span class="k">break</span><span class="p">;</span>
-                <span class="nl">default:</span>
-                    <span class="k">return</span> <span class="n">ZBX_AGENT_UNKNOWN</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="mi">2</span><span class="err">、</span><span class="n">ZBX_AGENT_UNKNOWN</span> <span class="err">常量</span> <span class="err">为</span> <span class="mi">255</span> <span class="err">对应之前的</span> <span class="err">#</span><span class="mi">2</span>
-</code></pre></div></div>
-
-<p>#7 根据agent_type来判断主机的可用性，网络设备会匹配到ZBX_AGENT_SNMP，四个值分别代表的意思是</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//poller.c</span>
-    <span class="k">static</span> <span class="kt">int</span>    <span class="nf">host_get_availability</span><span class="p">(</span><span class="k">const</span> <span class="n">DC_HOST</span> <span class="o">*</span><span class="n">dc_host</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">agent</span><span class="p">,</span> <span class="n">zbx_host_availability_t</span> <span class="o">*</span><span class="n">ha</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="n">zbx_agent_availability_t</span>    <span class="o">*</span><span class="n">availability</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ha</span><span class="o">-&gt;</span><span class="n">agents</span><span class="p">[</span><span class="n">agent</span><span class="p">];</span>
-
-        <span class="n">availability</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">=</span> <span class="n">ZBX_FLAGS_AGENT_STATUS</span><span class="p">;</span>
-
-        <span class="k">switch</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_ZABBIX</span><span class="p">:</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">available</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">;</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">error</span> <span class="o">=</span> <span class="n">zbx_strdup</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">error</span><span class="p">);</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">errors_from</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">;</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">disable_until</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">disable_until</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_SNMP</span><span class="p">:</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">available</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_available</span><span class="p">;</span>  <span class="c1">//主机的snmp可用状态</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">error</span> <span class="o">=</span> <span class="n">zbx_strdup</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_error</span><span class="p">);</span>  <span class="c1">//错误信息</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">errors_from</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_errors_from</span><span class="p">;</span>      <span class="c1">//错误发生时间</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">disable_until</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_disable_until</span><span class="p">;</span>  <span class="c1">//下次延迟检测时间</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_IPMI</span><span class="p">:</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">available</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_available</span><span class="p">;</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">error</span> <span class="o">=</span> <span class="n">zbx_strdup</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_error</span><span class="p">);</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">errors_from</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_errors_from</span><span class="p">;</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">disable_until</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_disable_until</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_JMX</span><span class="p">:</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">available</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_available</span><span class="p">;</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">error</span> <span class="o">=</span> <span class="n">zbx_strdup</span><span class="p">(</span><span class="nb">NULL</span><span class="p">,</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_error</span><span class="p">);</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">disable_until</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_disable_until</span><span class="p">;</span>
-                <span class="n">availability</span><span class="o">-&gt;</span><span class="n">errors_from</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_errors_from</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="nl">default:</span>
-                <span class="k">return</span> <span class="n">FAIL</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="n">ha</span><span class="o">-&gt;</span><span class="n">hostid</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">hostid</span><span class="p">;</span>
-
-        <span class="k">return</span> <span class="n">SUCCEED</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="c1">//dbcache.h</span>
-    <span class="k">typedef</span> <span class="k">struct</span>
-    <span class="p">{</span>
-        <span class="n">zbx_uint64_t</span>    <span class="n">hostid</span><span class="p">;</span>
-        <span class="n">zbx_uint64_t</span>    <span class="n">proxy_hostid</span><span class="p">;</span>
-        <span class="kt">char</span>        <span class="n">host</span><span class="p">[</span><span class="n">HOST_HOST_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">name</span><span class="p">[</span><span class="n">HOST_NAME_LEN</span> <span class="o">*</span> <span class="n">ZBX_MAX_BYTES_IN_UTF8_CHAR</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">maintenance_status</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">maintenance_type</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">maintenance_from</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">errors_from</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">available</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">disable_until</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">snmp_errors_from</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">snmp_available</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">snmp_disable_until</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">ipmi_errors_from</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">ipmi_available</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">ipmi_disable_until</span><span class="p">;</span>
-        <span class="kt">signed</span> <span class="kt">char</span>    <span class="n">ipmi_authtype</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">ipmi_privilege</span><span class="p">;</span>
-        <span class="kt">char</span>        <span class="n">ipmi_username</span><span class="p">[</span><span class="n">HOST_IPMI_USERNAME_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">ipmi_password</span><span class="p">[</span><span class="n">HOST_IPMI_PASSWORD_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">int</span>        <span class="n">jmx_errors_from</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">jmx_available</span><span class="p">;</span>
-        <span class="kt">int</span>        <span class="n">jmx_disable_until</span><span class="p">;</span>
-        <span class="kt">char</span>        <span class="n">inventory_mode</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">status</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">tls_connect</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">tls_accept</span><span class="p">;</span>
-    <span class="cp">#if defined(HAVE_POLARSSL) || defined(HAVE_GNUTLS) || defined(HAVE_OPENSSL)
-</span>        <span class="kt">char</span>        <span class="n">tls_issuer</span><span class="p">[</span><span class="n">HOST_TLS_ISSUER_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">tls_subject</span><span class="p">[</span><span class="n">HOST_TLS_SUBJECT_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">tls_psk_identity</span><span class="p">[</span><span class="n">HOST_TLS_PSK_IDENTITY_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">tls_psk</span><span class="p">[</span><span class="n">HOST_TLS_PSK_LEN_MAX</span><span class="p">];</span>
-    <span class="cp">#endif
-</span>        <span class="kt">char</span>        <span class="n">error</span><span class="p">[</span><span class="n">HOST_ERROR_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">snmp_error</span><span class="p">[</span><span class="n">HOST_ERROR_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">ipmi_error</span><span class="p">[</span><span class="n">HOST_ERROR_LEN_MAX</span><span class="p">];</span>
-        <span class="kt">char</span>        <span class="n">jmx_error</span><span class="p">[</span><span class="n">HOST_ERROR_LEN_MAX</span><span class="p">];</span>
-    <span class="p">}</span>
-    <span class="n">DC_HOST</span><span class="p">;</span>
-    
-    <span class="c1">//db.h</span>
-    <span class="cp">#define ZBX_FLAGS_AGENT_STATUS_AVAILABLE    0x00000001
-</span>    <span class="cp">#define ZBX_FLAGS_AGENT_STATUS_ERROR        0x00000002
-</span>    <span class="cp">#define ZBX_FLAGS_AGENT_STATUS_ERRORS_FROM    0x00000004
-</span>    <span class="cp">#define ZBX_FLAGS_AGENT_STATUS_DISABLE_UNTIL    0x00000008
-</span>    <span class="cp">#define ZBX_FLAGS_AGENT_STATUS        (ZBX_FLAGS_AGENT_STATUS_AVAILABLE |    \
-                        ZBX_FLAGS_AGENT_STATUS_ERROR |        \
-                        ZBX_FLAGS_AGENT_STATUS_ERRORS_FROM |    \
-                        ZBX_FLAGS_AGENT_STATUS_DISABLE_UNTIL) 
-</span>
-     
-    <span class="c1">//common.h</span>
-    <span class="cp">#define    FAIL        -1
-</span></code></pre></div></div>
-
-<p>#8  根据agent_type 设置主机状态</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="c1">//dbconfig.c</span>
-    <span class="kt">int</span>    <span class="nf">DChost_deactivate</span><span class="p">(</span><span class="n">zbx_uint64_t</span> <span class="n">hostid</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">agent_type</span><span class="p">,</span> <span class="k">const</span> <span class="n">zbx_timespec_t</span> <span class="o">*</span><span class="n">ts</span><span class="p">,</span>
-            <span class="n">zbx_agent_availability_t</span> <span class="o">*</span><span class="n">in</span><span class="p">,</span> <span class="n">zbx_agent_availability_t</span> <span class="o">*</span><span class="n">out</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">error_msg</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kt">int</span>        <span class="n">ret</span> <span class="o">=</span> <span class="n">FAIL</span><span class="p">,</span> <span class="n">errors_from</span><span class="p">,</span><span class="n">disable_until</span><span class="p">;</span>
-        <span class="k">const</span> <span class="kt">char</span>    <span class="o">*</span><span class="n">error</span><span class="p">;</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>    <span class="n">available</span><span class="p">;</span>
-        <span class="n">ZBX_DC_HOST</span>    <span class="o">*</span><span class="n">dc_host</span><span class="p">;</span>
-
-
-        <span class="cm">/* don't try deactivating host if the unreachable delay has not passed since the first error */</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">CONFIG_UNREACHABLE_DELAY</span> <span class="o">&gt;</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">-</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">)</span> 
-            <span class="k">goto</span> <span class="n">out</span><span class="p">;</span>
-
-        <span class="n">WRLOCK_CACHE</span><span class="p">;</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="nb">NULL</span> <span class="o">==</span> <span class="p">(</span><span class="n">dc_host</span> <span class="o">=</span> <span class="p">(</span><span class="n">ZBX_DC_HOST</span> <span class="o">*</span><span class="p">)</span><span class="n">zbx_hashset_search</span><span class="p">(</span><span class="o">&amp;</span><span class="n">config</span><span class="o">-&gt;</span><span class="n">hosts</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">hostid</span><span class="p">)))</span>
-            <span class="k">goto</span> <span class="n">unlock</span><span class="p">;</span>
-
-        <span class="cm">/* Don't try deactivating host if:                */</span>
-        <span class="cm">/* - (server, proxy) it's not monitored any more; */</span>
-        <span class="cm">/* - (server) it's monitored by proxy.            */</span>
-        <span class="k">if</span> <span class="p">((</span><span class="mi">0</span> <span class="o">!=</span> <span class="p">(</span><span class="n">program_type</span> <span class="o">&amp;</span> <span class="n">ZBX_PROGRAM_TYPE_SERVER</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="mi">0</span> <span class="o">!=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">proxy_hostid</span><span class="p">)</span> <span class="o">||</span>
-                <span class="n">HOST_STATUS_MONITORED</span> <span class="o">!=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">status</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">goto</span> <span class="n">unlock</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="n">DChost_get_agent_availability</span><span class="p">(</span><span class="n">dc_host</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">in</span><span class="p">);</span>
-
-        <span class="n">available</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">;</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">error</span><span class="p">;</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="cm">/* first error, schedule next unreachable check */</span>
-            <span class="n">errors_from</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span><span class="p">;</span>
-            <span class="n">disable_until</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">+</span> <span class="n">CONFIG_UNREACHABLE_DELAY</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="n">errors_from</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">;</span>
-            <span class="n">disable_until</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">disable_until</span><span class="p">;</span>
-
-            <span class="cm">/* Check if other pollers haven't already attempted deactivating host. */</span>
-            <span class="cm">/* In that case should wait the initial unreachable delay before       */</span>
-            <span class="cm">/* trying to make it unavailable.                                      */</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">CONFIG_UNREACHABLE_DELAY</span> <span class="o">&lt;=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">-</span> <span class="n">errors_from</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="cm">/* repeating error */</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">CONFIG_UNREACHABLE_PERIOD</span> <span class="o">&gt;</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">-</span> <span class="n">errors_from</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="cm">/* leave host available, schedule next unreachable check */</span>
-                    <span class="n">disable_until</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">+</span> <span class="n">CONFIG_UNREACHABLE_DELAY</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="k">else</span>
-                <span class="p">{</span>
-                    <span class="cm">/* make host unavailable, schedule next unavailable check */</span>
-                    <span class="n">disable_until</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">+</span> <span class="n">CONFIG_UNAVAILABLE_DELAY</span><span class="p">;</span>
-                    <span class="n">available</span> <span class="o">=</span> <span class="n">HOST_AVAILABLE_FALSE</span><span class="p">;</span>
-                    <span class="n">error</span> <span class="o">=</span> <span class="n">error_msg</span><span class="p">;</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="n">zbx_agent_availability_init</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">available</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">errors_from</span><span class="p">,</span> <span class="n">disable_until</span><span class="p">);</span>
-        <span class="n">DChost_set_agent_availability</span><span class="p">(</span><span class="n">dc_host</span><span class="p">,</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span><span class="p">,</span> <span class="n">agent_type</span><span class="p">,</span> <span class="n">out</span><span class="p">);</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="n">ZBX_FLAGS_AGENT_STATUS_NONE</span> <span class="o">!=</span> <span class="n">out</span><span class="o">-&gt;</span><span class="n">flags</span><span class="p">)</span>
-            <span class="n">ret</span> <span class="o">=</span> <span class="n">SUCCEED</span><span class="p">;</span>
-    <span class="nl">unlock:</span>
-        <span class="n">UNLOCK_CACHE</span><span class="p">;</span>
-    <span class="nl">out:</span>
-        <span class="k">return</span> <span class="n">ret</span><span class="p">;</span>
-    <span class="p">}</span>
-</code></pre></div></div>
-
-<p>主要看下这段:</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">==</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="cm">/* first error, schedule next unreachable check */</span>
-            <span class="n">errors_from</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span><span class="p">;</span>
-            <span class="n">disable_until</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">+</span> <span class="n">CONFIG_UNREACHABLE_DELAY</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-            <span class="n">errors_from</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">;</span>
-            <span class="n">disable_until</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">disable_until</span><span class="p">;</span>
- 
-            <span class="cm">/* Check if other pollers haven't already attempted deactivating host. */</span>
-            <span class="cm">/* In that case should wait the initial unreachable delay before       */</span>
-            <span class="cm">/* trying to make it unavailable.                                      */</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">CONFIG_UNREACHABLE_DELAY</span> <span class="o">&lt;=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">-</span> <span class="n">errors_from</span><span class="p">)</span>
-            <span class="p">{</span>
-                <span class="cm">/* repeating error */</span>
-                <span class="k">if</span> <span class="p">(</span><span class="n">CONFIG_UNREACHABLE_PERIOD</span> <span class="o">&gt;</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">-</span> <span class="n">errors_from</span><span class="p">)</span>
-                <span class="p">{</span>
-                    <span class="cm">/* leave host available, schedule next unreachable check */</span>
-                    <span class="n">disable_until</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">+</span> <span class="n">CONFIG_UNREACHABLE_DELAY</span><span class="p">;</span>
-                <span class="p">}</span>
-                <span class="k">else</span>
-                <span class="p">{</span>
-                    <span class="cm">/* make host unavailable, schedule next unavailable check */</span>
-                    <span class="n">disable_until</span> <span class="o">=</span> <span class="n">ts</span><span class="o">-&gt;</span><span class="n">sec</span> <span class="o">+</span> <span class="n">CONFIG_UNAVAILABLE_DELAY</span><span class="p">;</span>
-                    <span class="n">available</span> <span class="o">=</span> <span class="n">HOST_AVAILABLE_FALSE</span><span class="p">;</span>
-                    <span class="n">error</span> <span class="o">=</span> <span class="n">error_msg</span><span class="p">;</span>
-                <span class="p">}</span>
-            <span class="p">}</span>
-        <span class="p">}</span>        <span class="err">如果错误第一次出现</span><span class="o">:</span>
-            <span class="err">错误发生时间</span><span class="o">=</span><span class="err">检查的时间戳</span>
-            <span class="err">下次的检查时间</span> <span class="o">=</span> <span class="err">时间戳</span><span class="o">+</span><span class="mi">15</span><span class="n">s</span>
-        <span class="err">否则</span><span class="o">:</span>
-            <span class="err">错误发生时间</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">errors_from</span>
-            <span class="err">下次检查时间</span> <span class="o">=</span> <span class="n">in</span><span class="o">-&gt;</span><span class="n">disable_until</span>
- 
-            <span class="err">检查的时间戳</span><span class="o">-</span><span class="err">错误发生时间</span><span class="o">&gt;=</span><span class="mi">15</span><span class="n">s</span><span class="o">:</span>
-                <span class="err">检查的时间戳</span><span class="o">-</span><span class="err">错误发生时间</span><span class="o">&lt;</span> <span class="mi">45</span><span class="n">s</span><span class="o">:</span>
-                    <span class="err">下次的检查时间</span> <span class="o">=</span> <span class="err">检查的时间戳</span><span class="o">+</span><span class="mi">15</span><span class="n">s</span>
-                <span class="err">否则</span><span class="o">:</span>
-                    <span class="err">下一次检查时间</span> <span class="o">=</span><span class="err">检查的时间戳</span><span class="o">+</span><span class="mi">15</span><span class="n">s</span>
-                    <span class="err">主机可用性为不可用</span>
-</code></pre></div></div>
-
-<p>用配置文件来解释就是: 如果由于网络等原因没有实现项目的及时监控，第一次的监控间隔为UnreachableDelay时间(15s),如果这次也失败了，那么从第一次失败到本次检查在UnreachablePeriod时间内，会再次在UnreachableDelay时间后监控</p>
-
-<p>#9 更新数据库中的主机可用性信息</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// poller.c</span>
-    <span class="k">static</span> <span class="kt">int</span>    <span class="nf">db_host_update_availability</span><span class="p">(</span><span class="k">const</span> <span class="n">zbx_host_availability_t</span> <span class="o">*</span><span class="n">ha</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="kt">char</span>    <span class="o">*</span><span class="n">sql</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
-        <span class="kt">size_t</span>    <span class="n">sql_alloc</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">sql_offset</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="n">SUCCEED</span> <span class="o">==</span> <span class="n">zbx_sql_add_host_availability</span><span class="p">(</span><span class="o">&amp;</span><span class="n">sql</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sql_alloc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sql_offset</span><span class="p">,</span> <span class="n">ha</span><span class="p">))</span>
-        <span class="p">{</span>
-            <span class="n">DBbegin</span><span class="p">();</span>
-            <span class="n">DBexecute</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">sql</span><span class="p">);</span>
-            <span class="n">DBcommit</span><span class="p">();</span>
-
-            <span class="n">zbx_free</span><span class="p">(</span><span class="n">sql</span><span class="p">);</span>
-
-            <span class="k">return</span> <span class="n">SUCCEED</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="k">return</span> <span class="n">FAIL</span><span class="p">;</span>
-    <span class="p">}</span>
-</code></pre></div></div>
-
-<p>#10 根据agent_type设置主机可用性信息</p>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">//poller.c</span>
-    <span class="k">static</span> <span class="kt">int</span>    <span class="nf">host_set_availability</span><span class="p">(</span><span class="n">DC_HOST</span> <span class="o">*</span><span class="n">dc_host</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">agent</span><span class="p">,</span> <span class="k">const</span> <span class="n">zbx_host_availability_t</span> <span class="o">*</span><span class="n">ha</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="k">const</span> <span class="n">zbx_agent_availability_t</span>    <span class="o">*</span><span class="n">availability</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ha</span><span class="o">-&gt;</span><span class="n">agents</span><span class="p">[</span><span class="n">agent</span><span class="p">];</span>
-        <span class="kt">unsigned</span> <span class="kt">char</span>            <span class="o">*</span><span class="n">pavailable</span><span class="p">;</span>
-        <span class="kt">int</span>                <span class="o">*</span><span class="n">perrors_from</span><span class="p">,</span> <span class="o">*</span><span class="n">pdisable_until</span><span class="p">;</span>
-        <span class="kt">char</span>                <span class="o">*</span><span class="n">perror</span><span class="p">;</span>
-
-        <span class="k">switch</span> <span class="p">(</span><span class="n">agent</span><span class="p">)</span>
-        <span class="p">{</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_ZABBIX</span><span class="p">:</span>
-                <span class="n">pavailable</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">;</span>
-                <span class="n">perror</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">error</span><span class="p">;</span>
-                <span class="n">perrors_from</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">;</span>
-                <span class="n">pdisable_until</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">disable_until</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_SNMP</span><span class="p">:</span>
-                <span class="n">pavailable</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_available</span><span class="p">;</span>
-                <span class="n">perror</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_error</span><span class="p">;</span>
-                <span class="n">perrors_from</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_errors_from</span><span class="p">;</span>
-                <span class="n">pdisable_until</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">snmp_disable_until</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_IPMI</span><span class="p">:</span>
-                <span class="n">pavailable</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_available</span><span class="p">;</span>
-                <span class="n">perror</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_error</span><span class="p">;</span>
-                <span class="n">perrors_from</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_errors_from</span><span class="p">;</span>
-                <span class="n">pdisable_until</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">ipmi_disable_until</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="k">case</span> <span class="n">ZBX_AGENT_JMX</span><span class="p">:</span>
-                <span class="n">pavailable</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_available</span><span class="p">;</span>
-                <span class="n">perror</span> <span class="o">=</span> <span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_error</span><span class="p">;</span>
-                <span class="n">pdisable_until</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_disable_until</span><span class="p">;</span>
-                <span class="n">perrors_from</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dc_host</span><span class="o">-&gt;</span><span class="n">jmx_errors_from</span><span class="p">;</span>
-                <span class="k">break</span><span class="p">;</span>
-            <span class="nl">default:</span>
-                <span class="k">return</span> <span class="n">FAIL</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">!=</span> <span class="p">(</span><span class="n">availability</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">ZBX_FLAGS_AGENT_STATUS_AVAILABLE</span><span class="p">))</span>
-            <span class="o">*</span><span class="n">pavailable</span> <span class="o">=</span> <span class="n">availability</span><span class="o">-&gt;</span><span class="n">available</span><span class="p">;</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">!=</span> <span class="p">(</span><span class="n">availability</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">ZBX_FLAGS_AGENT_STATUS_ERROR</span><span class="p">))</span>
-            <span class="n">zbx_strlcpy</span><span class="p">(</span><span class="n">perror</span><span class="p">,</span> <span class="n">availability</span><span class="o">-&gt;</span><span class="n">error</span><span class="p">,</span> <span class="n">HOST_ERROR_LEN_MAX</span><span class="p">);</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">!=</span> <span class="p">(</span><span class="n">availability</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">ZBX_FLAGS_AGENT_STATUS_ERRORS_FROM</span><span class="p">))</span>
-            <span class="o">*</span><span class="n">perrors_from</span> <span class="o">=</span> <span class="n">availability</span><span class="o">-&gt;</span><span class="n">errors_from</span><span class="p">;</span>
-
-        <span class="k">if</span> <span class="p">(</span><span class="mi">0</span> <span class="o">!=</span> <span class="p">(</span><span class="n">availability</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">ZBX_FLAGS_AGENT_STATUS_DISABLE_UNTIL</span><span class="p">))</span>
-            <span class="o">*</span><span class="n">pdisable_until</span> <span class="o">=</span> <span class="n">availability</span><span class="o">-&gt;</span><span class="n">disable_until</span><span class="p">;</span>
-
-        <span class="k">return</span> <span class="n">SUCCEED</span><span class="p">;</span>
-    <span class="p">}</span>
-</code></pre></div></div>
-
-<p>#11-16</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#如果是第一次检查：</span>
-<span class="c">#   　　 记录日志first network error, wait for 15 seconds</span>
-<span class="c">#否则:</span>
-<span class="c">#   　　 如果数据库中的主机如果显示可用:</span>
-<span class="c">#        　　　　记录日志another network error, wait for 15 seconds</span>
-<span class="c">#    　　否则</span>
-<span class="c">#        　　　　记录日志temporarily disabling(这是前段页面的绿色图标会变为红色)</span>
-</code></pre></div></div>
-
-<p>从上面的代码可以看出，在三中情况下会产生network error, wait for 15s seconds的日志，分别是在poller过程中产生的网络错误，网关问题，或者是检查超时。总结下来就是:zabbix server 与zabbix agentd的连接和数据的收发不能成功或者在取得数据的一系列处理中花费的时间超过了zabbix server 的Timeout参数情况下发生。</p>
-
-<p>从正常取值到出现异常的处理过程是这样的:</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>正常取值   UnreachableDelay  UnreachableDelay   UnreachableDelay      UnnavailableDelay        恢复
-                  |                                       |                              |
-                  |                                       |                              |
-                  <span class="nt">-----------------------UnreachablePeriod--------------------------------</span>
-    1             2                3                   4                      5
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>       过程                                        日志                                                               
-
-    1 获取正常监控数据
-    2 发生错误                    <span class="nt">------------</span><span class="o">&gt;</span>first network
-    3 再次发生错误                <span class="nt">------------</span><span class="o">&gt;</span>another network
-    4 置为不可用                  <span class="nt">------------</span><span class="o">&gt;</span>temporarily disabling
-    5 恢复                        <span class="nt">------------</span><span class="o">&gt;</span>resuming
-</code></pre></div></div>
-<p>日志中的15s在配置文件中对应的配置UnreachableDelay,默认为15s，在源码中的位置是server.c中的CONFIG_UNREACHABLE_DELAY，
-但注意这个配置不会解决任何network error的问题，只是为计算下一个检查时间提供时间依据。还有大家应该注意到了UnreachableDelay参数和UnreachablePeriod是倍数关系</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[从zabbix的源码看another network error, wait for 15s seconds的异常]]></summary></entry></feed>
+UDLD所有交换机互联的链路上</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[STP介绍]]></summary></entry></feed>
