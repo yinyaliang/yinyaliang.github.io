@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-27T15:25:05+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Zabbix 对于 KVM 虚拟机资源监控</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="Zabbix 对于 KVM 虚拟机资源监控" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-27T15:28:32+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Zabbix 对于 KVM 虚拟机资源监控</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="Zabbix 对于 KVM 虚拟机资源监控" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
 
 <h4 id="安装">安装</h4>
 
@@ -19,41 +19,7 @@
 
 <h4 id="代码">代码</h4>
 
-<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="p">(</span>
-	<span class="s">"encoding/json"</span>
-	<span class="s">"fmt"</span>
-	<span class="s">"time"</span>
-
-	<span class="s">"libvirt.org/go/libvirt"</span>
-	<span class="s">"zabbix.com/pkg/plugin"</span>
-	<span class="s">"zabbix.com/pkg/zbxerr"</span>
-<span class="p">)</span>
-
-<span class="k">type</span> <span class="n">Plugin</span> <span class="k">struct</span> <span class="p">{</span>
-	<span class="n">plugin</span><span class="o">.</span><span class="n">Base</span>
-<span class="p">}</span>
-
-<span class="k">var</span> <span class="n">impl</span> <span class="n">Plugin</span>
-
-<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">Export</span><span class="p">(</span><span class="n">key</span> <span class="kt">string</span><span class="p">,</span> <span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="n">ctx</span> <span class="n">plugin</span><span class="o">.</span><span class="n">ContextProvider</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="k">interface</span><span class="p">{},</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">switch</span> <span class="n">key</span> <span class="p">{</span>
-	<span class="k">case</span> <span class="s">"domain.info"</span><span class="o">:</span>
-		<span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-		<span class="p">}</span>
-		<span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="no">nil</span>
-	<span class="k">default</span><span class="o">:</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">plugin</span><span class="o">.</span><span class="n">UnsupportedMetricError</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">type</span> <span class="n">domainInfo</span> <span class="k">struct</span> <span class="p">{</span>
-	<span class="n">MemUnUsed</span> <span class="kt">uint64</span> <span class="s">`json:"MEMUNUSED"`</span>
-	<span class="n">CPUUsage</span>  <span class="kt">uint64</span> <span class="s">`json:"CPUUsage"`</span>
-<span class="p">}</span>
-
-<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
 	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">1</span> <span class="p">{</span>
 		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Too many parameters."</span><span class="p">)</span>
 	<span class="p">}</span>
@@ -118,10 +84,6 @@
 	<span class="k">return</span>
 <span class="p">}</span>
 
-<span class="k">func</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
-	<span class="n">plugin</span><span class="o">.</span><span class="n">RegisterMetrics</span><span class="p">(</span><span class="o">&amp;</span><span class="n">impl</span><span class="p">,</span> <span class="s">"Kvm"</span><span class="p">,</span>
-		<span class="s">"domain.info"</span><span class="p">,</span> <span class="s">"Extract information about a domain."</span><span class="p">)</span>
-<span class="p">}</span>
 </code></pre></div></div>
 
 <h4 id="效果">效果</h4>
