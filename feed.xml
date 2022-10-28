@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-27T16:29:45+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Zabbix 对于 KVM 虚拟机资源监控</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="Zabbix 对于 KVM 虚拟机资源监控" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-28T11:56:55+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Zabbix 对于 KVM 虚拟机资源监控</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="Zabbix 对于 KVM 虚拟机资源监控" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
 
 <h4 id="安装">安装</h4>
 
@@ -66,13 +66,10 @@
 <span class="p">}</span>
 
 <span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">1</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Too many parameters."</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">!=</span> <span class="m">1</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Invalid parameter."</span><span class="p">)</span>
 	<span class="p">}</span>
 
-	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span> <span class="o">||</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="m">0</span><span class="p">])</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Invalid first parameter."</span><span class="p">)</span>
-	<span class="p">}</span>
 	<span class="n">domainName</span> <span class="o">:=</span> <span class="n">params</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
 
 	<span class="n">conn</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">libvirt</span><span class="o">.</span><span class="n">NewConnect</span><span class="p">(</span><span class="s">"qemu:///system"</span><span class="p">)</span>
@@ -90,7 +87,7 @@
 
 		<span class="n">doms</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">conn</span><span class="o">.</span><span class="n">ListAllDomains</span><span class="p">(</span><span class="n">libvirt</span><span class="o">.</span><span class="n">CONNECT_LIST_DOMAINS_ACTIVE</span><span class="p">)</span>
 		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-			<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="s">"err"</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
 		<span class="p">}</span>
 		<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dom</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">doms</span> <span class="p">{</span>
 			<span class="n">name</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
@@ -98,6 +95,7 @@
 				<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
 			<span class="p">}</span>
 			<span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">domainName</span> <span class="p">{</span>
+				<span class="n">dom</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
 				<span class="k">continue</span>
 			<span class="p">}</span>
 			<span class="c">// memory</span>
@@ -111,7 +109,7 @@
 			<span class="c">// Query cpu total stats</span>
 			<span class="n">cpuStats</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetCPUStats</span><span class="p">(</span><span class="o">-</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
 			<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-				<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+				<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
 			<span class="p">}</span>
 			<span class="n">cpu_time_pre</span> <span class="o">=</span> <span class="n">cpu_time_last</span>
 			<span class="n">cpu_time_last</span> <span class="o">=</span> <span class="n">cpuStats</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">CpuTime</span>
@@ -167,6 +165,7 @@
 		<span class="s">"kvm.avtive.domain.discovery"</span><span class="p">,</span> <span class="s">"Returns availabe domain."</span><span class="p">,</span>
 		<span class="s">"domain.info"</span><span class="p">,</span> <span class="s">"Extract information about a domain."</span><span class="p">)</span>
 <span class="p">}</span>
+
 </code></pre></div></div>
 
 <h4 id="效果">效果</h4>
@@ -174,10 +173,10 @@
 <p><img src="/assets/images/zabbix/03.png" /></p>
 
 <h4 id="参考">参考</h4>
-
-<p>https://people.redhat.com/rjones/virt-top/faq.html
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://people.redhat.com/rjones/virt-top/faq.html
 https://gitlab.com/libvirt/libvirt-go/blob/v7.4.0/domain.go#L369
-https://pkg.go.dev/libvirt.org/libvirt-go</p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[采集KVM虚拟主机CPU以及内存使用资源情况]]></summary></entry><entry><title type="html">Terraform 安装使用</title><link href="/terraform/" rel="alternate" type="text/html" title="Terraform 安装使用" /><published>2022-10-25T00:00:00+08:00</published><updated>2022-10-25T00:00:00+08:00</updated><id>/terraform</id><content type="html" xml:base="/terraform/"><![CDATA[<p>Terraform创建腾讯CVM</p>
+https://pkg.go.dev/libvirt.org/libvirt-go
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[采集KVM虚拟主机CPU以及内存使用资源情况]]></summary></entry><entry><title type="html">Terraform 安装使用</title><link href="/terraform/" rel="alternate" type="text/html" title="Terraform 安装使用" /><published>2022-10-25T00:00:00+08:00</published><updated>2022-10-25T00:00:00+08:00</updated><id>/terraform</id><content type="html" xml:base="/terraform/"><![CDATA[<p>Terraform创建腾讯CVM</p>
 
 <h4 id="什么是terraform">什么是terraform</h4>
 
