@@ -1,18 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-30T21:49:41+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">写一个C版本的测试程序</title><link href="/bcc-02/" rel="alternate" type="text/html" title="写一个C版本的测试程序" /><published>2022-10-30T00:00:00+08:00</published><updated>2022-10-30T00:00:00+08:00</updated><id>/bcc-02</id><content type="html" xml:base="/bcc-02/"><![CDATA[<h4 id="hello_kernc">hello_kern.c</h4>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-30T22:04:43+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">写一个C版本的测试程序</title><link href="/bcc-02/" rel="alternate" type="text/html" title="写一个C版本的测试程序" /><published>2022-10-30T00:00:00+08:00</published><updated>2022-10-30T00:00:00+08:00</updated><id>/bcc-02</id><content type="html" xml:base="/bcc-02/"><![CDATA[<h4 id="hello_kernc">hello_kern.c</h4>
 
 <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;linux/bpf.h&gt;</span><span class="cp">
 #include</span> <span class="cpf">"bpf/bpf_helpers.h"</span><span class="cp">
 </span>
 <span class="cp">#define SEC(NAME) __attribute__((section(NAME), used))
 </span>
+<span class="c1">// 编译到tracepoint/syscalls/sys_enter_execve</span>
 <span class="n">SEC</span><span class="p">(</span><span class="s">"tracepoint/syscalls/sys_enter_execve"</span><span class="p">)</span>
 <span class="kt">int</span> <span class="nf">bpf_prog</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="kt">char</span> <span class="n">msg</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"Hello BPF!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-        <span class="n">bpf_trace_printk</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+        <span class="n">bpf_trace_printk</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span> <span class="c1">// 在内核跟踪日志打印消息</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
-
+<span class="c1">// 兼容内核使用</span>
 <span class="kt">char</span> <span class="n">_license</span><span class="p">[]</span> <span class="n">SEC</span><span class="p">(</span><span class="s">"license"</span><span class="p">)</span> <span class="o">=</span> <span class="s">"GPL"</span><span class="p">;</span>
 </code></pre></div></div>
 

@@ -199,14 +199,15 @@
 </span>
 <span class="cp">#define SEC(NAME) __attribute__((section(NAME), used))
 </span>
+<span class="c1">// 编译到tracepoint/syscalls/sys_enter_execve</span>
 <span class="n">SEC</span><span class="p">(</span><span class="s">"tracepoint/syscalls/sys_enter_execve"</span><span class="p">)</span>
 <span class="kt">int</span> <span class="nf">bpf_prog</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
 <span class="p">{</span>
         <span class="kt">char</span> <span class="n">msg</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"Hello BPF!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-        <span class="n">bpf_trace_printk</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+        <span class="n">bpf_trace_printk</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span> <span class="c1">// 在内核跟踪日志打印消息</span>
         <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
-
+<span class="c1">// 兼容内核使用</span>
 <span class="kt">char</span> <span class="n">_license</span><span class="p">[]</span> <span class="n">SEC</span><span class="p">(</span><span class="s">"license"</span><span class="p">)</span> <span class="o">=</span> <span class="s">"GPL"</span><span class="p">;</span>
 </code></pre></div></div>
 
