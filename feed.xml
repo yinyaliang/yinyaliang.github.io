@@ -1,4 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-28T11:56:55+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Zabbix 对于 KVM 虚拟机资源监控</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="Zabbix 对于 KVM 虚拟机资源监控" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-10-30T21:49:41+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">写一个C版本的测试程序</title><link href="/bcc-02/" rel="alternate" type="text/html" title="写一个C版本的测试程序" /><published>2022-10-30T00:00:00+08:00</published><updated>2022-10-30T00:00:00+08:00</updated><id>/bcc-02</id><content type="html" xml:base="/bcc-02/"><![CDATA[<h4 id="hello_kernc">hello_kern.c</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;linux/bpf.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"bpf/bpf_helpers.h"</span><span class="cp">
+</span>
+<span class="cp">#define SEC(NAME) __attribute__((section(NAME), used))
+</span>
+<span class="n">SEC</span><span class="p">(</span><span class="s">"tracepoint/syscalls/sys_enter_execve"</span><span class="p">)</span>
+<span class="kt">int</span> <span class="nf">bpf_prog</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="kt">char</span> <span class="n">msg</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"Hello BPF!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
+        <span class="n">bpf_trace_printk</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">char</span> <span class="n">_license</span><span class="p">[]</span> <span class="n">SEC</span><span class="p">(</span><span class="s">"license"</span><span class="p">)</span> <span class="o">=</span> <span class="s">"GPL"</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="hello_userc">hello_user.c</h4>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+#include</span> <span class="cpf">"bpf_load.h"</span><span class="cp">
+#include</span> <span class="cpf">"trace_helpers.h"</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span> <span class="n">load_bpf_file</span><span class="p">(</span><span class="s">"hello_kern.o"</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"Error</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">read_trace_pipe</span><span class="p">();</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="makefile">Makefile</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tprogs-y +<span class="o">=</span> hello
+hello-objs :<span class="o">=</span> bpf_load.o hello_user.o <span class="si">$(</span>TRACE_HELPERS<span class="si">)</span>
+always +<span class="o">=</span> hello_kern.o <span class="si">$(</span>TRACE_HELPERS<span class="si">)</span>
+</code></pre></div></div>
+
+<h4 id="编译">编译</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make M=samples/bpf
+</code></pre></div></div>
+
+<h4 id="运行输出">运行输出</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./hello 
+</code></pre></div></div>
+<p>再打开一个终端</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-l</span>
+</code></pre></div></div>
+<p>查看输出</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            bash-58784   <span class="o">[</span>009] d...1  6403.020850: bpf_trace_printk: Hello BPF!
+
+
+            bash-58793   <span class="o">[</span>008] d...1  6429.165508: bpf_trace_printk: Hello BPF!
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="BCC" /><summary type="html"><![CDATA[hello_kern.c]]></summary></entry><entry><title type="html">Zabbix 对于 KVM 虚拟机资源监控</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="Zabbix 对于 KVM 虚拟机资源监控" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
 
 <h4 id="安装">安装</h4>
 
@@ -3989,307 +4046,4 @@ web2   1/1     Running   0          31s
 pod <span class="s2">"web2"</span> deleted
 <span class="o">[</span>root@master pod]# kubectl taint nodes node1 node1-
 node/node1 untainted
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[创建和删除pod]]></summary></entry><entry><title type="html">Switch STP</title><link href="/rs-cisco-config-stp-01/" rel="alternate" type="text/html" title="Switch STP" /><published>2022-09-07T00:00:00+08:00</published><updated>2022-09-07T00:00:00+08:00</updated><id>/rs-cisco-config-stp-01</id><content type="html" xml:base="/rs-cisco-config-stp-01/"><![CDATA[<p>STP介绍</p>
-
-<h3 id="生成树协议功能">生成树协议功能:</h3>
-
-<blockquote>
-  <p>以太网构建无环逻辑拓扑的网络协议
-防止环路及其产生的广播风暴、多帧复用、MAC表不稳定
-允许网络设计包含备份链接，保持冗余链路</p>
-</blockquote>
-
-<h3 id="三个步骤">三个步骤</h3>
-
-<blockquote>
-  <p>选举一个根桥
-在非根桥交换机选举根端口
-在每条链路上选举指定端口</p>
-</blockquote>
-
-<h3 id="生成树术语">生成树术语</h3>
-
-<h4 id="bridge-priority-data-unitbpdu">Bridge Priority Data Unit(BPDU):</h4>
-<p>包含桥ID,发送发的桥ID,到根桥的COST值,计时器等，所有的交换机会交换BPDU来选举根桥。桥ID最小的会变为根桥</p>
-
-<h4 id="bridge-id桥id">Bridge ID(桥ID)</h4>
-<p>字节的字段，包含2个字节的桥优先级和6个字节的设备MAC 地址，在优先级一致的情况下会参考MAC地址</p>
-
-<h4 id="bridge-priority桥优先级">Bridge Priority(桥优先级)</h4>
-<p>默认值32768，范围:0-65535</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree vlan 1 priority priority
-</code></pre></div></div>
-
-<h4 id="root-bridge根桥">Root Bridge(根桥)</h4>
-<p>具有最低的Bridge id的交换机会成为根桥.网络中的流量都会基于根桥选路</p>
-
-<h4 id="path-cost路径开销">Path Cost(路径开销)</h4>
-<p>到根桥可能会有多条路径，会依据cost选择最低的一条</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>Speed</th>
-      <th>Code</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>10Mbps</td>
-      <td>100</td>
-    </tr>
-    <tr>
-      <td>100Mbps</td>
-      <td>19</td>
-    </tr>
-    <tr>
-      <td>1Gbps</td>
-      <td>4</td>
-    </tr>
-    <tr>
-      <td>10Gbps</td>
-      <td>2</td>
-    </tr>
-  </tbody>
-</table>
-
-<h4 id="designated-port指定端口">Designated port(指定端口)</h4>
-<p>环路中的每条链路选择一个端口作为指定端口，根桥的所有端口都是指定端口</p>
-<blockquote>
-  <p>最小的BID(发送者的)
-到达根桥最低的路径开销
-最低的发送者BID
-最低的发送者端口ID</p>
-</blockquote>
-
-<h4 id="root-port根端口">Root port(根端口)</h4>
-<p>非根桥上选一个端口作为根端口。是到达根桥开销最小的端口，每台设备有一个</p>
-
-<h3 id="根桥的选举过程">根桥的选举过程</h3>
-<p>每台交换机假定自己是根桥，并向邻居发送BPDU，包含自身的BID，同时也会接收其它邻居的BPDU。每收到一个BPDU，交换机就会将其与自身的BID比较。 如果优于自身，交换机就会意识到自己不是根桥，否则仍会认为自身是根桥并持续发送BPDU，如果有新的更优的BID交换机加入到网络中，就会被选举为 新的根桥</p>
-
-<h3 id="生成树的类型">生成树的类型</h3>
-
-<h4 id="8021d">802.1D</h4>
-<p>它是IEEE开发的一种生成树标准，每个拓扑只选择一个根桥接器。所有流量都在同一路径上流动(到根桥接器的最佳路径)，只支持单个Vlan或lan，它非常慢，因为它需要30s-50s秒来收敛。</p>
-
-<blockquote>
-  <p>优点</p>
-  <ul>
-    <li>对CPU和内存要求低
-缺点</li>
-    <li>不支持负载均衡</li>
-    <li>到达根桥的最佳成本计算的路径可能不是到达网络的最佳路径</li>
-  </ul>
-</blockquote>
-
-<h4 id="cst">CST</h4>
-<p>整个网络只有一个生成树实例，支持多Vlan</p>
-
-<h4 id="per-vlan-spanning-treepvst">Per VLAN Spanning Tree+(PVST+)</h4>
-<p>思科专有 ，兼容802.1D和CST,每个VLAN一个生成树</p>
-<blockquote>
-  <p>优点</p>
-  <ul>
-    <li>PVST+在为每个VLAN选择根桥接时，对网络性能提供了更多的优化</li>
-    <li>带宽消耗小于CST</li>
-    <li>最佳的负载均衡
-缺点</li>
-    <li>50s收敛</li>
-    <li>消耗更多的CPU和内存资源</li>
-  </ul>
-</blockquote>
-
-<h4 id="8021w-rapid-spanning-tree-protocolrstp">802.1w Rapid Spanning Tree Protocol(RSTP)</h4>
-<p>IEEE开发的一种标准，具有比CST更快的收敛速度，在拓扑结构中寻找单一根桥。RSTP所需的桥接资源高于CST，但小于PVST+，收敛时间在5s-10s</p>
-<blockquote>
-  <p>端口状态</p>
-  <ul>
-    <li>discarding</li>
-    <li>learning</li>
-    <li>forwarding</li>
-  </ul>
-</blockquote>
-
-<blockquote>
-  <p>端口角色</p>
-  <ul>
-    <li>替代端口(AP) 根端口的备份,5s内切换</li>
-    <li>备份端口(BP) 指定端口的备份，1s内切换</li>
-  </ul>
-</blockquote>
-
-<h4 id="rapid-per-vlan-spanning-tree-rpvst">Rapid Per VLAN Spanning Tree +(RPVST+)</h4>
-<p>Cisco开发，提供了比PVST+更快的收敛速度，每个VLAN 基于802.1w的单独实例。比其它STP标准需要更多的CPU和内存。
-和802.1d对比，
-报文格式:
-4bit的网桥优先级   12bit的扩展系统ID     48bit的MAC地址</p>
-
-<h4 id="8021smultiple-spanning-tree">802.1s(Multiple Spanning Tree)</h4>
-
-<p>IEEE开发，可以对vlan进行分组，并对每个单独的组运行RSTP</p>
-<blockquote>
-  <p>优点</p>
-  <ul>
-    <li>可以实现冗余</li>
-    <li>负载均衡</li>
-    <li>较少的CPU和内存负载</li>
-  </ul>
-</blockquote>
-
-<blockquote>
-  <p>缺点</p>
-  <ul>
-    <li>配置复杂</li>
-  </ul>
-</blockquote>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>指定模式
-<span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree mode mst          </span>
-配置参数
-<span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree mst configuration  </span>
-<span class="o">(</span>config-mst<span class="o">)</span><span class="c">#name name         非必需</span>
-<span class="o">(</span>config-mst<span class="o">)</span><span class="c">#revision rev_num  非必需</span>
-<span class="o">(</span>config-mst<span class="o">)</span><span class="c">#instance instance_number vlan range</span>
-
-<span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree mst instance_number root primary|secondary   </span>
-配置mst的primary和secondary roots
-</code></pre></div></div>
-
-<p><img src="/assets/images/stp/stp1.png" /></p>
-
-<h3 id="stp的端口状态">STP的端口状态</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>STP端口状态</th>
-      <th>接收BPDU</th>
-      <th>发送BPDU</th>
-      <th>学习MAC地址</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Bloking</td>
-      <td>√</td>
-      <td> </td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>Listening</td>
-      <td>√</td>
-      <td>√</td>
-      <td> </td>
-    </tr>
-    <tr>
-      <td>Learning</td>
-      <td>√</td>
-      <td>√</td>
-      <td>√</td>
-    </tr>
-    <tr>
-      <td>Forwarding</td>
-      <td>√</td>
-      <td>√</td>
-      <td>√</td>
-    </tr>
-    <tr>
-      <td>Disabled</td>
-      <td> </td>
-      <td> </td>
-      <td> </td>
-    </tr>
-  </tbody>
-</table>
-
-<h3 id="stp稳定机制">STP稳定机制</h3>
-
-<p>UplinkFast 接入层上行链路启用，加快收敛，上行链路收敛速度30-50s变为1s</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config<span class="o">)</span><span class="c">#spanning-tree uplinkfast</span>
-</code></pre></div></div>
-
-<p>BackboneFast 分布层或者核心层交换机启用(根桥和备份根桥)，交换机要有冗余链路，加快收敛 30s左右</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree backbonefast
-</code></pre></div></div>
-
-<p>PortFast access端口启用加速收敛，1s收敛, 思科私有</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config-if<span class="o">)</span>spanning-tree portfast
-<span class="c"># 端口</span>
-<span class="o">(</span>config<span class="o">)</span>spanning-tree portfast default 
-<span class="c"># 全局的access接口</span>
-<span class="o">(</span>config-if<span class="o">)</span>spnaning-tree portfast trunk
-<span class="c"># 链接多个VLAN通信的服务器环境</span>
-<span class="o">(</span>config-if<span class="o">)</span><span class="c">#switchport host</span>
-<span class="c"># 启用postfast并置为access模式</span>
-</code></pre></div></div>
-
-<p>BPDU guard 收到BPDU，端口将处于err-disable状态(access状态的状态收到BPDU)</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config-if<span class="o">)</span> spanning-tree bpduguard <span class="nb">enable</span>
-<span class="c"># 端口</span>
-<span class="o">(</span>config<span class="o">)</span> spanning-tree portfast bpduguard default
-<span class="c"># 全局</span>
-<span class="c"># err-disable自动恢复</span>
-<span class="o">(</span>config<span class="o">)</span><span class="c">#errdisable recovery cause all</span>
-<span class="o">(</span>config<span class="o">)</span><span class="c">#errdisable recovery interval 30-86400</span>
-</code></pre></div></div>
-
-<p>BPDU filter 抑制端口上的BPDU，阻止向外发送BPDU并忽略收到的BPDU，配合Postfast</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree bpdufilter <span class="nb">enable</span>
-<span class="c"># 接口</span>
-spanning-tree portfast bpdufilter default
-</code></pre></div></div>
-
-<p>ROOT guard  阻止外部交换机成为根桥,启用的端口强制变为指定端口，如果收到更优的BPDU，端口会进入root-inconsistent状态，不会转发流量 ,Root Guard应该配置在所有接入端口中，即接入终端的端口,异常状态会自动恢复</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree guard root
-</code></pre></div></div>
-
-<p>LOOP guard，单向链路下当非指定端口收不到BPDU时，阻止它成为指定端口，防止环路</p>
-
-<p><img src="/assets/images/stp/stp2.png" /></p>
-
-<ul>
-  <li>Loop Guard不能再启用了Root Guard的交换机上使用</li>
-  <li>Loop GUard不能再启用了Port Fast或者Dynamic Vlan port上使用</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>spanning-tree guard loop
-</code></pre></div></div>
-
-<blockquote>
-  <p>UplinkFast 和 BackboneFast已经集成到RSTP中</p>
-</blockquote>
-
-<h4 id="udld单向链路检测">UDLD(单向链路检测)</h4>
-
-<p>检查设备自身的单向链路，思科私有， UDLD一般和Loop Guard配合使用</p>
-<ul>
-  <li>普通模式 仅仅将端口标记为不确定</li>
-  <li>激进模式 将端口置于err-disable状态</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>config<span class="o">)</span><span class="c">#udld(enable | aggressive)  # 所有光口启用</span>
-<span class="o">(</span>config-if<span class="o">)</span><span class="c">#udld port [aggressive]  # 特定光口启用</span>
-udld reset <span class="c"># 重置udld关闭的端口</span>
-</code></pre></div></div>
-
-<p><img src="/assets/images/stp/stp3.png" /></p>
-
-<ul>
-  <li>通常在所有的光纤互联端口开启</li>
-  <li>使用激进模式</li>
-  <li>全局开启UDLD</li>
-</ul>
-
-<h4 id="stp稳定推荐用法">STP稳定推荐用法</h4>
-<p>PostFast 终端用户，配合BPDU Guard使用
-根保护 所有指定端口和不链接根桥的端口
-环路保护 所有根端口和非指定端口
-UDLD所有交换机互联的链路上</p>]]></content><author><name>Your Name</name></author><category term="RS" /><summary type="html"><![CDATA[STP介绍]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[创建和删除pod]]></summary></entry></feed>

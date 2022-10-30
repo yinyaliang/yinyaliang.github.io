@@ -226,4 +226,10 @@ var store = [{
         "tags": ["Monitor"],
         "url": "/monitor-kvm-cpumem/",
         "teaser": null
+      },{
+        "title": "写一个C版本的测试程序",
+        "excerpt":"hello_kern.c #include &lt;linux/bpf.h&gt; #include \"bpf/bpf_helpers.h\" #define SEC(NAME) __attribute__((section(NAME), used)) SEC(\"tracepoint/syscalls/sys_enter_execve\") int bpf_prog(void *ctx) { char msg[] = \"Hello BPF!\\n\"; bpf_trace_printk(msg, sizeof(msg)); return 0; } char _license[] SEC(\"license\") = \"GPL\"; hello_user.c #include &lt;stdio.h&gt; #include \"bpf_load.h\" #include \"trace_helpers.h\" int main(int argc, char **argv) { if( load_bpf_file(\"hello_kern.o\") != 0) { printf(\"Error\\n\"); return -1;...","categories": [],
+        "tags": ["BCC"],
+        "url": "/bcc-02/",
+        "teaser": null
       }]
