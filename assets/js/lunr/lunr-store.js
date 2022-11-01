@@ -232,4 +232,10 @@ var store = [{
         "tags": ["BCC"],
         "url": "/bcc-02/",
         "teaser": null
+      },{
+        "title": "docker 常用命令",
+        "excerpt":"Mysql 命令记录   删除none的images  docker images  | grep '&lt;none&gt;' | awk '{print $3}' | xargs  docker image rm -f {}  ","categories": [],
+        "tags": ["Docker"],
+        "url": "/docker-command/",
+        "teaser": null
       }]
