@@ -239,9 +239,9 @@ var store = [{
         "url": "/docker-command/",
         "teaser": null
       },{
-        "title": "c 编程",
-        "excerpt":"涉及函数 int open( const char *pathname, int flags); int open( const char *pathname, int flags, mode_t mode); int creat(const char *pathname, mode_t mode); 在下面的情形下两种函数的功能一致 open(const char* pathname, (O_CREAT|O_WRONLY|O_TRUNC),mode_t mode); creat(const char* pathname,mode_t mode); 命令 #include \"stdio.h\" #include \"sys/types.h\" #include \"sys/stat.h\" #include \"fcntl.h\" #include \"unistd.h\" #include \"error.h\" #include &lt;stdlib.h&gt; int main(){...","categories": [],
-        "tags": ["C"],
+        "title": "使用open()和create()创建文件",
+        "excerpt":"创建文件 涉及函数 int open( const char *pathname, int flags); int open( const char *pathname, int flags, mode_t mode); int creat(const char *pathname, mode_t mode); 在下面的情形下两种函数的功能一致 open(const char* pathname, (O_CREAT|O_WRONLY|O_TRUNC),mode_t mode); creat(const char* pathname,mode_t mode); 命令 #include \"stdio.h\" #include \"sys/types.h\" #include \"sys/stat.h\" #include \"fcntl.h\" #include \"unistd.h\" #include \"error.h\" #include &lt;stdlib.h&gt; int...","categories": [],
+        "tags": ["Linux 下的C"],
         "url": "/c-01/",
         "teaser": null
       }]
