@@ -1,4 +1,75 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-01T10:05:10+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">docker 常用命令</title><link href="/docker-command/" rel="alternate" type="text/html" title="docker 常用命令" /><published>2022-11-01T00:00:00+08:00</published><updated>2022-11-01T00:00:00+08:00</updated><id>/docker-command</id><content type="html" xml:base="/docker-command/"><![CDATA[<p>Mysql 命令记录</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-02T20:56:58+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">c 编程</title><link href="/c-01/" rel="alternate" type="text/html" title="c 编程" /><published>2022-11-01T00:00:00+08:00</published><updated>2022-11-01T00:00:00+08:00</updated><id>/c-01</id><content type="html" xml:base="/c-01/"><![CDATA[<h4 id="涉及函数">涉及函数</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int open<span class="o">(</span> const char <span class="k">*</span>pathname, int flags<span class="o">)</span><span class="p">;</span>
+int open<span class="o">(</span> const char <span class="k">*</span>pathname, int flags, mode_t mode<span class="o">)</span><span class="p">;</span>
+
+int creat<span class="o">(</span>const char <span class="k">*</span>pathname, mode_t mode<span class="o">)</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>在下面的情形下两种函数的功能一致</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>open<span class="o">(</span>const char<span class="k">*</span> pathname, <span class="o">(</span>O_CREAT|O_WRONLY|O_TRUNC<span class="o">)</span>,mode_t mode<span class="o">)</span><span class="p">;</span>
+creat<span class="o">(</span>const char<span class="k">*</span> pathname,mode_t mode<span class="o">)</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h4 id="命令">命令</h4>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"stdio.h"</span><span class="cp">
+#include</span> <span class="cpf">"sys/types.h"</span><span class="cp">
+#include</span> <span class="cpf">"sys/stat.h"</span><span class="cp">
+#include</span> <span class="cpf">"fcntl.h"</span><span class="cp">
+#include</span> <span class="cpf">"unistd.h"</span><span class="cp">
+#include</span> <span class="cpf">"error.h"</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+        <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"1.creat 2.open</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+        <span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">n</span><span class="p">);</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">((</span><span class="n">fd</span><span class="o">=</span><span class="n">creat</span><span class="p">(</span><span class="s">"examp.c"</span><span class="p">,</span><span class="n">S_IRWXU</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="p">{</span>
+                        <span class="n">perror</span><span class="p">(</span><span class="s">"open"</span><span class="p">);</span>
+                        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                        <span class="n">printf</span><span class="p">(</span><span class="s">"create file examp.c"</span><span class="p">);</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">{</span>
+                <span class="k">if</span> <span class="p">((</span><span class="n">fd</span><span class="o">=</span><span class="n">open</span><span class="p">(</span><span class="s">"examp.c"</span><span class="p">,</span><span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_EXCL</span><span class="p">,</span><span class="n">S_IRUSR</span><span class="o">|</span><span class="n">S_IWUSR</span><span class="p">)))</span>
+                <span class="p">{</span>
+                        <span class="n">perror</span><span class="p">(</span><span class="s">"open"</span><span class="p">);</span>
+                        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="k">else</span>
+                <span class="p">{</span>
+                        <span class="n">printf</span><span class="p">(</span><span class="s">"create file examp.c"</span><span class="p">);</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">"your choice wrong"</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="参数">参数</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create()  # S_IRWXU00700 权限，代表该文件所有者具有可读、可写及可执行的权限
+
+O_CREAT|O_EXCL # 检查文件是否存在。文件若不存在则建立该文件，否则将导致打开文件错误
+S_IRUSR|S_IWUSR # 文件权限 600
+</code></pre></div></div>
+
+<h4 id="编译">编译</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc <span class="nt">-o</span> <span class="nb">test </span>test.c 
+</code></pre></div></div>
+
+<h4 id="参考">参考</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://wizardforcel.gitbooks.io/linux-c-api-ref/content/143.html
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="C" /><summary type="html"><![CDATA[涉及函数 ```bash int open( const char *pathname, int flags); int open( const char *pathname, int flags, mode_t mode);]]></summary></entry><entry><title type="html">docker 常用命令</title><link href="/docker-command/" rel="alternate" type="text/html" title="docker 常用命令" /><published>2022-11-01T00:00:00+08:00</published><updated>2022-11-01T00:00:00+08:00</updated><id>/docker-command</id><content type="html" xml:base="/docker-command/"><![CDATA[<p>Mysql 命令记录</p>
 
 <h4 id="删除none的images">删除none的images</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker images  | <span class="nb">grep</span> <span class="s1">'&lt;none&gt;'</span> | <span class="nb">awk</span> <span class="s1">'{print $3}'</span> | xargs  docker image <span class="nb">rm</span> <span class="nt">-f</span> <span class="o">{}</span>
@@ -2572,51 +2643,4 @@ repl_backlog_active:1
 repl_backlog_size:1048576
 repl_backlog_first_byte_offset:1
 repl_backlog_histlen:102075
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Redis Docker Sentinel]]></summary></entry><entry><title type="html">docker 部署 mysql</title><link href="/docker-04/" rel="alternate" type="text/html" title="docker 部署 mysql" /><published>2022-09-19T00:00:00+08:00</published><updated>2022-09-19T00:00:00+08:00</updated><id>/docker-04</id><content type="html" xml:base="/docker-04/"><![CDATA[<p>Mysql Docker</p>
-
-<h4 id="dockerfile">Dockerfile</h4>
-
-<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> mysql:8.0.20</span>
-
-<span class="k">ADD</span><span class="s"> devops.sql /docker-entrypoint-initdb.d</span>
-</code></pre></div></div>
-
-<h4 id="build">Build</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> osp/mysql-init <span class="nb">.</span> 
-</code></pre></div></div>
-
-<h4 id="docker-login">Docker Login</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker login
-<span class="c">#账户</span>
-<span class="c">#密码</span>
-</code></pre></div></div>
-
-<h4 id="docker-push">Docker Push</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag osp/mysql-init registry.eeo-inc.com/omdev/osp-mysql-init:v01
-docker push registry.eeo-inc.com/omdev/osp-mysql-init:v01
-</code></pre></div></div>
-
-<h4 id="docker-pull">Docker Pull</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull registry.eeo-inc.com/omdev/osp-mysql-init:v01
-</code></pre></div></div>
-
-<h4 id="docker-run">Docker Run</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run  <span class="se">\</span>
-    <span class="nt">--name</span> osp-dev-8.0.20  <span class="se">\</span>
-    <span class="nt">-t</span> <span class="nt">--net</span> host  <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>osp  <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_USER</span><span class="o">=</span>osp-test  <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="nb">test</span> <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_TCP_PORT</span><span class="o">=</span>61106 <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>zabbix <span class="se">\</span>
-    <span class="nt">-v</span> /var/lib/mysql:/var/lib/mysql <span class="se">\</span>
-    <span class="nt">-d</span> registry.eeo-inc.com/omdev/osp-mysql-init:v01     <span class="se">\</span>
-    <span class="nt">--character-set-server</span><span class="o">=</span>utf8     <span class="se">\</span>
-    <span class="nt">--collation-server</span><span class="o">=</span>utf8_bin  <span class="se">\</span>
-    <span class="nt">--default-authentication-plugin</span><span class="o">=</span>mysql_native_password
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Mysql Docker]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Redis Docker Sentinel]]></summary></entry></feed>

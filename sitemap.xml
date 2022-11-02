@@ -157,6 +157,10 @@
 <lastmod>2022-10-30T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>/c-01/</loc>
+<lastmod>2022-11-01T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>/docker-command/</loc>
 <lastmod>2022-11-01T00:00:00+08:00</lastmod>
 </url>
@@ -180,5 +184,8 @@
 </url>
 <url>
 <loc>/page2/</loc>
+</url>
+<url>
+<loc>/page3/</loc>
 </url>
 </urlset>
