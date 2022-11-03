@@ -245,7 +245,7 @@ var store = [{
         "url": "/c-01/",
         "teaser": null
       },{
-        "title": "安装metric server",
+        "title": "k8s安装metric server",
         "excerpt":"k8s安装metric server kubernetes 安装metric server k8s版本 # kubectl version Client Version: version.Info{Major:\"1\", Minor:\"20\", GitVersion:\"v1.20.15\", GitCommit:\"8f1e5bf0b9729a899b8df86249b56e2c74aebc55\", GitTreeState:\"clean\", BuildDate:\"2022-01-19T17:27:39Z\", GoVersion:\"go1.15.15\", Compiler:\"gc\", Platform:\"linux/amd64\"} Server Version: version.Info{Major:\"1\", Minor:\"20\", GitVersion:\"v1.20.15\", GitCommit:\"8f1e5bf0b9729a899b8df86249b56e2c74aebc55\", GitTreeState:\"clean\", BuildDate:\"2022-01-19T17:23:01Z\", GoVersion:\"go1.15.15\", Compiler:\"gc\", Platform:\"linux/amd64\"} 作用 基于 CPU/内存的水平自动缩放 自动调整/建议容器所需的资源 安装metric server 的条件 kube-apiserver 必须启用聚合层。 节点必须启用 Webhook身份验证和授权。 Kubelet 证书需要由集群证书颁发机构签名（或通过传递--kubelet-insecure-tls给 Metrics Server 来禁用证书验证） 容器运行时必须实现容器度量 RPC（或具有cAdvisor支持） 网络应支持以下通信：...","categories": [],
         "tags": ["Kubernetes"],
         "url": "/kubernetes-metric-server/",
