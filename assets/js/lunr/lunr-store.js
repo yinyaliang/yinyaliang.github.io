@@ -252,7 +252,7 @@ var store = [{
         "teaser": null
       },{
         "title": "获取tcp状态",
-        "excerpt":"通过module方式 解决zabbix通过ss命令获取tcp状态 老的方式 #!/usr/bin/python import os,sys from operator import itemgetter Base_Dir = '/data/scripts/oss/zabbix/' sys.path.append(Base_Dir) from eeo_zabbix import trapper_zabbix class tcp_state(dict): def __init__(self): self.update(self.command()) def command(self): for com in os.popen(\"/usr/sbin/ss -ant\"): yield com.split(' ')[0] def update(self, iterable=None, **kwds): if iterable is not None: if hasattr(iterable, 'items'): if self: self_get = self.get...","categories": [],
+        "excerpt":"通过module方式 替换zabbix通过ss命令获取tcp状态 老的方式 #!/usr/bin/python import os,sys from operator import itemgetter Base_Dir = '/data/scripts/oss/zabbix/' sys.path.append(Base_Dir) from eeo_zabbix import trapper_zabbix class tcp_state(dict): def __init__(self): self.update(self.command()) def command(self): for com in os.popen(\"/usr/sbin/ss -ant\"): yield com.split(' ')[0] def update(self, iterable=None, **kwds): if iterable is not None: if hasattr(iterable, 'items'): if self: self_get = self.get...","categories": [],
         "tags": ["Linux"],
         "url": "/c-02/",
         "teaser": null
