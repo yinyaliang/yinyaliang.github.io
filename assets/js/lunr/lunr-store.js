@@ -251,6 +251,12 @@ var store = [{
         "url": "/kubernetes-metric-server/",
         "teaser": null
       },{
+        "title": "zabbix discovery use prometheusi data",
+        "excerpt":"zabbix 使用prometheus数据格式实现自动发现 数据格式 # HELP apisix_http_status HTTP status codes per service in APISIX # TYPE apisix_http_status counter apisix_http_status{code=\"200\",route=\"ceshi-api\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-api\",consumer=\"\",node=\"\"} 26489 apisix_http_status{code=\"200\",route=\"ceshi-api\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-api\",consumer=\"\",node=\"10.1.9.3\"} 624693 apisix_http_status{code=\"200\",route=\"ceshi-api\",matched_uri=\"/*\",matched_host=\"ceshi.campre.dom\",service=\"ceshi-api\",consumer=\"\",node=\"10.1.9.3\"} 4820 apisix_http_status{code=\"200\",route=\"ceshi.camin.vip\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-console\",consumer=\"\",node=\"10.1.9.1\"} 8006 apisix_http_status{code=\"200\",route=\"ceshi.camin.vip\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-console\",consumer=\"\",node=\"10.0.1.1\"} 2376 模板 zabbix_export: version: '6.0' date: '2022-11-16T06:43:50Z' groups: - uuid: 5875dc458fab45f699bdaf705773c951 name: 模板/服务 templates: - uuid: 70715d4c9a5744a0a0550c7131c107f5 template: service.apisix name: service.apisix groups: - name:...","categories": [],
+        "tags": ["Monitor"],
+        "url": "/monitor-zabbix-metrics/",
+        "teaser": null
+      },{
         "title": "获取tcp状态",
         "excerpt":"通过module方式 替换zabbix通过ss命令获取tcp状态 老的方式 #!/usr/bin/python import os,sys from operator import itemgetter Base_Dir = '/data/scripts/oss/zabbix/' sys.path.append(Base_Dir) from eeo_zabbix import trapper_zabbix class tcp_state(dict): def __init__(self): self.update(self.command()) def command(self): for com in os.popen(\"/usr/sbin/ss -ant\"): yield com.split(' ')[0] def update(self, iterable=None, **kwds): if iterable is not None: if hasattr(iterable, 'items'): if self: self_get = self.get...","categories": [],
         "tags": ["Linux"],
