@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-16T14:49:31+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">zabbix discovery use prometheusi data</title><link href="/monitor-zabbix-metrics/" rel="alternate" type="text/html" title="zabbix discovery use prometheusi data" /><published>2022-11-16T00:00:00+08:00</published><updated>2022-11-16T00:00:00+08:00</updated><id>/monitor-zabbix-metrics</id><content type="html" xml:base="/monitor-zabbix-metrics/"><![CDATA[<p>zabbix 使用prometheus数据格式实现自动发现</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-16T14:50:47+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">zabbix discovery use prometheusi data</title><link href="/monitor-zabbix-metrics/" rel="alternate" type="text/html" title="zabbix discovery use prometheusi data" /><published>2022-11-16T00:00:00+08:00</published><updated>2022-11-16T00:00:00+08:00</updated><id>/monitor-zabbix-metrics</id><content type="html" xml:base="/monitor-zabbix-metrics/"><![CDATA[<p>zabbix 使用prometheus数据格式实现自动发现</p>
 
 <h4 id="数据格式">数据格式</h4>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># HELP apisix_http_status HTTP status codes per service in APISIX
@@ -966,7 +966,11 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
 </code></pre></div></div>
 
 <h4 id="效果">效果</h4>
-<p><img src="/assets/images/zabbix/zabbix-metrics.png" /></p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 使用prometheus数据格式实现自动发现]]></summary></entry><entry><title type="html">k8s安装metric server</title><link href="/kubernetes-metric-server/" rel="alternate" type="text/html" title="k8s安装metric server" /><published>2022-11-03T00:00:00+08:00</published><updated>2022-11-03T00:00:00+08:00</updated><id>/kubernetes-metric-server</id><content type="html" xml:base="/kubernetes-metric-server/"><![CDATA[<p>k8s安装metric server</p>
+<p><img src="/assets/images/zabbix/zabbix-metrics.png" /></p>
+
+<h4 id="参考">参考</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/prometheus
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 使用prometheus数据格式实现自动发现]]></summary></entry><entry><title type="html">k8s安装metric server</title><link href="/kubernetes-metric-server/" rel="alternate" type="text/html" title="k8s安装metric server" /><published>2022-11-03T00:00:00+08:00</published><updated>2022-11-03T00:00:00+08:00</updated><id>/kubernetes-metric-server</id><content type="html" xml:base="/kubernetes-metric-server/"><![CDATA[<p>k8s安装metric server</p>
 
 <h3 id="kubernetes-安装metric-server">kubernetes 安装metric server</h3>
 
