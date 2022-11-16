@@ -1,4 +1,325 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-16T14:47:08+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">获取tcp状态</title><link href="/c-02/" rel="alternate" type="text/html" title="获取tcp状态" /><published>2022-11-09T00:00:00+08:00</published><updated>2022-11-09T00:00:00+08:00</updated><id>/c-02</id><content type="html" xml:base="/c-02/"><![CDATA[<p>通过module方式 替换zabbix通过ss命令获取tcp状态</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-16T14:49:31+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">zabbix discovery use prometheusi data</title><link href="/monitor-zabbix-metrics/" rel="alternate" type="text/html" title="zabbix discovery use prometheusi data" /><published>2022-11-16T00:00:00+08:00</published><updated>2022-11-16T00:00:00+08:00</updated><id>/monitor-zabbix-metrics</id><content type="html" xml:base="/monitor-zabbix-metrics/"><![CDATA[<p>zabbix 使用prometheus数据格式实现自动发现</p>
+
+<h4 id="数据格式">数据格式</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># HELP apisix_http_status HTTP status codes per service in APISIX
+# TYPE apisix_http_status counter
+apisix_http_status{code="200",route="ceshi-api",matched_uri="/*",matched_host="ceshi.camin.vip",service="ceshi-api",consumer="",node=""} 26489
+apisix_http_status{code="200",route="ceshi-api",matched_uri="/*",matched_host="ceshi.camin.vip",service="ceshi-api",consumer="",node="10.1.9.3"} 624693
+apisix_http_status{code="200",route="ceshi-api",matched_uri="/*",matched_host="ceshi.campre.dom",service="ceshi-api",consumer="",node="10.1.9.3"} 4820
+apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_host="ceshi.camin.vip",service="ceshi-console",consumer="",node="10.1.9.1"} 8006
+apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_host="ceshi.camin.vip",service="ceshi-console",consumer="",node="10.0.1.1"} 2376
+</code></pre></div></div>
+
+<h4 id="模板">模板</h4>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">zabbix_export</span><span class="pi">:</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">6.0'</span>
+  <span class="na">date</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2022-11-16T06:43:50Z'</span>
+  <span class="na">groups</span><span class="pi">:</span>
+    <span class="pi">-</span>
+      <span class="na">uuid</span><span class="pi">:</span> <span class="s">5875dc458fab45f699bdaf705773c951</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">模板/服务</span>
+  <span class="na">templates</span><span class="pi">:</span>
+    <span class="pi">-</span>
+      <span class="na">uuid</span><span class="pi">:</span> <span class="s">70715d4c9a5744a0a0550c7131c107f5</span>
+      <span class="na">template</span><span class="pi">:</span> <span class="s">service.apisix</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">service.apisix</span>
+      <span class="na">groups</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">模板/服务</span>
+      <span class="na">items</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">d265901f69d640889c4f2a84b4971ab8</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">apisix</span><span class="nv"> </span><span class="s">metrics'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">HTTP_AGENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+          <span class="na">trends</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">value_type</span><span class="pi">:</span> <span class="s">TEXT</span>
+          <span class="na">url</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{HOST.IP}:9091/apisix/prometheus/metrics'</span>
+          <span class="na">tags</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s">RAW</span>
+      <span class="na">discovery_rules</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">cda308711c9f4ef8aef2c3f74d3bb2a3</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service</span><span class="nv"> </span><span class="s">apisix</span><span class="nv"> </span><span class="s">http</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">2xx'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.2xx</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">ff316b35fb62427492c1cf0ec435a401</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}{code={#CODE},route={#ROUTE},matched_uri={#MATCHED_URI},matched_host={#MATCHED_HOST},service={#SERVICE},consumer={#CONSUMER},node={#NODE}}'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">apisix.httpcode.2xx[{#CODE},{#ROUTE},{#MATCHED_URI},{#MATCHED_HOST},{#SERVICE},{#CONSUMER},{#NODE}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_PATTERN</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+                    <span class="pi">-</span> <span class="s">value</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">SIMPLE_CHANGE</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">APISIX-2XX</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+          <span class="na">lld_macro_paths</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">code'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CONSUMER}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">consumer'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#HELP}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.help</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_HOST}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_host'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_URI}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_uri'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.name</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">node'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#ROUTE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">route'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#SERVICE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">service'</span><span class="s1">'</span><span class="s">]'</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"2.*"}'</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">6a079ccfcf1e4df188515f0951c6f5e1</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service</span><span class="nv"> </span><span class="s">apisix</span><span class="nv"> </span><span class="s">http</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">3xx'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.3xx</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">e2a5955d8e2746a7a45d7ff27f3feb13</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}{code={#CODE},route={#ROUTE},matched_uri={#MATCHED_URI},matched_host={#MATCHED_HOST},service={#SERVICE},consumer={#CONSUMER},node={#NODE}}'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">apisix.httpcode.3xx[{#CODE},{#ROUTE},{#MATCHED_URI},{#MATCHED_HOST},{#SERVICE},{#CONSUMER},{#NODE}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_PATTERN</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+                    <span class="pi">-</span> <span class="s">value</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">SIMPLE_CHANGE</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">APISIX-3XX</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+          <span class="na">lld_macro_paths</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">code'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CONSUMER}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">consumer'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#HELP}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.help</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_HOST}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_host'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_URI}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_uri'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.name</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">node'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#ROUTE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">route'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#SERVICE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">service'</span><span class="s1">'</span><span class="s">]'</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"3.*"}'</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">f5e8b61f49a14bb79a96c911145a73e8</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service</span><span class="nv"> </span><span class="s">apisix</span><span class="nv"> </span><span class="s">http</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">4xx'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.4xx</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">c2a0c5e646cd420e95124f558a80fb86</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}{code={#CODE},route={#ROUTE},matched_uri={#MATCHED_URI},matched_host={#MATCHED_HOST},service={#SERVICE},consumer={#CONSUMER},node={#NODE}}'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">apisix.httpcode.4xx[{#CODE},{#ROUTE},{#MATCHED_URI},{#MATCHED_HOST},{#SERVICE},{#CONSUMER},{#NODE}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_PATTERN</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+                    <span class="pi">-</span> <span class="s">value</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">SIMPLE_CHANGE</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">APISIX-4XX</span>
+              <span class="na">trigger_prototypes</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">uuid</span><span class="pi">:</span> <span class="s">859ab9da74524cfaa20be1b0fd37e06f</span>
+                  <span class="na">expression</span><span class="pi">:</span> <span class="s1">'</span><span class="s">last(/service.apisix/apisix.httpcode.4xx[{#CODE},{#ROUTE},{#MATCHED_URI},{#MATCHED_HOST},{#SERVICE},{#CONSUMER},{#NODE}])&gt;0'</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#ROUTE}</span><span class="nv"> </span><span class="s">{#NODE}</span><span class="nv"> </span><span class="s">{#CODE}</span><span class="nv"> </span><span class="s">over</span><span class="nv"> </span><span class="s">0'</span>
+                  <span class="na">priority</span><span class="pi">:</span> <span class="s">WARNING</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+          <span class="na">lld_macro_paths</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">code'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CONSUMER}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">consumer'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#HELP}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.help</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_HOST}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_host'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_URI}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_uri'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.name</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">node'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#ROUTE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">route'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#SERVICE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">service'</span><span class="s1">'</span><span class="s">]'</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"4.*"}'</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">ee04b62140fd470badfd521e22127e52</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service</span><span class="nv"> </span><span class="s">apisix</span><span class="nv"> </span><span class="s">http</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">5xx'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.5xx</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">ba0685038fd84ab5ae87fbe15b2d683f</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}{code={#CODE},route={#ROUTE},matched_uri={#MATCHED_URI},matched_host={#MATCHED_HOST},service={#SERVICE},consumer={#CONSUMER},node={#NODE}}'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">apisix.httpcode.5xx[{#CODE},{#ROUTE},{#MATCHED_URI},{#MATCHED_HOST},{#SERVICE},{#CONSUMER},{#NODE}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_PATTERN</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code="{#CODE}",route="{#ROUTE}",matched_uri="{#MATCHED_URI}",matched_host="{#MATCHED_HOST}",service="{#SERVICE}",consumer="{#CONSUMER}",node="{#NODE}"}'</span>
+                    <span class="pi">-</span> <span class="s">value</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">SIMPLE_CHANGE</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">APISIX-5XX</span>
+              <span class="na">trigger_prototypes</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">uuid</span><span class="pi">:</span> <span class="s">263014e968b34f17b21eb4926359c83c</span>
+                  <span class="na">expression</span><span class="pi">:</span> <span class="s1">'</span><span class="s">last(/service.apisix/apisix.httpcode.5xx[{#CODE},{#ROUTE},{#MATCHED_URI},{#MATCHED_HOST},{#SERVICE},{#CONSUMER},{#NODE}])&gt;0'</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#ROUTE}</span><span class="nv"> </span><span class="s">{#NODE}</span><span class="nv"> </span><span class="s">{#CODE}</span><span class="nv"> </span><span class="s">over</span><span class="nv"> </span><span class="s">0'</span>
+                  <span class="na">priority</span><span class="pi">:</span> <span class="s">WARNING</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.info</span>
+          <span class="na">lld_macro_paths</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">code'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#CONSUMER}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">consumer'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#HELP}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.help</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_HOST}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_host'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#MATCHED_URI}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">matched_uri'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NAME}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">$.name</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#NODE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">node'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#ROUTE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">route'</span><span class="s1">'</span><span class="s">]'</span>
+            <span class="pi">-</span>
+              <span class="na">lld_macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{#SERVICE}'</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">$.labels['</span><span class="s1">'</span><span class="s">service'</span><span class="s1">'</span><span class="s">]'</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"5.*"}'</span>
+</code></pre></div></div>
+
+<h4 id="效果">效果</h4>
+<p><img src="/assets/images/zabbix/zabbix-metrics.png" /></p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 使用prometheus数据格式实现自动发现]]></summary></entry><entry><title type="html">获取tcp状态</title><link href="/c-02/" rel="alternate" type="text/html" title="获取tcp状态" /><published>2022-11-09T00:00:00+08:00</published><updated>2022-11-09T00:00:00+08:00</updated><id>/c-02</id><content type="html" xml:base="/c-02/"><![CDATA[<p>通过module方式 替换zabbix通过ss命令获取tcp状态</p>
 
 <h4 id="老的方式">老的方式</h4>
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/python
@@ -1890,229 +2211,4 @@ replicaset.apps <span class="s2">"myrs"</span> deleted
       <td>selector<br />matchLabels</td>
     </tr>
   </tbody>
-</table>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[daemonset]]></summary></entry><entry><title type="html">解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案</title><link href="/monitor-tcp-state/" rel="alternate" type="text/html" title="解决Zabbix 关于 TCP状态监控取值占用CPU高BUG的解决方案" /><published>2022-10-21T00:00:00+08:00</published><updated>2022-10-21T00:00:00+08:00</updated><id>/monitor-tcp-state</id><content type="html" xml:base="/monitor-tcp-state/"><![CDATA[<p>修复zabbix CPU占用高的bug</p>
-
-<h4 id="故障现象">故障现象</h4>
-
-<p><img src="/assets/images/zabbix/01.png" /></p>
-
-<h4 id="现象分析">现象分析</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>perf <span class="nb">stat</span> <span class="nt">-d</span> ./zabbix_agent2 <span class="nt">-t</span> net.tcp.socket.count[,,,,established]
-net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3208] Performance counter stats <span class="k">for</span> <span class="s1">'./zabbix_agent2 -t net.tcp.socket.count[,,,,established]'</span>:          1,389.13 msec task-clock                <span class="c">#    0.598 CPUs utilized          </span>
-             2,602      context-switches          <span class="c">#    0.002 M/sec                  </span>
-                 5      cpu-migrations            <span class="c">#    0.004 K/sec                  </span>
-             2,576      page-faults               <span class="c">#    0.002 M/sec                  </span>
-   &lt;not supported&gt;      cycles                                                      
-   &lt;not supported&gt;      instructions                                                
-   &lt;not supported&gt;      branches                                                    
-   &lt;not supported&gt;      branch-misses                                               
-   &lt;not supported&gt;      L1-dcache-loads                                             
-   &lt;not supported&gt;      L1-dcache-load-misses                                       
-   &lt;not supported&gt;      LLC-loads                                                   
-   &lt;not supported&gt;      LLC-load-misses                                                    2.323596300 seconds <span class="nb">time </span>elapsed       1.171183000 seconds user
-       0.217171000 seconds sys
-</code></pre></div></div>
-
-<p><img src="/assets/images/zabbix/02.png" /></p>
-
-<h4 id="解决代码">解决代码</h4>
-<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">eeoss</span>
-<span class="k">import</span> <span class="p">(</span>
-    <span class="s">"encoding/json"</span>
-    <span class="s">"fmt"</span>
-    <span class="s">"syscall"</span>
-    <span class="s">"zabbix.com/pkg/plugin"</span>
-    <span class="s">"github.com/vishvananda/netlink/nl"</span>
-<span class="p">)</span>
-<span class="c">// Plugin -</span>
-<span class="k">type</span> <span class="n">Plugin</span> <span class="k">struct</span> <span class="p">{</span>
-    <span class="n">plugin</span><span class="o">.</span><span class="n">Base</span>
-<span class="p">}</span>
-<span class="k">var</span> <span class="n">impl</span> <span class="n">Plugin</span>
-<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">Export</span><span class="p">(</span><span class="n">key</span> <span class="kt">string</span><span class="p">,</span> <span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="n">ctx</span> <span class="n">plugin</span><span class="o">.</span><span class="n">ContextProvider</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="k">interface</span><span class="p">{},</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">switch</span> <span class="n">key</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="s">"tcp.count"</span><span class="o">:</span>
-        <span class="k">return</span> <span class="n">tcpmMain</span><span class="p">()</span>
-    <span class="k">default</span><span class="o">:</span>
-        <span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">plugin</span><span class="o">.</span><span class="n">UnsupportedMetricError</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">plugin</span><span class="o">.</span><span class="n">RegisterMetrics</span><span class="p">(</span><span class="o">&amp;</span><span class="n">impl</span><span class="p">,</span> <span class="s">"Eeotcp"</span><span class="p">,</span>
-        <span class="s">"tcp.count"</span><span class="p">,</span> <span class="s">"Count tcp state."</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="n">tcp_state_count</span><span class="p">()</span> <span class="p">(</span><span class="n">tcpStateCount</span> <span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">tcpStateCount</span> <span class="o">=</span> <span class="nb">make</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
-    <span class="c">// Create a new netlink request</span>
-    <span class="n">socket_fd</span> <span class="o">:=</span> <span class="n">nl</span><span class="o">.</span><span class="n">NewNetlinkRequest</span><span class="p">(</span><span class="n">nl</span><span class="o">.</span><span class="n">SOCK_DIAG_BY_FAMILY</span><span class="p">,</span> <span class="n">syscall</span><span class="o">.</span><span class="n">NLM_F_DUMP</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="c">// returns a new NetlinkMessage InetDiagReqV2</span>
-        <span class="c">// https://github.com/torvalds/linux/blob/v4.0/include/uapi/linux/inet_diag.h#L37</span>
-        <span class="n">msg</span> <span class="o">:=</span> <span class="n">NewInetDiagReqV2</span><span class="p">(</span>
-            <span class="n">syscall</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span>
-            <span class="n">syscall</span><span class="o">.</span><span class="n">IPPROTO_TCP</span><span class="p">,</span>
-            <span class="n">AllTCPStates</span><span class="p">)</span>
-        <span class="n">msg</span><span class="o">.</span><span class="n">Ext</span> <span class="o">|=</span> <span class="p">(</span><span class="m">1</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">INET_DIAG_INFO</span> <span class="o">-</span> <span class="m">1</span><span class="p">))</span>
-        <span class="n">socket_fd</span><span class="o">.</span><span class="n">AddData</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="c">// return [][]byte</span>
-    <span class="n">res</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">socket_fd</span><span class="o">.</span><span class="n">Execute</span><span class="p">(</span><span class="n">syscall</span><span class="o">.</span><span class="n">NETLINK_INET_DIAG</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-    <span class="p">}</span>
-    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">data</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">res</span> <span class="p">{</span>
-        <span class="n">state</span> <span class="o">:=</span> <span class="n">TcpStateNames</span><span class="p">[</span><span class="n">ParseInetDiagMsg</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">State</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">_</span><span class="p">,</span> <span class="n">ok</span> <span class="o">:=</span> <span class="n">tcpStateCount</span><span class="p">[</span><span class="n">state</span><span class="p">];</span> <span class="n">ok</span> <span class="p">{</span>
-            <span class="n">tcpStateCount</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">+=</span> <span class="m">1</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="n">tcpStateCount</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="m">1</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">tcpStateCount</span><span class="p">,</span> <span class="no">nil</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="n">tcpmMain</span><span class="p">()</span> <span class="p">(</span><span class="k">interface</span><span class="p">{},</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">ret</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">tcp_state_count</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-        <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="n">jsonArray</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
-    <span class="k">if</span> <span class="no">nil</span> <span class="o">!=</span> <span class="n">err</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Cannot create JSON array: %s"</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">jsonArray</span><span class="p">),</span> <span class="no">nil</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">eeoss</span>
-<span class="k">import</span> <span class="p">(</span>
-    <span class="s">"fmt"</span>
-    <span class="s">"syscall"</span>
-    <span class="s">"unsafe"</span>
-<span class="p">)</span>
-<span class="c">// https://pkg.go.dev/github.com/elastic/gosigar/sys/linux</span>
-<span class="k">const</span> <span class="p">(</span>
-    <span class="n">AllTCPStates</span> <span class="o">=</span> <span class="o">^</span><span class="kt">uint32</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
-<span class="p">)</span>
-<span class="c">// https://github.com/torvalds/linux/blob/5924bbecd0267d87c24110cbe2041b5075173a25/include/net/tcp_states.h#L16</span>
-<span class="k">const</span> <span class="p">(</span>
-    <span class="n">TCP_ESTABLISHED</span> <span class="o">=</span> <span class="no">iota</span> <span class="o">+</span> <span class="m">1</span>
-    <span class="n">TCP_SYN_SENT</span>
-    <span class="n">TCP_SYN_RECV</span>
-    <span class="n">TCP_FIN_WAIT1</span>
-    <span class="n">TCP_FIN_WAIT2</span>
-    <span class="n">TCP_TIME_WAIT</span>
-    <span class="n">TCP_CLOSE</span>
-    <span class="n">TCP_CLOSE_WAIT</span>
-    <span class="n">TCP_LAST_ACK</span>
-    <span class="n">TCP_LISTEN</span>
-    <span class="n">TCP_CLOSING</span> <span class="c">/* Now a valid state */</span>
-<span class="p">)</span>
-<span class="k">var</span> <span class="n">TcpStateNames</span> <span class="o">=</span> <span class="k">map</span><span class="p">[</span><span class="kt">uint8</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span>
-    <span class="n">TCP_ESTABLISHED</span><span class="o">:</span> <span class="s">"ESTAB"</span><span class="p">,</span>
-    <span class="n">TCP_SYN_SENT</span><span class="o">:</span>    <span class="s">"SYN-SENT"</span><span class="p">,</span>
-    <span class="n">TCP_SYN_RECV</span><span class="o">:</span>    <span class="s">"SYN-RECV"</span><span class="p">,</span>
-    <span class="n">TCP_FIN_WAIT1</span><span class="o">:</span>   <span class="s">"FIN-WAIT-1"</span><span class="p">,</span>
-    <span class="n">TCP_FIN_WAIT2</span><span class="o">:</span>   <span class="s">"FIN-WAIT-2"</span><span class="p">,</span>
-    <span class="n">TCP_TIME_WAIT</span><span class="o">:</span>   <span class="s">"TIME-WAIT"</span><span class="p">,</span>
-    <span class="n">TCP_CLOSE</span><span class="o">:</span>       <span class="s">"UNCONN"</span><span class="p">,</span>
-    <span class="n">TCP_CLOSE_WAIT</span><span class="o">:</span>  <span class="s">"CLOSE-WAIT"</span><span class="p">,</span>
-    <span class="n">TCP_LAST_ACK</span><span class="o">:</span>    <span class="s">"LAST-ACK"</span><span class="p">,</span>
-    <span class="n">TCP_LISTEN</span><span class="o">:</span>      <span class="s">"LISTEN"</span><span class="p">,</span>
-    <span class="n">TCP_CLOSING</span><span class="o">:</span>     <span class="s">"CLOSING"</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="c">// Extensions that can be used in the InetDiagReqV2 request to ask for</span>
-<span class="c">// additional data.</span>
-<span class="c">// https://github.com/torvalds/linux/blob/v4.0/include/uapi/linux/inet_diag.h#L103</span>
-<span class="k">const</span> <span class="p">(</span>
-    <span class="n">INET_DIAG_NONE</span>    <span class="o">=</span> <span class="m">0</span>
-    <span class="n">INET_DIAG_MEMINFO</span> <span class="o">=</span> <span class="m">1</span> <span class="o">&lt;&lt;</span> <span class="no">iota</span>
-    <span class="n">INET_DIAG_INFO</span>
-    <span class="n">INET_DIAG_VEGASINFO</span>
-    <span class="n">INET_DIAG_CONG</span>
-    <span class="n">INET_DIAG_TOS</span>
-    <span class="n">INET_DIAG_TCLASS</span>
-    <span class="n">INET_DIAG_SKMEMINFO</span>
-    <span class="n">INET_DIAG_SHUTDOWN</span>
-    <span class="n">INET_DIAG_DCTCPINFO</span>
-    <span class="n">INET_DIAG_PROTOCOL</span> <span class="c">/* response attribute only */</span>
-    <span class="n">INET_DIAG_SKV6ONLY</span>
-    <span class="n">INET_DIAG_LOCALS</span>
-    <span class="n">INET_DIAG_PEERS</span>
-    <span class="n">INET_DIAG_PAD</span>
-    <span class="n">INET_DIAG_MARK</span>
-<span class="p">)</span>
-<span class="c">// V2 Request</span>
-<span class="k">var</span> <span class="n">SizeofInetDiagReqV2</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Sizeof</span><span class="p">(</span><span class="n">InetDiagReqV2</span><span class="p">{}))</span>
-<span class="c">// InetDiagReqV2 (inet_diag_req_v2) is used to request diagnostic data.</span>
-<span class="c">// https://github.com/torvalds/linux/blob/v4.0/include/uapi/linux/inet_diag.h#L37</span>
-<span class="k">type</span> <span class="n">InetDiagReqV2</span> <span class="k">struct</span> <span class="p">{</span>
-    <span class="n">Family</span>   <span class="kt">uint8</span>
-    <span class="n">Protocol</span> <span class="kt">uint8</span>
-    <span class="n">Ext</span>      <span class="kt">uint8</span>
-    <span class="n">Pad</span>      <span class="kt">uint8</span>
-    <span class="n">States</span>   <span class="kt">uint32</span>
-    <span class="n">ID</span>       <span class="n">InetDiagSockID</span>
-<span class="p">}</span>
-<span class="c">// InetDiagSockID (inet_diag_sockid) contains the socket identity.</span>
-<span class="c">// https://github.com/torvalds/linux/blob/v4.0/include/uapi/linux/inet_diag.h#L13</span>
-<span class="k">type</span> <span class="n">InetDiagSockID</span> <span class="k">struct</span> <span class="p">{</span>
-    <span class="n">SPort</span>  <span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="kt">byte</span>    <span class="c">// Source port (big-endian).</span>
-    <span class="n">DPort</span>  <span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="kt">byte</span>    <span class="c">// Destination port (big-endian).</span>
-    <span class="n">Src</span>    <span class="p">[</span><span class="m">4</span><span class="p">][</span><span class="m">4</span><span class="p">]</span><span class="kt">byte</span> <span class="c">// Source IP</span>
-    <span class="n">Dst</span>    <span class="p">[</span><span class="m">4</span><span class="p">][</span><span class="m">4</span><span class="p">]</span><span class="kt">byte</span> <span class="c">// Destination IP</span>
-    <span class="n">If</span>     <span class="kt">uint32</span>
-    <span class="n">Cookie</span> <span class="p">[</span><span class="m">2</span><span class="p">]</span><span class="kt">uint32</span>
-<span class="p">}</span>
-<span class="c">// InetDiagMsg (inet_diag_msg) is the base info structure. It contains socket</span>
-<span class="c">// identity (addrs/ports/cookie) and the information shown by netstat.</span>
-<span class="c">// https://github.com/torvalds/linux/blob/v4.0/include/uapi/linux/inet_diag.h#L86</span>
-<span class="k">type</span> <span class="n">InetDiagMsg</span> <span class="k">struct</span> <span class="p">{</span>
-    <span class="n">Family</span>  <span class="kt">uint8</span> <span class="c">// Address family.</span>
-    <span class="n">State</span>   <span class="kt">uint8</span> <span class="c">// TCP State</span>
-    <span class="n">Timer</span>   <span class="kt">uint8</span>
-    <span class="n">Retrans</span> <span class="kt">uint8</span>
-    <span class="n">ID</span> <span class="n">InetDiagSockID</span>
-    <span class="n">Expires</span> <span class="kt">uint32</span>
-    <span class="n">RQueue</span>  <span class="kt">uint32</span> <span class="c">// Recv-Q</span>
-    <span class="n">WQueue</span>  <span class="kt">uint32</span> <span class="c">// Send-Q</span>
-    <span class="n">UID</span>     <span class="kt">uint32</span> <span class="c">// UID</span>
-    <span class="n">Inode</span>   <span class="kt">uint32</span> <span class="c">// Inode of socket.</span>
-<span class="p">}</span>
-<span class="k">var</span> <span class="n">FamilyNames</span> <span class="o">=</span> <span class="k">map</span><span class="p">[</span><span class="kt">uint8</span><span class="p">]</span><span class="kt">string</span><span class="p">{</span>
-    <span class="n">syscall</span><span class="o">.</span><span class="n">AF_INET</span><span class="o">:</span>  <span class="s">"tcp"</span><span class="p">,</span>
-    <span class="n">syscall</span><span class="o">.</span><span class="n">AF_INET6</span><span class="o">:</span> <span class="s">"tcp6"</span><span class="p">,</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">InetDiagReqV2</span><span class="p">)</span> <span class="n">Serialize</span><span class="p">()</span> <span class="p">[]</span><span class="kt">byte</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="m">56</span><span class="p">]</span><span class="kt">byte</span><span class="p">)(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="n">req</span><span class="p">)))[</span><span class="o">:</span><span class="p">]</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="p">(</span><span class="n">req</span> <span class="o">*</span><span class="n">InetDiagReqV2</span><span class="p">)</span> <span class="n">Len</span><span class="p">()</span> <span class="kt">int</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">SizeofInetDiagReqV2</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="n">NewInetDiagReqV2</span><span class="p">(</span><span class="n">family</span><span class="p">,</span> <span class="n">protocol</span> <span class="kt">uint8</span><span class="p">,</span> <span class="n">states</span> <span class="kt">uint32</span><span class="p">)</span> <span class="o">*</span><span class="n">InetDiagReqV2</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="o">&amp;</span><span class="n">InetDiagReqV2</span><span class="p">{</span>
-        <span class="n">Family</span><span class="o">:</span>   <span class="n">family</span><span class="p">,</span>
-        <span class="n">Protocol</span><span class="o">:</span> <span class="n">protocol</span><span class="p">,</span>
-        <span class="n">States</span><span class="o">:</span>   <span class="n">states</span><span class="p">,</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="p">(</span><span class="n">msg</span> <span class="o">*</span><span class="n">InetDiagMsg</span><span class="p">)</span> <span class="n">String</span><span class="p">()</span> <span class="kt">string</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Sprintf</span><span class="p">(</span><span class="s">"%s"</span><span class="p">,</span> <span class="n">TcpStateNames</span><span class="p">[</span><span class="n">msg</span><span class="o">.</span><span class="n">State</span><span class="p">])</span>
-<span class="p">}</span>
-<span class="k">func</span> <span class="n">ParseInetDiagMsg</span><span class="p">(</span><span class="n">data</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">)</span> <span class="o">*</span><span class="n">InetDiagMsg</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">InetDiagMsg</span><span class="p">)(</span><span class="n">unsafe</span><span class="o">.</span><span class="n">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">[</span><span class="m">0</span><span class="p">]))</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h4 id="测试结果">测试结果</h4>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># time ./zabbix_agent2 -t net.tcp.socket.count[,,,,established]</span>
-net.tcp.socket.count[,,,,established]         <span class="o">[</span>s|3783]
-real    0m2.814s
-user    0m2.055s
-sys     0m0.413s
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># zabbix_agent2 -t tcp.count</span>
-tcp.count                                     <span class="o">[</span>s|<span class="o">{</span><span class="s2">"CLOSE-WAIT"</span>:530,<span class="s2">"ESTAB"</span>:3797,<span class="s2">"FIN-WAIT-2"</span>:527,<span class="s2">"LISTEN"</span>:4,<span class="s2">"SYN-SENT"</span>:2,<span class="s2">"TIME-WAIT"</span>:176<span class="o">}]</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[修复zabbix CPU占用高的bug]]></summary></entry></feed>
+</table>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[daemonset]]></summary></entry></feed>
