@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-16T14:52:57+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">zabbix discovery use prometheusi data</title><link href="/monitor-zabbix-metrics/" rel="alternate" type="text/html" title="zabbix discovery use prometheusi data" /><published>2022-11-16T00:00:00+08:00</published><updated>2022-11-16T00:00:00+08:00</updated><id>/monitor-zabbix-metrics</id><content type="html" xml:base="/monitor-zabbix-metrics/"><![CDATA[<p>zabbix 使用prometheus数据格式实现自动发现</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-16T15:14:24+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">zabbix discovery use prometheusi data</title><link href="/monitor-zabbix-metrics/" rel="alternate" type="text/html" title="zabbix discovery use prometheusi data" /><published>2022-11-16T00:00:00+08:00</published><updated>2022-11-16T00:00:00+08:00</updated><id>/monitor-zabbix-metrics</id><content type="html" xml:base="/monitor-zabbix-metrics/"><![CDATA[<p>zabbix 使用prometheus数据格式实现自动发现</p>
 
 <h4 id="数据格式">数据格式</h4>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># HELP apisix_http_status HTTP status codes per service in APISIX
@@ -660,7 +660,7 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
 <h4 id="模板">模板</h4>
 <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">zabbix_export</span><span class="pi">:</span>
   <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">6.0'</span>
-  <span class="na">date</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2022-11-16T06:43:50Z'</span>
+  <span class="na">date</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2022-11-16T07:13:33Z'</span>
   <span class="na">groups</span><span class="pi">:</span>
     <span class="pi">-</span>
       <span class="na">uuid</span><span class="pi">:</span> <span class="s">5875dc458fab45f699bdaf705773c951</span>
@@ -693,6 +693,7 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
           <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
           <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.2xx</span>
           <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
           <span class="na">item_prototypes</span><span class="pi">:</span>
             <span class="pi">-</span>
               <span class="na">uuid</span><span class="pi">:</span> <span class="s">ff316b35fb62427492c1cf0ec435a401</span>
@@ -752,13 +753,14 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
             <span class="pi">-</span>
               <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
               <span class="na">parameters</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"2.*"}'</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"2.."}'</span>
         <span class="pi">-</span>
           <span class="na">uuid</span><span class="pi">:</span> <span class="s">6a079ccfcf1e4df188515f0951c6f5e1</span>
           <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service</span><span class="nv"> </span><span class="s">apisix</span><span class="nv"> </span><span class="s">http</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">3xx'</span>
           <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
           <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.3xx</span>
           <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
           <span class="na">item_prototypes</span><span class="pi">:</span>
             <span class="pi">-</span>
               <span class="na">uuid</span><span class="pi">:</span> <span class="s">e2a5955d8e2746a7a45d7ff27f3feb13</span>
@@ -818,13 +820,14 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
             <span class="pi">-</span>
               <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
               <span class="na">parameters</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"3.*"}'</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"3.."}'</span>
         <span class="pi">-</span>
           <span class="na">uuid</span><span class="pi">:</span> <span class="s">f5e8b61f49a14bb79a96c911145a73e8</span>
           <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service</span><span class="nv"> </span><span class="s">apisix</span><span class="nv"> </span><span class="s">http</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">4xx'</span>
           <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
           <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.4xx</span>
           <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
           <span class="na">item_prototypes</span><span class="pi">:</span>
             <span class="pi">-</span>
               <span class="na">uuid</span><span class="pi">:</span> <span class="s">c2a0c5e646cd420e95124f558a80fb86</span>
@@ -890,13 +893,14 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
             <span class="pi">-</span>
               <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
               <span class="na">parameters</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"4.*"}'</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"4.."}'</span>
         <span class="pi">-</span>
           <span class="na">uuid</span><span class="pi">:</span> <span class="s">ee04b62140fd470badfd521e22127e52</span>
           <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service</span><span class="nv"> </span><span class="s">apisix</span><span class="nv"> </span><span class="s">http</span><span class="nv"> </span><span class="s">code</span><span class="nv"> </span><span class="s">5xx'</span>
           <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
           <span class="na">key</span><span class="pi">:</span> <span class="s">apisix.httpcode.5xx</span>
           <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
           <span class="na">item_prototypes</span><span class="pi">:</span>
             <span class="pi">-</span>
               <span class="na">uuid</span><span class="pi">:</span> <span class="s">ba0685038fd84ab5ae87fbe15b2d683f</span>
@@ -962,7 +966,7 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
             <span class="pi">-</span>
               <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
               <span class="na">parameters</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"5.*"}'</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">apisix_http_status{code=~"5.."}'</span>
 </code></pre></div></div>
 
 <h4 id="效果">效果</h4>
