@@ -1,4 +1,158 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-16T17:57:05+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">zabbix discovery use prometheusi data</title><link href="/monitor-zabbix-metrics/" rel="alternate" type="text/html" title="zabbix discovery use prometheusi data" /><published>2022-11-16T00:00:00+08:00</published><updated>2022-11-16T00:00:00+08:00</updated><id>/monitor-zabbix-metrics</id><content type="html" xml:base="/monitor-zabbix-metrics/"><![CDATA[<p>zabbix 使用prometheus数据格式实现自动发现</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-20T15:49:26+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Netlink 简介</title><link href="/linux-netlink/" rel="alternate" type="text/html" title="Netlink 简介" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/linux-netlink</id><content type="html" xml:base="/linux-netlink/"><![CDATA[<p>netlink 简介</p>
+
+<h3 id="netlink">netlink</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// net/netlink  位置</span>
+<span class="n">af_netlink</span><span class="p">.</span><span class="n">c</span>
+<span class="n">af_netlink</span><span class="p">.</span><span class="n">h</span>
+<span class="n">genetlink</span><span class="p">.</span><span class="n">c</span>
+<span class="n">diag</span><span class="p">.</span><span class="n">c</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 优点</span>
+<span class="c1">// 不需要轮询</span>
+<span class="c1">// 内核可以向用户空间发送异步消息</span>
+<span class="c1">// 支持组播</span>
+</code></pre></div></div>
+
+<h4 id="创建netlink套接字">创建netlink套接字</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>用户空间: sock(AF_NETLINK,SOCK_RAW|SOCK_CLEXEC,NETLINK_ROUTE) -&gt; netlink_create() -&gt; _netlink_create()
+内核空间: netlink_kernel_create() -&gt; _netlink_create()
+</code></pre></div></div>
+
+<h4 id="库文件">库文件</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://netfilter.org/projects/libmnl/
+</code></pre></div></div>
+
+<h4 id="sockaddr_nl">sockaddr_nl</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/uapi/linux/netlink.h</span>
+<span class="k">struct</span> <span class="n">sockaddr_nl</span><span class="p">{</span>
+	<span class="n">__kernel_sa_family_t</span>	<span class="n">nl_family</span><span class="p">;</span>    <span class="cm">/*AF_NETLINK*/</span>
+	<span class="kt">unsigned</span> <span class="kt">short</span> 			<span class="n">nl_pad</span><span class="p">;</span>		  <span class="cm">/*为零*/</span>
+	<span class="n">__u32</span> 					<span class="n">nl_pid</span><span class="p">;</span>       <span class="cm">/*端口号*/</span>
+	<span class="n">__u32</span> 					<span class="n">nl_groups</span><span class="p">;</span>    <span class="cm">/*组播组掩码*/</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>nl_pid 内核套接字,为0。 用户态程序设置为程序PID</p>
+
+<h4 id="netlink消息报头">netlink消息报头</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/uapi/linux/netlink.h</span>
+<span class="k">struct</span> <span class="n">nlmsghdr</span> <span class="p">{</span>
+	<span class="n">__u32</span>		<span class="n">nlmsg_len</span><span class="p">;</span>
+	<span class="n">__u16</span>		<span class="n">nlmsg_type</span><span class="p">;</span>
+	<span class="n">__u16</span>		<span class="n">nlmsg_flags</span><span class="p">;</span>
+	<span class="n">__u32</span>		<span class="n">nlmsg_seq</span><span class="p">;</span>
+	<span class="n">__u32</span>		<span class="n">nlmsg_pid</span><span class="p">;</span>
+	<span class="n">__u8</span>		<span class="n">nlmsg_data</span><span class="p">[];</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//nlmsg_type</span>
+<span class="cp">#define NLMSG_NOOP			0x1		</span><span class="cm">/* Nothing.		*/</span><span class="cp">
+#define NLMSG_ERROR			0x2		</span><span class="cm">/* Error		*/</span><span class="cp">
+#define NLMSG_DONE			0x3		</span><span class="cm">/* End of a dump	*/</span><span class="cp">
+#define NLMSG_OVERRUN		0x4		</span><span class="cm">/* Data lost		*/</span><span class="cp">
+</span></code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// nlmsg_flags</span>
+
+<span class="cp">#define NLM_F_REQUEST			0x01	</span><span class="cm">/* It is request message. 	*/</span><span class="cp">
+#define NLM_F_MULTI				0x02	</span><span class="cm">/* Multipart message, terminated by NLMSG_DONE */</span><span class="cp">
+#define NLM_F_ACK				0x04	</span><span class="cm">/* Reply with ack, with zero or error code */</span><span class="cp">
+#define NLM_F_ECHO				0x08	</span><span class="cm">/* Receive resulting notifications */</span><span class="cp">
+#define NLM_F_DUMP_INTR			0x10	</span><span class="cm">/* Dump was inconsistent due to sequence change */</span><span class="cp">
+#define NLM_F_DUMP_FILTERED		0x20	</span><span class="cm">/* Dump was filtered as requested */</span><span class="cp">
+</span>
+<span class="cm">/* Modifiers to GET request */</span>
+<span class="cp">#define NLM_F_ROOT				0x100	</span><span class="cm">/* specify tree	root	*/</span><span class="cp">
+#define NLM_F_MATCH				0x200	</span><span class="cm">/* return all matching	*/</span><span class="cp">
+#define NLM_F_ATOMIC			0x400	</span><span class="cm">/* atomic GET		*/</span><span class="cp">
+#define NLM_F_DUMP				(NLM_F_ROOT|NLM_F_MATCH)
+</span>
+<span class="cm">/* Modifiers to NEW request */</span>
+<span class="cp">#define NLM_F_REPLACE			0x100	</span><span class="cm">/* Override existing		*/</span><span class="cp">
+#define NLM_F_EXCL				0x200	</span><span class="cm">/* Do not touch, if it exists	*/</span><span class="cp">
+#define NLM_F_CREATE			0x400	</span><span class="cm">/* Create, if it does not exist	*/</span><span class="cp">
+#define NLM_F_APPEND			0x800	</span><span class="cm">/* Add to end of list		*/</span><span class="cp">
+</span>
+<span class="cm">/* Modifiers to DELETE request */</span>
+<span class="cp">#define NLM_F_NONREC			0x100	</span><span class="cm">/* Do not delete recursively	*/</span><span class="cp">
+#define NLM_F_BULK				0x200	</span><span class="cm">/* Delete multiple objects	*/</span><span class="cp">
+</span>
+<span class="cm">/* Flags for ACK message */</span>
+<span class="cp">#define NLM_F_CAPPED			0x100	</span><span class="cm">/* request was capped */</span><span class="cp">
+#define NLM_F_ACK_TLVS			0x200	</span><span class="cm">/* extended ACK TVLs were included */</span><span class="cp">
+</span></code></pre></div></div>
+
+<h3 id="ip-route">ip route</h3>
+
+<h4 id="ip-route-add-添加顺序">ip route add 添加顺序</h4>
+
+<ul>
+  <li>用户态通过 netlink 协议，发送消息 RTM_NEWROUTE，</li>
+  <li>内核态由rtnetlink_rcv() 处理。</li>
+  <li>通过调用net/ipv4/fib_frontend.c的inet_rtm_newroute()完成。</li>
+  <li>再使用方法fib_table_insert()插入转发数据库(FIB)</li>
+  <li>通知订阅了RTM_NEWROUTE消息的侦听(使用rtmsg_fib()方法)</li>
+  <li>创建一条netlinki消息，通过rtnl_notify()发送，通知加入了RTNLGRP_IPV4_ROUTE组播组的所有侦听者</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ip</span> <span class="n">route</span> <span class="n">add</span> <span class="o">-&gt;</span> <span class="n">rtnetlink_rcv</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">inet_rtm_newroute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">fib_table_insert</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">rtmsg_fib</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">rtnl_notify</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="ip-route-del-删除顺序">ip route del 删除顺序</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip route del -&gt; rtnetlink_rcv() -&gt; inet_rtm_delroute() -&gt; fib_table_delete() -&gt; rtmsg_fib() -&gt; rtnl_notify()
+</code></pre></div></div>
+
+<h4 id="ip-monitor-route">ip monitor route</h4>
+
+<p>通过Netlink，加入RTNLGRP_IPV4_ROUTE组播组。通过rtnl_notify()发送的消息会被ip monitor接收</p>
+
+<h3 id="netlink-消息">netlink 消息</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0                                         31
+        netlink消息报头(nlmsghdr)
+        通用netlink消息报头(genlmsghdr)
+        用户特定的消息报头(可选)
+        通用netlink消息有效载荷(可选)
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/uapi/linux/genetlink.h</span>
+<span class="k">struct</span> <span class="n">genlmsghdr</span> <span class="p">{</span>
+    <span class="n">__u8</span> <span class="n">cmd</span><span class="p">;</span>                     <span class="c1">// 通用消息类型</span>
+    <span class="n">__u8</span> <span class="n">version</span><span class="p">;</span>                 <span class="c1">// 版本控制</span>
+    <span class="n">__u16</span> <span class="n">reserved</span><span class="p">;</span>               <span class="c1">// 保留</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sk_buff</span> <span class="o">*</span><span class="n">genlmsg_new</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">payload</span><span class="p">,</span><span class="n">gfp_t</span> <span class="n">flags</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>实现了为netlink消息分配缓冲区，这个是nlmsg_new()的包装器</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>genlmsg_new（） -&gt; 调用genlmsg_put() 创建netlink报头 
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/net/genetlink.h</span>
+<span class="n">genlmsg_unicast</span><span class="p">()</span> <span class="c1">// 单播 是nlmsg_unicast() 包装器</span>
+<span class="n">genlmsg_multicast</span><span class="p">()</span> <span class="c1">// 发送消息到默认网络命名空间(namespace) net_init</span>
+<span class="n">genlmsg_multicast_allns</span><span class="p">()</span>  <span class="c1">// 发送到所有网络命名空间(namespace)</span>
+</code></pre></div></div>
+
+<p>用户态创建netlink套接字</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>socket(AF_NETLINK,SOCK_RAM,NETLINK_GENERIC) -&gt; 内核 netlink_create()
+</code></pre></div></div>
+
+<h4 id="监视接口">监视接口</h4>
+
+<p>http://yinyaliang.site/monitor-tcp-state/</p>]]></content><author><name>Your Name</name></author><category term="Linux" /><summary type="html"><![CDATA[netlink 简介]]></summary></entry><entry><title type="html">zabbix discovery use prometheus data</title><link href="/monitor-zabbix-metrics/" rel="alternate" type="text/html" title="zabbix discovery use prometheus data" /><published>2022-11-16T00:00:00+08:00</published><updated>2022-11-16T00:00:00+08:00</updated><id>/monitor-zabbix-metrics</id><content type="html" xml:base="/monitor-zabbix-metrics/"><![CDATA[<p>zabbix 使用prometheus数据格式实现自动发现</p>
 
 <h4 id="数据格式">数据格式</h4>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># HELP apisix_http_status HTTP status codes per service in APISIX
@@ -1926,297 +2080,4 @@ Do you want to perform these actions?
 │    1: resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
 │ 
 ╵
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[Terraform创建腾讯CVM]]></summary></entry><entry><title type="html">Daemonset</title><link href="/kubernetes-kubeadm-daemonset/" rel="alternate" type="text/html" title="Daemonset" /><published>2022-10-23T00:00:00+08:00</published><updated>2022-10-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-daemonset</id><content type="html" xml:base="/kubernetes-kubeadm-daemonset/"><![CDATA[<p>daemonset</p>
-
-<h3 id="创建及删除daemonset">创建及删除daemonset</h3>
-
-<ul>
-  <li>daemonset会在所有的节点上创建一个pod,有几个节点就创建几个pod,每个节点只有一个</li>
-  <li>一般用于监控、日志等，每个节点上运行一个pod</li>
-  <li>master上不会产生Pod,因为master上有污点</li>
-</ul>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl describe nodes master | <span class="nb">grep</span> ^Taints
-Taints:             node-role.kubernetes.io/master:NoSchedule
-</code></pre></div></div>
-
-<h4 id="查看">查看</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ~]# kubectl get ds
-No resources found <span class="k">in </span>nsdeploy namespace.
-</code></pre></div></div>
-
-<h4 id="创建及删除ds">创建及删除ds</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>ds
-<span class="nb">cd </span>ds/
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl create ns nsds
-namespace/nsds created
-<span class="o">[</span>root@master ds]# kubens nsds
-Context <span class="s2">"kubernetes-admin@kubernetes"</span> modified.
-Active namespace is <span class="s2">"nsds"</span><span class="nb">.</span>
-</code></pre></div></div>
-
-<p>daemonset和deployment的yaml只有四点不同,</p>
-
-<ul>
-  <li>把kind改成Daemonset</li>
-  <li>deployment有副本数,daemonset没有副本数</li>
-  <li>删除.spec下的strategy:{}</li>
-  <li>删除最后一行的status:{}</li>
-</ul>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
-<span class="na">kind</span><span class="pi">:</span>  <span class="s">DaemonSet</span>
-<span class="na">metadata</span><span class="pi">:</span>  
-  <span class="na">name</span><span class="pi">:</span>  <span class="s">ds1</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
-  <span class="na">template</span><span class="pi">:</span>
-    <span class="na">metadata</span><span class="pi">:</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
-    <span class="na">spec</span><span class="pi">:</span>
-      <span class="na">containers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
-        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
-        <span class="na">name</span><span class="pi">:</span>  <span class="s">busybox</span>
-        <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">sh"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">sleep</span><span class="nv"> </span><span class="s">36000"</span><span class="pi">]</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> ds1.yaml 
-daemonset.apps/ds1 created
-</code></pre></div></div>
-
-<h4 id="查看pod的运行">查看pod的运行</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods <span class="nt">-o</span> wide
-NAME        READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
-ds1-2b2cq   1/1     Running   0          27s   10.244.104.48    node2   &lt;none&gt;           &lt;none&gt;
-ds1-b2rgv   1/1     Running   0          27s   10.244.166.169   node1   &lt;none&gt;           &lt;none&gt;
-</code></pre></div></div>
-
-<h4 id="删除daemonset">删除daemonset</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl delete ds ds1
-daemonset.apps <span class="s2">"ds1"</span> deleted
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get ds
-No resources found <span class="k">in </span>nsds namespace.
-</code></pre></div></div>
-
-<h3 id="指定pod运行在特定的节点">指定pod运行在特定的节点</h3>
-
-<p>可以通过标签的方式制定daemonset的pod在指定的节点上运行</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
-<span class="na">kind</span><span class="pi">:</span>  <span class="s">DaemonSet</span>
-<span class="na">metadata</span><span class="pi">:</span>  
-  <span class="na">name</span><span class="pi">:</span>  <span class="s">ds1</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
-  <span class="na">template</span><span class="pi">:</span>
-    <span class="na">metadata</span><span class="pi">:</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span>  <span class="s">busybox</span>
-    <span class="na">spec</span><span class="pi">:</span>
-      <span class="na">nodeSelector</span><span class="pi">:</span>
-        <span class="na">diskxx</span><span class="pi">:</span>  <span class="s">ssdxx</span>
-      <span class="na">containers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
-        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
-        <span class="na">name</span><span class="pi">:</span>  <span class="s">busybox</span>
-        <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">sh"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">sleep</span><span class="nv"> </span><span class="s">36000"</span><span class="pi">]</span>
-</code></pre></div></div>
-
-<p>这里通过nodeSelector来指定pod运行在含有标签diskxx==ssdxx的节点上</p>
-
-<h3 id="其它控制器-replicationcontroller-rc">其它控制器 ReplicationController (rc)</h3>
-
-<p>rc和deployment的作用一样，使用方法也一样</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc
-No resources found <span class="k">in </span>nsds namespace.
-</code></pre></div></div>
-
-<h4 id="创建rc所需要的yaml文件">创建rc所需要的yaml文件</h4>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span>  <span class="s">ReplicationController</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span>  <span class="s">myrc</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">replicas</span><span class="pi">:</span>  <span class="m">3</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span>  <span class="s">nginx</span>
-  <span class="na">template</span><span class="pi">:</span>
-    <span class="na">metadata</span><span class="pi">:</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span>  <span class="s">nginx</span>
-    <span class="na">spec</span><span class="pi">:</span>
-      <span class="na">containers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">nginx</span>
-        <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
-        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
-        <span class="na">ports</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span>  <span class="m">80</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> rc1.yaml 
-replicationcontroller/myrc created
-</code></pre></div></div>
-
-<h4 id="查看-1">查看</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc
-NAME   DESIRED   CURRENT   READY   AGE
-myrc   3         3         3       30s
-<span class="o">[</span>root@master ds]# kubectl get pods
-NAME         READY   STATUS    RESTARTS   AGE
-myrc-cqj4m   1/1     Running   0          38s
-myrc-hdjz8   1/1     Running   0          38s
-myrc-s77mw   1/1     Running   0          38s
-</code></pre></div></div>
-
-<h4 id="扩展">扩展</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl scale rc myrc <span class="nt">--replicas</span><span class="o">=</span>5
-replicationcontroller/myrc scaled
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods
-NAME         READY   STATUS    RESTARTS   AGE
-myrc-bzphd   1/1     Running   0          11s
-myrc-cqj4m   1/1     Running   0          94s
-myrc-hdjz8   1/1     Running   0          94s
-myrc-kn5zc   1/1     Running   0          11s
-myrc-s77mw   1/1     Running   0          94s
-</code></pre></div></div>
-
-<h4 id="更新">更新</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc <span class="nt">-o</span> wide
-NAME   DESIRED   CURRENT   READY   AGE    CONTAINERS   IMAGES   SELECTOR
-myrc   5         5         5       2m6s   nginx        nginx    <span class="nv">app</span><span class="o">=</span>nginx
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl <span class="nb">set </span>image rc myrc <span class="nv">nginx</span><span class="o">=</span>nginx:1.9
-replicationcontroller/myrc image updated
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rc <span class="nt">-o</span> wide
-NAME   DESIRED   CURRENT   READY   AGE     CONTAINERS   IMAGES      SELECTOR
-myrc   5         5         5       2m42s   nginx        nginx:1.9   <span class="nv">app</span><span class="o">=</span>nginx
-</code></pre></div></div>
-
-<h4 id="删除">删除</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl delete rc myrc
-</code></pre></div></div>
-
-<h3 id="其他控制器-rplicaset-rs">其他控制器 RplicaSet (rs)</h3>
-
-<p>和deployment作用一样</p>
-
-<h4 id="查看-2">查看</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get rs
-No resources found <span class="k">in </span>nsds namespace.
-</code></pre></div></div>
-
-<h4 id="创建">创建</h4>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">apps/v1</span>
-<span class="na">kind</span><span class="pi">:</span>  <span class="s">ReplicaSet</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span>  <span class="s">myrs</span>
-  <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span>  <span class="s">rs1</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">replicas</span><span class="pi">:</span>  <span class="m">3</span>
-  <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span>  <span class="s">rsx</span>
-  <span class="na">template</span><span class="pi">:</span>
-    <span class="na">metadata</span><span class="pi">:</span>
-      <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span>  <span class="s">rsx</span>
-    <span class="na">spec</span><span class="pi">:</span>
-      <span class="na">containers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">web</span>
-        <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
-        <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl apply <span class="nt">-f</span> rs1.yaml 
-replicaset.apps/myrs created
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods
-NAME         READY   STATUS    RESTARTS   AGE
-myrs-mc2j6   1/1     Running   0          23s
-myrs-rbg92   1/1     Running   0          23s
-myrs-zx9db   1/1     Running   0          23s
-</code></pre></div></div>
-
-<h4 id="扩展-1">扩展</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl scale rs myrs <span class="nt">--replicas</span><span class="o">=</span>5
-replicaset.apps/myrs scaled
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl get pods <span class="nt">-o</span> wide
-NAME         READY   STATUS    RESTARTS   AGE   IP               NODE    NOMINATED NODE   READINESS GATES
-myrs-htmgf   1/1     Running   0          14s   10.244.166.178   node1   &lt;none&gt;           &lt;none&gt;
-myrs-mc2j6   1/1     Running   0          84s   10.244.166.176   node1   &lt;none&gt;           &lt;none&gt;
-myrs-rbg92   1/1     Running   0          84s   10.244.166.177   node1   &lt;none&gt;           &lt;none&gt;
-myrs-skxft   1/1     Running   0          14s   10.244.166.179   node1   &lt;none&gt;           &lt;none&gt;
-myrs-zx9db   1/1     Running   0          84s   10.244.166.175   node1   &lt;none&gt;           &lt;none&gt;
-</code></pre></div></div>
-
-<h4 id="删除-1">删除</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master ds]# kubectl delete rs myrs
-replicaset.apps <span class="s2">"myrs"</span> deleted
-</code></pre></div></div>
-
-<h4 id="对比">对比</h4>
-
-<table>
-  <thead>
-    <tr>
-      <th> </th>
-      <th>api</th>
-      <th>select</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>deploment</td>
-      <td>apps/v1</td>
-      <td>selector<br />matchLabels</td>
-    </tr>
-    <tr>
-      <td>daemonset</td>
-      <td>apps/v1</td>
-      <td>selector<br />matchLaels</td>
-    </tr>
-    <tr>
-      <td>ReplicationController</td>
-      <td>v1</td>
-      <td>selector</td>
-    </tr>
-    <tr>
-      <td>ReplicaSet</td>
-      <td>apps/v1</td>
-      <td>selector<br />matchLabels</td>
-    </tr>
-  </tbody>
-</table>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[daemonset]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[Terraform创建腾讯CVM]]></summary></entry></feed>

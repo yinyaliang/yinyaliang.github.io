@@ -263,9 +263,15 @@ var store = [{
         "url": "/c-02/",
         "teaser": null
       },{
-        "title": "zabbix discovery use prometheusi data",
+        "title": "zabbix discovery use prometheus data",
         "excerpt":"zabbix 使用prometheus数据格式实现自动发现 数据格式 # HELP apisix_http_status HTTP status codes per service in APISIX # TYPE apisix_http_status counter apisix_http_status{code=\"200\",route=\"ceshi-api\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-api\",consumer=\"\",node=\"\"} 26489 apisix_http_status{code=\"200\",route=\"ceshi-api\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-api\",consumer=\"\",node=\"10.1.9.3\"} 624693 apisix_http_status{code=\"200\",route=\"ceshi-api\",matched_uri=\"/*\",matched_host=\"ceshi.campre.dom\",service=\"ceshi-api\",consumer=\"\",node=\"10.1.9.3\"} 4820 apisix_http_status{code=\"200\",route=\"ceshi.camin.vip\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-console\",consumer=\"\",node=\"10.1.9.1\"} 8006 apisix_http_status{code=\"200\",route=\"ceshi.camin.vip\",matched_uri=\"/*\",matched_host=\"ceshi.camin.vip\",service=\"ceshi-console\",consumer=\"\",node=\"10.0.1.1\"} 2376 模板 zabbix_export: version: '6.0' date: '2022-11-16T06:43:50Z' groups: - uuid: 5875dc458fab45f699bdaf705773c951 name: 模板/服务 templates: - uuid: 70715d4c9a5744a0a0550c7131c107f5 template: service.apisix name: service.apisix groups: - name:...","categories": [],
         "tags": ["Monitor"],
         "url": "/monitor-zabbix-metrics/",
+        "teaser": null
+      },{
+        "title": "Netlink 简介",
+        "excerpt":"netlink 简介 netlink // net/netlink 位置 af_netlink.c af_netlink.h genetlink.c diag.c // 优点 // 不需要轮询 // 内核可以向用户空间发送异步消息 // 支持组播 创建netlink套接字 用户空间: sock(AF_NETLINK,SOCK_RAW|SOCK_CLEXEC,NETLINK_ROUTE) -&gt; netlink_create() -&gt; _netlink_create() 内核空间: netlink_kernel_create() -&gt; _netlink_create() 库文件 https://netfilter.org/projects/libmnl/ sockaddr_nl // include/uapi/linux/netlink.h struct sockaddr_nl{ __kernel_sa_family_t nl_family; /*AF_NETLINK*/ unsigned short nl_pad; /*为零*/ __u32 nl_pid; /*端口号*/ __u32 nl_groups; /*组播组掩码*/ }...","categories": [],
+        "tags": ["Linux"],
+        "url": "/linux-netlink/",
         "teaser": null
       }]

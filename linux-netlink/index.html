@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Netlink 简介 - 尹亚亮</title>
+<meta name="description" content="netlink 简介">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="Netlink 简介">
+<meta property="og:url" content="/linux-netlink/">
+
+
+  <meta property="og:description" content="netlink 简介">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-11-20T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/linux-netlink/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Netlink 简介">
+    <meta itemprop="description" content="netlink 简介">
+    <meta itemprop="datePublished" content="2022-11-20T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/linux-netlink/" class="u-url" itemprop="url">Netlink 简介
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-11-20T00:00:00+08:00">November 20, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#netlink">netlink</a><ul><li><a href="#创建netlink套接字">创建netlink套接字</a></li><li><a href="#库文件">库文件</a></li><li><a href="#sockaddr_nl">sockaddr_nl</a></li><li><a href="#netlink消息报头">netlink消息报头</a></li></ul></li><li><a href="#ip-route">ip route</a><ul><li><a href="#ip-route-add-添加顺序">ip route add 添加顺序</a></li><li><a href="#ip-route-del-删除顺序">ip route del 删除顺序</a></li><li><a href="#ip-monitor-route">ip monitor route</a></li></ul></li><li><a href="#netlink-消息">netlink 消息</a><ul><li><a href="#监视接口">监视接口</a></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>netlink 简介</p>
+
+<h3 id="netlink">netlink</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// net/netlink  位置</span>
+<span class="n">af_netlink</span><span class="p">.</span><span class="n">c</span>
+<span class="n">af_netlink</span><span class="p">.</span><span class="n">h</span>
+<span class="n">genetlink</span><span class="p">.</span><span class="n">c</span>
+<span class="n">diag</span><span class="p">.</span><span class="n">c</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 优点</span>
+<span class="c1">// 不需要轮询</span>
+<span class="c1">// 内核可以向用户空间发送异步消息</span>
+<span class="c1">// 支持组播</span>
+</code></pre></div></div>
+
+<h4 id="创建netlink套接字">创建netlink套接字</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>用户空间: sock(AF_NETLINK,SOCK_RAW|SOCK_CLEXEC,NETLINK_ROUTE) -&gt; netlink_create() -&gt; _netlink_create()
+内核空间: netlink_kernel_create() -&gt; _netlink_create()
+</code></pre></div></div>
+
+<h4 id="库文件">库文件</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://netfilter.org/projects/libmnl/
+</code></pre></div></div>
+
+<h4 id="sockaddr_nl">sockaddr_nl</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/uapi/linux/netlink.h</span>
+<span class="k">struct</span> <span class="n">sockaddr_nl</span><span class="p">{</span>
+	<span class="n">__kernel_sa_family_t</span>	<span class="n">nl_family</span><span class="p">;</span>    <span class="cm">/*AF_NETLINK*/</span>
+	<span class="kt">unsigned</span> <span class="kt">short</span> 			<span class="n">nl_pad</span><span class="p">;</span>		  <span class="cm">/*为零*/</span>
+	<span class="n">__u32</span> 					<span class="n">nl_pid</span><span class="p">;</span>       <span class="cm">/*端口号*/</span>
+	<span class="n">__u32</span> 					<span class="n">nl_groups</span><span class="p">;</span>    <span class="cm">/*组播组掩码*/</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>nl_pid 内核套接字,为0。 用户态程序设置为程序PID</p>
+
+<h4 id="netlink消息报头">netlink消息报头</h4>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/uapi/linux/netlink.h</span>
+<span class="k">struct</span> <span class="n">nlmsghdr</span> <span class="p">{</span>
+	<span class="n">__u32</span>		<span class="n">nlmsg_len</span><span class="p">;</span>
+	<span class="n">__u16</span>		<span class="n">nlmsg_type</span><span class="p">;</span>
+	<span class="n">__u16</span>		<span class="n">nlmsg_flags</span><span class="p">;</span>
+	<span class="n">__u32</span>		<span class="n">nlmsg_seq</span><span class="p">;</span>
+	<span class="n">__u32</span>		<span class="n">nlmsg_pid</span><span class="p">;</span>
+	<span class="n">__u8</span>		<span class="n">nlmsg_data</span><span class="p">[];</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//nlmsg_type</span>
+<span class="cp">#define NLMSG_NOOP			0x1		</span><span class="cm">/* Nothing.		*/</span><span class="cp">
+#define NLMSG_ERROR			0x2		</span><span class="cm">/* Error		*/</span><span class="cp">
+#define NLMSG_DONE			0x3		</span><span class="cm">/* End of a dump	*/</span><span class="cp">
+#define NLMSG_OVERRUN		0x4		</span><span class="cm">/* Data lost		*/</span><span class="cp">
+</span></code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// nlmsg_flags</span>
+
+<span class="cp">#define NLM_F_REQUEST			0x01	</span><span class="cm">/* It is request message. 	*/</span><span class="cp">
+#define NLM_F_MULTI				0x02	</span><span class="cm">/* Multipart message, terminated by NLMSG_DONE */</span><span class="cp">
+#define NLM_F_ACK				0x04	</span><span class="cm">/* Reply with ack, with zero or error code */</span><span class="cp">
+#define NLM_F_ECHO				0x08	</span><span class="cm">/* Receive resulting notifications */</span><span class="cp">
+#define NLM_F_DUMP_INTR			0x10	</span><span class="cm">/* Dump was inconsistent due to sequence change */</span><span class="cp">
+#define NLM_F_DUMP_FILTERED		0x20	</span><span class="cm">/* Dump was filtered as requested */</span><span class="cp">
+</span>
+<span class="cm">/* Modifiers to GET request */</span>
+<span class="cp">#define NLM_F_ROOT				0x100	</span><span class="cm">/* specify tree	root	*/</span><span class="cp">
+#define NLM_F_MATCH				0x200	</span><span class="cm">/* return all matching	*/</span><span class="cp">
+#define NLM_F_ATOMIC			0x400	</span><span class="cm">/* atomic GET		*/</span><span class="cp">
+#define NLM_F_DUMP				(NLM_F_ROOT|NLM_F_MATCH)
+</span>
+<span class="cm">/* Modifiers to NEW request */</span>
+<span class="cp">#define NLM_F_REPLACE			0x100	</span><span class="cm">/* Override existing		*/</span><span class="cp">
+#define NLM_F_EXCL				0x200	</span><span class="cm">/* Do not touch, if it exists	*/</span><span class="cp">
+#define NLM_F_CREATE			0x400	</span><span class="cm">/* Create, if it does not exist	*/</span><span class="cp">
+#define NLM_F_APPEND			0x800	</span><span class="cm">/* Add to end of list		*/</span><span class="cp">
+</span>
+<span class="cm">/* Modifiers to DELETE request */</span>
+<span class="cp">#define NLM_F_NONREC			0x100	</span><span class="cm">/* Do not delete recursively	*/</span><span class="cp">
+#define NLM_F_BULK				0x200	</span><span class="cm">/* Delete multiple objects	*/</span><span class="cp">
+</span>
+<span class="cm">/* Flags for ACK message */</span>
+<span class="cp">#define NLM_F_CAPPED			0x100	</span><span class="cm">/* request was capped */</span><span class="cp">
+#define NLM_F_ACK_TLVS			0x200	</span><span class="cm">/* extended ACK TVLs were included */</span><span class="cp">
+</span></code></pre></div></div>
+
+<h3 id="ip-route">ip route</h3>
+
+<h4 id="ip-route-add-添加顺序">ip route add 添加顺序</h4>
+
+<ul>
+  <li>用户态通过 netlink 协议，发送消息 RTM_NEWROUTE，</li>
+  <li>内核态由rtnetlink_rcv() 处理。</li>
+  <li>通过调用net/ipv4/fib_frontend.c的inet_rtm_newroute()完成。</li>
+  <li>再使用方法fib_table_insert()插入转发数据库(FIB)</li>
+  <li>通知订阅了RTM_NEWROUTE消息的侦听(使用rtmsg_fib()方法)</li>
+  <li>创建一条netlinki消息，通过rtnl_notify()发送，通知加入了RTNLGRP_IPV4_ROUTE组播组的所有侦听者</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ip</span> <span class="n">route</span> <span class="n">add</span> <span class="o">-&gt;</span> <span class="n">rtnetlink_rcv</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">inet_rtm_newroute</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">fib_table_insert</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">rtmsg_fib</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">rtnl_notify</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="ip-route-del-删除顺序">ip route del 删除顺序</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ip route del -&gt; rtnetlink_rcv() -&gt; inet_rtm_delroute() -&gt; fib_table_delete() -&gt; rtmsg_fib() -&gt; rtnl_notify()
+</code></pre></div></div>
+
+<h4 id="ip-monitor-route">ip monitor route</h4>
+
+<p>通过Netlink，加入RTNLGRP_IPV4_ROUTE组播组。通过rtnl_notify()发送的消息会被ip monitor接收</p>
+
+<h3 id="netlink-消息">netlink 消息</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0                                         31
+        netlink消息报头(nlmsghdr)
+        通用netlink消息报头(genlmsghdr)
+        用户特定的消息报头(可选)
+        通用netlink消息有效载荷(可选)
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/uapi/linux/genetlink.h</span>
+<span class="k">struct</span> <span class="n">genlmsghdr</span> <span class="p">{</span>
+    <span class="n">__u8</span> <span class="n">cmd</span><span class="p">;</span>                     <span class="c1">// 通用消息类型</span>
+    <span class="n">__u8</span> <span class="n">version</span><span class="p">;</span>                 <span class="c1">// 版本控制</span>
+    <span class="n">__u16</span> <span class="n">reserved</span><span class="p">;</span>               <span class="c1">// 保留</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sk_buff</span> <span class="o">*</span><span class="n">genlmsg_new</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">payload</span><span class="p">,</span><span class="n">gfp_t</span> <span class="n">flags</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>实现了为netlink消息分配缓冲区，这个是nlmsg_new()的包装器</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>genlmsg_new（） -&gt; 调用genlmsg_put() 创建netlink报头 
+</code></pre></div></div>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// include/net/genetlink.h</span>
+<span class="n">genlmsg_unicast</span><span class="p">()</span> <span class="c1">// 单播 是nlmsg_unicast() 包装器</span>
+<span class="n">genlmsg_multicast</span><span class="p">()</span> <span class="c1">// 发送消息到默认网络命名空间(namespace) net_init</span>
+<span class="n">genlmsg_multicast_allns</span><span class="p">()</span>  <span class="c1">// 发送到所有网络命名空间(namespace)</span>
+</code></pre></div></div>
+
+<p>用户态创建netlink套接字</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>socket(AF_NETLINK,SOCK_RAM,NETLINK_GENERIC) -&gt; 内核 netlink_create()
+</code></pre></div></div>
+
+<h4 id="监视接口">监视接口</h4>
+
+<p>http://yinyaliang.site/monitor-tcp-state/</p>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#linux" class="page__taxonomy-item p-category" rel="tag">Linux</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-11-20T00:00:00+08:00">November 20, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Netlink+%E7%AE%80%E4%BB%8B%20%2Flinux-netlink%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Flinux-netlink%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Flinux-netlink%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/monitor-zabbix-metrics/" class="pagination--pager" title="zabbix discovery use prometheus data
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>
