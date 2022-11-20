@@ -187,14 +187,14 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#为pod配置liveness探针">为pod配置liveness探针</a><ul><li><a href="#command探测">command探测</a></li><li><a href="#创建目录">创建目录</a></li><li><a href="#创建namespace">创建namespace</a></li><li><a href="#创建">创建</a></li><li><a href="#查看">查看</a></li><li><a href="#检查tmphealthy是否存在">检查/tmp/healthy是否存在</a></li><li><a href="#liveness-probe-httpget探测方式">liveness probe httpget探测方式</a></li><li><a href="#liveness-probe-tcpsocket的探测方式">liveness probe tcpsocket的探测方式</a></li><li><a href="#删除">删除</a></li></ul></li></ul></li><li><a href="#为pod配置readliness探针">为pod配置readliness探针</a><ul><li><a href="#创建-1">创建</a></li><li><a href="#创建svc">创建svc</a></li><li><a href="#修改pod的-indexhtml">修改pod的 index.html</a></li><li><a href="#获取svc的ip地址">获取svc的IP地址</a></li><li><a href="#访问测试">访问测试</a></li><li><a href="#删除pod3里的tmlhealthy">删除pod3里的/tml/healthy</a></li><li><a href="#查看pod3的状态">查看pod3的状态</a></li><li><a href="#再次访问readsvc">再次访问readsvc</a></li><li><a href="#查看pod的状态">查看pod的状态</a></li><li><a href="#删除-1">删除</a></li></ul></li></ul></li></ul>
+              <ul class="toc__menu"><li><a href="#为pod配置liveness探针">为pod配置liveness探针</a><ul><li><a href="#command探测">command探测</a></li><li><a href="#创建目录">创建目录</a></li><li><a href="#创建namespace">创建namespace</a></li><li><a href="#创建">创建</a></li><li><a href="#查看">查看</a></li><li><a href="#检查tmphealthy是否存在">检查/tmp/healthy是否存在</a></li><li><a href="#liveness-probe-httpget探测方式">liveness probe httpget探测方式</a></li><li><a href="#liveness-probe-tcpsocket的探测方式">liveness probe tcpsocket的探测方式</a></li><li><a href="#删除">删除</a></li></ul></li><li><a href="#为pod配置readliness探针">为pod配置readliness探针</a><ul><li><a href="#创建-1">创建</a></li><li><a href="#创建svc">创建svc</a></li><li><a href="#修改pod的-indexhtml">修改pod的 index.html</a></li><li><a href="#获取svc的ip地址">获取svc的IP地址</a></li><li><a href="#访问测试">访问测试</a></li><li><a href="#删除pod3里的tmlhealthy">删除pod3里的/tml/healthy</a></li><li><a href="#查看pod3的状态">查看pod3的状态</a></li><li><a href="#再次访问readsvc">再次访问readsvc</a></li><li><a href="#查看pod的状态">查看pod的状态</a></li><li><a href="#删除-1">删除</a></li></ul></li></ul>
 
             </nav>
           </aside>
         
         <p>probe</p>
 
-<h2 id="为pod配置liveness探针">为pod配置liveness探针</h2>
+<h3 id="为pod配置liveness探针">为pod配置liveness探针</h3>
 
 <p>deployment 只能保证pod的状态为running,内部服务状态无法保证</p>
 
@@ -391,7 +391,7 @@ pod <span class="s2">"liveness-http"</span> deleted
 pod <span class="s2">"liveness-tcp"</span> deleted
 </code></pre></div></div>
 
-<h2 id="为pod配置readliness探针">为pod配置readliness探针</h2>
+<h3 id="为pod配置readliness探针">为pod配置readliness探针</h3>
 
 <p>livenss:  探测到pod有问题后,通过重启pod来解决问题</p>
 
