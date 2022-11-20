@@ -269,6 +269,12 @@ var store = [{
         "url": "/monitor-zabbix-metrics/",
         "teaser": null
       },{
+        "title": "探针",
+        "excerpt":"probe 为pod配置liveness探针 deployment 只能保证pod的状态为running,内部服务状态无法保证 deployment 检测你出勤了没有 probe 检查你是否在工作 liveness 检查到某个pod运行有问题,就会重启，实际就是创建一个同名的Pod command探测 容器内部执行命令,返回0 正常，0 异常 创建目录 mkdir probe cd probe 创建namespace [root@master probe]# kubectl create ns nsprobe namespace/nsprobe created [root@master probe]# kubens nsprobe Context \"kubernetes-admin@kubernetes\" modified. Active namespace is \"nsprobe\". apiVersion: v1 kind: Pod metadata: labels: test: liveness name: liveness-exec spec:...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-probe/",
+        "teaser": null
+      },{
         "title": "Netlink 简介",
         "excerpt":"netlink 简介 netlink // net/netlink 位置 af_netlink.c af_netlink.h genetlink.c diag.c // 优点 // 不需要轮询 // 内核可以向用户空间发送异步消息 // 支持组播 创建netlink套接字 用户空间: sock(AF_NETLINK,SOCK_RAW|SOCK_CLEXEC,NETLINK_ROUTE) -&gt; netlink_create() -&gt; _netlink_create() 内核空间: netlink_kernel_create() -&gt; _netlink_create() 库文件 https://netfilter.org/projects/libmnl/ sockaddr_nl // include/uapi/linux/netlink.h struct sockaddr_nl{ __kernel_sa_family_t nl_family; /*AF_NETLINK*/ unsigned short nl_pad; /*为零*/ __u32 nl_pid; /*端口号*/ __u32 nl_groups; /*组播组掩码*/ }...","categories": [],
         "tags": ["Linux"],

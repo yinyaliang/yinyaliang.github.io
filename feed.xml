@@ -1,4 +1,386 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-20T15:49:26+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Netlink 简介</title><link href="/linux-netlink/" rel="alternate" type="text/html" title="Netlink 简介" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/linux-netlink</id><content type="html" xml:base="/linux-netlink/"><![CDATA[<p>netlink 简介</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-20T15:55:37+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">探针</title><link href="/kubernetes-kubeadm-probe/" rel="alternate" type="text/html" title="探针" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/kubernetes-kubeadm-probe</id><content type="html" xml:base="/kubernetes-kubeadm-probe/"><![CDATA[<p>probe</p>
+
+<h2 id="为pod配置liveness探针">为pod配置liveness探针</h2>
+
+<p>deployment 只能保证pod的状态为running,内部服务状态无法保证</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>deployment</th>
+      <th>检测你出勤了没有</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>probe</td>
+      <td>检查你是否在工作</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>liveness 检查到某个pod运行有问题,就会重启，实际就是创建一个同名的Pod</p>
+
+<h4 id="command探测">command探测</h4>
+
+<p>容器内部执行命令,返回0 正常，0 异常</p>
+
+<h4 id="创建目录">创建目录</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>probe
+<span class="nb">cd </span>probe
+</code></pre></div></div>
+
+<h4 id="创建namespace">创建namespace</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl create ns nsprobe
+namespace/nsprobe created
+<span class="o">[</span>root@master probe]# kubens nsprobe
+Context <span class="s2">"kubernetes-admin@kubernetes"</span> modified.
+Active namespace is <span class="s2">"nsprobe"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">test</span><span class="pi">:</span>  <span class="s">liveness</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness-exec</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">busybox</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">args</span><span class="pi">:</span>
+    <span class="pi">-</span>  <span class="s">/bin/sh</span>
+    <span class="pi">-</span>  <span class="s">-c</span>
+    <span class="pi">-</span>  <span class="s">touch /tmp/healthy; sleep 30 ; rm -rf /tmp/healthy; sleep </span><span class="m">1000</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="na">exec</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">cat</span>
+        <span class="pi">-</span> <span class="s">/tmp/healthy</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span>  <span class="m">5</span> <span class="c1"># 启动的5s内不探测</span>
+      <span class="na">periodSeconds</span><span class="pi">:</span>  <span class="m">5</span> <span class="c1"># 每5s探测一次</span>
+</code></pre></div></div>
+
+<p>initialDelaySeconds: pod启动多少秒内不探测</p>
+
+<p>periodSeconds: 探测间隔</p>
+
+<p>successThreshold: 探测失败后,最少连续探测成功后多少次才被认定为成功,默认为1</p>
+
+<p>failureThreshold: 探测失败后kubernetes的重拾次数 默认为3,最小值是1</p>
+
+<h4 id="创建">创建</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> liveness1.yaml 
+pod/liveness-exec created
+</code></pre></div></div>
+
+<h4 id="查看">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME            READY   STATUS    RESTARTS   AGE
+liveness-exec   1/1     Running   2          2m53s
+</code></pre></div></div>
+
+<h4 id="检查tmphealthy是否存在">检查/tmp/healthy是否存在</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@master probe]# kubectl exec liveness-exec -- ls /tmp
+[root@master probe]# kubectl get pods
+NAME            READY   STATUS    RESTARTS   AGE
+liveness-exec   1/1     Running   3          4m30s
+</code></pre></div></div>
+
+<p>这里healthy文件被删除了,pod被重建</p>
+
+<h4 id="liveness-probe-httpget探测方式">liveness probe httpget探测方式</h4>
+
+<p>http是否可以访问,下面是通过80端口访问到/usr/shar/nginx/html/index.html</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">test</span><span class="pi">:</span>  <span class="s">liveness</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness-http</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="na">failureThreshold</span><span class="pi">:</span>  <span class="m">3</span>
+      <span class="na">httpGet</span><span class="pi">:</span>
+        <span class="na">path</span><span class="pi">:</span>  <span class="s">/index.html</span>
+        <span class="na">port</span><span class="pi">:</span>  <span class="m">80</span>
+        <span class="na">scheme</span><span class="pi">:</span>  <span class="s">HTTP</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span>  <span class="m">10</span>
+      <span class="na">periodSeconds</span><span class="pi">:</span>  <span class="m">10</span>
+      <span class="na">successThreshold</span><span class="pi">:</span>  <span class="m">1</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> liveness-http.yaml 
+pod/liveness-http created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME            READY   STATUS             RESTARTS   AGE
+liveness-exec   0/1     CrashLoopBackOff   7          14m
+liveness-http   1/1     Running            0          87s
+</code></pre></div></div>
+
+<p>删除index.html</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-it</span> liveness-http <span class="nt">--</span> bash
+root@liveness-http:/# <span class="nb">rm</span> <span class="nt">-rf</span> /usr/share/nginx/html/
+50x.html    index.html  
+root@liveness-http:/# <span class="nb">rm</span> <span class="nt">-rf</span> /usr/share/nginx/html/index.html 
+root@liveness-http:/# 
+<span class="nb">exit</span>
+</code></pre></div></div>
+
+<p>查看</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-it</span> liveness-http <span class="nt">--</span> <span class="nb">ls</span> /usr/share/nginx/html/
+50x.html  index.html
+</code></pre></div></div>
+
+<p>index.html存在，证明pod已经重新拉起</p>
+
+<h4 id="liveness-probe-tcpsocket的探测方式">liveness probe tcpsocket的探测方式</h4>
+
+<p>是否可以tcp三次握手</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">test</span><span class="pi">:</span>  <span class="s">liveness</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness-tcp</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="na">failureThreshold</span><span class="pi">:</span>  <span class="m">3</span>
+      <span class="na">tcpSocket</span><span class="pi">:</span>
+        <span class="na">port</span><span class="pi">:</span>  <span class="m">808</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span>  <span class="m">5</span>
+      <span class="na">periodSeconds</span><span class="pi">:</span>  <span class="m">5</span>
+</code></pre></div></div>
+
+<p>nginx 端口是80,这里探测808 肯定失败</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> liveness-tcp.yaml 
+pod/liveness-tcp created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME            READY   STATUS             RESTARTS   AGE
+liveness-exec   0/1     CrashLoopBackOff   9          23m
+liveness-http   1/1     Running            1          9m33s
+liveness-tcp    1/1     Running            1          30s
+</code></pre></div></div>
+
+<p>可以看到完成了一次重启</p>
+
+<h4 id="删除">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete pod liveness-exec
+pod <span class="s2">"liveness-exec"</span> deleted
+<span class="o">[</span>root@master probe]# kubectl delete pod liveness-http
+pod <span class="s2">"liveness-http"</span> deleted
+<span class="o">[</span>root@master probe]# kubectl delete pod liveness-tcp
+pod <span class="s2">"liveness-tcp"</span> deleted
+</code></pre></div></div>
+
+<h2 id="为pod配置readliness探针">为pod配置readliness探针</h2>
+
+<p>livenss:  探测到pod有问题后,通过重启pod来解决问题</p>
+
+<p>readliness:  探测到pod有问题之后不重启,只是svc接受到请求后,不再转发请求到这个pod</p>
+
+<h4 id="创建-1">创建</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span>  <span class="s">app</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">pod1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">c1</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">lifecycle</span><span class="pi">:</span>
+      <span class="na">postStart</span><span class="pi">:</span>
+        <span class="na">exec</span><span class="pi">:</span>
+          <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">/bin/bash"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">touch</span><span class="nv"> </span><span class="s">/tmp/healthy"</span><span class="pi">]</span>
+    <span class="na">readinessProbe</span><span class="pi">:</span>
+      <span class="na">exec</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">cat</span>
+        <span class="pi">-</span> <span class="s">/tmp/healthy</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> readiness.yaml 
+pod/pod1 created
+<span class="o">[</span>root@master probe]# <span class="nb">sed</span> <span class="s1">'s/pod1/pod2/'</span> readiness.yaml | kubectl apply <span class="nt">-f</span> -
+pod/pod2 created
+<span class="o">[</span>root@master probe]# <span class="nb">sed</span> <span class="s1">'s/pod1/pod3/'</span> readiness.yaml | kubectl apply <span class="nt">-f</span> -
+pod/pod3 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods <span class="nt">--show-labels</span>
+NAME   READY   STATUS    RESTARTS   AGE   LABELS
+pod1   1/1     Running   0          58s   <span class="nv">run</span><span class="o">=</span>app
+pod2   1/1     Running   0          20s   <span class="nv">run</span><span class="o">=</span>app
+pod3   1/1     Running   0          15s   <span class="nv">run</span><span class="o">=</span>app
+</code></pre></div></div>
+
+<h4 id="创建svc">创建svc</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl expose <span class="nt">--name</span><span class="o">=</span>readsvc pod pod1 <span class="nt">--port</span><span class="o">=</span>80 <span class="nt">--selector</span><span class="o">=</span><span class="nv">run</span><span class="o">=</span>app
+service/readsvc exposed
+</code></pre></div></div>
+
+<p>这里是为pod1创建svc,因为标签一样,所以readsvc会关联三个pod</p>
+
+<h4 id="修改pod的-indexhtml">修改pod的 index.html</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod1 <span class="nt">--</span> bash
+root@pod1:/# <span class="nb">echo </span>111 <span class="o">&gt;</span> /usr/share/nginx/html/index.html 
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod2 <span class="nt">--</span> bash
+root@pod2:/# <span class="nb">echo </span>222 <span class="o">&gt;</span> /usr/share/nginx/html/index.html 
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod3 <span class="nt">--</span> bash
+root@pod3:/# <span class="nb">echo </span>333 <span class="o">&gt;</span> /usr/share/nginx/html/index.html
+</code></pre></div></div>
+
+<h4 id="获取svc的ip地址">获取svc的IP地址</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get svc readsvc
+NAME      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+readsvc   ClusterIP   10.102.65.92   &lt;none&gt;        80/TCP    3m28s
+</code></pre></div></div>
+
+<h4 id="访问测试">访问测试</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+111
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+333
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+333
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+222
+</code></pre></div></div>
+
+<h4 id="删除pod3里的tmlhealthy">删除pod3里的/tml/healthy</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod3 <span class="nt">--</span> <span class="nb">rm</span> <span class="nt">-rf</span> /tmp/healthy
+<span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod3 <span class="nt">--</span> <span class="nb">ls</span> <span class="nt">-l</span> /tmp/
+total 0
+</code></pre></div></div>
+
+<h4 id="查看pod3的状态">查看pod3的状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl describe pod pod3
+Name:         pod3
+Namespace:    nsprobe
+Priority:     0
+Node:         node1/192.168.122.202
+Start Time:   Sat, 23 Jul 2022 13:21:42 +0800
+Labels:       <span class="nv">run</span><span class="o">=</span>app
+Annotations:  cni.projectcalico.org/containerID: be54cb3773b113867bbb9b53964166def9e455d175dbf2af134bf1801342b85a
+              cni.projectcalico.org/podIP: 10.244.166.185/32
+              cni.projectcalico.org/podIPs: 10.244.166.185/32
+Status:       Running
+IP:           10.244.166.185
+IPs:
+  IP:  10.244.166.185
+Containers:
+  c1:
+    Container ID:   docker://1dfc5239cc2d026ef09d8a5edbde7e8647c0823d24387e201bce0806adf2eeee
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31
+    Port:           &lt;none&gt;
+    Host Port:      &lt;none&gt;
+    State:          Running
+      Started:      Sat, 23 Jul 2022 13:21:43 +0800
+    Ready:          False
+    Restart Count:  0
+    Readiness:      <span class="nb">exec</span> <span class="o">[</span><span class="nb">cat</span> /tmp/healthy] <span class="nv">delay</span><span class="o">=</span>0s <span class="nb">timeout</span><span class="o">=</span>1s <span class="nv">period</span><span class="o">=</span>10s <span class="c">#success=1 #failure=3</span>
+    Environment:    &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-db7dv <span class="o">(</span>ro<span class="o">)</span>
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-db7dv:
+    Type:                    Projected <span class="o">(</span>a volume that contains injected data from multiple sources<span class="o">)</span>
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       &lt;nil&gt;
+    DownwardAPI:             <span class="nb">true
+</span>QoS Class:                   BestEffort
+Node-Selectors:              &lt;none&gt;
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute <span class="nv">op</span><span class="o">=</span>Exists <span class="k">for </span>300s
+                             node.kubernetes.io/unreachable:NoExecute <span class="nv">op</span><span class="o">=</span>Exists <span class="k">for </span>300s
+Events:
+  Type     Reason     Age               From               Message
+  <span class="nt">----</span>     <span class="nt">------</span>     <span class="nt">----</span>              <span class="nt">----</span>               <span class="nt">-------</span>
+  Normal   Scheduled  6m53s             default-scheduler  Successfully assigned nsprobe/pod3 to node1
+  Normal   Pulled     6m50s             kubelet            Container image <span class="s2">"nginx"</span> already present on machine
+  Normal   Created    6m50s             kubelet            Created container c1
+  Normal   Started    6m49s             kubelet            Started container c1
+  Warning  Unhealthy  0s <span class="o">(</span>x4 over 30s<span class="o">)</span>  kubelet            Readiness probe failed: <span class="nb">cat</span>: /tmp/healthy: No such file or directory
+</code></pre></div></div>
+
+<h4 id="再次访问readsvc">再次访问readsvc</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+111
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+222
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+111
+</code></pre></div></div>
+
+<p>可以看到请求不再转发给pod3了</p>
+
+<h4 id="查看pod的状态">查看pod的状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME   READY   STATUS    RESTARTS   AGE
+pod1   1/1     Running   0          8m55s
+pod2   1/1     Running   0          8m17s
+pod3   0/1     Running   0          8m12s
+</code></pre></div></div>
+
+<p>虽然svc不再转发请求到pod3,但pod3的容器依然是正常运行的</p>
+
+<h4 id="删除-1">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete svc readsvc
+service <span class="s2">"readsvc"</span> deleted
+<span class="o">[</span>root@master probe]# kubectl delete pod pod<span class="o">{</span>1,2,3<span class="o">}</span> <span class="nt">--force</span>
+warning: Immediate deletion does not <span class="nb">wait </span><span class="k">for </span>confirmation that the running resource has been terminated. The resource may <span class="k">continue </span>to run on the cluster indefinitely.
+pod <span class="s2">"pod1"</span> force deleted
+pod <span class="s2">"pod2"</span> force deleted
+pod <span class="s2">"pod3"</span> force deleted
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[probe]]></summary></entry><entry><title type="html">Netlink 简介</title><link href="/linux-netlink/" rel="alternate" type="text/html" title="Netlink 简介" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/linux-netlink</id><content type="html" xml:base="/linux-netlink/"><![CDATA[<p>netlink 简介</p>
 
 <h3 id="netlink">netlink</h3>
 
@@ -1533,551 +1915,4 @@ always +<span class="o">=</span> hello_kern.o <span class="si">$(</span>TRACE_HE
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://people.redhat.com/rjones/virt-top/faq.html
 https://gitlab.com/libvirt/libvirt-go/blob/v7.4.0/domain.go#L369
 https://pkg.go.dev/libvirt.org/libvirt-go
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[采集KVM虚拟主机CPU以及内存使用资源情况]]></summary></entry><entry><title type="html">Terraform 安装使用</title><link href="/terraform/" rel="alternate" type="text/html" title="Terraform 安装使用" /><published>2022-10-25T00:00:00+08:00</published><updated>2022-10-25T00:00:00+08:00</updated><id>/terraform</id><content type="html" xml:base="/terraform/"><![CDATA[<p>Terraform创建腾讯CVM</p>
-
-<h4 id="什么是terraform">什么是terraform</h4>
-
-<p>HashiCorp Terraform 是一种基础架构即代码工具，可让在可读的配置文件中定义云和本地资源，可以对其进行版本控制、重用和共享。可以使用一致的工作流程在整个生命周期内配置和管理所有基础架构。Terraform 可以管理计算、存储和网络资源等低级组件，以及DNS 条目和 SaaS 功能等高级组件。</p>
-
-<h4 id="使用">使用</h4>
-
-<ul>
-  <li>以_configurations_的形式获取凭证和输入，在目标云上创建一个资源,</li>
-  <li>配置以Terraform的语法进行资源的描述。基本上是声明式的语法。</li>
-  <li>Terraform使用云服务商提供的API来创建资源，社区提供了1700多个provider来提供管理（https://registry.terraform.io/）,支持扩展</li>
-</ul>
-
-<h4 id="优势">优势</h4>
-
-<ul>
-  <li>可以管理多个云平台上的基础架构</li>
-  <li>时间优化，可以在短时间内编写配置，几分钟就可以创建云资源</li>
-  <li>变更更容易了和改代码一样了</li>
-  <li>Terraform 的状态允许在整个部署过程中跟踪资源更改</li>
-  <li>支持版本控制</li>
-</ul>
-
-<h4 id="工作流程">工作流程</h4>
-
-<p><img src="/assets/images/application/1.png" /></p>
-
-<h4 id="安装">安装</h4>
-
-<h5 id="安装-1">安装</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> yum-utils
-<span class="nb">sudo </span>yum-config-manager <span class="nt">--add-repo</span> https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
-<span class="nb">sudo </span>yum <span class="nt">-y</span> <span class="nb">install </span>terraform 
-</code></pre></div></div>
-
-<h5 id="验证">验证</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># terraform -help</span>
-Usage: terraform <span class="o">[</span>global options] &lt;subcommand&gt; <span class="o">[</span>args]
-
-The available commands <span class="k">for </span>execution are listed below.
-The primary workflow commands are given first, followed by
-less common or more advanced commands.
-
-Main commands:
-  init          Prepare your working directory <span class="k">for </span>other commands
-  validate      Check whether the configuration is valid
-  plan          Show changes required by the current configuration
-  apply         Create or update infrastructure
-  destroy       Destroy previously-created infrastructure
-
-All other commands:
-  console       Try Terraform expressions at an interactive <span class="nb">command </span>prompt
-  <span class="nb">fmt           </span>Reformat your configuration <span class="k">in </span>the standard style
-  force-unlock  Release a stuck lock on the current workspace
-  get           Install or upgrade remote Terraform modules
-  graph         Generate a Graphviz graph of the steps <span class="k">in </span>an operation
-  import        Associate existing infrastructure with a Terraform resource
-  login         Obtain and save credentials <span class="k">for </span>a remote host
-  <span class="nb">logout        </span>Remove locally-stored credentials <span class="k">for </span>a remote host
-  output        Show output values from your root module
-  providers     Show the providers required <span class="k">for </span>this configuration
-  refresh       Update the state to match remote systems
-  show          Show the current state or a saved plan
-  state         Advanced state management
-  taint         Mark a resource instance as not fully functional
-  <span class="nb">test          </span>Experimental support <span class="k">for </span>module integration testing
-  untaint       Remove the <span class="s1">'tainted'</span> state from a resource instance
-  version       Show the current Terraform version
-  workspace     Workspace management
-
-Global options <span class="o">(</span>use these before the subcommand, <span class="k">if </span>any<span class="o">)</span>:
-  <span class="nt">-chdir</span><span class="o">=</span>DIR    Switch to a different working directory before executing the
-                given subcommand.
-  <span class="nt">-help</span>         Show this <span class="nb">help </span>output, or the <span class="nb">help </span><span class="k">for </span>a specified subcommand.
-  <span class="nt">-version</span>      An <span class="nb">alias </span><span class="k">for </span>the <span class="s2">"version"</span> subcommand.
-</code></pre></div></div>
-
-<h5 id="补全">补全</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">touch</span> ~/.bashrc
-terraform <span class="nt">-install-autocomplete</span>
-</code></pre></div></div>
-
-<h4 id="简单测试">简单测试</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir learn-terraform-docker-container
-cd learn-terraform-docker-container
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> <span class="o">&gt;</span> main.tf <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh">
-terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~&gt; 2.13.0"
-    }
-  }
-}
-
-provider "docker" {}
-
-resource "docker_image" "nginx" {
-  name         = "nginx:latest"
-  keep_locally = false
-}
-
-resource "docker_container" "nginx" {
-  image = docker_image.nginx.latest
-  name  = "tutorial"
-  ports {
-    internal = 80
-    external = 8000
-  }
-}
-</span><span class="no">EOF
-</span></code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> terraform init
- terraform apply
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># curl localhost:8000
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Welcome to nginx!&lt;/title&gt;
-&lt;style&gt;
-html { color-scheme: light dark; }
-body { width: 35em; margin: 0 auto;
-font-family: Tahoma, Verdana, Arial, sans-serif; }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;h1&gt;Welcome to nginx!&lt;/h1&gt;
-&lt;p&gt;If you see this page, the nginx web server is successfully installed and
-working. Further configuration is required.&lt;/p&gt;
-
-&lt;p&gt;For online documentation and support please refer to
-&lt;a href="http://nginx.org/"&gt;nginx.org&lt;/a&gt;.&lt;br/&gt;
-Commercial support is available at
-&lt;a href="http://nginx.com/"&gt;nginx.com&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;/em&gt;&lt;/p&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># docker ps</span>
-CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS              PORTS                  NAMES
-8fde98406749   5d58c024174d   <span class="s2">"/docker-entrypoint.…"</span>   About a minute ago   Up About a minute   0.0.0.0:8000-&gt;80/tcp   tutorial
-</code></pre></div></div>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>terraform destroy
-</code></pre></div></div>
-
-<h4 id="构建腾讯基础设施">构建腾讯基础设施</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir tencent
-cd tencent
-</code></pre></div></div>
-
-<h5 id="初始化环境">初始化环境</h5>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cat &gt; provider.tf &lt;&lt; EOF
-terraform {
-  required_providers {
-    tencentcloud = {
-      source = "tencentcloudstack/tencentcloud"
-    }
-  }
-}
-
-# Configure the TencentCloud Provider
-provider "tencentcloud" {
-  secret_id  = "my-secret-id"
-  secret_key = "my-secret-key"
-  region     = "ap-guangzhou"
-}
-EOF
-</code></pre></div></div>
-
-<h5 id="创建一台cvm">创建一台CVM</h5>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>resource "tencentcloud_instance" "web" {
-  instance_name              = "test web server"
-  availability_zone          = "ap-beijing-6"
-  image_id                   = "img-hbbgxy7f"
-  instance_type              = "S6.MEDIUM2"
-  system_disk_type           = "CLOUD_PREMIUM"
-  system_disk_size           = 50
-  security_groups            = ["sg-4m6i7s6v"]
-  count                      = 1
-}
-</code></pre></div></div>
-
-<h5 id="测试执行">测试执行</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># terraform plan</span>
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
-following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-  <span class="c"># tencentcloud_instance.web[0] will be created</span>
-  + resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
-      + allocate_public_ip                      <span class="o">=</span> <span class="nb">false</span>
-      + availability_zone                       <span class="o">=</span> <span class="s2">"ap-beijing-6"</span>
-      + create_time                             <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + disable_monitor_service                 <span class="o">=</span> <span class="nb">false</span>
-      + disable_security_service                <span class="o">=</span> <span class="nb">false</span>
-      + expired_time                            <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + force_delete                            <span class="o">=</span> <span class="nb">false</span>
-      + <span class="nb">id</span>                                      <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + image_id                                <span class="o">=</span> <span class="s2">"img-hbbgxy7f"</span>
-      + instance_charge_type                    <span class="o">=</span> <span class="s2">"POSTPAID_BY_HOUR"</span>
-      + instance_charge_type_prepaid_renew_flag <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_name                           <span class="o">=</span> <span class="s2">"test web server"</span>
-      + instance_status                         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_type                           <span class="o">=</span> <span class="s2">"S6.MEDIUM2"</span>
-      + internet_charge_type                    <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + internet_max_bandwidth_out              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_ids                                 <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_name                                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + private_ip                              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + project_id                              <span class="o">=</span> 0
-      + public_ip                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + running_flag                            <span class="o">=</span> <span class="nb">true</span>
-      + security_groups                         <span class="o">=</span> <span class="o">[</span>
-          + <span class="s2">"sg-4m6i7s6v"</span>,
-        <span class="o">]</span>
-      + subnet_id                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_id                          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_size                        <span class="o">=</span> 50
-      + system_disk_type                        <span class="o">=</span> <span class="s2">"CLOUD_PREMIUM"</span>
-      + vpc_id                                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-
-      + data_disks <span class="o">{</span>
-          + data_disk_id           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_size         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_snapshot_id  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_type         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + delete_with_instance   <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + encrypt                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + throughput_performance <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-Plan: 1 to add, 0 to change, 0 to destroy.
-</code></pre></div></div>
-
-<h5 id="执行创建">执行创建</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># terraform apply</span>
-
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
-following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-  <span class="c"># tencentcloud_instance.web[0] will be created</span>
-  + resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
-      + allocate_public_ip                      <span class="o">=</span> <span class="nb">false</span>
-      + availability_zone                       <span class="o">=</span> <span class="s2">"ap-beijing-6"</span>
-      + create_time                             <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + disable_monitor_service                 <span class="o">=</span> <span class="nb">false</span>
-      + disable_security_service                <span class="o">=</span> <span class="nb">false</span>
-      + expired_time                            <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + force_delete                            <span class="o">=</span> <span class="nb">false</span>
-      + <span class="nb">id</span>                                      <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + image_id                                <span class="o">=</span> <span class="s2">"img-hbbgxy7f"</span>
-      + instance_charge_type                    <span class="o">=</span> <span class="s2">"POSTPAID_BY_HOUR"</span>
-      + instance_charge_type_prepaid_renew_flag <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_name                           <span class="o">=</span> <span class="s2">"test web server"</span>
-      + instance_status                         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_type                           <span class="o">=</span> <span class="s2">"S6.MEDIUM2"</span>
-      + internet_charge_type                    <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + internet_max_bandwidth_out              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_ids                                 <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_name                                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + private_ip                              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + project_id                              <span class="o">=</span> 0
-      + public_ip                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + running_flag                            <span class="o">=</span> <span class="nb">true</span>
-      + security_groups                         <span class="o">=</span> <span class="o">[</span>
-          + <span class="s2">"sg-4m6i7s6v"</span>,
-        <span class="o">]</span>
-      + subnet_id                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_id                          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_size                        <span class="o">=</span> 50
-      + system_disk_type                        <span class="o">=</span> <span class="s2">"CLOUD_PREMIUM"</span>
-      + vpc_id                                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-
-      + data_disks <span class="o">{</span>
-          + data_disk_id           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_size         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_snapshot_id  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_type         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + delete_with_instance   <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + encrypt                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + throughput_performance <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-Plan: 1 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only <span class="s1">'yes'</span> will be accepted to approve.
-
-  Enter a value: <span class="nb">yes
-
-</span>tencentcloud_instance.web[0]: Creating...
-tencentcloud_instance.web[0]: Still creating... <span class="o">[</span>10s elapsed]
-tencentcloud_instance.web[0]: Still creating... <span class="o">[</span>20s elapsed]
-tencentcloud_instance.web[0]: Still creating... <span class="o">[</span>30s elapsed]
-tencentcloud_instance.web[0]: Creation <span class="nb">complete </span>after 38s <span class="o">[</span><span class="nb">id</span><span class="o">=</span>ins-pvmqc3pr]
-
-Apply <span class="nb">complete</span><span class="o">!</span> Resources: 1 added, 0 changed, 0 destroyed.
-</code></pre></div></div>
-
-<p><img src="/assets/images/application/2.png" /></p>
-
-<h5 id="查询实例数据">查询实例数据</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># terraform show</span>
-<span class="c"># tencentcloud_instance.web[0]:</span>
-resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
-    allocate_public_ip         <span class="o">=</span> <span class="nb">false
-    </span>availability_zone          <span class="o">=</span> <span class="s2">"ap-beijing-6"</span>
-    create_time                <span class="o">=</span> <span class="s2">"2022-10-25T08:49:16Z"</span>
-    disable_monitor_service    <span class="o">=</span> <span class="nb">false
-    </span>disable_security_service   <span class="o">=</span> <span class="nb">false
-    </span>force_delete               <span class="o">=</span> <span class="nb">false
-    id</span>                         <span class="o">=</span> <span class="s2">"ins-pvmqc3pr"</span>
-    image_id                   <span class="o">=</span> <span class="s2">"img-hbbgxy7f"</span>
-    instance_charge_type       <span class="o">=</span> <span class="s2">"POSTPAID_BY_HOUR"</span>
-    instance_name              <span class="o">=</span> <span class="s2">"test web server"</span>
-    instance_status            <span class="o">=</span> <span class="s2">"RUNNING"</span>
-    instance_type              <span class="o">=</span> <span class="s2">"S6.MEDIUM2"</span>
-    internet_max_bandwidth_out <span class="o">=</span> 0
-    key_ids                    <span class="o">=</span> <span class="o">[]</span>
-    private_ip                 <span class="o">=</span> <span class="s2">"172.21.48.7"</span>
-    project_id                 <span class="o">=</span> 0
-    running_flag               <span class="o">=</span> <span class="nb">true
-    </span>security_groups            <span class="o">=</span> <span class="o">[</span>
-        <span class="s2">"sg-4m6i7s6v"</span>,
-    <span class="o">]</span>
-    subnet_id                  <span class="o">=</span> <span class="s2">"subnet-k8mir1zl"</span>
-    system_disk_id             <span class="o">=</span> <span class="s2">"disk-2t8ene3n"</span>
-    system_disk_size           <span class="o">=</span> 50
-    system_disk_type           <span class="o">=</span> <span class="s2">"CLOUD_PREMIUM"</span>
-    vpc_id                     <span class="o">=</span> <span class="s2">"vpc-bgsgnv7o"</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<h5 id="删除实例数据">删除实例数据</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># terraform destroy</span>
-tencentcloud_instance.web[0]: Refreshing state... <span class="o">[</span><span class="nb">id</span><span class="o">=</span>ins-pvmqc3pr]
-
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
-following symbols:
-  - destroy
-
-Terraform will perform the following actions:
-
-  <span class="c"># tencentcloud_instance.web[0] will be destroyed</span>
-  - resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
-      - allocate_public_ip         <span class="o">=</span> <span class="nb">false</span> -&gt; null
-      - availability_zone          <span class="o">=</span> <span class="s2">"ap-beijing-6"</span> -&gt; null
-      - create_time                <span class="o">=</span> <span class="s2">"2022-10-25T08:49:16Z"</span> -&gt; null
-      - disable_monitor_service    <span class="o">=</span> <span class="nb">false</span> -&gt; null
-      - disable_security_service   <span class="o">=</span> <span class="nb">false</span> -&gt; null
-      - force_delete               <span class="o">=</span> <span class="nb">false</span> -&gt; null
-      - <span class="nb">id</span>                         <span class="o">=</span> <span class="s2">"ins-pvmqc3pr"</span> -&gt; null
-      - image_id                   <span class="o">=</span> <span class="s2">"img-hbbgxy7f"</span> -&gt; null
-      - instance_charge_type       <span class="o">=</span> <span class="s2">"POSTPAID_BY_HOUR"</span> -&gt; null
-      - instance_name              <span class="o">=</span> <span class="s2">"test web server"</span> -&gt; null
-      - instance_status            <span class="o">=</span> <span class="s2">"RUNNING"</span> -&gt; null
-      - instance_type              <span class="o">=</span> <span class="s2">"S6.MEDIUM2"</span> -&gt; null
-      - internet_max_bandwidth_out <span class="o">=</span> 0 -&gt; null
-      - key_ids                    <span class="o">=</span> <span class="o">[]</span> -&gt; null
-      - private_ip                 <span class="o">=</span> <span class="s2">"172.21.48.7"</span> -&gt; null
-      - project_id                 <span class="o">=</span> 0 -&gt; null
-      - running_flag               <span class="o">=</span> <span class="nb">true</span> -&gt; null
-      - security_groups            <span class="o">=</span> <span class="o">[</span>
-          - <span class="s2">"sg-4m6i7s6v"</span>,
-        <span class="o">]</span> -&gt; null
-      - subnet_id                  <span class="o">=</span> <span class="s2">"subnet-k8mir1zl"</span> -&gt; null
-      - system_disk_id             <span class="o">=</span> <span class="s2">"disk-2t8ene3n"</span> -&gt; null
-      - system_disk_size           <span class="o">=</span> 50 -&gt; null
-      - system_disk_type           <span class="o">=</span> <span class="s2">"CLOUD_PREMIUM"</span> -&gt; null
-      - tags                       <span class="o">=</span> <span class="o">{}</span> -&gt; null
-      - vpc_id                     <span class="o">=</span> <span class="s2">"vpc-bgsgnv7o"</span> -&gt; null
-    <span class="o">}</span>
-
-Plan: 0 to add, 0 to change, 1 to destroy.
-
-Do you really want to destroy all resources?
-  Terraform will destroy all your managed infrastructure, as shown above.
-  There is no undo. Only <span class="s1">'yes'</span> will be accepted to confirm.
-
-  Enter a value: <span class="nb">yes
-
-</span>tencentcloud_instance.web[0]: Destroying... <span class="o">[</span><span class="nb">id</span><span class="o">=</span>ins-pvmqc3pr]
-tencentcloud_instance.web[0]: Still destroying... <span class="o">[</span><span class="nb">id</span><span class="o">=</span>ins-pvmqc3pr, 10s elapsed]
-tencentcloud_instance.web[0]: Destruction <span class="nb">complete </span>after 11s
-
-Destroy <span class="nb">complete</span><span class="o">!</span> Resources: 1 destroyed.
-</code></pre></div></div>
-
-<h5 id="无资源测试">无资源测试</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># terraform plan</span>
-
-Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
-following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-  <span class="c"># tencentcloud_instance.web[0] will be created</span>
-  + resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
-      + allocate_public_ip                      <span class="o">=</span> <span class="nb">false</span>
-      + availability_zone                       <span class="o">=</span> <span class="s2">"ap-beijing-6"</span>
-      + create_time                             <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + disable_monitor_service                 <span class="o">=</span> <span class="nb">false</span>
-      + disable_security_service                <span class="o">=</span> <span class="nb">false</span>
-      + expired_time                            <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + force_delete                            <span class="o">=</span> <span class="nb">false</span>
-      + <span class="nb">id</span>                                      <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + image_id                                <span class="o">=</span> <span class="s2">"img-hbbgxy7f"</span>
-      + instance_charge_type                    <span class="o">=</span> <span class="s2">"POSTPAID_BY_HOUR"</span>
-      + instance_charge_type_prepaid_renew_flag <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_name                           <span class="o">=</span> <span class="s2">"test web server"</span>
-      + instance_status                         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_type                           <span class="o">=</span> <span class="s2">"S5se.LARGE16"</span>
-      + internet_charge_type                    <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + internet_max_bandwidth_out              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_ids                                 <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_name                                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + private_ip                              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + project_id                              <span class="o">=</span> 0
-      + public_ip                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + running_flag                            <span class="o">=</span> <span class="nb">true</span>
-      + security_groups                         <span class="o">=</span> <span class="o">[</span>
-          + <span class="s2">"sg-4m6i7s6v"</span>,
-        <span class="o">]</span>
-      + subnet_id                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_id                          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_size                        <span class="o">=</span> 50
-      + system_disk_type                        <span class="o">=</span> <span class="s2">"CLOUD_PREMIUM"</span>
-      + vpc_id                                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-
-      + data_disks <span class="o">{</span>
-          + data_disk_id           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_size         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_snapshot_id  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_type         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + delete_with_instance   <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + encrypt                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + throughput_performance <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-Plan: 1 to add, 0 to change, 0 to destroy.
-
-───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-
-Note: You didn<span class="s1">'t use the -out option to save this plan, so Terraform can'</span>t guarantee to take exactly these actions <span class="k">if </span>you run
-<span class="s2">"terraform apply"</span> now.
-</code></pre></div></div>
-
-<h5 id="无资源创建测试">无资源创建测试</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the
-following symbols:
-  + create
-
-Terraform will perform the following actions:
-
-  <span class="c"># tencentcloud_instance.web[0] will be created</span>
-  + resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
-      + allocate_public_ip                      <span class="o">=</span> <span class="nb">false</span>
-      + availability_zone                       <span class="o">=</span> <span class="s2">"ap-beijing-6"</span>
-      + create_time                             <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + disable_monitor_service                 <span class="o">=</span> <span class="nb">false</span>
-      + disable_security_service                <span class="o">=</span> <span class="nb">false</span>
-      + expired_time                            <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + force_delete                            <span class="o">=</span> <span class="nb">false</span>
-      + <span class="nb">id</span>                                      <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + image_id                                <span class="o">=</span> <span class="s2">"img-hbbgxy7f"</span>
-      + instance_charge_type                    <span class="o">=</span> <span class="s2">"POSTPAID_BY_HOUR"</span>
-      + instance_charge_type_prepaid_renew_flag <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_name                           <span class="o">=</span> <span class="s2">"test web server"</span>
-      + instance_status                         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + instance_type                           <span class="o">=</span> <span class="s2">"S5se.LARGE16"</span>
-      + internet_charge_type                    <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + internet_max_bandwidth_out              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_ids                                 <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + key_name                                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + private_ip                              <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + project_id                              <span class="o">=</span> 0
-      + public_ip                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + running_flag                            <span class="o">=</span> <span class="nb">true</span>
-      + security_groups                         <span class="o">=</span> <span class="o">[</span>
-          + <span class="s2">"sg-4m6i7s6v"</span>,
-        <span class="o">]</span>
-      + subnet_id                               <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_id                          <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-      + system_disk_size                        <span class="o">=</span> 50
-      + system_disk_type                        <span class="o">=</span> <span class="s2">"CLOUD_PREMIUM"</span>
-      + vpc_id                                  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-
-      + data_disks <span class="o">{</span>
-          + data_disk_id           <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_size         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_snapshot_id  <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + data_disk_type         <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + delete_with_instance   <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + encrypt                <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-          + throughput_performance <span class="o">=</span> <span class="o">(</span>known after apply<span class="o">)</span>
-        <span class="o">}</span>
-    <span class="o">}</span>
-
-Plan: 1 to add, 0 to change, 0 to destroy.
-
-Do you want to perform these actions?
-  Terraform will perform the actions described above.
-  Only <span class="s1">'yes'</span> will be accepted to approve.
-
-  Enter a value: <span class="nb">yes
-
-</span>tencentcloud_instance.web[0]: Creating...
-╷
-│ Error: <span class="o">[</span>TencentCloudSDKError] <span class="nv">Code</span><span class="o">=</span>ResourceInsufficient.SpecifiedInstanceType, <span class="nv">Message</span><span class="o">=</span>The specified <span class="nb">type </span>of instance is understocked., <span class="nv">RequestId</span><span class="o">=</span>c978845f-cd62-46d0-8b91-60d9aa13e889
-│ 
-│   with tencentcloud_instance.web[0],
-│   on cvm.tf line 1, <span class="k">in </span>resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span>:
-│    1: resource <span class="s2">"tencentcloud_instance"</span> <span class="s2">"web"</span> <span class="o">{</span>
-│ 
-╵
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Application" /><summary type="html"><![CDATA[Terraform创建腾讯CVM]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[采集KVM虚拟主机CPU以及内存使用资源情况]]></summary></entry></feed>

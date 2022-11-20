@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>探针 - 尹亚亮</title>
+<meta name="description" content="probe">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="探针">
+<meta property="og:url" content="/kubernetes-kubeadm-probe/">
+
+
+  <meta property="og:description" content="probe">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2022-11-20T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/kubernetes-kubeadm-probe/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="探针">
+    <meta itemprop="description" content="probe">
+    <meta itemprop="datePublished" content="2022-11-20T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/kubernetes-kubeadm-probe/" class="u-url" itemprop="url">探针
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2022-11-20T00:00:00+08:00">November 20, 2022</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#为pod配置liveness探针">为pod配置liveness探针</a><ul><li><a href="#command探测">command探测</a></li><li><a href="#创建目录">创建目录</a></li><li><a href="#创建namespace">创建namespace</a></li><li><a href="#创建">创建</a></li><li><a href="#查看">查看</a></li><li><a href="#检查tmphealthy是否存在">检查/tmp/healthy是否存在</a></li><li><a href="#liveness-probe-httpget探测方式">liveness probe httpget探测方式</a></li><li><a href="#liveness-probe-tcpsocket的探测方式">liveness probe tcpsocket的探测方式</a></li><li><a href="#删除">删除</a></li></ul></li></ul></li><li><a href="#为pod配置readliness探针">为pod配置readliness探针</a><ul><li><a href="#创建-1">创建</a></li><li><a href="#创建svc">创建svc</a></li><li><a href="#修改pod的-indexhtml">修改pod的 index.html</a></li><li><a href="#获取svc的ip地址">获取svc的IP地址</a></li><li><a href="#访问测试">访问测试</a></li><li><a href="#删除pod3里的tmlhealthy">删除pod3里的/tml/healthy</a></li><li><a href="#查看pod3的状态">查看pod3的状态</a></li><li><a href="#再次访问readsvc">再次访问readsvc</a></li><li><a href="#查看pod的状态">查看pod的状态</a></li><li><a href="#删除-1">删除</a></li></ul></li></ul></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>probe</p>
+
+<h2 id="为pod配置liveness探针">为pod配置liveness探针</h2>
+
+<p>deployment 只能保证pod的状态为running,内部服务状态无法保证</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>deployment</th>
+      <th>检测你出勤了没有</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>probe</td>
+      <td>检查你是否在工作</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>liveness 检查到某个pod运行有问题,就会重启，实际就是创建一个同名的Pod</p>
+
+<h4 id="command探测">command探测</h4>
+
+<p>容器内部执行命令,返回0 正常，0 异常</p>
+
+<h4 id="创建目录">创建目录</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">mkdir </span>probe
+<span class="nb">cd </span>probe
+</code></pre></div></div>
+
+<h4 id="创建namespace">创建namespace</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl create ns nsprobe
+namespace/nsprobe created
+<span class="o">[</span>root@master probe]# kubens nsprobe
+Context <span class="s2">"kubernetes-admin@kubernetes"</span> modified.
+Active namespace is <span class="s2">"nsprobe"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">test</span><span class="pi">:</span>  <span class="s">liveness</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness-exec</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">busybox</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">args</span><span class="pi">:</span>
+    <span class="pi">-</span>  <span class="s">/bin/sh</span>
+    <span class="pi">-</span>  <span class="s">-c</span>
+    <span class="pi">-</span>  <span class="s">touch /tmp/healthy; sleep 30 ; rm -rf /tmp/healthy; sleep </span><span class="m">1000</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="na">exec</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">cat</span>
+        <span class="pi">-</span> <span class="s">/tmp/healthy</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span>  <span class="m">5</span> <span class="c1"># 启动的5s内不探测</span>
+      <span class="na">periodSeconds</span><span class="pi">:</span>  <span class="m">5</span> <span class="c1"># 每5s探测一次</span>
+</code></pre></div></div>
+
+<p>initialDelaySeconds: pod启动多少秒内不探测</p>
+
+<p>periodSeconds: 探测间隔</p>
+
+<p>successThreshold: 探测失败后,最少连续探测成功后多少次才被认定为成功,默认为1</p>
+
+<p>failureThreshold: 探测失败后kubernetes的重拾次数 默认为3,最小值是1</p>
+
+<h4 id="创建">创建</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> liveness1.yaml 
+pod/liveness-exec created
+</code></pre></div></div>
+
+<h4 id="查看">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME            READY   STATUS    RESTARTS   AGE
+liveness-exec   1/1     Running   2          2m53s
+</code></pre></div></div>
+
+<h4 id="检查tmphealthy是否存在">检查/tmp/healthy是否存在</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[root@master probe]# kubectl exec liveness-exec -- ls /tmp
+[root@master probe]# kubectl get pods
+NAME            READY   STATUS    RESTARTS   AGE
+liveness-exec   1/1     Running   3          4m30s
+</code></pre></div></div>
+
+<p>这里healthy文件被删除了,pod被重建</p>
+
+<h4 id="liveness-probe-httpget探测方式">liveness probe httpget探测方式</h4>
+
+<p>http是否可以访问,下面是通过80端口访问到/usr/shar/nginx/html/index.html</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">test</span><span class="pi">:</span>  <span class="s">liveness</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness-http</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="na">failureThreshold</span><span class="pi">:</span>  <span class="m">3</span>
+      <span class="na">httpGet</span><span class="pi">:</span>
+        <span class="na">path</span><span class="pi">:</span>  <span class="s">/index.html</span>
+        <span class="na">port</span><span class="pi">:</span>  <span class="m">80</span>
+        <span class="na">scheme</span><span class="pi">:</span>  <span class="s">HTTP</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span>  <span class="m">10</span>
+      <span class="na">periodSeconds</span><span class="pi">:</span>  <span class="m">10</span>
+      <span class="na">successThreshold</span><span class="pi">:</span>  <span class="m">1</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> liveness-http.yaml 
+pod/liveness-http created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME            READY   STATUS             RESTARTS   AGE
+liveness-exec   0/1     CrashLoopBackOff   7          14m
+liveness-http   1/1     Running            0          87s
+</code></pre></div></div>
+
+<p>删除index.html</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-it</span> liveness-http <span class="nt">--</span> bash
+root@liveness-http:/# <span class="nb">rm</span> <span class="nt">-rf</span> /usr/share/nginx/html/
+50x.html    index.html  
+root@liveness-http:/# <span class="nb">rm</span> <span class="nt">-rf</span> /usr/share/nginx/html/index.html 
+root@liveness-http:/# 
+<span class="nb">exit</span>
+</code></pre></div></div>
+
+<p>查看</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-it</span> liveness-http <span class="nt">--</span> <span class="nb">ls</span> /usr/share/nginx/html/
+50x.html  index.html
+</code></pre></div></div>
+
+<p>index.html存在，证明pod已经重新拉起</p>
+
+<h4 id="liveness-probe-tcpsocket的探测方式">liveness probe tcpsocket的探测方式</h4>
+
+<p>是否可以tcp三次握手</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">test</span><span class="pi">:</span>  <span class="s">liveness</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness-tcp</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">liveness</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">livenessProbe</span><span class="pi">:</span>
+      <span class="na">failureThreshold</span><span class="pi">:</span>  <span class="m">3</span>
+      <span class="na">tcpSocket</span><span class="pi">:</span>
+        <span class="na">port</span><span class="pi">:</span>  <span class="m">808</span>
+      <span class="na">initialDelaySeconds</span><span class="pi">:</span>  <span class="m">5</span>
+      <span class="na">periodSeconds</span><span class="pi">:</span>  <span class="m">5</span>
+</code></pre></div></div>
+
+<p>nginx 端口是80,这里探测808 肯定失败</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> liveness-tcp.yaml 
+pod/liveness-tcp created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME            READY   STATUS             RESTARTS   AGE
+liveness-exec   0/1     CrashLoopBackOff   9          23m
+liveness-http   1/1     Running            1          9m33s
+liveness-tcp    1/1     Running            1          30s
+</code></pre></div></div>
+
+<p>可以看到完成了一次重启</p>
+
+<h4 id="删除">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete pod liveness-exec
+pod <span class="s2">"liveness-exec"</span> deleted
+<span class="o">[</span>root@master probe]# kubectl delete pod liveness-http
+pod <span class="s2">"liveness-http"</span> deleted
+<span class="o">[</span>root@master probe]# kubectl delete pod liveness-tcp
+pod <span class="s2">"liveness-tcp"</span> deleted
+</code></pre></div></div>
+
+<h2 id="为pod配置readliness探针">为pod配置readliness探针</h2>
+
+<p>livenss:  探测到pod有问题后,通过重启pod来解决问题</p>
+
+<p>readliness:  探测到pod有问题之后不重启,只是svc接受到请求后,不再转发请求到这个pod</p>
+
+<h4 id="创建-1">创建</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span>  <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span>  <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">run</span><span class="pi">:</span>  <span class="s">app</span>
+  <span class="na">name</span><span class="pi">:</span>  <span class="s">pod1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span>  <span class="s">c1</span>
+    <span class="na">image</span><span class="pi">:</span>  <span class="s">nginx</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span>  <span class="s">IfNotPresent</span>
+    <span class="na">lifecycle</span><span class="pi">:</span>
+      <span class="na">postStart</span><span class="pi">:</span>
+        <span class="na">exec</span><span class="pi">:</span>
+          <span class="na">command</span><span class="pi">:</span>  <span class="pi">[</span><span class="s2">"</span><span class="s">/bin/bash"</span><span class="pi">,</span><span class="s2">"</span><span class="s">-c"</span><span class="pi">,</span><span class="s2">"</span><span class="s">touch</span><span class="nv"> </span><span class="s">/tmp/healthy"</span><span class="pi">]</span>
+    <span class="na">readinessProbe</span><span class="pi">:</span>
+      <span class="na">exec</span><span class="pi">:</span>
+        <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">cat</span>
+        <span class="pi">-</span> <span class="s">/tmp/healthy</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> readiness.yaml 
+pod/pod1 created
+<span class="o">[</span>root@master probe]# <span class="nb">sed</span> <span class="s1">'s/pod1/pod2/'</span> readiness.yaml | kubectl apply <span class="nt">-f</span> -
+pod/pod2 created
+<span class="o">[</span>root@master probe]# <span class="nb">sed</span> <span class="s1">'s/pod1/pod3/'</span> readiness.yaml | kubectl apply <span class="nt">-f</span> -
+pod/pod3 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods <span class="nt">--show-labels</span>
+NAME   READY   STATUS    RESTARTS   AGE   LABELS
+pod1   1/1     Running   0          58s   <span class="nv">run</span><span class="o">=</span>app
+pod2   1/1     Running   0          20s   <span class="nv">run</span><span class="o">=</span>app
+pod3   1/1     Running   0          15s   <span class="nv">run</span><span class="o">=</span>app
+</code></pre></div></div>
+
+<h4 id="创建svc">创建svc</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl expose <span class="nt">--name</span><span class="o">=</span>readsvc pod pod1 <span class="nt">--port</span><span class="o">=</span>80 <span class="nt">--selector</span><span class="o">=</span><span class="nv">run</span><span class="o">=</span>app
+service/readsvc exposed
+</code></pre></div></div>
+
+<p>这里是为pod1创建svc,因为标签一样,所以readsvc会关联三个pod</p>
+
+<h4 id="修改pod的-indexhtml">修改pod的 index.html</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod1 <span class="nt">--</span> bash
+root@pod1:/# <span class="nb">echo </span>111 <span class="o">&gt;</span> /usr/share/nginx/html/index.html 
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod2 <span class="nt">--</span> bash
+root@pod2:/# <span class="nb">echo </span>222 <span class="o">&gt;</span> /usr/share/nginx/html/index.html 
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod3 <span class="nt">--</span> bash
+root@pod3:/# <span class="nb">echo </span>333 <span class="o">&gt;</span> /usr/share/nginx/html/index.html
+</code></pre></div></div>
+
+<h4 id="获取svc的ip地址">获取svc的IP地址</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get svc readsvc
+NAME      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>   AGE
+readsvc   ClusterIP   10.102.65.92   &lt;none&gt;        80/TCP    3m28s
+</code></pre></div></div>
+
+<h4 id="访问测试">访问测试</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+111
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+333
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+333
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+222
+</code></pre></div></div>
+
+<h4 id="删除pod3里的tmlhealthy">删除pod3里的/tml/healthy</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod3 <span class="nt">--</span> <span class="nb">rm</span> <span class="nt">-rf</span> /tmp/healthy
+<span class="o">[</span>root@master probe]# kubectl <span class="nb">exec</span> <span class="nt">-ti</span> pod3 <span class="nt">--</span> <span class="nb">ls</span> <span class="nt">-l</span> /tmp/
+total 0
+</code></pre></div></div>
+
+<h4 id="查看pod3的状态">查看pod3的状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl describe pod pod3
+Name:         pod3
+Namespace:    nsprobe
+Priority:     0
+Node:         node1/192.168.122.202
+Start Time:   Sat, 23 Jul 2022 13:21:42 +0800
+Labels:       <span class="nv">run</span><span class="o">=</span>app
+Annotations:  cni.projectcalico.org/containerID: be54cb3773b113867bbb9b53964166def9e455d175dbf2af134bf1801342b85a
+              cni.projectcalico.org/podIP: 10.244.166.185/32
+              cni.projectcalico.org/podIPs: 10.244.166.185/32
+Status:       Running
+IP:           10.244.166.185
+IPs:
+  IP:  10.244.166.185
+Containers:
+  c1:
+    Container ID:   docker://1dfc5239cc2d026ef09d8a5edbde7e8647c0823d24387e201bce0806adf2eeee
+    Image:          nginx
+    Image ID:       docker-pullable://nginx@sha256:0d17b565c37bcbd895e9d92315a05c1c3c9a29f762b011a10c54a66cd53c9b31
+    Port:           &lt;none&gt;
+    Host Port:      &lt;none&gt;
+    State:          Running
+      Started:      Sat, 23 Jul 2022 13:21:43 +0800
+    Ready:          False
+    Restart Count:  0
+    Readiness:      <span class="nb">exec</span> <span class="o">[</span><span class="nb">cat</span> /tmp/healthy] <span class="nv">delay</span><span class="o">=</span>0s <span class="nb">timeout</span><span class="o">=</span>1s <span class="nv">period</span><span class="o">=</span>10s <span class="c">#success=1 #failure=3</span>
+    Environment:    &lt;none&gt;
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-db7dv <span class="o">(</span>ro<span class="o">)</span>
+Conditions:
+  Type              Status
+  Initialized       True 
+  Ready             False 
+  ContainersReady   False 
+  PodScheduled      True 
+Volumes:
+  kube-api-access-db7dv:
+    Type:                    Projected <span class="o">(</span>a volume that contains injected data from multiple sources<span class="o">)</span>
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       &lt;nil&gt;
+    DownwardAPI:             <span class="nb">true
+</span>QoS Class:                   BestEffort
+Node-Selectors:              &lt;none&gt;
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute <span class="nv">op</span><span class="o">=</span>Exists <span class="k">for </span>300s
+                             node.kubernetes.io/unreachable:NoExecute <span class="nv">op</span><span class="o">=</span>Exists <span class="k">for </span>300s
+Events:
+  Type     Reason     Age               From               Message
+  <span class="nt">----</span>     <span class="nt">------</span>     <span class="nt">----</span>              <span class="nt">----</span>               <span class="nt">-------</span>
+  Normal   Scheduled  6m53s             default-scheduler  Successfully assigned nsprobe/pod3 to node1
+  Normal   Pulled     6m50s             kubelet            Container image <span class="s2">"nginx"</span> already present on machine
+  Normal   Created    6m50s             kubelet            Created container c1
+  Normal   Started    6m49s             kubelet            Started container c1
+  Warning  Unhealthy  0s <span class="o">(</span>x4 over 30s<span class="o">)</span>  kubelet            Readiness probe failed: <span class="nb">cat</span>: /tmp/healthy: No such file or directory
+</code></pre></div></div>
+
+<h4 id="再次访问readsvc">再次访问readsvc</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+111
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+222
+<span class="o">[</span>root@master probe]# curl <span class="nt">-s</span> 10.102.65.92
+111
+</code></pre></div></div>
+
+<p>可以看到请求不再转发给pod3了</p>
+
+<h4 id="查看pod的状态">查看pod的状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME   READY   STATUS    RESTARTS   AGE
+pod1   1/1     Running   0          8m55s
+pod2   1/1     Running   0          8m17s
+pod3   0/1     Running   0          8m12s
+</code></pre></div></div>
+
+<p>虽然svc不再转发请求到pod3,但pod3的容器依然是正常运行的</p>
+
+<h4 id="删除-1">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete svc readsvc
+service <span class="s2">"readsvc"</span> deleted
+<span class="o">[</span>root@master probe]# kubectl delete pod pod<span class="o">{</span>1,2,3<span class="o">}</span> <span class="nt">--force</span>
+warning: Immediate deletion does not <span class="nb">wait </span><span class="k">for </span>confirmation that the running resource has been terminated. The resource may <span class="k">continue </span>to run on the cluster indefinitely.
+pod <span class="s2">"pod1"</span> force deleted
+pod <span class="s2">"pod2"</span> force deleted
+pod <span class="s2">"pod3"</span> force deleted
+</code></pre></div></div>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#kubernetes" class="page__taxonomy-item p-category" rel="tag">Kubernetes</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2022-11-20T00:00:00+08:00">November 20, 2022</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=%E6%8E%A2%E9%92%88%20%2Fkubernetes-kubeadm-probe%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fkubernetes-kubeadm-probe%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fkubernetes-kubeadm-probe%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/monitor-zabbix-metrics/" class="pagination--pager" title="zabbix discovery use prometheus data
+">上一页</a>
+    
+    
+      <a href="/linux-netlink/" class="pagination--pager" title="Netlink 简介
+">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>
