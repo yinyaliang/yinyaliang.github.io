@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#删除none的images">删除none的images</a></li><li><a href="#更新k8s的configmap">更新k8s的configmap</a></li></ul>
+              <ul class="toc__menu"><li><a href="#删除none的images">删除none的images</a></li><li><a href="#更新k8s的configmap">更新k8s的configmap</a></li><li><a href="#拉取指定远程分支到本地">拉取指定远程分支到本地</a></li></ul>
 
             </nav>
           </aside>
@@ -201,6 +201,23 @@
 <h4 id="更新k8s的configmap">更新k8s的configmap</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create configmap osptest <span class="nt">--from-file</span><span class="o">=</span>test.yaml <span class="nt">-o</span> yaml <span class="nt">-n</span> osp-test <span class="nt">--dry-run</span> | kubectl apply <span class="nt">-f</span> -
 </code></pre></div></div>
+
+<h4 id="拉取指定远程分支到本地">拉取指定远程分支到本地</h4>
+<p>新建仓库</p>
+
+<p>$ mkdir gitrepo
+$ cd giterpo
+$ git init</p>
+
+<p>拉取远程指定分支</p>
+
+<p>$ git remote add origin https://github.com/zjZSTU/zjzstu.github.com.git
+$ git fetch origin dev</p>
+
+<p>新建本地分支并关联到指定远程分支</p>
+
+<p>$ git checkout -b dev origin/dev</p>
+
 
         
       </section>
