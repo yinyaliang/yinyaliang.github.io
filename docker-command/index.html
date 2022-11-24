@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#删除none的images">删除none的images</a></li></ul>
+              <ul class="toc__menu"><li><a href="#删除none的images">删除none的images</a></li><li><a href="#更新k8s的configmap">更新k8s的configmap</a></li></ul>
 
             </nav>
           </aside>
@@ -196,11 +196,10 @@
 
 <h4 id="删除none的images">删除none的images</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker images  | <span class="nb">grep</span> <span class="s1">'&lt;none&gt;'</span> | <span class="nb">awk</span> <span class="s1">'{print $3}'</span> | xargs  docker image <span class="nb">rm</span> <span class="nt">-f</span> <span class="o">{}</span>
-<span class="sb">``</span>
+</code></pre></div></div>
 
-<span class="c">#### 更新k8s的configmap</span>
-<span class="sb">```</span>bash
-kubectl create configmap osptest <span class="nt">--from-file</span><span class="o">=</span>test.yaml <span class="nt">-o</span> yaml <span class="nt">-n</span> osp-test <span class="nt">--dry-run</span> | kubectl apply <span class="nt">-f</span> -
+<h4 id="更新k8s的configmap">更新k8s的configmap</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create configmap osptest <span class="nt">--from-file</span><span class="o">=</span>test.yaml <span class="nt">-o</span> yaml <span class="nt">-n</span> osp-test <span class="nt">--dry-run</span> | kubectl apply <span class="nt">-f</span> -
 </code></pre></div></div>
 
         

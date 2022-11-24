@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-24T10:14:18+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">探针</title><link href="/kubernetes-kubeadm-probe/" rel="alternate" type="text/html" title="探针" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/kubernetes-kubeadm-probe</id><content type="html" xml:base="/kubernetes-kubeadm-probe/"><![CDATA[<p>probe</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-24T10:18:40+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">探针</title><link href="/kubernetes-kubeadm-probe/" rel="alternate" type="text/html" title="探针" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/kubernetes-kubeadm-probe</id><content type="html" xml:base="/kubernetes-kubeadm-probe/"><![CDATA[<p>probe</p>
 
 <h3 id="为pod配置liveness探针">为pod配置liveness探针</h3>
 
@@ -1679,11 +1679,10 @@ S_IRUSR|S_IWUSR # 文件权限 600
 
 <h4 id="删除none的images">删除none的images</h4>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker images  | <span class="nb">grep</span> <span class="s1">'&lt;none&gt;'</span> | <span class="nb">awk</span> <span class="s1">'{print $3}'</span> | xargs  docker image <span class="nb">rm</span> <span class="nt">-f</span> <span class="o">{}</span>
-<span class="sb">``</span>
+</code></pre></div></div>
 
-<span class="c">#### 更新k8s的configmap</span>
-<span class="sb">```</span>bash
-kubectl create configmap osptest <span class="nt">--from-file</span><span class="o">=</span>test.yaml <span class="nt">-o</span> yaml <span class="nt">-n</span> osp-test <span class="nt">--dry-run</span> | kubectl apply <span class="nt">-f</span> -
+<h4 id="更新k8s的configmap">更新k8s的configmap</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create configmap osptest <span class="nt">--from-file</span><span class="o">=</span>test.yaml <span class="nt">-o</span> yaml <span class="nt">-n</span> osp-test <span class="nt">--dry-run</span> | kubectl apply <span class="nt">-f</span> -
 </code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Mysql 命令记录]]></summary></entry><entry><title type="html">写一个C版本的ebpf测试程序</title><link href="/bcc-02/" rel="alternate" type="text/html" title="写一个C版本的ebpf测试程序" /><published>2022-10-30T00:00:00+08:00</published><updated>2022-10-30T00:00:00+08:00</updated><id>/bcc-02</id><content type="html" xml:base="/bcc-02/"><![CDATA[<h4 id="hello_kernc">hello_kern.c</h4>
 
 <div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;linux/bpf.h&gt;</span><span class="cp">

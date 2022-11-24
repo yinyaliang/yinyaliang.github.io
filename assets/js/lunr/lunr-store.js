@@ -234,7 +234,7 @@ var store = [{
         "teaser": null
       },{
         "title": "常用命令",
-        "excerpt":"Mysql 命令记录   删除none的images  docker images  | grep '&lt;none&gt;' | awk '{print $3}' | xargs  docker image rm -f {} ``  #### 更新k8s的configmap ```bash kubectl create configmap osptest --from-file=test.yaml -o yaml -n osp-test --dry-run | kubectl apply -f -  ","categories": [],
+        "excerpt":"Mysql 命令记录   删除none的images  docker images  | grep '&lt;none&gt;' | awk '{print $3}' | xargs  docker image rm -f {}   更新k8s的configmap  kubectl create configmap osptest --from-file=test.yaml -o yaml -n osp-test --dry-run | kubectl apply -f -  ","categories": [],
         "tags": ["Docker"],
         "url": "/docker-command/",
         "teaser": null
