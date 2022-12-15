@@ -1,4 +1,289 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-11-24T11:50:21+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">探针</title><link href="/kubernetes-kubeadm-probe/" rel="alternate" type="text/html" title="探针" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/kubernetes-kubeadm-probe</id><content type="html" xml:base="/kubernetes-kubeadm-probe/"><![CDATA[<p>probe</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-12-15T09:15:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Job</title><link href="/kubernetes-kubeadm-job/" rel="alternate" type="text/html" title="Job" /><published>2022-12-15T00:00:00+08:00</published><updated>2022-12-15T00:00:00+08:00</updated><id>/kubernetes-kubeadm-job</id><content type="html" xml:base="/kubernetes-kubeadm-job/"><![CDATA[<p>Job</p>
+
+<p>临时使用或者是定期运行的工作,可以通过 cronjob实现</p>
+
+<h3 id="创建及删除job">创建及删除job</h3>
+
+<p>job用于临时性任务,成功则job结束，失败则创建新的或者重启pod</p>
+
+<h4 id="创建空间">创建空间</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create ns nsjob
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl create ns nsjob
+namespace/nsjob created
+<span class="o">[</span>root@master probe]# kubens nsjob
+Context <span class="s2">"kubernetes-admin@kubernetes"</span> modified.
+Active namespace is <span class="s2">"nsjob"</span><span class="nb">.</span>
+</code></pre></div></div>
+
+<h4 id="创建job">创建job</h4>
+
+<p>两种方式,命令行或者是生成yaml,建议命令行生成yaml再修改生成job</p>
+
+<p>kubectl create job 名字 –image=镜像 – “命令”</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>kubectl create job job1 <span class="nt">--image</span><span class="o">=</span>busybox <span class="nt">--dry-run</span><span class="o">=</span>client <span class="nt">-o</span> yaml <span class="nt">--</span> sh <span class="nt">-c</span> <span class="s2">"echo hello &amp;&amp; sleep 10"</span> <span class="o">&gt;</span> job.yaml
+</code></pre></div></div>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">batch/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Job</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">job1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">sh</span>
+        <span class="pi">-</span> <span class="s">-c</span>
+        <span class="pi">-</span> <span class="s">echo hello &amp;&amp; sleep </span><span class="m">10</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">job1</span>
+        <span class="na">resources</span><span class="pi">:</span> <span class="pi">{}</span>
+      <span class="na">restartPolicy</span><span class="pi">:</span> <span class="s">Never</span>
+<span class="na">status</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p>增加IfNotPresent</p>
+
+<p>job的restart 策略有两种:</p>
+
+<ul>
+  <li>Never: 只要任务没有完成,则新创建pod运行，知道job完成,会产生多个pod</li>
+  <li>OnFailure: 只要pod没有完成, 就会重启pod,重新执行任务</li>
+</ul>
+
+<h4 id="创建job-1">创建job</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> job.yaml 
+job.batch/job1 created
+</code></pre></div></div>
+
+<h4 id="查看job状态">查看job状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get <span class="nb">jobs
+</span>NAME   COMPLETIONS   DURATION   AGE
+job1   1/1           11s        34s
+</code></pre></div></div>
+
+<p>1/1显示完成</p>
+
+<h4 id="删除pod">删除pod</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete job job1
+job.batch <span class="s2">"job1"</span> deleted
+</code></pre></div></div>
+
+<h4 id="job中指定参数">job中指定参数</h4>
+
+<p>parallelism: N  并行运行N个pod，parallelism的值 不会超过completions</p>
+
+<p>completions: M  job测试多次的话,要有M次要成功才算成功,即要有M个状态为Complete的pod,如果没有就重复执行</p>
+
+<p>backoffLimit: N  如果job失败,则重试几次</p>
+
+<p>activeDeadlineSeconds: N  job运行的最长时间，单位: 秒</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">batch/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Job</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">job1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">parallelism</span><span class="pi">:</span> <span class="m">3</span>
+  <span class="na">completions</span><span class="pi">:</span> <span class="m">6</span>
+  <span class="na">backoffLimit</span><span class="pi">:</span> <span class="m">4</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">sh</span>
+        <span class="pi">-</span> <span class="s">-c</span>
+        <span class="pi">-</span> <span class="s">echo hello &amp;&amp; sleep </span><span class="m">10</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">job1</span>
+        <span class="na">resources</span><span class="pi">:</span> <span class="pi">{}</span>
+      <span class="na">restartPolicy</span><span class="pi">:</span> <span class="s">Never</span>
+<span class="na">status</span><span class="pi">:</span> <span class="pi">{}</span>
+</code></pre></div></div>
+
+<p>并行设置3个,要有6个pod处于完成状态才可以</p>
+
+<h4 id="创建">创建</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> job.yaml 
+job.batch/job1 created
+</code></pre></div></div>
+
+<h4 id="查看pod">查看pod</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME         READY   STATUS      RESTARTS   AGE
+job1-9m4rl   0/1     Completed   0          17s
+job1-hhm75   1/1     Running     0          5s
+job1-l9kqn   1/1     Running     0          5s
+job1-pw7kk   0/1     Completed   0          17s
+job1-qmdxd   0/1     Completed   0          17s
+job1-rm44q   1/1     Running     0          5s
+</code></pre></div></div>
+
+<p>有三个运行的job</p>
+
+<h4 id="查看job">查看job</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get <span class="nb">jobs
+</span>NAME   COMPLETIONS   DURATION   AGE
+job1   6/6           24s        68s
+</code></pre></div></div>
+
+<h4 id="再次看pod的状态">再次看pod的状态</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME         READY   STATUS      RESTARTS   AGE
+job1-9m4rl   0/1     Completed   0          95s
+job1-hhm75   0/1     Completed   0          83s
+job1-l9kqn   0/1     Completed   0          83s
+job1-pw7kk   0/1     Completed   0          95s
+job1-qmdxd   0/1     Completed   0          95s
+job1-rm44q   0/1     Completed   0          83s
+</code></pre></div></div>
+
+<h4 id="删除">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete <span class="nt">-f</span> job.yaml 
+job.batch <span class="s2">"job1"</span> deleted
+</code></pre></div></div>
+
+<h4 id="测试失败">测试失败</h4>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">batch/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Job</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">job1</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">parallelism</span><span class="pi">:</span> <span class="m">3</span>
+  <span class="na">completions</span><span class="pi">:</span> <span class="m">6</span>
+  <span class="na">backoffLimit</span><span class="pi">:</span> <span class="m">4</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">creationTimestamp</span><span class="pi">:</span> <span class="no">null</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">command</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">sh</span>
+        <span class="pi">-</span> <span class="s">-c</span>
+        <span class="pi">-</span> <span class="s">echoX hello &amp;&amp; sleep </span><span class="m">10</span>
+        <span class="na">image</span><span class="pi">:</span> <span class="s">busybox</span>
+        <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+        <span class="na">name</span><span class="pi">:</span> <span class="s">job1</span>
+        <span class="na">resources</span><span class="pi">:</span> <span class="pi">{}</span>
+      <span class="na">restartPolicy</span><span class="pi">:</span> <span class="s">Never</span>
+<span class="na">status</span><span class="pi">:</span> <span class="pi">{}</span>
+<span class="s">~</span>              
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> job.yaml 
+job.batch/job1 created
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME         READY   STATUS   RESTARTS   AGE
+job1-6858m   0/1     Error    0          6s
+job1-dbpgx   0/1     Error    0          9s
+job1-gndds   0/1     Error    0          8s
+job1-nb9gr   0/1     Error    0          8s
+job1-xh45n   0/1     Error    0          9s
+job1-xnhqb   0/1     Error    0          9s
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete <span class="nt">-f</span> job.yaml 
+job.batch <span class="s2">"job1"</span> deleted
+</code></pre></div></div>
+
+<h3 id="创建及删除cronjob">创建及删除cronjob</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get cj
+No resources found <span class="k">in </span>nsjob namespace.
+</code></pre></div></div>
+
+<h4 id="命令创建">命令创建</h4>
+
+<p>kubectl create cj 名字 –image=镜像 –schedule=”*/1 * * * *” – /bin/sh -c “命令”</p>
+
+<p>–schedule 定时</p>
+
+<h4 id="yaml创建">yaml创建</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl create cj job2 <span class="nt">--image</span><span class="o">=</span>busybox <span class="nt">--schedule</span><span class="o">=</span><span class="s2">"*/1 * * * *"</span> <span class="nt">--dry-run</span><span class="o">=</span>client <span class="nt">-o</span> yaml <span class="nt">--</span> /bin/sh <span class="nt">-c</span> <span class="s2">"echo hello world"</span> <span class="o">&gt;</span> job2.yaml
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: job2
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: job2
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+          - <span class="nb">command</span>:
+            - /bin/sh
+            - <span class="nt">-c</span>
+            - <span class="nb">echo </span>hello world
+            image: busybox
+            name: job2
+            resources: <span class="o">{}</span>
+          restartPolicy: OnFailure
+  schedule: <span class="s1">'*/1 * * * *'</span>
+status: <span class="o">{}</span>
+</code></pre></div></div>
+
+<h4 id="创建-1">创建</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl apply <span class="nt">-f</span> job2.yaml 
+cronjob.batch/job2 created
+</code></pre></div></div>
+
+<h4 id="查看">查看</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get cj
+NAME   SCHEDULE      SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+job2   <span class="k">*</span>/1 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span>   False     0        &lt;none&gt;          10s
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME                  READY   STATUS              RESTARTS   AGE
+job2-27642647-th984   0/1     ContainerCreating   0          21s
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl get pods
+NAME                  READY   STATUS      RESTARTS   AGE
+job2-27642647-th984   0/1     Completed   0          79s
+job2-27642648-wgkzc   0/1     Completed   0          19s
+</code></pre></div></div>
+
+<h4 id="删除-1">删除</h4>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@master probe]# kubectl delete <span class="nt">-f</span> job2.yaml 
+cronjob.batch <span class="s2">"job2"</span> deleted
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[Job]]></summary></entry><entry><title type="html">探针</title><link href="/kubernetes-kubeadm-probe/" rel="alternate" type="text/html" title="探针" /><published>2022-11-20T00:00:00+08:00</published><updated>2022-11-20T00:00:00+08:00</updated><id>/kubernetes-kubeadm-probe</id><content type="html" xml:base="/kubernetes-kubeadm-probe/"><![CDATA[<p>probe</p>
 
 <h3 id="为pod配置liveness探针">为pod配置liveness探针</h3>
 
@@ -1755,182 +2040,4 @@ always +<span class="o">=</span> hello_kern.o <span class="si">$(</span>TRACE_HE
 
 
             bash-58793   <span class="o">[</span>008] d...1  6429.165508: bpf_trace_printk: Hello BPF!
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="BCC" /><summary type="html"><![CDATA[hello_kern.c]]></summary></entry><entry><title type="html">Zabbix 对于 KVM 虚拟机资源监控</title><link href="/monitor-kvm-cpumem/" rel="alternate" type="text/html" title="Zabbix 对于 KVM 虚拟机资源监控" /><published>2022-10-27T00:00:00+08:00</published><updated>2022-10-27T00:00:00+08:00</updated><id>/monitor-kvm-cpumem</id><content type="html" xml:base="/monitor-kvm-cpumem/"><![CDATA[<p>采集KVM虚拟主机CPU以及内存使用资源情况</p>
-
-<h4 id="安装">安装</h4>
-
-<h5 id="centos">centos</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> yum <span class="nt">-y</span> <span class="nb">install </span>libvirt-devel
-</code></pre></div></div>
-
-<h5 id="ubuntu">ubuntu</h5>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>apt <span class="nb">install </span>libvirt-dev
-</code></pre></div></div>
-
-<p>package</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> go get libvirt/libvirt-go
-</code></pre></div></div>
-
-<h4 id="代码">代码</h4>
-
-<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">kvm</span>
-
-<span class="k">import</span> <span class="p">(</span>
-	<span class="s">"encoding/json"</span>
-	<span class="s">"fmt"</span>
-	<span class="s">"time"</span>
-
-	<span class="s">"libvirt.org/go/libvirt"</span>
-	<span class="s">"zabbix.com/pkg/plugin"</span>
-	<span class="s">"zabbix.com/pkg/zbxerr"</span>
-<span class="p">)</span>
-
-<span class="k">type</span> <span class="n">Plugin</span> <span class="k">struct</span> <span class="p">{</span>
-	<span class="n">plugin</span><span class="o">.</span><span class="n">Base</span>
-<span class="p">}</span>
-
-<span class="k">var</span> <span class="n">impl</span> <span class="n">Plugin</span>
-
-<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">Export</span><span class="p">(</span><span class="n">key</span> <span class="kt">string</span><span class="p">,</span> <span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">,</span> <span class="n">ctx</span> <span class="n">plugin</span><span class="o">.</span><span class="n">ContextProvider</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="k">interface</span><span class="p">{},</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">switch</span> <span class="n">key</span> <span class="p">{</span>
-	<span class="k">case</span> <span class="s">"kvm.avtive.domain.discovery"</span><span class="o">:</span>
-		<span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">virtual_host_discovery</span><span class="p">()</span>
-		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-		<span class="p">}</span>
-		<span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="no">nil</span>
-	<span class="k">case</span> <span class="s">"domain.info"</span><span class="o">:</span>
-		<span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">p</span><span class="o">.</span><span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-		<span class="p">}</span>
-		<span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="no">nil</span>
-	<span class="k">default</span><span class="o">:</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">plugin</span><span class="o">.</span><span class="n">UnsupportedMetricError</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">type</span> <span class="n">kvmkDiscovery</span> <span class="k">struct</span> <span class="p">{</span>
-	<span class="n">Kvm</span> <span class="kt">string</span> <span class="s">`json:"{#KVM}"`</span>
-<span class="p">}</span>
-
-<span class="k">type</span> <span class="n">domainInfo</span> <span class="k">struct</span> <span class="p">{</span>
-	<span class="n">MemUnUsed</span> <span class="kt">uint64</span> <span class="s">`json:"MEMUNUSED"`</span>
-	<span class="n">CPUUsage</span>  <span class="kt">uint64</span> <span class="s">`json:"CPUUsage"`</span>
-<span class="p">}</span>
-
-<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_domain_info</span><span class="p">(</span><span class="n">params</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">!=</span> <span class="m">1</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">fmt</span><span class="o">.</span><span class="n">Errorf</span><span class="p">(</span><span class="s">"Invalid parameter."</span><span class="p">)</span>
-	<span class="p">}</span>
-
-	<span class="n">domainName</span> <span class="o">:=</span> <span class="n">params</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>
-
-	<span class="n">conn</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">libvirt</span><span class="o">.</span><span class="n">NewConnect</span><span class="p">(</span><span class="s">"qemu:///system"</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-	<span class="p">}</span>
-	<span class="k">defer</span> <span class="n">conn</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
-	<span class="k">var</span> <span class="n">domainifo</span> <span class="n">domainInfo</span>
-
-	<span class="k">var</span> <span class="n">cpu_time_last</span> <span class="kt">uint64</span>
-	<span class="k">var</span> <span class="n">cpu_time_pre</span> <span class="kt">uint64</span>
-	<span class="k">var</span> <span class="n">memory_unused</span> <span class="kt">uint64</span>
-	<span class="k">var</span> <span class="n">cpuUsage</span> <span class="kt">uint64</span>
-	<span class="k">for</span> <span class="n">count</span> <span class="o">:=</span> <span class="m">1</span><span class="p">;</span> <span class="n">count</span> <span class="o">&lt;=</span> <span class="m">2</span><span class="p">;</span> <span class="n">count</span><span class="o">++</span> <span class="p">{</span>
-
-		<span class="n">doms</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">conn</span><span class="o">.</span><span class="n">ListAllDomains</span><span class="p">(</span><span class="n">libvirt</span><span class="o">.</span><span class="n">CONNECT_LIST_DOMAINS_ACTIVE</span><span class="p">)</span>
-		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-		<span class="p">}</span>
-		<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dom</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">doms</span> <span class="p">{</span>
-			<span class="n">name</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
-			<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-				<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-			<span class="p">}</span>
-			<span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="n">domainName</span> <span class="p">{</span>
-				<span class="n">dom</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
-				<span class="k">continue</span>
-			<span class="p">}</span>
-			<span class="c">// memory</span>
-			<span class="n">meminfo</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">MemoryStats</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
-
-			<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">tag</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">meminfo</span> <span class="p">{</span>
-				<span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">Tag</span> <span class="o">==</span> <span class="m">5</span> <span class="p">{</span>
-					<span class="n">memory_unused</span> <span class="o">=</span> <span class="n">tag</span><span class="o">.</span><span class="n">Val</span>
-				<span class="p">}</span>
-			<span class="p">}</span>
-			<span class="c">// Query cpu total stats</span>
-			<span class="n">cpuStats</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetCPUStats</span><span class="p">(</span><span class="o">-</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
-			<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-				<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-			<span class="p">}</span>
-			<span class="n">cpu_time_pre</span> <span class="o">=</span> <span class="n">cpu_time_last</span>
-			<span class="n">cpu_time_last</span> <span class="o">=</span> <span class="n">cpuStats</span><span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">.</span><span class="n">CpuTime</span>
-			<span class="n">cpuUsage</span> <span class="o">=</span> <span class="m">100</span> <span class="o">*</span> <span class="p">(</span><span class="n">cpu_time_last</span> <span class="o">-</span> <span class="n">cpu_time_pre</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="m">1</span> <span class="o">*</span> <span class="m">1000000000</span><span class="p">)</span>
-
-			<span class="n">dom</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
-		<span class="p">}</span>
-		<span class="n">time</span><span class="o">.</span><span class="n">Sleep</span><span class="p">(</span><span class="m">1</span> <span class="o">*</span> <span class="n">time</span><span class="o">.</span><span class="n">Second</span><span class="p">)</span>
-	<span class="p">}</span>
-
-	<span class="n">domainifo</span><span class="o">.</span><span class="n">CPUUsage</span> <span class="o">=</span> <span class="n">cpuUsage</span>
-	<span class="n">domainifo</span><span class="o">.</span><span class="n">MemUnUsed</span> <span class="o">=</span> <span class="n">memory_unused</span>
-	<span class="k">if</span> <span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">domainifo</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">zbxerr</span><span class="o">.</span><span class="n">ErrorCannotMarshalJSON</span><span class="o">.</span><span class="n">Wrap</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="k">return</span>
-<span class="p">}</span>
-
-<span class="k">func</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">Plugin</span><span class="p">)</span> <span class="n">virtual_host_discovery</span><span class="p">()</span> <span class="p">(</span><span class="n">result</span> <span class="p">[]</span><span class="kt">byte</span><span class="p">,</span> <span class="n">err</span> <span class="kt">error</span><span class="p">)</span> <span class="p">{</span>
-	<span class="n">conn</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">libvirt</span><span class="o">.</span><span class="n">NewConnect</span><span class="p">(</span><span class="s">"qemu:///system"</span><span class="p">)</span>
-	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-	<span class="p">}</span>
-	<span class="k">defer</span> <span class="n">conn</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
-	<span class="n">kvm</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="n">kvmkDiscovery</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
-	<span class="c">// 获取所有开启的虚拟机名称</span>
-
-	<span class="n">doms</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">conn</span><span class="o">.</span><span class="n">ListAllDomains</span><span class="p">(</span><span class="n">libvirt</span><span class="o">.</span><span class="n">CONNECT_LIST_DOMAINS_ACTIVE</span><span class="p">)</span>
-
-	<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-	<span class="p">}</span>
-
-	<span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">dom</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">doms</span> <span class="p">{</span>
-
-		<span class="n">name</span><span class="p">,</span> <span class="n">err</span> <span class="o">:=</span> <span class="n">dom</span><span class="o">.</span><span class="n">GetName</span><span class="p">()</span>
-		<span class="k">if</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">err</span>
-		<span class="p">}</span>
-
-		<span class="n">kvm</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">kvm</span><span class="p">,</span> <span class="n">kvmkDiscovery</span><span class="p">{</span><span class="n">Kvm</span><span class="o">:</span> <span class="n">name</span><span class="p">})</span>
-		<span class="n">dom</span><span class="o">.</span><span class="n">Free</span><span class="p">()</span>
-	<span class="p">}</span>
-
-	<span class="k">if</span> <span class="n">result</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">Marshal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">kvm</span><span class="p">);</span> <span class="n">err</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="no">nil</span><span class="p">,</span> <span class="n">zbxerr</span><span class="o">.</span><span class="n">ErrorCannotMarshalJSON</span><span class="o">.</span><span class="n">Wrap</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="k">return</span>
-<span class="p">}</span>
-
-<span class="k">func</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
-	<span class="n">plugin</span><span class="o">.</span><span class="n">RegisterMetrics</span><span class="p">(</span><span class="o">&amp;</span><span class="n">impl</span><span class="p">,</span> <span class="s">"Kvm"</span><span class="p">,</span>
-		<span class="s">"kvm.avtive.domain.discovery"</span><span class="p">,</span> <span class="s">"Returns availabe domain."</span><span class="p">,</span>
-		<span class="s">"domain.info"</span><span class="p">,</span> <span class="s">"Extract information about a domain."</span><span class="p">)</span>
-<span class="p">}</span>
-
-</code></pre></div></div>
-
-<h4 id="效果">效果</h4>
-
-<p><img src="/assets/images/zabbix/03.png" /></p>
-
-<h4 id="参考">参考</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://people.redhat.com/rjones/virt-top/faq.html
-https://gitlab.com/libvirt/libvirt-go/blob/v7.4.0/domain.go#L369
-https://pkg.go.dev/libvirt.org/libvirt-go
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[采集KVM虚拟主机CPU以及内存使用资源情况]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="BCC" /><summary type="html"><![CDATA[hello_kern.c]]></summary></entry></feed>

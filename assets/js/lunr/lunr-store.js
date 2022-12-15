@@ -280,4 +280,10 @@ var store = [{
         "tags": ["Linux"],
         "url": "/linux-netlink/",
         "teaser": null
+      },{
+        "title": "Job",
+        "excerpt":"Job 临时使用或者是定期运行的工作,可以通过 cronjob实现 创建及删除job job用于临时性任务,成功则job结束，失败则创建新的或者重启pod 创建空间 kubectl create ns nsjob [root@master probe]# kubectl create ns nsjob namespace/nsjob created [root@master probe]# kubens nsjob Context \"kubernetes-admin@kubernetes\" modified. Active namespace is \"nsjob\". 创建job 两种方式,命令行或者是生成yaml,建议命令行生成yaml再修改生成job kubectl create job 名字 –image=镜像 – “命令” kubectl create job job1 --image=busybox --dry-run=client -o yaml -- sh -c \"echo...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-job/",
+        "teaser": null
       }]
