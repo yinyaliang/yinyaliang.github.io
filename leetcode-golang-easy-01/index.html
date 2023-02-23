@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>leetcode-golang-easy-01 - 尹亚亮</title>
+<meta name="description" content="两数之和">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="leetcode-golang-easy-01">
+<meta property="og:url" content="/leetcode-golang-easy-01/">
+
+
+  <meta property="og:description" content="两数之和">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-02-23T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/leetcode-golang-easy-01/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="leetcode-golang-easy-01">
+    <meta itemprop="description" content="两数之和">
+    <meta itemprop="datePublished" content="2023-02-23T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/leetcode-golang-easy-01/" class="u-url" itemprop="url">leetcode-golang-easy-01
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-02-23T00:00:00+08:00">February 23, 2023</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#两数之和">两数之和</a></li><li><a href="#回文数">回文数</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <h3 id="两数之和">两数之和</h3>
+
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=1 lang=golang
+ *
+ * [1] 两数之和
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">twoSum</span><span class="p">(</span><span class="n">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="n">target</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>          <span class="c">// nums 是是一个整数数组,target是目标值</span>
+	<span class="n">numMap</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>                  <span class="c">// 储存没个数字的补数</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">nums</span> <span class="p">{</span>                   <span class="c">// 循环nums,i为num索引</span>
+		<span class="n">com</span> <span class="o">:=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">num</span>                  <span class="c">// com + num = target</span>
+		<span class="k">if</span> <span class="n">index</span><span class="p">,</span> <span class="n">ok</span> <span class="o">:=</span> <span class="n">numMap</span><span class="p">[</span><span class="n">com</span><span class="p">];</span> <span class="n">ok</span> <span class="p">{</span>    <span class="c">// 判断numMap中是否存在 com值,index为com索引</span>
+			<span class="k">return</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="n">index</span><span class="p">,</span> <span class="n">i</span><span class="p">}</span>       <span class="c">// 返回com索引(index),num索引(i)</span>
+		<span class="p">}</span>
+		<span class="n">numMap</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>                      <span class="c">// 存储num和它的索引</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{}</span>                               
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+
+</code></pre></div></div>
+
+<h3 id="回文数">回文数</h3>
+
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=9 lang=golang
+ *
+ * [9] 回文数
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">isPalindrome</span><span class="p">(</span><span class="n">x</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>                       <span class="c">// 负数不可能是回文数</span>
+	<span class="p">}</span>
+
+
+	<span class="k">var</span> <span class="n">r</span> <span class="kt">int</span>                           
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">x</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">/=</span> <span class="m">10</span> <span class="p">{</span>               
+		<span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="m">10</span> <span class="o">+</span> <span class="n">i</span><span class="o">%</span><span class="m">10</span>                   <span class="c">// 将x的每一位数取出来，加到r的末尾</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">r</span> <span class="o">==</span> <span class="n">x</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#leetcode" class="page__taxonomy-item p-category" rel="tag">leetcode</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2023-02-23T00:00:00+08:00">February 23, 2023</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=leetcode-golang-easy-01%20%2Fleetcode-golang-easy-01%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fleetcode-golang-easy-01%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fleetcode-golang-easy-01%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/kubernetes-kubeadm-job/" class="pagination--pager" title="Job
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>

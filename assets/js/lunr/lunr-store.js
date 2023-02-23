@@ -287,9 +287,9 @@ var store = [{
         "url": "/kubernetes-kubeadm-job/",
         "teaser": null
       },{
-        "title": "leetcode-golang-01",
+        "title": "leetcode-golang-easy-01",
         "excerpt":"两数之和 /* * @lc app=leetcode.cn id=1 lang=golang * * [1] 两数之和 */ // @lc code=start func twoSum(nums []int, target int) []int { // nums 是是一个整数数组,target是目标值 numMap := make(map[int]int) // 储存没个数字的补数 for i, num := range nums { // 循环nums,i为num索引 com := target - num // com + num = target...","categories": [],
         "tags": ["leetcode"],
-        "url": "/leetcode-01/",
+        "url": "/leetcode-golang-easy-01/",
         "teaser": null
       }]
