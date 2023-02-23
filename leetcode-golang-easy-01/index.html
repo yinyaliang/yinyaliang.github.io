@@ -252,7 +252,7 @@
 
 <span class="c">// @lc code=start</span>
 <span class="k">func</span> <span class="n">romanToInt</span><span class="p">(</span><span class="n">s</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
-	<span class="n">mapSymbol</span> <span class="o">:=</span> <span class="k">map</span><span class="p">[</span><span class="kt">byte</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span> <span class="c">//</span>
+	<span class="n">mapSymbol</span> <span class="o">:=</span> <span class="k">map</span><span class="p">[</span><span class="kt">byte</span><span class="p">]</span><span class="kt">int</span><span class="p">{</span>               <span class="c">//  映射集合</span>
 		<span class="sc">'I'</span><span class="o">:</span> <span class="m">1</span><span class="p">,</span>
 		<span class="sc">'V'</span><span class="o">:</span> <span class="m">5</span><span class="p">,</span>
 		<span class="sc">'X'</span><span class="o">:</span> <span class="m">10</span><span class="p">,</span>
@@ -265,12 +265,12 @@
 	<span class="k">var</span> <span class="n">result</span> <span class="kt">int</span>
 	<span class="n">prev</span> <span class="o">:=</span> <span class="m">0</span>
 
-	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span> <span class="p">{</span>
-		<span class="n">curr</span> <span class="o">:=</span> <span class="n">mapSymbol</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
-		<span class="k">if</span> <span class="n">curr</span> <span class="o">&lt;</span> <span class="n">prev</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span><span class="o">--</span> <span class="p">{</span>         
+		<span class="n">curr</span> <span class="o">:=</span> <span class="n">mapSymbol</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>          <span class="c">// 获取当前数字</span>
+		<span class="k">if</span> <span class="n">curr</span> <span class="o">&lt;</span> <span class="n">prev</span> <span class="p">{</span>                 <span class="c">// 当前值小于前值,表示的是一个减法，就从结果中减去当前整数</span>
 			<span class="n">result</span> <span class="o">-=</span> <span class="n">curr</span>
 		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-			<span class="n">result</span> <span class="o">+=</span> <span class="n">curr</span>
+			<span class="n">result</span> <span class="o">+=</span> <span class="n">curr</span>           <span class="c">// 表示的是一个加法，就将当前整数加到结果中</span>
 		<span class="p">}</span>
 		<span class="n">prev</span> <span class="o">=</span> <span class="n">curr</span>
 	<span class="p">}</span>
