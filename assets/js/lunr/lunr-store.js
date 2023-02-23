@@ -287,6 +287,12 @@ var store = [{
         "url": "/kubernetes-kubeadm-job/",
         "teaser": null
       },{
+        "title": "服务管理",
+        "excerpt":"创建及删除service service 通过 kube-proxy 实现 服务转发到后端的pod. [root@master ds]# mkdir svc &amp;&amp; cd svc 创建空间 [root@master svc]# kubectl create ns nssvc namespace/nssvc created [root@master svc]# kubens nssvc Context \"kubernetes-admin@kubernetes\" modified. Active namespace is \"nssvc\". 创建一个deployment的yaml文件 [root@master svc]# kubectl create deployment web --image=nginx --dry-run=client -o yaml &gt; web1.yaml apiVersion: apps/v1 kind: Deployment...","categories": [],
+        "tags": ["Kubernetes"],
+        "url": "/kubernetes-kubeadm-service-manage/",
+        "teaser": null
+      },{
         "title": "leetcode-golang-easy-01",
         "excerpt":"两数之和 /* * @lc app=leetcode.cn id=1 lang=golang * * [1] 两数之和 */ // @lc code=start func twoSum(nums []int, target int) []int { // nums 是是一个整数数组,target是目标值 numMap := make(map[int]int) // 储存没个数字的补数 for i, num := range nums { // 循环nums,i为num索引 com := target - num // com + num = target...","categories": [],
         "tags": ["leetcode"],
