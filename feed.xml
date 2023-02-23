@@ -1,4 +1,54 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2022-12-15T09:15:06+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Job</title><link href="/kubernetes-kubeadm-job/" rel="alternate" type="text/html" title="Job" /><published>2022-12-15T00:00:00+08:00</published><updated>2022-12-15T00:00:00+08:00</updated><id>/kubernetes-kubeadm-job</id><content type="html" xml:base="/kubernetes-kubeadm-job/"><![CDATA[<p>Job</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-23T09:59:57+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">leetcode-golang-01</title><link href="/leetcode-01/" rel="alternate" type="text/html" title="leetcode-golang-01" /><published>2023-02-23T00:00:00+08:00</published><updated>2023-02-23T00:00:00+08:00</updated><id>/leetcode-01</id><content type="html" xml:base="/leetcode-01/"><![CDATA[<h3 id="两数之和">两数之和</h3>
+
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=1 lang=golang
+ *
+ * [1] 两数之和
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">twoSum</span><span class="p">(</span><span class="n">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="n">target</span> <span class="kt">int</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>          <span class="c">// nums 是是一个整数数组,target是目标值</span>
+	<span class="n">numMap</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>                  <span class="c">// 储存没个数字的补数</span>
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">nums</span> <span class="p">{</span>                   <span class="c">// 循环nums,i为num索引</span>
+		<span class="n">com</span> <span class="o">:=</span> <span class="n">target</span> <span class="o">-</span> <span class="n">num</span>                  <span class="c">// com + num = target</span>
+		<span class="k">if</span> <span class="n">index</span><span class="p">,</span> <span class="n">ok</span> <span class="o">:=</span> <span class="n">numMap</span><span class="p">[</span><span class="n">com</span><span class="p">];</span> <span class="n">ok</span> <span class="p">{</span>    <span class="c">// 判断numMap中是否存在 com值,index为com索引</span>
+			<span class="k">return</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="n">index</span><span class="p">,</span> <span class="n">i</span><span class="p">}</span>       <span class="c">// 返回com索引(index),num索引(i)</span>
+		<span class="p">}</span>
+		<span class="n">numMap</span><span class="p">[</span><span class="n">num</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>                      <span class="c">// 存储num和它的索引</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{}</span>                               
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+
+</code></pre></div></div>
+
+<h3 id="回文数">回文数</h3>
+
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=9 lang=golang
+ *
+ * [9] 回文数
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">isPalindrome</span><span class="p">(</span><span class="n">x</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>                       <span class="c">// 负数不可能是回文数</span>
+	<span class="p">}</span>
+
+
+	<span class="k">var</span> <span class="n">r</span> <span class="kt">int</span>                           
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="n">x</span><span class="p">;</span> <span class="n">i</span> <span class="o">!=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">/=</span> <span class="m">10</span> <span class="p">{</span>               
+		<span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">*</span><span class="m">10</span> <span class="o">+</span> <span class="n">i</span><span class="o">%</span><span class="m">10</span>                   <span class="c">// 将x的每一位数取出来，加到r的末尾</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">r</span> <span class="o">==</span> <span class="n">x</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+
+
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="leetcode" /><summary type="html"><![CDATA[两数之和]]></summary></entry><entry><title type="html">Job</title><link href="/kubernetes-kubeadm-job/" rel="alternate" type="text/html" title="Job" /><published>2022-12-15T00:00:00+08:00</published><updated>2022-12-15T00:00:00+08:00</updated><id>/kubernetes-kubeadm-job</id><content type="html" xml:base="/kubernetes-kubeadm-job/"><![CDATA[<p>Job</p>
 
 <p>临时使用或者是定期运行的工作,可以通过 cronjob实现</p>
 
@@ -1982,62 +2032,4 @@ S_IRUSR|S_IWUSR # 文件权限 600
 </code></pre></div></div>
 <p>新建本地分支并关联到指定远程分支</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>git checkout <span class="nt">-b</span> dev origin/dev
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Mysql 命令记录]]></summary></entry><entry><title type="html">写一个C版本的ebpf测试程序</title><link href="/bcc-02/" rel="alternate" type="text/html" title="写一个C版本的ebpf测试程序" /><published>2022-10-30T00:00:00+08:00</published><updated>2022-10-30T00:00:00+08:00</updated><id>/bcc-02</id><content type="html" xml:base="/bcc-02/"><![CDATA[<h4 id="hello_kernc">hello_kern.c</h4>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;linux/bpf.h&gt;</span><span class="cp">
-#include</span> <span class="cpf">"bpf/bpf_helpers.h"</span><span class="cp">
-</span>
-<span class="cp">#define SEC(NAME) __attribute__((section(NAME), used))
-</span>
-<span class="c1">// 编译到tracepoint/syscalls/sys_enter_execve</span>
-<span class="n">SEC</span><span class="p">(</span><span class="s">"tracepoint/syscalls/sys_enter_execve"</span><span class="p">)</span>
-<span class="kt">int</span> <span class="nf">bpf_prog</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ctx</span><span class="p">)</span>
-<span class="p">{</span>
-        <span class="kt">char</span> <span class="n">msg</span><span class="p">[]</span> <span class="o">=</span> <span class="s">"Hello BPF!</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span>
-        <span class="n">bpf_trace_printk</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span> <span class="c1">// 在内核跟踪日志打印消息</span>
-        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="c1">// 兼容内核使用</span>
-<span class="kt">char</span> <span class="n">_license</span><span class="p">[]</span> <span class="n">SEC</span><span class="p">(</span><span class="s">"license"</span><span class="p">)</span> <span class="o">=</span> <span class="s">"GPL"</span><span class="p">;</span>
-</code></pre></div></div>
-
-<h4 id="hello_userc">hello_user.c</h4>
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-#include</span> <span class="cpf">"bpf_load.h"</span><span class="cp">
-#include</span> <span class="cpf">"trace_helpers.h"</span><span class="cp">
-</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
-<span class="p">{</span>
-        <span class="k">if</span><span class="p">(</span> <span class="n">load_bpf_file</span><span class="p">(</span><span class="s">"hello_kern.o"</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="p">{</span>
-                <span class="n">printf</span><span class="p">(</span><span class="s">"Error</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-        <span class="p">}</span>
-
-        <span class="n">read_trace_pipe</span><span class="p">();</span>
-        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h4 id="makefile">Makefile</h4>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tprogs-y +<span class="o">=</span> hello
-hello-objs :<span class="o">=</span> bpf_load.o hello_user.o <span class="si">$(</span>TRACE_HELPERS<span class="si">)</span>
-always +<span class="o">=</span> hello_kern.o <span class="si">$(</span>TRACE_HELPERS<span class="si">)</span>
-</code></pre></div></div>
-
-<h4 id="编译">编译</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>make M=samples/bpf
-</code></pre></div></div>
-
-<h4 id="运行输出">运行输出</h4>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./hello 
-</code></pre></div></div>
-<p>再打开一个终端</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ls</span> <span class="nt">-l</span>
-</code></pre></div></div>
-<p>查看输出</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            bash-58784   <span class="o">[</span>009] d...1  6403.020850: bpf_trace_printk: Hello BPF!
-
-
-            bash-58793   <span class="o">[</span>008] d...1  6429.165508: bpf_trace_printk: Hello BPF!
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="BCC" /><summary type="html"><![CDATA[hello_kern.c]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Docker" /><summary type="html"><![CDATA[Mysql 命令记录]]></summary></entry></feed>
