@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#两数之和">两数之和</a></li><li><a href="#回文数">回文数</a></li><li><a href="#罗马数字转整数">罗马数字转整数</a></li></ul>
+              <ul class="toc__menu"><li><a href="#两数之和">两数之和</a></li><li><a href="#回文数">回文数</a></li><li><a href="#罗马数字转整数">罗马数字转整数</a></li><li><a href="#最长公共前缀">最长公共前缀</a></li></ul>
 
             </nav>
           </aside>
@@ -278,6 +278,36 @@
 <span class="p">}</span>
 
 <span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="最长公共前缀">最长公共前缀</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=14 lang=golang
+ *
+ * [14] 最长公共前缀
+ */</span>
+
+<span class="c">// @lc code=start</span>
+
+<span class="k">func</span> <span class="n">longestCommonPrefix</span><span class="p">(</span><span class="n">strs</span> <span class="p">[]</span><span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">strs</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s">""</span>                                    <span class="c">//空strs返回空字符串           </span>
+	<span class="p">}</span>
+	<span class="n">prefix</span> <span class="o">:=</span> <span class="n">strs</span><span class="p">[</span><span class="m">0</span><span class="p">]</span>                                    <span class="c">// 取strs第一个字符串作为前缀匹配</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">strs</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="o">!</span><span class="n">strings</span><span class="o">.</span><span class="n">HasPrefix</span><span class="p">(</span><span class="n">strs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">prefix</span><span class="p">)</span> <span class="p">{</span>  
+			<span class="n">prefix</span> <span class="o">=</span> <span class="n">prefix</span><span class="p">[</span><span class="o">:</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span><span class="o">-</span><span class="m">1</span><span class="p">]</span>      <span class="c">// 依次对比剩余字符串,如未匹配则减少一位</span>
+			<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+				<span class="k">return</span> <span class="s">""</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">prefix</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+
+
 </code></pre></div></div>
 
         
