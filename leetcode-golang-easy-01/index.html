@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#两数之和">两数之和</a></li><li><a href="#回文数">回文数</a></li><li><a href="#罗马数字转整数">罗马数字转整数</a></li><li><a href="#最长公共前缀">最长公共前缀</a></li><li><a href="#有效的括号">有效的括号</a></li></ul>
+              <ul class="toc__menu"><li><a href="#两数之和">两数之和</a></li><li><a href="#回文数">回文数</a></li><li><a href="#罗马数字转整数">罗马数字转整数</a></li><li><a href="#最长公共前缀">最长公共前缀</a></li><li><a href="#有效的括号">有效的括号</a></li><li><a href="#合并两个有序链表">合并两个有序链表</a></li></ul>
 
             </nav>
           </aside>
@@ -345,6 +345,50 @@
 <span class="c">// @lc code=end</span>
 
 </code></pre></div></div>
+
+<h3 id="合并两个有序链表">合并两个有序链表</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=21 lang=golang
+ *
+ * [21] 合并两个有序链表
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */</span>
+<span class="k">func</span> <span class="n">mergeTwoLists</span><span class="p">(</span><span class="n">list1</span> <span class="o">*</span><span class="n">ListNode</span><span class="p">,</span> <span class="n">list2</span> <span class="o">*</span><span class="n">ListNode</span><span class="p">)</span> <span class="o">*</span><span class="n">ListNode</span> <span class="p">{</span>
+	<span class="n">linklist</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">ListNode</span><span class="p">{}</span>
+	<span class="n">cur</span> <span class="o">:=</span> <span class="n">linklist</span>
+
+	<span class="k">for</span> <span class="n">list1</span> <span class="o">!=</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">list2</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">list1</span><span class="o">.</span><span class="n">Val</span> <span class="o">&lt;</span> <span class="n">list2</span><span class="o">.</span><span class="n">Val</span> <span class="p">{</span>
+			<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list1</span>
+			<span class="n">list1</span> <span class="o">=</span> <span class="n">list1</span><span class="o">.</span><span class="n">Next</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list2</span>
+			<span class="n">list2</span> <span class="o">=</span> <span class="n">list2</span><span class="o">.</span><span class="n">Next</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="n">list1</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list1</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="n">list2</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list2</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">linklist</span><span class="o">.</span><span class="n">Next</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+
+</code></pre></div></div>
+
 
         
       </section>
