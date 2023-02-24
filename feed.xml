@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-24T13:46:35+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">服务管理</title><link href="/kubernetes-kubeadm-service-manage/" rel="alternate" type="text/html" title="服务管理" /><published>2023-02-23T00:00:00+08:00</published><updated>2023-02-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-service-manage</id><content type="html" xml:base="/kubernetes-kubeadm-service-manage/"><![CDATA[<h2 id="创建及删除service">创建及删除service</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-24T13:49:46+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">服务管理</title><link href="/kubernetes-kubeadm-service-manage/" rel="alternate" type="text/html" title="服务管理" /><published>2023-02-23T00:00:00+08:00</published><updated>2023-02-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-service-manage</id><content type="html" xml:base="/kubernetes-kubeadm-service-manage/"><![CDATA[<h2 id="创建及删除service">创建及删除service</h2>
 
 <p>service 通过 kube-proxy 实现 服务转发到后端的pod.</p>
 
@@ -1662,13 +1662,14 @@ mying   &lt;none&gt;   www1.rhce.cc,www2.rhce.cc   192.168.122.202   80      25h
 	<span class="n">cur</span> <span class="o">:=</span> <span class="n">linklist</span>
 
 	<span class="k">for</span> <span class="n">list1</span> <span class="o">!=</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">list2</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="n">list1</span><span class="o">.</span><span class="n">Val</span> <span class="o">&lt;</span> <span class="n">list2</span><span class="o">.</span><span class="n">Val</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">list1</span><span class="o">.</span><span class="n">Val</span> <span class="o">&lt;=</span> <span class="n">list2</span><span class="o">.</span><span class="n">Val</span> <span class="p">{</span>
 			<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list1</span>
 			<span class="n">list1</span> <span class="o">=</span> <span class="n">list1</span><span class="o">.</span><span class="n">Next</span>
 		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 			<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list2</span>
 			<span class="n">list2</span> <span class="o">=</span> <span class="n">list2</span><span class="o">.</span><span class="n">Next</span>
 		<span class="p">}</span>
+		<span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">Next</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="n">list1</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
@@ -1682,7 +1683,6 @@ mying   &lt;none&gt;   www1.rhce.cc,www2.rhce.cc   192.168.122.202   80      25h
 <span class="p">}</span>
 
 <span class="c">// @lc code=end</span>
-
 </code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="leetcode" /><summary type="html"><![CDATA[两数之和]]></summary></entry><entry><title type="html">Job</title><link href="/kubernetes-kubeadm-job/" rel="alternate" type="text/html" title="Job" /><published>2022-12-15T00:00:00+08:00</published><updated>2022-12-15T00:00:00+08:00</updated><id>/kubernetes-kubeadm-job</id><content type="html" xml:base="/kubernetes-kubeadm-job/"><![CDATA[<p>Job</p>
 
 <p>临时使用或者是定期运行的工作,可以通过 cronjob实现</p>

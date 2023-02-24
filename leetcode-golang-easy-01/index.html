@@ -366,13 +366,14 @@
 	<span class="n">cur</span> <span class="o">:=</span> <span class="n">linklist</span>
 
 	<span class="k">for</span> <span class="n">list1</span> <span class="o">!=</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">list2</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
-		<span class="k">if</span> <span class="n">list1</span><span class="o">.</span><span class="n">Val</span> <span class="o">&lt;</span> <span class="n">list2</span><span class="o">.</span><span class="n">Val</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">list1</span><span class="o">.</span><span class="n">Val</span> <span class="o">&lt;=</span> <span class="n">list2</span><span class="o">.</span><span class="n">Val</span> <span class="p">{</span>
 			<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list1</span>
 			<span class="n">list1</span> <span class="o">=</span> <span class="n">list1</span><span class="o">.</span><span class="n">Next</span>
 		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 			<span class="n">cur</span><span class="o">.</span><span class="n">Next</span> <span class="o">=</span> <span class="n">list2</span>
 			<span class="n">list2</span> <span class="o">=</span> <span class="n">list2</span><span class="o">.</span><span class="n">Next</span>
 		<span class="p">}</span>
+		<span class="n">cur</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">Next</span>
 	<span class="p">}</span>
 
 	<span class="k">if</span> <span class="n">list1</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
@@ -386,7 +387,6 @@
 <span class="p">}</span>
 
 <span class="c">// @lc code=end</span>
-
 </code></pre></div></div>
 
 
