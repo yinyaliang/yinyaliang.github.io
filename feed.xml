@@ -1,4 +1,48 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-24T13:59:24+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">服务管理</title><link href="/kubernetes-kubeadm-service-manage/" rel="alternate" type="text/html" title="服务管理" /><published>2023-02-23T00:00:00+08:00</published><updated>2023-02-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-service-manage</id><content type="html" xml:base="/kubernetes-kubeadm-service-manage/"><![CDATA[<h2 id="创建及删除service">创建及删除service</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-27T20:19:55+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
+
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+        <span class="s">"fmt"</span>
+        <span class="s">"math/rand"</span>
+        <span class="s">"time"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">un</span><span class="p">()</span><span class="kt">string</span><span class="p">{</span>
+    <span class="n">str</span> <span class="o">:=</span> <span class="s">"abcdefghijklmnopqrstuvwxyz1234567890"</span> <span class="c">// 取值池</span>
+    <span class="n">timestamp</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">UnixNano</span><span class="p">()</span>  <span class="c">// 纳秒</span>
+    <span class="n">un</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span><span class="m">6</span><span class="p">)</span>
+    <span class="n">rand</span><span class="o">.</span><span class="n">Seed</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">un</span> <span class="p">{</span>
+        <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">str</span><span class="p">[</span><span class="n">rand</span><span class="o">.</span><span class="n">Intn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str</span><span class="p">))]</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">un</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">(){</span>
+    <span class="n">testMap</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+    <span class="n">testRange</span> <span class="o">:=</span> <span class="m">2</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="o">:=</span><span class="m">1</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">testRange</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">{</span>
+        <span class="n">un</span> <span class="o">:=</span> <span class="n">un</span><span class="p">()</span>
+        <span class="n">_</span> <span class="p">,</span><span class="n">ok</span> <span class="o">:=</span> <span class="n">testMap</span><span class="p">[</span><span class="n">un</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">{</span>
+            <span class="n">testMap</span><span class="p">[</span><span class="n">un</span><span class="p">]</span> <span class="o">+=</span> <span class="m">1</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="n">testMap</span><span class="p">[</span><span class="n">un</span><span class="p">]</span> <span class="o">=</span> <span class="m">0</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">conflict</span> <span class="o">:=</span> <span class="m">0</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span><span class="n">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">testMap</span><span class="p">{</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="m">0</span><span class="p">{</span>
+            <span class="n">conflict</span> <span class="o">+=</span> <span class="m">1</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">testMap</span><span class="p">)</span>
+    <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">conflict</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="golang" /><summary type="html"><![CDATA[6位唯一码]]></summary></entry><entry><title type="html">服务管理</title><link href="/kubernetes-kubeadm-service-manage/" rel="alternate" type="text/html" title="服务管理" /><published>2023-02-23T00:00:00+08:00</published><updated>2023-02-23T00:00:00+08:00</updated><id>/kubernetes-kubeadm-service-manage</id><content type="html" xml:base="/kubernetes-kubeadm-service-manage/"><![CDATA[<h2 id="创建及删除service">创建及删除service</h2>
 
 <p>service 通过 kube-proxy 实现 服务转发到后端的pod.</p>
 
@@ -3594,77 +3638,4 @@ osp-test-admin-5d9587c668-m8kw2   0m           4Mi
 <h4 id="参考">参考</h4>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://github.com/kubernetes-sigs/metrics-server
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[k8s安装metric server]]></summary></entry><entry><title type="html">使用open()和create()创建文件</title><link href="/c-01/" rel="alternate" type="text/html" title="使用open()和create()创建文件" /><published>2022-11-02T00:00:00+08:00</published><updated>2022-11-02T00:00:00+08:00</updated><id>/c-01</id><content type="html" xml:base="/c-01/"><![CDATA[<p>使用open()和create()创建文件</p>
-
-<h4 id="涉及函数">涉及函数</h4>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int open<span class="o">(</span> const char <span class="k">*</span>pathname, int flags<span class="o">)</span><span class="p">;</span>
-int open<span class="o">(</span> const char <span class="k">*</span>pathname, int flags, mode_t mode<span class="o">)</span><span class="p">;</span>
-
-int creat<span class="o">(</span>const char <span class="k">*</span>pathname, mode_t mode<span class="o">)</span><span class="p">;</span>
-</code></pre></div></div>
-
-<p>在下面的情形下两种函数的功能一致</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>open<span class="o">(</span>const char<span class="k">*</span> pathname, <span class="o">(</span>O_CREAT|O_WRONLY|O_TRUNC<span class="o">)</span>,mode_t mode<span class="o">)</span><span class="p">;</span>
-creat<span class="o">(</span>const char<span class="k">*</span> pathname,mode_t mode<span class="o">)</span><span class="p">;</span>
-</code></pre></div></div>
-
-<h4 id="命令">命令</h4>
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"stdio.h"</span><span class="cp">
-#include</span> <span class="cpf">"sys/types.h"</span><span class="cp">
-#include</span> <span class="cpf">"sys/stat.h"</span><span class="cp">
-#include</span> <span class="cpf">"fcntl.h"</span><span class="cp">
-#include</span> <span class="cpf">"unistd.h"</span><span class="cp">
-#include</span> <span class="cpf">"error.h"</span><span class="cp">
-#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
-</span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
-        <span class="kt">int</span> <span class="n">fd</span><span class="p">;</span>
-        <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">"1.creat 2.open</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
-        <span class="n">scanf</span><span class="p">(</span><span class="s">"%d"</span><span class="p">,</span><span class="o">&amp;</span><span class="n">n</span><span class="p">);</span>
-        <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">){</span>
-                <span class="k">if</span><span class="p">((</span><span class="n">fd</span><span class="o">=</span><span class="n">creat</span><span class="p">(</span><span class="s">"examp.c"</span><span class="p">,</span><span class="n">S_IRWXU</span><span class="p">))</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-                <span class="p">{</span>
-                        <span class="n">perror</span><span class="p">(</span><span class="s">"open"</span><span class="p">);</span>
-                        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-                <span class="p">}</span>
-                <span class="k">else</span>
-                <span class="p">{</span>
-                        <span class="n">printf</span><span class="p">(</span><span class="s">"create file examp.c"</span><span class="p">);</span>
-                <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="p">{</span>
-                <span class="k">if</span> <span class="p">((</span><span class="n">fd</span><span class="o">=</span><span class="n">open</span><span class="p">(</span><span class="s">"examp.c"</span><span class="p">,</span><span class="n">O_CREAT</span><span class="o">|</span><span class="n">O_EXCL</span><span class="p">,</span><span class="n">S_IRUSR</span><span class="o">|</span><span class="n">S_IWUSR</span><span class="p">)))</span>
-                <span class="p">{</span>
-                        <span class="n">perror</span><span class="p">(</span><span class="s">"open"</span><span class="p">);</span>
-                        <span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
-                <span class="p">}</span>
-                <span class="k">else</span>
-                <span class="p">{</span>
-                        <span class="n">printf</span><span class="p">(</span><span class="s">"create file examp.c"</span><span class="p">);</span>
-                <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="k">else</span>
-        <span class="p">{</span>
-                <span class="n">printf</span><span class="p">(</span><span class="s">"your choice wrong"</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span>
-        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<h4 id="参数">参数</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>create()  # S_IRWXU00700 权限，代表该文件所有者具有可读、可写及可执行的权限
-
-O_CREAT|O_EXCL # 检查文件是否存在。文件若不存在则建立该文件，否则将导致打开文件错误
-S_IRUSR|S_IWUSR # 文件权限 600
-</code></pre></div></div>
-
-<h4 id="编译">编译</h4>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gcc <span class="nt">-o</span> <span class="nb">test </span>test.c 
-</code></pre></div></div>
-
-<h4 id="参考">参考</h4>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://wizardforcel.gitbooks.io/linux-c-api-ref/content/143.html
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Linux" /><summary type="html"><![CDATA[使用open()和create()创建文件]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[k8s安装metric server]]></summary></entry></feed>

@@ -298,4 +298,10 @@ var store = [{
         "tags": ["leetcode"],
         "url": "/leetcode-golang-easy-01/",
         "teaser": null
+      },{
+        "title": "6位唯一码",
+        "excerpt":"6位唯一码 package main import ( \"fmt\" \"math/rand\" \"time\" ) func un()string{ str := \"abcdefghijklmnopqrstuvwxyz1234567890\" // 取值池 timestamp := time.Now().UnixNano() // 纳秒 un := make([]byte,6) rand.Seed(timestamp) for i := range un { un[i] = str[rand.Intn(len(str))] } return string(un) } func main(){ testMap := make(map[string]int) testRange := 2 for i:=1;i &lt;= testRange;i++{...","categories": [],
+        "tags": ["golang"],
+        "url": "/6lenid/",
+        "teaser": null
       }]
