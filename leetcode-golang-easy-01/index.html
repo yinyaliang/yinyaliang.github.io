@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#1-两数之和">1 两数之和</a></li><li><a href="#2-回文数">2 回文数</a></li><li><a href="#3-罗马数字转整数">3 罗马数字转整数</a></li><li><a href="#4-最长公共前缀">4 最长公共前缀</a></li><li><a href="#5-有效的括号">5 有效的括号</a></li><li><a href="#6-合并两个有序链表">6 合并两个有序链表</a></li><li><a href="#7-删除有序数组中的重复项">7 删除有序数组中的重复项</a></li><li><a href="#8-移除元素">8 移除元素</a></li><li><a href="#9-搜索插入位置">9 搜索插入位置</a></li><li><a href="#10-最后一个单词的长度">10 最后一个单词的长度</a></li><li><a href="#11-加一">11 加一</a></li></ul>
+              <ul class="toc__menu"><li><a href="#1-两数之和">1 两数之和</a></li><li><a href="#2-回文数">2 回文数</a></li><li><a href="#3-罗马数字转整数">3 罗马数字转整数</a></li><li><a href="#4-最长公共前缀">4 最长公共前缀</a></li><li><a href="#5-有效的括号">5 有效的括号</a></li><li><a href="#6-合并两个有序链表">6 合并两个有序链表</a></li><li><a href="#7-删除有序数组中的重复项">7 删除有序数组中的重复项</a></li><li><a href="#8-移除元素">8 移除元素</a></li><li><a href="#9-搜索插入位置">9 搜索插入位置</a></li><li><a href="#10-最后一个单词的长度">10 最后一个单词的长度</a></li><li><a href="#11-加一">11 加一</a></li><li><a href="#12-二进制求和">12 二进制求和</a></li></ul>
 
             </nav>
           </aside>
@@ -500,6 +500,41 @@
 		<span class="p">}</span>
 	<span class="p">}</span>
 	<span class="k">return</span> <span class="nb">append</span><span class="p">([]</span><span class="kt">int</span><span class="p">{</span><span class="m">1</span><span class="p">},</span> <span class="n">digits</span><span class="o">...</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="12-二进制求和">12 二进制求和</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=67 lang=golang
+ *
+ * [67] 二进制求和
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">addBinary</span><span class="p">(</span><span class="n">a</span> <span class="kt">string</span><span class="p">,</span> <span class="n">b</span> <span class="kt">string</span><span class="p">)</span> <span class="kt">string</span> <span class="p">{</span>
+	<span class="n">aLen</span><span class="p">,</span> <span class="n">bLen</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="m">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="m">1</span>
+	<span class="n">carry</span> <span class="o">:=</span> <span class="m">0</span>
+	<span class="n">res</span> <span class="o">:=</span> <span class="s">""</span>
+	<span class="k">for</span> <span class="n">aLen</span> <span class="o">&gt;=</span> <span class="m">0</span> <span class="o">||</span> <span class="n">bLen</span> <span class="o">&gt;=</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">:=</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span>
+		<span class="k">if</span> <span class="n">aLen</span> <span class="o">&gt;=</span> <span class="m">0</span> <span class="p">{</span>
+			<span class="n">x</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">aLen</span><span class="p">]</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">)</span>
+			<span class="n">aLen</span><span class="o">--</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="n">bLen</span> <span class="o">&gt;=</span> <span class="m">0</span> <span class="p">{</span>
+			<span class="n">y</span> <span class="o">=</span> <span class="kt">int</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">bLen</span><span class="p">]</span> <span class="o">-</span> <span class="sc">'0'</span><span class="p">)</span>
+			<span class="n">bLen</span><span class="o">--</span>
+		<span class="p">}</span>
+		<span class="n">sum</span> <span class="o">:=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">carry</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="n">strconv</span><span class="o">.</span><span class="n">Itoa</span><span class="p">(</span><span class="n">sum</span><span class="o">%</span><span class="m">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">res</span> <span class="c">// 对 2 取模就是当前位的值</span>
+		<span class="n">carry</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">/</span> <span class="m">2</span>                 <span class="c">// 对 2 取整就是进位的值</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">carry</span> <span class="o">==</span> <span class="m">1</span> <span class="p">{</span>
+		<span class="n">res</span> <span class="o">=</span> <span class="s">"1"</span> <span class="o">+</span> <span class="n">res</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">res</span>
 <span class="p">}</span>
 
 <span class="c">// @lc code=end</span>
