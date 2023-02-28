@@ -187,7 +187,7 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#1-两数之和">1 两数之和</a></li><li><a href="#2-回文数">2 回文数</a></li><li><a href="#3-罗马数字转整数">3 罗马数字转整数</a></li><li><a href="#4-最长公共前缀">4 最长公共前缀</a></li><li><a href="#5-有效的括号">5 有效的括号</a></li><li><a href="#6-合并两个有序链表">6 合并两个有序链表</a></li><li><a href="#7-删除有序数组中的重复项">7 删除有序数组中的重复项</a></li><li><a href="#8-移除元素">8 移除元素</a></li><li><a href="#9-搜索插入位置">9 搜索插入位置</a></li><li><a href="#10-最后一个单词的长度">10 最后一个单词的长度</a></li><li><a href="#11-加一">11 加一</a></li><li><a href="#12-二进制求和">12 二进制求和</a></li><li><a href="#13-x-的平方根">13 x 的平方根</a></li></ul>
+              <ul class="toc__menu"><li><a href="#1-两数之和">1 两数之和</a></li><li><a href="#2-回文数">2 回文数</a></li><li><a href="#3-罗马数字转整数">3 罗马数字转整数</a></li><li><a href="#4-最长公共前缀">4 最长公共前缀</a></li><li><a href="#5-有效的括号">5 有效的括号</a></li><li><a href="#6-合并两个有序链表">6 合并两个有序链表</a></li><li><a href="#7-删除有序数组中的重复项">7 删除有序数组中的重复项</a></li><li><a href="#8-移除元素">8 移除元素</a></li><li><a href="#9-搜索插入位置">9 搜索插入位置</a></li><li><a href="#10-最后一个单词的长度">10 最后一个单词的长度</a></li><li><a href="#11-加一">11 加一</a></li><li><a href="#12-二进制求和">12 二进制求和</a></li><li><a href="#13-x-的平方根">13 x 的平方根</a></li><li><a href="#14-爬楼梯">14 爬楼梯</a></li></ul>
 
             </nav>
           </aside>
@@ -569,6 +569,29 @@
 <span class="c">// @lc code=end</span>
 </code></pre></div></div>
 
+<h3 id="14-爬楼梯">14 爬楼梯</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=70 lang=golang
+ *
+ * [70] 爬楼梯
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">climbStairs</span><span class="p">(</span><span class="n">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="m">2</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">n</span>
+	<span class="p">}</span>
+	<span class="n">f1</span><span class="p">,</span> <span class="n">f2</span> <span class="o">:=</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">3</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">f3</span> <span class="o">:=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">f2</span> <span class="c">//f(n) = f(n-1) + f(n-2)</span>
+		<span class="n">f1</span> <span class="o">=</span> <span class="n">i</span>        <span class="c">//f(n-2)</span>
+		<span class="n">f2</span> <span class="o">=</span> <span class="n">f3</span>       <span class="c">//f(n-1)</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">f2</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
 
         
       </section>

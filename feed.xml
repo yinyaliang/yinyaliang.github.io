@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-28T19:23:46+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-28T19:30:38+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
 
 <div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -1904,6 +1904,30 @@ mying   &lt;none&gt;   www1.rhce.cc,www2.rhce.cc   192.168.122.202   80      25h
 		<span class="p">}</span>
 	<span class="p">}</span>
 	<span class="k">return</span> <span class="n">right</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="14-爬楼梯">14 爬楼梯</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=70 lang=golang
+ *
+ * [70] 爬楼梯
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">climbStairs</span><span class="p">(</span><span class="n">n</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="m">2</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">n</span>
+	<span class="p">}</span>
+	<span class="n">f1</span><span class="p">,</span> <span class="n">f2</span> <span class="o">:=</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">3</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">f3</span> <span class="o">:=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">f2</span> <span class="c">//f(n) = f(n-1) + f(n-2)</span>
+		<span class="n">f1</span> <span class="o">=</span> <span class="n">i</span>        <span class="c">//f(n-2)</span>
+		<span class="n">f2</span> <span class="o">=</span> <span class="n">f3</span>       <span class="c">//f(n-1)</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">f2</span>
 <span class="p">}</span>
 
 <span class="c">// @lc code=end</span>
