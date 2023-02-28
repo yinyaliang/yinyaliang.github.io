@@ -584,7 +584,7 @@
 	<span class="n">f1</span><span class="p">,</span> <span class="n">f2</span> <span class="o">:=</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span>
 	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">3</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
 		<span class="n">f3</span> <span class="o">:=</span> <span class="n">f1</span> <span class="o">+</span> <span class="n">f2</span> <span class="c">//f(n) = f(n-1) + f(n-2)</span>
-		<span class="n">f1</span> <span class="o">=</span> <span class="n">i</span>        <span class="c">//f(n-2)</span>
+		<span class="n">f1</span> <span class="o">=</span> <span class="n">f2</span>       <span class="c">//f(n-2)</span>
 		<span class="n">f2</span> <span class="o">=</span> <span class="n">f3</span>       <span class="c">//f(n-1)</span>
 	<span class="p">}</span>
 	<span class="k">return</span> <span class="n">f2</span>
