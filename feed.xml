@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-02-28T20:54:55+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-03-01T14:19:27+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
 
 <div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -1958,6 +1958,329 @@ mying   &lt;none&gt;   www1.rhce.cc,www2.rhce.cc   192.168.122.202   80      25h
 		<span class="p">}</span>
 	<span class="p">}</span>
 	<span class="k">return</span> <span class="n">head</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="16-合并两个有序数组">16 合并两个有序数组</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=88 lang=golang
+ *
+ * [88] 合并两个有序数组
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="k">func</span> <span class="n">merge</span><span class="p">(</span><span class="n">nums1</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="n">m</span> <span class="kt">int</span><span class="p">,</span> <span class="n">nums2</span> <span class="p">[]</span><span class="kt">int</span><span class="p">,</span> <span class="n">n</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">ms</span><span class="p">,</span> <span class="n">ns</span> <span class="o">:=</span> <span class="n">m</span><span class="o">-</span><span class="m">1</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="m">1</span>
+	<span class="n">totalLen</span> <span class="o">:=</span> <span class="n">m</span> <span class="o">+</span> <span class="n">n</span> <span class="o">-</span> <span class="m">1</span>
+	<span class="k">for</span> <span class="n">ms</span> <span class="o">&gt;=</span> <span class="m">0</span> <span class="o">&amp;&amp;</span> <span class="n">ns</span> <span class="o">&gt;=</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">if</span> <span class="n">nums1</span><span class="p">[</span><span class="n">ms</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nums2</span><span class="p">[</span><span class="n">ns</span><span class="p">]</span> <span class="p">{</span>
+			<span class="n">nums1</span><span class="p">[</span><span class="n">totalLen</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums1</span><span class="p">[</span><span class="n">ms</span><span class="p">]</span>
+			<span class="n">ms</span><span class="o">--</span>
+		<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+			<span class="n">nums1</span><span class="p">[</span><span class="n">totalLen</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums2</span><span class="p">[</span><span class="n">ns</span><span class="p">]</span>
+			<span class="n">ns</span><span class="o">--</span>
+		<span class="p">}</span>
+		<span class="n">totalLen</span><span class="o">--</span>
+	<span class="p">}</span>
+	<span class="k">for</span> <span class="n">ns</span> <span class="o">&gt;=</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="n">nums1</span><span class="p">[</span><span class="n">totalLen</span><span class="p">]</span> <span class="o">=</span> <span class="n">nums2</span><span class="p">[</span><span class="n">ns</span><span class="p">]</span>
+		<span class="n">totalLen</span><span class="o">--</span>
+		<span class="n">ns</span><span class="o">--</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="17-二叉树的中序遍历">17 二叉树的中序遍历</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=94 lang=golang
+ *
+ * [94] 二叉树的中序遍历
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+<span class="k">func</span> <span class="n">inorderTraversal</span><span class="p">(</span><span class="n">root</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="p">[]</span><span class="kt">int</span> <span class="p">{</span>
+	<span class="c">//左子树 -&gt; 根节点 -&gt; 右子树</span>
+	<span class="n">res</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">int</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">root</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">res</span>
+	<span class="p">}</span>
+	<span class="n">res</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">inorderTraversal</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Left</span><span class="p">)</span><span class="o">...</span><span class="p">)</span>
+	<span class="n">res</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">root</span><span class="o">.</span><span class="n">Val</span><span class="p">)</span>
+	<span class="n">res</span> <span class="o">=</span> <span class="nb">append</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">inorderTraversal</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Right</span><span class="p">)</span><span class="o">...</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">res</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="18-相同的树">18 相同的树</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=100 lang=golang
+ *
+ * [100] 相同的树
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+<span class="k">func</span> <span class="n">isSameTree</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">,</span> <span class="n">q</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">q</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">true</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="no">nil</span> <span class="o">||</span> <span class="n">q</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">Val</span> <span class="o">!=</span> <span class="n">q</span><span class="o">.</span><span class="n">Val</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">isSameTree</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">Left</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">Left</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">isSameTree</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">Right</span><span class="p">,</span> <span class="n">q</span><span class="o">.</span><span class="n">Right</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="19-对称二叉树">19 对称二叉树</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=101 lang=golang
+ *
+ * [101] 对称二叉树
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+
+<span class="k">func</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">left</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">,</span> <span class="n">right</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">left</span> <span class="o">==</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">right</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">true</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">left</span> <span class="o">==</span> <span class="no">nil</span> <span class="o">||</span> <span class="n">right</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">Val</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">Val</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">Left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">Right</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">Right</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">Left</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">isSymmetric</span><span class="p">(</span><span class="n">root</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="n">isMirror</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">root</span><span class="p">)</span>
+
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="20-二叉树的最大深度">20 二叉树的最大深度</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=104 lang=golang
+ *
+ * [104] 二叉树的最大深度
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+
+<span class="k">func</span> <span class="n">max</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">y</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">x</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">y</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">root</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="m">0</span>
+	<span class="p">}</span>
+	<span class="n">leftDepth</span> <span class="o">:=</span> <span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Left</span><span class="p">)</span>
+	<span class="n">rightDepth</span> <span class="o">:=</span> <span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Right</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">max</span><span class="p">(</span><span class="n">leftDepth</span><span class="p">,</span> <span class="n">rightDepth</span><span class="p">)</span> <span class="o">+</span> <span class="m">1</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="21-将有序数组转换为二叉搜索树">21 将有序数组转换为二叉搜索树</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=108 lang=golang
+ *
+ * [108] 将有序数组转换为二叉搜索树
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+<span class="k">func</span> <span class="n">sortedArrayToBST</span><span class="p">(</span><span class="n">nums</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="o">*</span><span class="n">TreeNode</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">nil</span>
+	<span class="p">}</span>
+	<span class="n">mid</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span> <span class="o">/</span> <span class="m">2</span>
+	<span class="n">root</span> <span class="o">:=</span> <span class="o">&amp;</span><span class="n">TreeNode</span><span class="p">{</span><span class="n">Val</span><span class="o">:</span> <span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="p">]}</span>           <span class="c">//根节点是数组的中间元素</span>
+	<span class="n">root</span><span class="o">.</span><span class="n">Left</span> <span class="o">=</span> <span class="n">sortedArrayToBST</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="o">:</span><span class="n">mid</span><span class="p">])</span>    <span class="c">//左边的元素作为左子树</span>
+	<span class="n">root</span><span class="o">.</span><span class="n">Right</span> <span class="o">=</span> <span class="n">sortedArrayToBST</span><span class="p">(</span><span class="n">nums</span><span class="p">[</span><span class="n">mid</span><span class="o">+</span><span class="m">1</span><span class="o">:</span><span class="p">])</span> <span class="c">//右边的元素作为右子树</span>
+	<span class="k">return</span> <span class="n">root</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="22-平衡二叉树">22 平衡二叉树</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=110 lang=golang
+ *
+ * [110] 平衡二叉树
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+
+<span class="k">func</span> <span class="n">abs</span><span class="p">(</span><span class="n">a</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="o">-</span><span class="n">a</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">a</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">max</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">a</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">b</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">root</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="m">0</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">max</span><span class="p">(</span><span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Left</span><span class="p">),</span> <span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Right</span><span class="p">))</span> <span class="o">+</span> <span class="m">1</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">isBalanced</span><span class="p">(</span><span class="n">root</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">root</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">true</span>
+	<span class="p">}</span>
+	<span class="n">leftDepth</span> <span class="o">:=</span> <span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Left</span><span class="p">)</span>
+	<span class="n">rightDepth</span> <span class="o">:=</span> <span class="n">maxDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Right</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">abs</span><span class="p">(</span><span class="n">leftDepth</span><span class="o">-</span><span class="n">rightDepth</span><span class="p">)</span> <span class="o">&gt;</span> <span class="m">1</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">isBalanced</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Left</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">isBalanced</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Right</span><span class="p">)</span>
+
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="23-二叉树的最小深度">23 二叉树的最小深度</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=111 lang=golang
+ *
+ * [111] 二叉树的最小深度
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+
+<span class="k">func</span> <span class="n">min</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">a</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="n">b</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">minDepth</span><span class="p">(</span><span class="n">root</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">root</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="m">0</span>
+	<span class="p">}</span>
+	<span class="n">leftDepth</span> <span class="o">:=</span> <span class="n">minDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Left</span><span class="p">)</span>
+	<span class="n">rightDepth</span> <span class="o">:=</span> <span class="n">minDepth</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Right</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">leftDepth</span> <span class="o">==</span> <span class="m">0</span> <span class="o">||</span> <span class="n">rightDepth</span> <span class="o">==</span> <span class="m">0</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="n">leftDepth</span> <span class="o">+</span> <span class="n">rightDepth</span> <span class="o">+</span> <span class="m">1</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="m">1</span> <span class="o">+</span> <span class="n">min</span><span class="p">(</span><span class="n">leftDepth</span><span class="p">,</span> <span class="n">rightDepth</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c">// @lc code=end</span>
+</code></pre></div></div>
+
+<h3 id="24-路径总和">24 路径总和</h3>
+<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">/*
+ * @lc app=leetcode.cn id=112 lang=golang
+ *
+ * [112] 路径总和
+ */</span>
+
+<span class="c">// @lc code=start</span>
+<span class="c">/**
+ * Definition for a binary tree node.
+ * type TreeNode struct {
+ *     Val int
+ *     Left *TreeNode
+ *     Right *TreeNode
+ * }
+ */</span>
+<span class="k">func</span> <span class="n">hasPathSum</span><span class="p">(</span><span class="n">root</span> <span class="o">*</span><span class="n">TreeNode</span><span class="p">,</span> <span class="n">targetSum</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">root</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">false</span>
+	<span class="p">}</span>
+	<span class="k">if</span> <span class="n">root</span><span class="o">.</span><span class="n">Val</span> <span class="o">==</span> <span class="n">targetSum</span> <span class="o">&amp;&amp;</span> <span class="n">root</span><span class="o">.</span><span class="n">Left</span> <span class="o">==</span> <span class="no">nil</span> <span class="o">&amp;&amp;</span> <span class="n">root</span><span class="o">.</span><span class="n">Right</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="no">true</span>
+	<span class="p">}</span>
+	<span class="n">targetSum</span> <span class="o">-=</span> <span class="n">root</span><span class="o">.</span><span class="n">Val</span>
+	<span class="k">return</span> <span class="n">hasPathSum</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Left</span><span class="p">,</span> <span class="n">targetSum</span><span class="p">)</span> <span class="o">||</span> <span class="n">hasPathSum</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">Right</span><span class="p">,</span> <span class="n">targetSum</span><span class="p">)</span>
+
 <span class="p">}</span>
 
 <span class="c">// @lc code=end</span>
