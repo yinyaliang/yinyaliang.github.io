@@ -1,4 +1,387 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-03-01T14:19:27+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-03-09T17:08:10+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">zabbix 实现 histogram_quantile</title><link href="/monitor-zabbix-histogram-quantile/" rel="alternate" type="text/html" title="zabbix 实现 histogram_quantile" /><published>2023-03-09T00:00:00+08:00</published><updated>2023-03-09T00:00:00+08:00</updated><id>/monitor-zabbix-histogram-quantile</id><content type="html" xml:base="/monitor-zabbix-histogram-quantile/"><![CDATA[<p>zabbix 收集TIDB的etcd_disk_wal_fsync_duration_seconds_bucket, 实现prometheus的 histogram_quantile</p>
+
+<h3 id="prometheus的报警规则">prometheus的报警规则</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>histogram_quantile<span class="o">(</span>0.99,sum<span class="o">(</span>rate<span class="o">(</span>etcd_disk_wal_fsync_duration_seconds_bucket[1m]<span class="o">))</span> by <span class="o">(</span>instance,job,le<span class="o">))</span> <span class="o">&gt;</span> 1
+</code></pre></div></div>
+
+<h3 id="客户端-metrics">客户端 metrics</h3>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.002"</span><span class="o">}</span> 1.16569197e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.004"</span><span class="o">}</span> 1.16826659e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.008"</span><span class="o">}</span> 1.16908279e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.016"</span><span class="o">}</span> 1.1695191e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.032"</span><span class="o">}</span> 1.16979685e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.064"</span><span class="o">}</span> 1.17018263e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.128"</span><span class="o">}</span> 1.17029029e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.256"</span><span class="o">}</span> 1.17033774e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"0.512"</span><span class="o">}</span> 1.17035754e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"1.024"</span><span class="o">}</span> 1.17036426e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"2.048"</span><span class="o">}</span> 1.17036682e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"4.096"</span><span class="o">}</span> 1.17036699e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"8.192"</span><span class="o">}</span> 1.17036699e+08
+etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="nv">le</span><span class="o">=</span><span class="s2">"+Inf"</span><span class="o">}</span> 1.17036699e+08
+</code></pre></div></div>
+
+<h3 id="zabbix-yaml">zabbix yaml</h3>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">zabbix_export</span><span class="pi">:</span>
+  <span class="na">version</span><span class="pi">:</span> <span class="s1">'</span><span class="s">6.2'</span>
+  <span class="na">date</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2023-03-09T08:29:57Z'</span>
+  <span class="na">template_groups</span><span class="pi">:</span>
+    <span class="pi">-</span>
+      <span class="na">uuid</span><span class="pi">:</span> <span class="s">748ad4d098d447d492bb935c907f652f</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">Templates/Databases</span>
+  <span class="na">templates</span><span class="pi">:</span>
+    <span class="pi">-</span>
+      <span class="na">uuid</span><span class="pi">:</span> <span class="s">43596328d4d74a5592906a9e08e3fd96</span>
+      <span class="na">template</span><span class="pi">:</span> <span class="s">service.TiDB-PD</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">service.TiDB-PD</span>
+      <span class="na">groups</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">Templates/Databases</span>
+      <span class="na">items</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">a0e6cf6c975042e0b884de64710b56b5</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[TIDB-PD]</span><span class="nv"> </span><span class="s">etcd</span><span class="nv"> </span><span class="s">write</span><span class="nv"> </span><span class="s">disk</span><span class="nv"> </span><span class="s">latency'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">CALCULATED</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">etcd.write.disk.latency</span>
+          <span class="na">value_type</span><span class="pi">:</span> <span class="s">FLOAT</span>
+          <span class="na">params</span><span class="pi">:</span> <span class="s1">'</span><span class="s">histogram_quantile(0.99,bucket_rate_foreach(//etcd.write.disk.latency[*],60s))'</span>
+          <span class="na">tags</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">3a1fd879a08a445cbf438f3d68078111</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">PD:</span><span class="nv"> </span><span class="s">Get</span><span class="nv"> </span><span class="s">instance</span><span class="nv"> </span><span class="s">metrics'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">HTTP_AGENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s">30s</span>
+          <span class="na">history</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">trends</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">value_type</span><span class="pi">:</span> <span class="s">TEXT</span>
+          <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Get</span><span class="nv"> </span><span class="s">TiDB</span><span class="nv"> </span><span class="s">PD</span><span class="nv"> </span><span class="s">instance</span><span class="nv"> </span><span class="s">metrics.'</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">CHECK_NOT_SUPPORTED</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">PROMETHEUS_TO_JSON</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+          <span class="na">url</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{HOST.IP}:{$PD.PORT}/metrics'</span>
+          <span class="na">tags</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s">RAW</span>
+      <span class="na">discovery_rules</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">74748726242c46bcaa7533edde4b2633</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">etcd</span><span class="nv"> </span><span class="s">disk</span><span class="nv"> </span><span class="s">wal</span><span class="nv"> </span><span class="s">fsync</span><span class="nv"> </span><span class="s">duration</span><span class="nv"> </span><span class="s">seconds</span><span class="nv"> </span><span class="s">bucket</span><span class="nv"> </span><span class="s">discovery'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">etcd.disk.wal.fsync.duration.seconds.bucket.discovery</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">c56a7113b37d48db836e6af8043e2639</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB-PD:</span><span class="nv"> </span><span class="s">{#NAME}</span><span class="nv">  </span><span class="s">{#LE}'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">etcd.write.disk.latency[{#LE}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">value_type</span><span class="pi">:</span> <span class="s">FLOAT</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name=="etcd_disk_wal_fsync_duration_seconds_bucket")]'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JAVASCRIPT</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="pi">|</span>
+                      <span class="s">var obj = JSON.parse(value)</span>
+                      <span class="s">for (var i=0;i&lt; obj.length;i++){</span>
+                          <span class="s">if (obj[i]['labels']['le'] == "{#LE}" &amp;&amp; obj[i]["name"] == "{#NAME}" ){</span>
+                              <span class="s">return obj[i]["line_raw"].split(" ")[1]</span>
+                          <span class="s">}</span>
+                      <span class="s">}</span>
+                      <span class="s">return</span>
+                      
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">CHANGE_PER_SECOND</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name=="etcd_disk_wal_fsync_duration_seconds_bucket")]'</span>
+              <span class="na">error_handler</span><span class="pi">:</span> <span class="s">CUSTOM_VALUE</span>
+              <span class="na">error_handler_params</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[]'</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JAVASCRIPT</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="pi">|</span>
+                  <span class="s">var obj = JSON.parse(value)</span>
+                  <span class="s">var outJson=[]</span>
+                  <span class="s">for (var i=0;i&lt;obj.length;i++){</span>
+                      <span class="s">outJson.push({"{#LE}":obj[i]['labels']['le'],"{#NAME}":obj[i]["name"]})</span>
+                  <span class="s">}</span>
+                  <span class="s">var ret = {}</span>
+                  <span class="s">ret["data"] = outJson</span>
+                  <span class="s">return JSON.stringify(ret)</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">cd1f27cf5f1d4f6f84032386ec7f8abb</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Cluster</span><span class="nv"> </span><span class="s">metrics</span><span class="nv"> </span><span class="s">discovery'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">pd.cluster.discovery</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Discovery</span><span class="nv"> </span><span class="s">cluster</span><span class="nv"> </span><span class="s">specific</span><span class="nv"> </span><span class="s">metrics.'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">060fe77d53c24329a9165b50068ba757</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster:</span><span class="nv"> </span><span class="s">tikv</span><span class="nv"> </span><span class="s">used</span><span class="nv"> </span><span class="s">sotrage</span><span class="nv"> </span><span class="s">capacity'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">CALCULATED</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd.cluster.capacity[{#SINGLETON}]'</span>
+              <span class="na">units</span><span class="pi">:</span> <span class="s1">'</span><span class="s">%'</span>
+              <span class="na">params</span><span class="pi">:</span> <span class="s1">'</span><span class="s">last(//pd.cluster_status.storage_size[{#SINGLETON}])</span><span class="nv"> </span><span class="s">/</span><span class="nv"> </span><span class="s">last(//pd.cluster_status.storage_capacity[{#SINGLETON}])</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">100'</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">d39f58372e3f464c87b2ec42acdf2061</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster:</span><span class="nv"> </span><span class="s">Storage</span><span class="nv"> </span><span class="s">capacity'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd.cluster_status.storage_capacity[{#SINGLETON}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">history</span><span class="pi">:</span> <span class="s">7d</span>
+              <span class="na">value_type</span><span class="pi">:</span> <span class="s">FLOAT</span>
+              <span class="na">units</span><span class="pi">:</span> <span class="s">MB</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">The</span><span class="nv"> </span><span class="s">total</span><span class="nv"> </span><span class="s">storage</span><span class="nv"> </span><span class="s">capacity</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster.'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"pd_cluster_status"</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">@.labels.type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"storage_capacity")].value.first()'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JAVASCRIPT</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">return</span><span class="nv"> </span><span class="s">value/1024/1024'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">c72e6a2f89d041c4bf764021b9bc182c</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster:</span><span class="nv"> </span><span class="s">Storage</span><span class="nv"> </span><span class="s">size'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd.cluster_status.storage_size[{#SINGLETON}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">history</span><span class="pi">:</span> <span class="s">7d</span>
+              <span class="na">value_type</span><span class="pi">:</span> <span class="s">FLOAT</span>
+              <span class="na">units</span><span class="pi">:</span> <span class="s">MB</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">The</span><span class="nv"> </span><span class="s">storage</span><span class="nv"> </span><span class="s">size</span><span class="nv"> </span><span class="s">that</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">currently</span><span class="nv"> </span><span class="s">used</span><span class="nv"> </span><span class="s">by</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster.'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"pd_cluster_status"</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">@.labels.type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"storage_size")].value.first()'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JAVASCRIPT</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">return</span><span class="nv"> </span><span class="s">value/1024/1024'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">ce35701fa8344c4cbd1dc6b1d24dfa10</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster:</span><span class="nv"> </span><span class="s">Lowspace</span><span class="nv"> </span><span class="s">stores'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd.cluster_status.store_low_space[{#SINGLETON}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">history</span><span class="pi">:</span> <span class="s">7d</span>
+              <span class="na">units</span><span class="pi">:</span> <span class="s">MB</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">The</span><span class="nv"> </span><span class="s">count</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">low</span><span class="nv"> </span><span class="s">space</span><span class="nv"> </span><span class="s">stores.'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"pd_cluster_status"</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">@.labels.type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"store_low_space_count")].value.first()'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+          <span class="na">trigger_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">843d566b33bc401390c2a633d08bb033</span>
+              <span class="na">expression</span><span class="pi">:</span> <span class="s1">'</span><span class="s">min(/service.TiDB-PD/pd.cluster_status.storage_size[{#SINGLETON}],5m)/last(/service.TiDB-PD/pd.cluster_status.storage_capacity[{#SINGLETON}])*100&gt;{$PD.STORAGE_USAGE.MAX.WARN}'</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster:</span><span class="nv"> </span><span class="s">Current</span><span class="nv"> </span><span class="s">storage</span><span class="nv"> </span><span class="s">usage</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">too</span><span class="nv"> </span><span class="s">high</span><span class="nv"> </span><span class="s">(over</span><span class="nv"> </span><span class="s">{$PD.STORAGE_USAGE.MAX.WARN}%</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">5m)'</span>
+              <span class="na">status</span><span class="pi">:</span> <span class="s">DISABLED</span>
+              <span class="na">priority</span><span class="pi">:</span> <span class="s">WARNING</span>
+              <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Over</span><span class="nv"> </span><span class="s">{$PD.STORAGE_USAGE.MAX.WARN}%</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">the</span><span class="nv"> </span><span class="s">cluster</span><span class="nv"> </span><span class="s">space</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">occupied.'</span>
+          <span class="na">graph_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">270de7aa73cf454cb147a3f5b39ebb35</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB</span><span class="nv"> </span><span class="s">cluster:</span><span class="nv"> </span><span class="s">Storage</span><span class="nv"> </span><span class="s">Usage[{#SINGLETON}]'</span>
+              <span class="na">graph_items</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">color</span><span class="pi">:</span> <span class="s">1A7C11</span>
+                  <span class="na">item</span><span class="pi">:</span>
+                    <span class="na">host</span><span class="pi">:</span> <span class="s">service.TiDB-PD</span>
+                    <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd.cluster_status.storage_size[{#SINGLETON}]'</span>
+                <span class="pi">-</span>
+                  <span class="na">sortorder</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1'</span>
+                  <span class="na">color</span><span class="pi">:</span> <span class="s">2774A4</span>
+                  <span class="na">item</span><span class="pi">:</span>
+                    <span class="na">host</span><span class="pi">:</span> <span class="s">service.TiDB-PD</span>
+                    <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd.cluster_status.storage_capacity[{#SINGLETON}]'</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name=="pd_cluster_status")]'</span>
+              <span class="na">error_handler</span><span class="pi">:</span> <span class="s">CUSTOM_VALUE</span>
+              <span class="na">error_handler_params</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[]'</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JAVASCRIPT</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">return</span><span class="nv"> </span><span class="s">JSON.stringify(value</span><span class="nv"> </span><span class="s">!=</span><span class="nv"> </span><span class="s">"[]"</span><span class="nv"> </span><span class="s">?</span><span class="nv"> </span><span class="s">[{'</span><span class="s1">'</span><span class="s">{#SINGLETON}'</span><span class="s1">'</span><span class="s">:</span><span class="nv"> </span><span class="s">'</span><span class="s1">'</span><span class="s">'</span><span class="s1">'</span><span class="s">}]</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">[]);'</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">e75aae0f2933400399028f8286b555f2</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd</span><span class="nv"> </span><span class="s">events</span><span class="nv"> </span><span class="s">metrics</span><span class="nv"> </span><span class="s">discovery'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">pd.events.discovery</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">1dac13d2c6d04cf09faee366442069c3</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB:</span><span class="nv"> </span><span class="s">pd</span><span class="nv"> </span><span class="s">tso</span><span class="nv"> </span><span class="s">events[save]'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd.tso.evnets[{#SINGLETON}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">value_type</span><span class="pi">:</span> <span class="s">FLOAT</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"pd_tso_events"</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">@.labels.type</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"save")].value.first()'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">SIMPLE_CHANGE</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name=="pd_tso_events")]'</span>
+              <span class="na">error_handler</span><span class="pi">:</span> <span class="s">CUSTOM_VALUE</span>
+              <span class="na">error_handler_params</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[]'</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JAVASCRIPT</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">return</span><span class="nv"> </span><span class="s">JSON.stringify(value</span><span class="nv"> </span><span class="s">!=</span><span class="nv"> </span><span class="s">"[]"</span><span class="nv"> </span><span class="s">?</span><span class="nv"> </span><span class="s">[{'</span><span class="s1">'</span><span class="s">{#SINGLETON}'</span><span class="s1">'</span><span class="s">:</span><span class="nv"> </span><span class="s">'</span><span class="s1">'</span><span class="s">'</span><span class="s1">'</span><span class="s">}]</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">[]);'</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">1138b1dbad934a57af545d04a2979294</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">pd</span><span class="nv"> </span><span class="s">process</span><span class="nv"> </span><span class="s">start</span><span class="nv">  </span><span class="s">time</span><span class="nv"> </span><span class="s">discovery'</span>
+          <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">pd.process.start.time.discovery</span>
+          <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">lifetime</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+          <span class="na">item_prototypes</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">uuid</span><span class="pi">:</span> <span class="s">4f0ec43060af4ef3a506f578af97b664</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">TiDB-PD:</span><span class="nv"> </span><span class="s">process</span><span class="nv"> </span><span class="s">start</span><span class="nv"> </span><span class="s">time</span><span class="nv"> </span><span class="s">seconds'</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">DEPENDENT</span>
+              <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">process.start.time.seconds[{#SINGLETON}]'</span>
+              <span class="na">delay</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">preprocessing</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">"process_start_time_seconds"</span><span class="nv"> </span><span class="s">)].value.first()'</span>
+                <span class="pi">-</span>
+                  <span class="na">type</span><span class="pi">:</span> <span class="s">SIMPLE_CHANGE</span>
+                  <span class="na">parameters</span><span class="pi">:</span>
+                    <span class="pi">-</span> <span class="s1">'</span><span class="s">'</span>
+              <span class="na">master_item</span><span class="pi">:</span>
+                <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+              <span class="na">tags</span><span class="pi">:</span>
+                <span class="pi">-</span>
+                  <span class="na">tag</span><span class="pi">:</span> <span class="s">Application</span>
+                  <span class="na">value</span><span class="pi">:</span> <span class="s">TIDB-PD</span>
+          <span class="na">master_item</span><span class="pi">:</span>
+            <span class="na">key</span><span class="pi">:</span> <span class="s">pd.get_metrics</span>
+          <span class="na">preprocessing</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JSONPATH</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">$[?(@.name=="process_start_time_seconds")]'</span>
+              <span class="na">error_handler</span><span class="pi">:</span> <span class="s">CUSTOM_VALUE</span>
+              <span class="na">error_handler_params</span><span class="pi">:</span> <span class="s1">'</span><span class="s">[]'</span>
+            <span class="pi">-</span>
+              <span class="na">type</span><span class="pi">:</span> <span class="s">JAVASCRIPT</span>
+              <span class="na">parameters</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">return</span><span class="nv"> </span><span class="s">JSON.stringify(value</span><span class="nv"> </span><span class="s">!=</span><span class="nv"> </span><span class="s">"[]"</span><span class="nv"> </span><span class="s">?</span><span class="nv"> </span><span class="s">[{'</span><span class="s1">'</span><span class="s">{#SINGLETON}'</span><span class="s1">'</span><span class="s">:</span><span class="nv"> </span><span class="s">'</span><span class="s1">'</span><span class="s">'</span><span class="s1">'</span><span class="s">}]</span><span class="nv"> </span><span class="s">:</span><span class="nv"> </span><span class="s">[]);'</span>
+      <span class="na">macros</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{$PD.MISS_REGION.MAX.WARN}'</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">100'</span>
+          <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Maximum</span><span class="nv"> </span><span class="s">number</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">missed</span><span class="nv"> </span><span class="s">regions'</span>
+        <span class="pi">-</span>
+          <span class="na">macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{$PD.PORT}'</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">2379'</span>
+          <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">The</span><span class="nv"> </span><span class="s">port</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">PD</span><span class="nv"> </span><span class="s">server</span><span class="nv"> </span><span class="s">metrics</span><span class="nv"> </span><span class="s">web</span><span class="nv"> </span><span class="s">endpoint'</span>
+        <span class="pi">-</span>
+          <span class="na">macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{$PD.STORAGE_USAGE.MAX.WARN}'</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">80'</span>
+          <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Maximum</span><span class="nv"> </span><span class="s">percentage</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">cluster</span><span class="nv"> </span><span class="s">space</span><span class="nv"> </span><span class="s">used'</span>
+        <span class="pi">-</span>
+          <span class="na">macro</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{$PD.URL}'</span>
+          <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">{HOST.IP}'</span>
+          <span class="na">description</span><span class="pi">:</span> <span class="s1">'</span><span class="s">PD</span><span class="nv"> </span><span class="s">server</span><span class="nv"> </span><span class="s">URL'</span>
+      <span class="na">valuemaps</span><span class="pi">:</span>
+        <span class="pi">-</span>
+          <span class="na">uuid</span><span class="pi">:</span> <span class="s">bce54cbdf2b8487985f9c7847a4c4918</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Service</span><span class="nv"> </span><span class="s">state'</span>
+          <span class="na">mappings</span><span class="pi">:</span>
+            <span class="pi">-</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">0'</span>
+              <span class="na">newvalue</span><span class="pi">:</span> <span class="s">Down</span>
+            <span class="pi">-</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">1'</span>
+              <span class="na">newvalue</span><span class="pi">:</span> <span class="s">Up</span>
+</code></pre></div></div>
+
+<h3 id="效果">效果</h3>
+<p><img src="/assets/images/zabbix/2023-03-09_16-35.png" />
+<img src="/assets/images/zabbix/2023-03-09_16-35_1.png" /></p>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 收集TIDB的etcd_disk_wal_fsync_duration_seconds_bucket, 实现prometheus的 histogram_quantile]]></summary></entry><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
 
 <div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
 
@@ -4081,96 +4464,4 @@ apisix_http_status{code="200",route="ceshi.camin.vip",matched_uri="/*",matched_h
 
 <h4 id="参考">参考</h4>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.zabbix.com/documentation/current/en/manual/discovery/low_level_discovery/examples/prometheus
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 使用prometheus数据格式实现自动发现]]></summary></entry><entry><title type="html">k8s安装metric server</title><link href="/kubernetes-metric-server/" rel="alternate" type="text/html" title="k8s安装metric server" /><published>2022-11-03T00:00:00+08:00</published><updated>2022-11-03T00:00:00+08:00</updated><id>/kubernetes-metric-server</id><content type="html" xml:base="/kubernetes-metric-server/"><![CDATA[<p>k8s安装metric server</p>
-
-<h3 id="kubernetes-安装metric-server">kubernetes 安装metric server</h3>
-
-<h4 id="k8s版本">k8s版本</h4>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># kubectl version</span>
-Client Version: version.Info<span class="o">{</span>Major:<span class="s2">"1"</span>, Minor:<span class="s2">"20"</span>, GitVersion:<span class="s2">"v1.20.15"</span>, GitCommit:<span class="s2">"8f1e5bf0b9729a899b8df86249b56e2c74aebc55"</span>, GitTreeState:<span class="s2">"clean"</span>, BuildDate:<span class="s2">"2022-01-19T17:27:39Z"</span>, GoVersion:<span class="s2">"go1.15.15"</span>, Compiler:<span class="s2">"gc"</span>, Platform:<span class="s2">"linux/amd64"</span><span class="o">}</span>
-Server Version: version.Info<span class="o">{</span>Major:<span class="s2">"1"</span>, Minor:<span class="s2">"20"</span>, GitVersion:<span class="s2">"v1.20.15"</span>, GitCommit:<span class="s2">"8f1e5bf0b9729a899b8df86249b56e2c74aebc55"</span>, GitTreeState:<span class="s2">"clean"</span>, BuildDate:<span class="s2">"2022-01-19T17:23:01Z"</span>, GoVersion:<span class="s2">"go1.15.15"</span>, Compiler:<span class="s2">"gc"</span>, Platform:<span class="s2">"linux/amd64"</span><span class="o">}</span>
-</code></pre></div></div>
-
-<h4 id="作用">作用</h4>
-
-<ul>
-  <li>基于 CPU/内存的水平自动缩放</li>
-  <li>自动调整/建议容器所需的资源</li>
-</ul>
-
-<h4 id="安装metric-server-的条件">安装metric server 的条件</h4>
-
-<ul>
-  <li>kube-apiserver 必须<a href="https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/">启用聚合层</a>。</li>
-  <li>节点必须启用 Webhook<a href="https://kubernetes.io/docs/reference/access-authn-authz/kubelet-authn-authz/">身份验证和授权</a>。</li>
-  <li>Kubelet 证书需要由集群证书颁发机构签名（或通过传递<code class="language-plaintext highlighter-rouge">--kubelet-insecure-tls</code>给 Metrics Server 来禁用证书验证）</li>
-  <li>容器运行时必须实现<a href="https://github.com/kubernetes/community/blob/master/contributors/devel/sig-node/cri-container-stats.md">容器度量 RPC</a>（或具有<a href="https://github.com/google/cadvisor">cAdvisor</a>支持）</li>
-  <li>网络应支持以下通信：
-    <ul>
-      <li>控制平面到 Metrics Server。控制平面节点需要到达 Metrics Server 的 pod IP 和端口 10250（或节点 IP 和自定义端口，如果<code class="language-plaintext highlighter-rouge">hostNetwork</code>启用）</li>
-      <li>Metrics Server 到所有节点上的 Kubelet。Metrics 服务器需要到达节点地址和 Kubelet 端口。地址和端口在 Kubelet 中配置并作为 Node 对象的一部分发布。字段中的地址<code class="language-plaintext highlighter-rouge">.status.addresses</code>和端口<code class="language-plaintext highlighter-rouge">.status.daemonEndpoints.kubeletEndpoint.port</code>（默认为 10250）。Metrics Server 将根据<code class="language-plaintext highlighter-rouge">kubelet-preferred-address-types</code>命令行标志提供的列表（<code class="language-plaintext highlighter-rouge">InternalIP,ExternalIP,Hostname</code>清单中的默认值）选择第一个节点地址。</li>
-    </ul>
-  </li>
-</ul>
-
-<h4 id="使用聚合层扩展-kubernete-api">使用聚合层扩展 Kubernete API</h4>
-
-<p>为了将原来的 API server 应用给拆分开，方便用户开发自己的 API server 集成进来，而不用直接修改 Kubernetes 官方仓库的代码，这样一来也能将 API server 解耦，用户可以通过附加的 API 扩展 Kubernetes， 而不局限于 Kubernetes 核心 API 提供的功能。</p>
-
-<p>开启API的聚合参数</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s">--requestheader-allowed-names=kubernetes \\</span>
-<span class="s">--requestheader-extra-headers-prefix=X-Remote-Extra- \\</span>
-<span class="s">--requestheader-group-headers=X-Remote-Group \\</span>
-<span class="s">--requestheader-username-headers=X-Remote-User \\</span>
-<span class="s">--enable-aggregator-routing=true \\</span>
-<span class="s">--proxy-client-cert-file=/opt/kubernetes/ssl/server.pem \\</span>
-<span class="s">--proxy-client-key-file=/opt/kubernetes/ssl/server-key.pem \\</span>
-</code></pre></div></div>
-
-<p><strong>kubeadm安装的集群不需配置<a href="http://yinyaliang.site/kubernetes-kubeadm-install/">参考</a></strong></p>
-
-<h4 id="安装">安装</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-</code></pre></div></div>
-
-<p>修改配置</p>
-
-<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="pi">-</span> <span class="na">args</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">--cert-dir=/tmp</span>
-        <span class="pi">-</span> <span class="s">--secure-port=4443</span>
-        <span class="pi">-</span> <span class="s">--kubelet-preferred-address-types=InternalIP</span>   <span class="c1">#修改</span>
-        <span class="pi">-</span> <span class="s">--kubelet-insecure-tls</span>                         <span class="c1">#增加</span>
-        <span class="pi">-</span> <span class="s">--kubelet-use-node-status-port</span>
-        <span class="pi">-</span> <span class="s">--metric-resolution=15s</span>
-</code></pre></div></div>
-
-<p>查看</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code> kubectl get pods <span class="nt">-n</span> kube-system | <span class="nb">grep </span>metric
-</code></pre></div></div>
-
-<p>测试</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># kubectl top nodes --sort-by=cpu </span>
-NAME          CPU<span class="o">(</span>cores<span class="o">)</span>   CPU%   MEMORY<span class="o">(</span>bytes<span class="o">)</span>   MEMORY%   
-oif-omdhkm1   276m         13%    1457Mi          37%       
-oif-omdhkm3   264m         13%    1347Mi          35%       
-oif-omdhkm2   239m         11%    1257Mi          32%       
-oif-omdhkp1   219m         2%     916Mi           3%        
-oif-omdhkp3   202m         2%     910Mi           3%        
-oif-omdhkp2   199m         2%     885Mi           3%        
-oif-omdhkd1   123m         3%     1144Mi          14%  
-</code></pre></div></div>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># kubectl top pod --sort-by=cpu -n osp-test</span>
-NAME                              CPU<span class="o">(</span>cores<span class="o">)</span>   MEMORY<span class="o">(</span>bytes<span class="o">)</span>   
-osp-test-api-6fcf98987c-qbr29     1m           18Mi            
-osp-test-admin-5d9587c668-m8kw2   0m           4Mi 
-</code></pre></div></div>
-
-<h4 id="参考">参考</h4>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://github.com/kubernetes-sigs/metrics-server
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Kubernetes" /><summary type="html"><![CDATA[k8s安装metric server]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 使用prometheus数据格式实现自动发现]]></summary></entry></feed>

@@ -304,4 +304,10 @@ var store = [{
         "tags": ["golang"],
         "url": "/6lenid/",
         "teaser": null
+      },{
+        "title": "zabbix 实现 histogram_quantile",
+        "excerpt":"zabbix 收集TIDB的etcd_disk_wal_fsync_duration_seconds_bucket, 实现prometheus的 histogram_quantile prometheus的报警规则 histogram_quantile(0.99,sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance,job,le)) &gt; 1 客户端 metrics etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.002\"} 1.16569197e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.004\"} 1.16826659e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.008\"} 1.16908279e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.016\"} 1.1695191e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.032\"} 1.16979685e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.064\"} 1.17018263e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.128\"} 1.17029029e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.256\"} 1.17033774e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"0.512\"} 1.17035754e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"1.024\"} 1.17036426e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"2.048\"} 1.17036682e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"4.096\"} 1.17036699e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"8.192\"} 1.17036699e+08 etcd_disk_wal_fsync_duration_seconds_bucket{le=\"+Inf\"} 1.17036699e+08 zabbix yaml zabbix_export: version: '6.2' date: '2023-03-09T08:29:57Z' template_groups: - uuid:...","categories": [],
+        "tags": ["Monitor"],
+        "url": "/monitor-zabbix-histogram-quantile/",
+        "teaser": null
       }]
