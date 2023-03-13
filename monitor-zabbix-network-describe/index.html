@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3436206915764997"
+     crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>zabbix 报警显示网络设备的端口描述 - 尹亚亮</title>
+<meta name="description" content="zabbix 报警显示网络设备的端口描述">
+
+
+  <meta name="author" content="Your Name">
+  
+  <meta property="article:author" content="Your Name">
+  
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:site_name" content="尹亚亮">
+<meta property="og:title" content="zabbix 报警显示网络设备的端口描述">
+<meta property="og:url" content="/monitor-zabbix-network-describe/">
+
+
+  <meta property="og:description" content="zabbix 报警显示网络设备的端口描述">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2023-03-13T00:00:00+08:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="/monitor-zabbix-network-describe/">
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    
+      "@type": "Person",
+      "name": "Your Name",
+      "url": "/"
+    
+  }
+</script>
+
+
+  <meta name="google-site-verification" content="A4xb7189wuH7_ck4RBWFMcZetHQvGEtM6c4NkowkBXo" />
+
+
+
+
+  <meta name="yandex-verification" content="b34490b8136e1c97">
+
+
+  <meta name="naver-site-verification" content="bcc3391cbb77775a98167dd719a9653fad02042a">
+
+
+  <meta name="baidu-site-verification" content="code-faatzlDIxD">
+
+<!-- end _includes/seo.html -->
+
+
+
+  <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="尹亚亮 Feed">
+
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5/css/all.min.css"></noscript>
+
+
+
+    
+  </head>
+
+  <body class="layout--single">
+    <nav class="skip-links">
+  <ul>
+    <li><a href="#site-nav" class="screen-reader-shortcut">转到主导航栏</a></li>
+    <li><a href="#main" class="screen-reader-shortcut">转到内容</a></li>
+    <li><a href="#footer" class="screen-reader-shortcut">转到底部</a></li>
+  </ul>
+</nav>
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+        <a class="site-title" href="/">
+          尹亚亮
+          
+        </a>
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/year-archive/">归档</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/">分类</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">切换菜单</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+
+    <div class="initial-content">
+      
+
+
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+  
+  </div>
+
+
+
+  <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="zabbix 报警显示网络设备的端口描述">
+    <meta itemprop="description" content="zabbix 报警显示网络设备的端口描述">
+    <meta itemprop="datePublished" content="2023-03-13T00:00:00+08:00">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title p-name" itemprop="headline">
+            <a href="/monitor-zabbix-network-describe/" class="u-url" itemprop="url">zabbix 报警显示网络设备的端口描述
+</a>
+          </h1>
+          
+
+  <p class="page__meta">
+    
+      
+      <span class="page__meta-date">
+        <i class="far fa-calendar-alt" aria-hidden="true"></i>
+        
+        <time datetime="2023-03-13T00:00:00+08:00">March 13, 2023</time>
+      </span>
+    
+
+    
+
+    
+  </p>
+
+
+        </header>
+      
+
+      <section class="page__content e-content" itemprop="text">
+        
+          <aside class="sidebar__right ">
+            <nav class="toc">
+              <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
+              <ul class="toc__menu"><li><a href="#配置自动发现">配置自动发现</a><ul><li><a href="#自动发现oid">自动发现OID</a></li><li><a href="#获取后的值为">获取后的值为</a></li></ul></li><li><a href="#trigger-name">trigger name</a></li><li><a href="#触发器message配置">触发器Message配置</a></li><li><a href="#效果">效果</a></li></ul>
+
+            </nav>
+          </aside>
+        
+        <p>zabbix 报警显示网络设备的端口描述</p>
+
+<h3 id="配置自动发现">配置自动发现</h3>
+
+<h4 id="自动发现oid">自动发现OID</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>discovery[{#SNMPVALUE},IF-MIB::ifDescr,{#IFALIAS},IF-MIB::ifAlias]
+</code></pre></div></div>
+<p>** {#SNMPVALUE} 表示 端口描述 **
+** {#IFALIAS}   表示 端口别名 **</p>
+
+<h4 id="获取后的值为">获取后的值为</h4>
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+</span><span class="p">[</span><span class="w">
+
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"{#SNMPINDEX}"</span><span class="p">:</span><span class="s2">"11"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"{#SNMPVALUE}"</span><span class="p">:</span><span class="s2">"Eth-Trunk47"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"{#IFALIAS}"</span><span class="p">:</span><span class="s2">"to-glb-hvn7-up"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"{#SNMPINDEX}"</span><span class="p">:</span><span class="s2">"12"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"{#SNMPVALUE}"</span><span class="p">:</span><span class="s2">"GigabitEthernet1/0/5"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"{#IFALIAS}"</span><span class="p">:</span><span class="s2">"test02"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+
+</span><span class="p">]</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="trigger-name">trigger name</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>端口 {#SNMPVALUE} Down
+</code></pre></div></div>
+
+<h3 id="触发器message配置">触发器Message配置</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>"端口描述":"{ITEM.LASTVALUE2}",
+</code></pre></div></div>
+
+<h3 id="效果">效果</h3>
+<p><img src="/assets/images/zabbix/2023-03-13_11-16.png" /></p>
+
+        
+      </section>
+
+      <!-- <footer class="page__meta">
+        
+        
+  
+
+
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> 标签: </strong>
+    <span itemprop="keywords">
+    
+      <a href="/tags/#monitor" class="page__taxonomy-item p-category" rel="tag">Monitor</a>
+    
+    </span>
+  </p>
+
+
+
+ 
+        
+
+  <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> 更新时间:</strong> <time class="dt-published" datetime="2023-03-13T00:00:00+08:00">March 13, 2023</time></p>
+ 
+      </footer> -->
+
+      <!-- <section class="page__share">
+  
+    <h4 class="page__share-title">分享</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=zabbix+%E6%8A%A5%E8%AD%A6%E6%98%BE%E7%A4%BA%E7%BD%91%E7%BB%9C%E8%AE%BE%E5%A4%87%E7%9A%84%E7%AB%AF%E5%8F%A3%E6%8F%8F%E8%BF%B0%20%2Fmonitor-zabbix-network-describe%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fmonitor-zabbix-network-describe%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fmonitor-zabbix-network-describe%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+ -->
+
+      
+  <nav class="pagination">
+    
+      <a href="/monitor-zabbix-histogram-quantile/" class="pagination--pager" title="zabbix 实现 histogram_quantile
+">上一页</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">下一页</a>
+    
+  </nav>
+
+    </div>
+
+     <div class="page__comments">
+  
+  
+      <h4 class="page__comments-title">留下评论</h4>
+      <section id="utterances-comments"></section>
+    
+</div>
+
+  </article>
+
+</div>
+
+    </div>
+
+    
+
+    <div id="footer" class="page__footer">
+      <footer>
+        
+        <div class="page__footer-follow">
+  多研究些问题，少谈些主义。
+ </div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+
+
+
+
+
+
+
+    <script>
+  'use strict';
+
+  (function() {
+    var commentContainer = document.querySelector('#utterances-comments');
+
+    if (!commentContainer) {
+      return;
+    }
+
+    var script = document.createElement('script');
+    script.setAttribute('src', 'https://utteranc.es/client.js');
+    script.setAttribute('repo', 'yinyaliang/yinyaliang.github.io');
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'comment');
+    script.setAttribute('theme', 'github-dark');
+    script.setAttribute('crossorigin', 'anonymous');
+
+    commentContainer.appendChild(script);
+  })();
+</script>
+
+  
+
+
+
+
+
+  </body>
+</html>
