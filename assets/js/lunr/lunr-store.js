@@ -312,7 +312,7 @@ var store = [{
         "teaser": null
       },{
         "title": "zabbix 报警显示网络设备的端口描述",
-        "excerpt":"zabbix 报警显示网络设备的端口描述   配置自动发现   自动发现OID  discovery[{#SNMPVALUE},IF-MIB::ifDescr,{#IFALIAS},IF-MIB::ifAlias]  ** {#SNMPVALUE} 表示 端口描述 ** ** {#IFALIAS}   表示 端口别名 **   获取后的值为   [      {         \"{#SNMPINDEX}\":\"11\",         \"{#SNMPVALUE}\":\"Eth-Trunk47\",         \"{#IFALIAS}\":\"to-glb-hvn7-up\"     },     {         \"{#SNMPINDEX}\":\"12\",         \"{#SNMPVALUE}\":\"GigabitEthernet1/0/5\",         \"{#IFALIAS}\":\"test02\"     }  ]   trigger name  端口 {#SNMPVALUE} Down   触发器Message配置  \"端口描述\":\"{ITEM.LASTVALUE2}\",   效果    ","categories": [],
+        "excerpt":"zabbix 报警显示网络设备的端口描述   配置自动发现   自动发现OID  discovery[{#SNMPVALUE},IF-MIB::ifDescr,{#IFALIAS},IF-MIB::ifAlias]  {#SNMPVALUE} 表示 端口描述   {#IFALIAS}   表示 端口别名   获取后的值为   [      {         \"{#SNMPINDEX}\":\"11\",         \"{#SNMPVALUE}\":\"Eth-Trunk47\",         \"{#IFALIAS}\":\"to-glb-hvn7-up\"     },     {         \"{#SNMPINDEX}\":\"12\",         \"{#SNMPVALUE}\":\"GigabitEthernet1/0/5\",         \"{#IFALIAS}\":\"test02\"     }  ]   trigger name  端口 {#SNMPVALUE} Down   触发器Message配置  \"端口描述\":\"{ITEM.LASTVALUE2}\",   效果    ","categories": [],
         "tags": ["Monitor"],
         "url": "/monitor-zabbix-network-describe/",
         "teaser": null
