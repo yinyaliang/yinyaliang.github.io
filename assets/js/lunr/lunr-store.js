@@ -324,7 +324,7 @@ var store = [{
         "teaser": null
       },{
         "title": "zabbix API实现多参数搜索",
-        "excerpt":"zabbix API实现多参数搜索   提交结构  {      \"jsonrpc\":\"2.0\",     \"method\":\"host.get\",     \"params\":{         \"output\":[             \"host\",             \"hostid\",             \"status\"         ],         \"search\":{             \"name\":[                 \"test1\",                 \"test2\"             ]         },         \"searchByAny\":\"true\"     },     \"auth\":\"daf761af769c1706f3db2919e6d157a9f90c0b9c6f0b7fe176e25d791b64295b\",     \"id\":1  }    解释  当使用多个搜索条件时，需要指定 searchByAny 参数以控制匹配的方式。  默认情况下，如果不指定 searchByAny 参数，则 Zabbix API 会将多个搜索条件视为“任何条件匹配”（即匹配任何一个条件即可返回主机）。如果您想要匹配所有条件，可以将 searchByAny 参数设置为 false，这样只有同时匹配所有条件的主机才会被返回。  上面示例请求，将使用 search 参数来搜索名称包含字符串“test1”或“test2”的所有主机，并将 searchByAny 参数设置为true，这样匹配任意一个条件的主机都会被返回  ","categories": [],
+        "excerpt":"zabbix API实现多参数搜索   提交结构  {      \"jsonrpc\":\"2.0\",     \"method\":\"host.get\",     \"params\":{         \"output\":[             \"host\",             \"hostid\",             \"status\"         ],         \"search\":{             \"name\":[                 \"test1\",                 \"test2\"             ]         },         \"searchByAny\":\"true\"     },     \"auth\":\"daf761af769c1706f3db2919e6d157a9f90c0b9c6f0b7fe176e25d791b64295b\",     \"id\":1  }    解释  当使用多个搜索条件时，需要指定 searchByAny 参数以控制匹配的方式。  如果将其设置为 true，则返回与筛选器或搜索参数中任何一个条件匹配的结果，而不是全部匹配。换句话说，如果设置为 true，则结果中的每个主机只需要满足搜索条件之一，而不需要满足所有搜索条件  上面示例请求，将使用 search 参数来搜索名称包含字符串“test1”或“test2”的主机，并将 searchByAny 参数设置为true，这样匹配任意一个条件的主机都会被返回  ","categories": [],
         "tags": ["Monitor"],
         "url": "/monitor-zabbix-search-multiple/",
         "teaser": null
