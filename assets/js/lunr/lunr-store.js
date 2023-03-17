@@ -328,4 +328,10 @@ var store = [{
         "tags": ["Monitor"],
         "url": "/monitor-zabbix-search-multiple/",
         "teaser": null
+      },{
+        "title": "yapi安装",
+        "excerpt":"centos 安装yapi 安装nodejs curl -sL https://rpm.nodesource.com/setup_12.x | sudo -E bash - yum install nodejs node -v 安装git yun -y install git 安装yapi mkdir -p /data/app/yapi &amp;&amp; cd /data/app/yapi git clone https://github.com/YMFE/yapi.git vendors --depth=1 修改配置 cp vendors/config_example.json ./config.json vim ./config.json { \"port\": \"8080\", \"adminAccount\": \"yaliang.yin@****.com\", \"timeout\": 120000, \"db\": { \"connectString\": \"mongodb://IP:PORT,IP:PORT,IP:PORT/yapi_ops?slaveOk=true\",...","categories": [],
+        "tags": ["Application"],
+        "url": "/yapi-install/",
+        "teaser": null
       }]
