@@ -334,4 +334,10 @@ var store = [{
         "tags": ["Application"],
         "url": "/yapi-install/",
         "teaser": null
+      },{
+        "title": "Ubuntu 20更改墙纸的展示方式",
+        "excerpt":"墙纸可以调整墙纸,支持zoom, centre, scale等展示方式  ### 原因 设置了一个路由图的背景,图片过高显示不全,现在版本的ubuntu不再支持墙纸的显示配置  ### 安装 ```bash apt install gnome-tweaks ```  ### 调整 调整页面搜索 gnome-tweaks,在外观中可以看到相关设置  ","categories": [],
+        "tags": ["Linux"],
+        "url": "/ubuntu-wallpaper/",
+        "teaser": null
       }]
