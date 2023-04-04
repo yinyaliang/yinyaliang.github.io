@@ -71,9 +71,9 @@ var store = [{
         "url": "/kubernetes-kubeadm-install/",
         "teaser": null
       },{
-        "title": "ubuntu install zabbix agent2",
-        "excerpt":"ubuntu install zabbix agent2 安装依赖 apt install gcc apt install libpcre3 libpcre3-dev apt-get install zlib1g-dev apt install make golang 安装 https://go.dev/doc/install 创建组和用户 groupadd -g 2210 zabbix useradd -u 2210 zabbix -g zabbix 创建目录及赋权 [ ! -d /data/scripts/oss/zabbix ] &amp;&amp; mkdir -p /data/scripts/oss/zabbix [ ! -d /data/logs/oss/zabbix ] &amp;&amp; mkdir -p...","categories": [],
-        "tags": ["Application"],
+        "title": "Ubuntu Install Zabbix Agent2",
+        "excerpt":"安装依赖 apt install gcc apt install libpcre3 libpcre3-dev apt-get install zlib1g-dev apt install make 安装golang https://go.dev/doc/install 下载异常挂在代理: go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct 创建组和用户 groupadd -g 2210 zabbix useradd -u 2210 zabbix -g zabbix 创建目录及赋权 [ ! -d /data/scripts/oss/zabbix ] &amp;&amp; mkdir -p /data/scripts/oss/zabbix [ ! -d /data/logs/oss/zabbix ] &amp;&amp; mkdir -p...","categories": [],
+        "tags": [],
         "url": "/ubuntu-install-zabbix-agent2/",
         "teaser": null
       },{
