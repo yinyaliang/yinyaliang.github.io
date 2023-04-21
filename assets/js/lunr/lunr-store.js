@@ -340,4 +340,10 @@ var store = [{
         "tags": ["Linux"],
         "url": "/ubuntu-wallpaper/",
         "teaser": null
+      },{
+        "title": "NCE2-01 A private conversation",
+        "excerpt":"A private conversation 单词 private adj 私人的 私密的 私立的 # a private conversation / a private school / car privacy n 隐私 public adj 公共的，公开的 conversation n 谈话 名词不是动词 theatre n 剧院，戏院 # th- 发音? 舌尖发在上下牙之间 go to the theatre angry adj 生气的 形容词 angrily adv 生气地 副词 # 区别...","categories": [],
+        "tags": ["NCE2"],
+        "url": "/nce2-01/",
+        "teaser": null
       }]
