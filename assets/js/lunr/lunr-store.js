@@ -346,4 +346,10 @@ var store = [{
         "tags": ["NCE2"],
         "url": "/nce2-01/",
         "teaser": null
+      },{
+        "title": "squid snmp方式和squitclient方式获取数值差异的原因",
+        "excerpt":"snmp方式和squitclient方式获取数值差异的原因 起因 观察发现snmp方式获取cpu平稳,无明显波动,squidclient方式获取数据波动大 官方回复 SNMP cacheCpuUsage is the average CPU usage of the process handling the SNMP query. The averaging is done over the entire process lifetime[1]. This measurement is not SMP-aware. mgr:info \"CPU Usage, 5 minute avg\" is the average CPU usage of all Squid kid processes combined. Very...","categories": [],
+        "tags": ["Monitor"],
+        "url": "/monitor-squid-cpu/",
+        "teaser": null
       }]
