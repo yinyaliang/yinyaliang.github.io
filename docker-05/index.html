@@ -5,8 +5,8 @@
      crossorigin="anonymous"></script>
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>docker 部署 mysql - 尹亚亮</title>
-<meta name="description" content="Mysql Docker">
+<!-- begin _includes/seo.html --><title>docker 下mysql 显示中文 为问号 - 尹亚亮</title>
+<meta name="description" content="mysql中文显示问号">
 
 
   <meta name="author" content="Your Name">
@@ -18,11 +18,11 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:site_name" content="尹亚亮">
-<meta property="og:title" content="docker 部署 mysql">
-<meta property="og:url" content="/docker-04/">
+<meta property="og:title" content="docker 下mysql 显示中文 为问号">
+<meta property="og:url" content="/docker-05/">
 
 
-  <meta property="og:description" content="Mysql Docker">
+  <meta property="og:description" content="mysql中文显示问号">
 
 
 
@@ -41,7 +41,7 @@
   
 
 
-<link rel="canonical" href="/docker-04/">
+<link rel="canonical" href="/docker-05/">
 
 
 
@@ -149,8 +149,8 @@
 
 
   <article class="page h-entry" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="docker 部署 mysql">
-    <meta itemprop="description" content="Mysql Docker">
+    <meta itemprop="headline" content="docker 下mysql 显示中文 为问号">
+    <meta itemprop="description" content="mysql中文显示问号">
     <meta itemprop="datePublished" content="2022-09-19T00:00:00+08:00">
     
 
@@ -158,7 +158,7 @@
       
         <header>
           <h1 id="page-title" class="page__title p-name" itemprop="headline">
-            <a href="/docker-04/" class="u-url" itemprop="url">docker 部署 mysql
+            <a href="/docker-05/" class="u-url" itemprop="url">docker 下mysql 显示中文 为问号
 </a>
           </h1>
           
@@ -187,58 +187,40 @@
           <aside class="sidebar__right ">
             <nav class="toc">
               <header><h4 class="nav__title"><i class="fas fa-file-alt"></i> 目录</h4></header>
-              <ul class="toc__menu"><li><a href="#dockerfile">Dockerfile</a></li><li><a href="#build">Build</a></li><li><a href="#docker-login">Docker Login</a></li><li><a href="#docker-push">Docker Push</a></li><li><a href="#docker-pull">Docker Pull</a></li><li><a href="#docker-run">Docker Run</a></li></ul>
+              <ul class="toc__menu"><li><a href="#查找docker">查找docker</a></li><li><a href="#复制mysql配置文件">复制mysql配置文件</a></li><li><a href="#增加mysql配置">增加mysql配置</a></li><li><a href="#替换mysql配置文件">替换mysql配置文件</a></li><li><a href="#重启mysql">重启mysql</a></li></ul>
 
             </nav>
           </aside>
         
-        <p>Mysql Docker</p>
+        <p>mysql中文显示问号</p>
 
-<h4 id="dockerfile">Dockerfile</h4>
-
-<div class="language-dockerfile highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">FROM</span><span class="s"> mysql:8.0.20</span>
-
-<span class="k">ADD</span><span class="s"> devops.sql /docker-entrypoint-initdb.d</span>
+<h4 id="查找docker">查找docker</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps
+CONTAINER ID   IMAGE                                           COMMAND                  CREATED        STATUS         PORTS     NAMES
+e12e03ea1e89   registry.eeo-inc.com/omdev/osp-mysql-init:v11   <span class="s2">"docker-entrypoint.s…"</span>   6 weeks ago    Up 3 minutes             osp-dev-8.0.20
 </code></pre></div></div>
 
-<h4 id="build">Build</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker build <span class="nt">-t</span> osp/mysql-init <span class="nb">.</span> 
+<h4 id="复制mysql配置文件">复制mysql配置文件</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp
+docker <span class="nb">cp </span>e1:/tmp/mysql/my.cnf <span class="nb">.</span>
 </code></pre></div></div>
 
-<h4 id="docker-login">Docker Login</h4>
+<h4 id="增加mysql配置">增加mysql配置</h4>
+<pre><code class="language-cnf">[client]
+default-character-set=utf8
+ 
+[mysqld]
+character-set-server=utf8
+collation-server=utf8_general_ci
+</code></pre>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker login
-<span class="c">#账户</span>
-<span class="c">#密码</span>
+<h4 id="替换mysql配置文件">替换mysql配置文件</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker <span class="nb">cp </span>my.cnf e1:/tmp/mysql/my.cnf
 </code></pre></div></div>
 
-<h4 id="docker-push">Docker Push</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker tag osp/mysql-init registry.eeo-inc.com/omdev/osp-mysql-init:v01
-docker push registry.eeo-inc.com/omdev/osp-mysql-init:v01
-</code></pre></div></div>
-
-<h4 id="docker-pull">Docker Pull</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull registry.eeo-inc.com/omdev/osp-mysql-init:v01
-</code></pre></div></div>
-
-<h4 id="docker-run">Docker Run</h4>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run  <span class="se">\</span>
-    <span class="nt">--name</span> osp-dev-8.0.20  <span class="se">\</span>
-    <span class="nt">-t</span> <span class="nt">--net</span> host  <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_DATABASE</span><span class="o">=</span>osp  <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_USER</span><span class="o">=</span>osp-test  <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_PASSWORD</span><span class="o">=</span><span class="nb">test</span> <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_TCP_PORT</span><span class="o">=</span>61106 <span class="se">\</span>
-    <span class="nt">-e</span> <span class="nv">MYSQL_ROOT_PASSWORD</span><span class="o">=</span>zabbix <span class="se">\</span>
-    <span class="nt">-v</span> /var/lib/mysql:/var/lib/mysql <span class="se">\</span>
-    <span class="nt">-d</span> registry.eeo-inc.com/omdev/osp-mysql-init:v01     <span class="se">\</span>
-    <span class="nt">--character-set-server</span><span class="o">=</span>utf8     <span class="se">\</span>
-    <span class="nt">--collation-server</span><span class="o">=</span>utf8_bin  <span class="se">\</span>
-    <span class="nt">--default-authentication-plugin</span><span class="o">=</span>mysql_native_password
+<h4 id="重启mysql">重启mysql</h4>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker stop e1
+docker start e1
 </code></pre></div></div>
 
         
@@ -275,22 +257,22 @@ docker push registry.eeo-inc.com/omdev/osp-mysql-init:v01
     <h4 class="page__share-title">分享</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=docker+%E9%83%A8%E7%BD%B2+mysql%20%2Fdocker-04%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=docker+%E4%B8%8Bmysql+%E6%98%BE%E7%A4%BA%E4%B8%AD%E6%96%87+%E4%B8%BA%E9%97%AE%E5%8F%B7%20%2Fdocker-05%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fdocker-04%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=%2Fdocker-05%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fdocker-04%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=%2Fdocker-05%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="分享 LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
  -->
 
       
   <nav class="pagination">
     
-      <a href="/docker-03/" class="pagination--pager" title="docker 部署redis sentinel
+      <a href="/docker-04/" class="pagination--pager" title="docker 部署 mysql
 ">上一页</a>
     
     
-      <a href="/docker-05/" class="pagination--pager" title="docker 下mysql 显示中文 为问号
+      <a href="/kubernetes-kubeadm-password/" class="pagination--pager" title="密码管理
 ">下一页</a>
     
   </nav>

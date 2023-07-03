@@ -191,6 +191,12 @@ var store = [{
         "url": "/docker-04/",
         "teaser": null
       },{
+        "title": "docker 下mysql 显示中文 为问号",
+        "excerpt":"mysql中文显示问号   查找docker  docker ps CONTAINER ID   IMAGE                                           COMMAND                  CREATED        STATUS         PORTS     NAMES e12e03ea1e89   registry.eeo-inc.com/omdev/osp-mysql-init:v11   \"docker-entrypoint.s…\"   6 weeks ago    Up 3 minutes             osp-dev-8.0.20   复制mysql配置文件  cd /tmp docker cp e1:/tmp/mysql/my.cnf .   增加mysql配置  [client] default-character-set=utf8   [mysqld] character-set-server=utf8 collation-server=utf8_general_ci   替换mysql配置文件  docker cp my.cnf e1:/tmp/mysql/my.cnf   重启mysql  docker stop e1 docker start e1  ","categories": [],
+        "tags": ["Docker"],
+        "url": "/docker-05/",
+        "teaser": null
+      },{
         "title": "密码管理",
         "excerpt":"密码管理的几种方式 创建及删除secret 避免mysql类型的容器变量保存在yaml里不安全,可以使用secret,保存方式为 键=值 或者是 key=value 创建secret [root@master ~]# mkdir secret [root@master ~]# cd secret/ 创建一个新的命名空间 [root@master secret]# kubectl create ns nssec namespace/nssec created [root@master secret]# kubens nssec Context \"kubernetes-admin@kubernetes\" modified. Active namespace is \"nssec\". 命令行 kubectl create secret generic 名字 –from-literal=k1=v1 –from-literal=k2=v2 # 创建一个名字为 mysecret1 的 secret [root@master secret]#...","categories": [],
         "tags": ["Kubernetes"],
