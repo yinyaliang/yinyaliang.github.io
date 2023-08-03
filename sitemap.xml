@@ -241,6 +241,10 @@
 <lastmod>2023-07-01T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>/gorm-mysql-insertJson/</loc>
+<lastmod>2023-08-03T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>/about/</loc>
 </url>
 <url>
@@ -263,5 +267,8 @@
 </url>
 <url>
 <loc>/page3/</loc>
+</url>
+<url>
+<loc>/page4/</loc>
 </url>
 </urlset>

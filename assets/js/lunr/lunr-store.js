@@ -358,4 +358,10 @@ var store = [{
         "tags": ["Monitor"],
         "url": "/monitor-squid-cpu/",
         "teaser": null
+      },{
+        "title": "使用Gorm将struct做为json字段插入mysql数据库",
+        "excerpt":"Gorm使用 代码 package main import ( \"encoding/json\" \"fmt\" \"gorm.io/driver/mysql\" \"gorm.io/gorm\" ) type ContinentData struct { Name string `json:\"name\"` Code string `json:\"code\"` } type Fixaiwen struct { ID uint `gorm:\"primaryKey;autoIncrement\" json:\"id\"` Minip uint `json:\"minip\"` Maxip uint `json:\"maxip\"` Continent json.RawMessage `gorm:\"type:json\" json:\"continent\"` } func main() { dsn := \"user:password@tcp(127.0.0.1:3306)/database_name?charset=utf8mb4&amp;parseTime=True&amp;loc=Local\" db, err :=...","categories": [],
+        "tags": ["Gorm"],
+        "url": "/gorm-mysql-insertJson/",
+        "teaser": null
       }]
