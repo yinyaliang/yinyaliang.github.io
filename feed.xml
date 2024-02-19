@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2023-08-03T17:03:23+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">使用Gorm将struct做为json字段插入mysql数据库</title><link href="/gorm-mysql-insertJson/" rel="alternate" type="text/html" title="使用Gorm将struct做为json字段插入mysql数据库" /><published>2023-08-03T00:00:00+08:00</published><updated>2023-08-03T00:00:00+08:00</updated><id>/gorm-mysql-insertJson</id><content type="html" xml:base="/gorm-mysql-insertJson/"><![CDATA[<p>Gorm使用</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.2.2">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2024-02-19T09:45:00+08:00</updated><id>/feed.xml</id><title type="html">尹亚亮</title><subtitle>An amazing website.</subtitle><author><name>Your Name</name></author><entry><title type="html">Daily Dictation</title><link href="/daily-dictation-1/" rel="alternate" type="text/html" title="Daily Dictation" /><published>2024-02-19T00:00:00+08:00</published><updated>2024-02-19T00:00:00+08:00</updated><id>/daily-dictation-1</id><content type="html" xml:base="/daily-dictation-1/"><![CDATA[<h4 id="content">Content</h4>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 Mother xxx who receive the new bile piece price for her work on behieve of the poor dies on xxx india,she was 87 years old
+
+1 Mother Teresa, who received a Nobel Peace Prize for her work on behalf of the poor, dies in Calcutta, India - she was 87 years old.
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Daily Dictation" /><summary type="html"><![CDATA[Content ``` 1 Mother xxx who receive the new bile piece price for her work on behieve of the poor dies on xxx india,she was 87 years old]]></summary></entry><entry><title type="html">使用Gorm将struct做为json字段插入mysql数据库</title><link href="/gorm-mysql-insertJson/" rel="alternate" type="text/html" title="使用Gorm将struct做为json字段插入mysql数据库" /><published>2023-08-03T00:00:00+08:00</published><updated>2023-08-03T00:00:00+08:00</updated><id>/gorm-mysql-insertJson</id><content type="html" xml:base="/gorm-mysql-insertJson/"><![CDATA[<p>Gorm使用</p>
 
 <h4 id="代码">代码</h4>
 <div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
@@ -924,48 +928,4 @@ etcd_disk_wal_fsync_duration_seconds_bucket<span class="o">{</span><span class="
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>https://www.zabbix.com/documentation/6.0/en/manual/appendix/functions/aggregate
 https://www.zabbix.com/documentation/6.0/en/manual/appendix/functions/aggregate/foreach
 https://support.zabbix.com/browse/ZBXNEXT-6879
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 收集TIDB的etcd_disk_wal_fsync_duration_seconds_bucket, 实现prometheus的 histogram_quantile]]></summary></entry><entry><title type="html">6位唯一码</title><link href="/6lenid/" rel="alternate" type="text/html" title="6位唯一码" /><published>2023-02-27T00:00:00+08:00</published><updated>2023-02-27T00:00:00+08:00</updated><id>/6lenid</id><content type="html" xml:base="/6lenid/"><![CDATA[<h3 id="6位唯一码">6位唯一码</h3>
-
-<div class="language-golang highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
-
-<span class="k">import</span> <span class="p">(</span>
-        <span class="s">"fmt"</span>
-        <span class="s">"math/rand"</span>
-        <span class="s">"time"</span>
-<span class="p">)</span>
-
-<span class="k">func</span> <span class="n">un</span><span class="p">()</span><span class="kt">string</span><span class="p">{</span>
-    <span class="n">str</span> <span class="o">:=</span> <span class="s">"abcdefghijklmnopqrstuvwxyz1234567890"</span> <span class="c">// 取值池</span>
-    <span class="n">timestamp</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">UnixNano</span><span class="p">()</span>  <span class="c">// 纳秒</span>
-    <span class="n">un</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">([]</span><span class="kt">byte</span><span class="p">,</span><span class="m">6</span><span class="p">)</span>
-    <span class="n">rand</span><span class="o">.</span><span class="n">Seed</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">un</span> <span class="p">{</span>
-        <span class="n">un</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">str</span><span class="p">[</span><span class="n">rand</span><span class="o">.</span><span class="n">Intn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str</span><span class="p">))]</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="kt">string</span><span class="p">(</span><span class="n">un</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="k">func</span> <span class="n">main</span><span class="p">(){</span>
-    <span class="n">testMap</span> <span class="o">:=</span> <span class="nb">make</span><span class="p">(</span><span class="k">map</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
-    <span class="n">testRange</span> <span class="o">:=</span> <span class="m">2</span>
-
-    <span class="k">for</span> <span class="n">i</span><span class="o">:=</span><span class="m">1</span><span class="p">;</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">testRange</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">{</span>
-        <span class="n">un</span> <span class="o">:=</span> <span class="n">un</span><span class="p">()</span>
-        <span class="n">_</span> <span class="p">,</span><span class="n">ok</span> <span class="o">:=</span> <span class="n">testMap</span><span class="p">[</span><span class="n">un</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">ok</span><span class="p">{</span>
-            <span class="n">testMap</span><span class="p">[</span><span class="n">un</span><span class="p">]</span> <span class="o">+=</span> <span class="m">1</span>
-        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
-            <span class="n">testMap</span><span class="p">[</span><span class="n">un</span><span class="p">]</span> <span class="o">=</span> <span class="m">0</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-
-    <span class="n">conflict</span> <span class="o">:=</span> <span class="m">0</span>
-    <span class="k">for</span> <span class="n">_</span><span class="p">,</span><span class="n">val</span> <span class="o">:=</span> <span class="k">range</span> <span class="n">testMap</span><span class="p">{</span>
-        <span class="k">if</span> <span class="n">val</span> <span class="o">!=</span> <span class="m">0</span><span class="p">{</span>
-            <span class="n">conflict</span> <span class="o">+=</span> <span class="m">1</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">testMap</span><span class="p">)</span>
-    <span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">conflict</span><span class="p">)</span>
-<span class="p">}</span>
-</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="golang" /><summary type="html"><![CDATA[6位唯一码]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>Your Name</name></author><category term="Monitor" /><summary type="html"><![CDATA[zabbix 收集TIDB的etcd_disk_wal_fsync_duration_seconds_bucket, 实现prometheus的 histogram_quantile]]></summary></entry></feed>

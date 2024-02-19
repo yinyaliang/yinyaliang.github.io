@@ -364,4 +364,10 @@ var store = [{
         "tags": ["Gorm"],
         "url": "/gorm-mysql-insertJson/",
         "teaser": null
+      },{
+        "title": "Daily Dictation",
+        "excerpt":"Content 1 Mother xxx who receive the new bile piece price for her work on behieve of the poor dies on xxx india,she was 87 years old 1 Mother Teresa, who received a Nobel Peace Prize for her work on behalf of the poor, dies in Calcutta, India - she...","categories": [],
+        "tags": ["Daily Dictation"],
+        "url": "/daily-dictation-1/",
+        "teaser": null
       }]
