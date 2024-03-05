@@ -370,4 +370,10 @@ var store = [{
         "tags": ["Daily Dictation"],
         "url": "/daily-dictation-1/",
         "teaser": null
+      },{
+        "title": "Daily Dictation",
+        "excerpt":"Content  定义form      const [form] = Form.useForm();  setFieldsValue      form.setFieldsValue({       name: props.user.name     })  在From中使用      &lt;Form         name=\"basic\"         form={form}         initialValues={props.user}         &gt;         &lt;Form.Item label=\"姓名：\" name=\"name\"&gt;             &lt;Input /&gt;         &lt;/Form.Item&gt;     &lt;/Form&gt;  ","categories": [],
+        "tags": ["Daily Dictation"],
+        "url": "/antd-design-form-setfieldsvalue/",
+        "teaser": null
       }]
